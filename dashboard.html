@@ -551,7 +551,7 @@
                 </div>
                 <div class="table-info-item">
                     <span class="table-info-label">Total Listings</span>
-                    <span class="table-info-value">${allJobs.length}</span>
+                    <span class="table-info-value" id="listings-counter">${allJobs.length}</span>
                 </div>
             `;
             jobsContainer.appendChild(infoBar);
@@ -678,13 +678,21 @@
         function filterTable() {
             const inputs = document.querySelectorAll('.filter-row input');
             const rows = document.querySelectorAll('tbody tr');
+            let visibleCount = 0;
+            let totalCount = rows.length;
+            let activeFilter = false;
+            
+            inputs.forEach(input => {
+                if (input.value.toLowerCase().trim()) {
+                    activeFilter = true;
+                }
+            });
             
             rows.forEach(row => {
                 let show = true;
                 inputs.forEach((input, index) => {
                     const filter = input.value.toLowerCase().trim();
                     if (filter) {
-                        // Offset by 1 because ID (#) column does not have an input
                         const td = row.getElementsByTagName("td")[index + 1];
                         const val = td && td.hasAttribute("data-value") ? td.getAttribute("data-value").toLowerCase() : (td ? td.textContent.toLowerCase() : "");
                         
@@ -694,7 +702,19 @@
                     }
                 });
                 row.style.display = show ? "" : "none";
+                if (show) {
+                    visibleCount++;
+                }
             });
+            
+            const counter = document.getElementById('listings-counter');
+            if (counter) {
+                if (activeFilter) {
+                    counter.textContent = `${visibleCount} of ${totalCount}`;
+                } else {
+                    counter.textContent = `${totalCount}`;
+                }
+            }
         }
 
         function toggleApplied(btn, jobUrl) {
