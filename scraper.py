@@ -450,7 +450,7 @@ def update_git():
             return
 
         # Add updated files
-        subprocess.run(["git", "add", "jobs.json", "seen_urls.json", "checkpoint.json"], cwd=repo_dir, check=True, env=env)
+        subprocess.run(["git", "add", "jobs.json", "seen_urls.json", "checkpoint.json", "dashboard.html", "job_descriptions"], cwd=repo_dir, check=True, env=env)
         # Check if there are changes to commit
         status = subprocess.run(["git", "status", "--porcelain"], cwd=repo_dir, capture_output=True, text=True, env=env)
         if status.stdout.strip():
