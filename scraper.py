@@ -157,6 +157,7 @@ def scrape_all_jobs(max_jobs=200):
                     if len(all_extracted_jobs) >= limit:
                         break
                     if job['url'] not in seen_urls:
+                        job['id'] = hashlib.md5(job['url'].encode('utf-8')).hexdigest()[:8]
                         job['source'] = target['id']
                         all_extracted_jobs.append(job)
                         seen_urls.add(job['url'])

@@ -246,6 +246,7 @@
 
         /* Column specific styles */
         .col-id { width: 3.5rem; text-align: center; color: var(--text-secondary); }
+        .col-job-id { font-family: 'Space Grotesk', sans-serif; font-size: 0.8rem; font-weight: 600; color: #a78bfa; text-align: center; width: 5.5rem; }
         .col-title { font-weight: 600; color: #ffffff; min-width: 12rem; }
         .col-company { min-width: 8rem; }
         .col-location { min-width: 7rem; }
@@ -561,20 +562,22 @@
                 <thead>
                     <tr>
                         <th class="col-id" onclick="sortTable(0)"># ↕</th>
-                        <th class="col-title" onclick="sortTable(1)">Job Title ↕</th>
-                        <th class="col-company" onclick="sortTable(2)">Company ↕</th>
-                        <th class="col-location" onclick="sortTable(3)">Location ↕</th>
-                        <th class="col-source" onclick="sortTable(4)">Source ↕</th>
-                        <th class="col-posted" onclick="sortTable(5)">Posted ↕</th>
-                        <th class="col-deadline" onclick="sortTable(6)">Deadline ↕</th>
-                        <th class="col-visited" onclick="sortTable(7)">Visited ↕</th>
-                        <th class="col-matches" onclick="sortTable(8)">Matches ↕</th>
-                        <th class="col-reason" onclick="sortTable(9)">Reason ↕</th>
-                        <th class="col-applied" onclick="sortTable(10)">Applied ↕</th>
+                        <th class="col-job-id" onclick="sortTable(1)">Job ID ↕</th>
+                        <th class="col-title" onclick="sortTable(2)">Job Title ↕</th>
+                        <th class="col-company" onclick="sortTable(3)">Company ↕</th>
+                        <th class="col-location" onclick="sortTable(4)">Location ↕</th>
+                        <th class="col-source" onclick="sortTable(5)">Source ↕</th>
+                        <th class="col-posted" onclick="sortTable(6)">Posted ↕</th>
+                        <th class="col-deadline" onclick="sortTable(7)">Deadline ↕</th>
+                        <th class="col-visited" onclick="sortTable(8)">Visited ↕</th>
+                        <th class="col-matches" onclick="sortTable(9)">Matches ↕</th>
+                        <th class="col-reason" onclick="sortTable(10)">Reason ↕</th>
+                        <th class="col-applied" onclick="sortTable(11)">Applied ↕</th>
                         <th class="col-link">Link</th>
                     </tr>
                     <tr class="filter-row">
                         <th></th>
+                        <th><input type="text" oninput="filterTable()" placeholder="Filter ID..."></th>
                         <th><input type="text" oninput="filterTable()" placeholder="Filter title..."></th>
                         <th><input type="text" oninput="filterTable()" placeholder="Filter company..."></th>
                         <th><input type="text" oninput="filterTable()" placeholder="Filter location..."></th>
@@ -624,9 +627,11 @@
                 const postedVal = job.posted_date || 'N/A';
                 const deadlineVal = job.deadline || 'N/A';
                 const sourceVal = job.source || getSourceFromUrl(job.url) || 'Unknown';
+                const jobIdVal = job.id || 'N/A';
                 
                 tr.innerHTML = `
                     <td class="col-id">${index + 1}</td>
+                    <td class="col-job-id">${jobIdVal}</td>
                     <td class="col-title">${job.title || 'Unknown Title'}</td>
                     <td class="col-company">${job.company || 'Unknown Company'}</td>
                     <td class="col-location">📍 ${job.location || 'Unknown Location'}</td>
