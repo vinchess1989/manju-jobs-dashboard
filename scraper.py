@@ -149,9 +149,10 @@ def scrape_all_jobs(max_jobs=200):
                 
                 added = 0
                 for job in jobs:
-                    if len(all_extracted_jobs) >= MAX_JOBS:
+                    if len(all_extracted_jobs) >= limit:
                         break
                     if job['url'] not in seen_urls:
+                        job['source'] = target['id']
                         all_extracted_jobs.append(job)
                         seen_urls.add(job['url'])
                         added += 1
@@ -509,20 +510,76 @@ def main():
     parser.add_argument("--max-jobs", type=int, default=200, help="Maximum number of new jobs to fetch in this run (default 200). Use 0 for unlimited.")
     args = parser.parse_args()
 
-    max_jobs = args.max_jobs
-
     if args.git_only:
         update_git()
         return
 
     if args.review_only:
         check_requirements_update()
-        review_pending_jobs()
+        while True:
+            if not os.path.exists(JOBS_FILE):
+                break
+            with open(JOBS_FILE, 'r', encoding='utf-8') as f:
+                jobs = json.load(f)
+            
+            pending_urls = [j['url'] for j in jobs if j.get('matches_requirements') == 'pending']
+            if not pending_urls:
+                print("INFO: No more pending jobs to review.")
+                break
+                
+            batch_urls = pending_urls[:15]
+            print(f"\nINFO: Reviewing batch of {len(batch_urls)} pending jobs (Remaining pending: {len(pending_urls)})...")
+            review_pending_jobs(specific_urls=set(batch_urls))
+            
+            update_git()
+            time.sleep(1)
         return
 
     if args.scrape_only:
         check_requirements_update()
-        scrape_all_jobs(max_jobs)
+        targets = generate_targets()
+        total_targets = len(targets)
+        visited_indices = set()
+        
+        while len(visited_indices) < total_targets:
+            checkpoint_idx = 0
+            if os.path.exists(CHECKPOINT_FILE):
+                try:
+                    with open(CHECKPOINT_FILE, 'r') as f:
+                        checkpoint_idx = json.load(f).get("target_index", 0)
+                except Exception:
+                    pass
+            
+            if checkpoint_idx >= total_targets or checkpoint_idx < 0:
+                checkpoint_idx = 0
+                
+            print(f"\nINFO: Scraping batch of up to 15 jobs (Starting target index: {checkpoint_idx}/{total_targets})...")
+            new_jobs = scrape_all_jobs(max_jobs=15)
+            
+            new_checkpoint_idx = 0
+            if os.path.exists(CHECKPOINT_FILE):
+                try:
+                    with open(CHECKPOINT_FILE, 'r') as f:
+                        new_checkpoint_idx = json.load(f).get("target_index", 0)
+                except Exception:
+                    pass
+            
+            if new_checkpoint_idx > checkpoint_idx:
+                for i in range(checkpoint_idx, new_checkpoint_idx):
+                    visited_indices.add(i)
+            else:
+                for i in range(checkpoint_idx, total_targets):
+                    visited_indices.add(i)
+                for i in range(0, new_checkpoint_idx):
+                    visited_indices.add(i)
+                    
+            update_git()
+            
+            if not new_jobs and new_checkpoint_idx == checkpoint_idx:
+                print("INFO: No progress made, stopping scrape loop.")
+                break
+                
+            time.sleep(1)
         return
 
     print("INFO: Scraper script starting execution loop...")
