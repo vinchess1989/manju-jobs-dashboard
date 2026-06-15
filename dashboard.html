@@ -647,11 +647,11 @@
                     <td class="col-title">${job.title || 'Unknown Title'}</td>
                     <td class="col-company">${job.company || 'Unknown Company'}</td>
                     <td class="col-location">📍 ${job.location || 'Unknown Location'}</td>
-                    <td class="col-source"><span class="source-tag">${sourceVal}</span></td>
+                    <td class="col-source" data-value="${sourceVal}"><span class="source-tag">${sourceVal}</span></td>
                     <td class="col-posted">${postedVal}</td>
                     <td class="col-deadline">${deadlineVal}</td>
-                    <td class="col-visited"><span class="status-pill ${visitedVal}">${visitedVal}</span></td>
-                    <td class="col-matches"><span class="status-pill ${matchVal}">${matchVal}</span></td>
+                    <td class="col-visited" data-value="${visitedVal}"><span class="status-pill ${visitedVal}">${visitedVal}</span></td>
+                    <td class="col-matches" data-value="${matchVal}"><span class="status-pill ${matchVal}">${matchVal}</span></td>
                     <td class="col-reason"><em>${job.reason || ''}</em></td>
                     <td class="col-applied" data-value="${appliedStatus}">
                         <button class="status-btn ${appliedStatus === 'yes' ? 'status-yes' : 'status-no'}" onclick="toggleApplied(this, '${job.url}')">${appliedStatus}</button>
@@ -706,10 +706,10 @@
                     let filter = input.value.toLowerCase().trim();
                     if (filter) {
                         const td = row.getElementsByTagName("td")[index + 1];
-                        const val = td && td.hasAttribute("data-value") ? td.getAttribute("data-value").toLowerCase() : (td ? td.textContent.toLowerCase() : "");
+                        const val = td && td.hasAttribute("data-value") ? td.getAttribute("data-value").toLowerCase().trim() : (td ? td.textContent.toLowerCase().trim() : "");
                         
                         let isNegative = false;
-                        if (filter.startsWith('!') || filter.startsWith('-')) {
+                        if (filter && (filter[0] === '!' || filter[0] === '-')) {
                             isNegative = true;
                             filter = filter.substring(1).trim();
                         }
