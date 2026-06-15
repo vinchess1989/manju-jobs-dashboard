@@ -27,7 +27,7 @@ SEARCH_SITES = [
     {"id": "duunitori", "platform": "duunitori", "url": "https://duunitori.fi/tyopaikat?jarjestys=uusimmat"},
     {"id": "indeed", "platform": "indeed", "url": "https://fi.indeed.com/jobs?l=Finland&sort=date"},
     {"id": "oikotie", "platform": "oikotie", "url": "https://tyopaikat.oikotie.fi/tyopaikat?jarjestys=julkaisuaika"},
-    {"id": "tyomarkkinatori", "platform": "tyomarkkinatori", "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/tyopaikat?sort=published,desc"},
+    {"id": "tyomarkkinatori", "platform": "tyomarkkinatori", "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat?sort=published,desc"},
     {"id": "jobly", "platform": "jobly", "url": "https://www.jobly.fi/tyopaikat"},
     {"id": "meetfrank", "platform": "meetfrank", "url": "https://meetfrank.com/jobs/"},
     {"id": "hub", "platform": "hub", "url": "https://hub.no/jobs"}
