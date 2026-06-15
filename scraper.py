@@ -322,8 +322,8 @@ URL: {job['url']}
 Return a JSON object with exactly six keys:
 - "match": a string, either "yes" or "no".
 - "reason": a short 1-sentence explanation of your decision.
-- "posted_date": a string, the date the job was posted (e.g. '2026-06-12' or 'N/A' if not found).
-- "deadline": a string, the deadline for applying (e.g. '2026-06-30' or 'N/A' if not found).
+- "posted_date": a string, the date the job was posted formatted strictly as YYYY-MM-DD (e.g. '2026-06-12'). If a relative date like '3 days ago' is mentioned, calculate it relative to today's date (2026-06-15). If not found, return 'N/A'.
+- "deadline": a string, the deadline for applying formatted strictly as YYYY-MM-DD (e.g. '2026-06-30'). Ignore any times (e.g. if deadline is 15.6.2026 23:59, return '2026-06-15'). If it is open-ended or 'open until filled', return 'Open until filled'. If not found, return 'N/A'.
 - "company": a string, the name of the hiring company (e.g. 'Wolt' or 'N/A' if not found).
 - "location": a string, the city and country of the job (e.g. 'Helsinki, Finland' or 'N/A' if not found).
 
@@ -374,6 +374,38 @@ Do not include any conversational intro/outro or explanations outside the JSON o
                 job['reason'] = reason
                 job['posted_date'] = posted_date
                 job['deadline'] = deadline
+                
+                # If a posting matches requirements, save job description text to a file inside job_descriptions/
+                if match == 'yes':
+                    import re
+                    clean_title = re.sub(r'[^a-zA-Z0-9]', '_', job['title'].lower())[:30]
+                    clean_company = re.sub(r'[^a-zA-Z0-9]', '_', job['company'].lower())[:20]
+                    url_hash = hashlib.md5(job['url'].encode('utf-8')).hexdigest()[:8]
+                    desc_filename = f"{clean_company}_{clean_title}_{url_hash}.txt"
+                    
+                    desc_dir = os.path.join(BASE_DIR, "job_descriptions")
+                    os.makedirs(desc_dir, exist_ok=True)
+                    desc_path = os.path.join(desc_dir, desc_filename)
+                    try:
+                        with open(desc_path, 'w', encoding='utf-8') as f_desc:
+                            f_desc.write(f"Title: {job['title']}\n")
+                            f_desc.write(f"Company: {job['company']}\n")
+                            f_desc.write(f"Location: {job['location']}\n")
+                            f_desc.write(f"URL: {job['url']}\n")
+                            f_desc.write(f"Posted: {posted_date}\n")
+                            f_desc.write(f"Deadline: {deadline}\n")
+                            f_desc.write(f"Reason: {reason}\n")
+                            f_desc.write("\n" + "="*40 + "\n")
+                            f_desc.write("JOB DESCRIPTION:\n")
+                            f_desc.write("="*40 + "\n\n")
+                            f_desc.write(text)
+                        job['description_file'] = f"job_descriptions/{desc_filename}"
+                    except Exception as e_desc:
+                        print(f"Error writing description file: {e_desc}")
+                        job['description_file'] = None
+                else:
+                    job['description_file'] = None
+
                 print(f" -> {match.upper()}: {reason} (Posted: {posted_date}, Deadline: {deadline}, Company: {job['company']}, Location: {job['location']})")
                 
             except Exception as e:
@@ -383,6 +415,7 @@ Do not include any conversational intro/outro or explanations outside the JSON o
                 job['reason'] = "Page load or parsing error."
                 job['posted_date'] = "N/A"
                 job['deadline'] = "N/A"
+                job['description_file'] = None
                 
             # Save aggressively after each evaluation
             with open(JOBS_FILE, 'w') as f:
