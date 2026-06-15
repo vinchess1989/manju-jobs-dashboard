@@ -71,7 +71,13 @@ def parse_generic(soup, base_url):
     for a in soup.find_all('a', href=True):
         href = a['href']
         # Look for URL paths commonly associated with job postings
-        if any(kw in href.lower() for kw in ['/tyopaikat', '/tyopaikka', '/job', '/avoimet-tyopaikat', '/view', '/rc/clk']):
+        if any(kw in href.lower() for kw in ['/tyopaikka', '/job', '/view', '/rc/clk', '/avoimet-tyopaikat']):
+            # Skip search/list filter queries, sorting options, and base list pages
+            if any(skip in href.lower() for skip in ['?haku=', '?search=', '?q=', 'jarjestys=', '?sort=', 'tyopaikat.oikotie.fi/tyopaikat?']):
+                continue
+            clean_path = href.lower().split('?')[0].rstrip('/')
+            if clean_path.endswith('/tyopaikat') or clean_path.endswith('/avoimet-tyopaikat') or clean_path.endswith('/jobs'):
+                continue
             title = a.text.strip()
             if 'senior' in title.lower():
                 continue
