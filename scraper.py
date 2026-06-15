@@ -200,6 +200,8 @@ def scrape_all_jobs(max_jobs=200):
     # Save checkpoint
     with open(CHECKPOINT_FILE, 'w') as f:
         json.dump({"target_index": current_idx}, f, indent=2)
+        
+    return all_extracted_jobs
 
 def get_file_hash(filepath):
     if not os.path.exists(filepath):
@@ -251,7 +253,7 @@ def extract_json_from_text(text):
             pass
     return json.loads(text)
 
-def review_pending_jobs():
+def review_pending_jobs(specific_urls=None):
     """Visit URLs of pending jobs, extract description, and evaluate using a local LLM."""
     if not os.path.exists(JOBS_FILE):
         return
@@ -259,7 +261,11 @@ def review_pending_jobs():
     with open(JOBS_FILE, 'r') as f:
         jobs = json.load(f)
         
-    pending_jobs = [j for j in jobs if j.get('matches_requirements') == 'pending']
+    if specific_urls is not None:
+        pending_jobs = [j for j in jobs if j.get('matches_requirements') == 'pending' and j['url'] in specific_urls]
+    else:
+        pending_jobs = [j for j in jobs if j.get('matches_requirements') == 'pending']
+        
     if not pending_jobs:
         return
         
@@ -530,15 +536,42 @@ def main():
         except Exception as e:
             print(f"An error occurred checking requirements: {e}")
             
+        quota = 15
+        new_jobs = []
+        
         try:
-            scrape_all_jobs(max_jobs)
+            print(f"\nINFO: Scanning for up to {quota} new unseen jobs...")
+            new_jobs = scrape_all_jobs(max_jobs=quota)
         except Exception as e:
             print(f"An error occurred during scraping: {e}")
             
-        try:
-            review_pending_jobs()
-        except Exception as e:
-            print(f"An error occurred during reviewing: {e}")
+        # Collect URLs to review
+        urls_to_review = [j['url'] for j in new_jobs]
+        
+        if len(urls_to_review) < quota:
+            remaining_slots = quota - len(urls_to_review)
+            try:
+                if os.path.exists(JOBS_FILE):
+                    with open(JOBS_FILE, 'r', encoding='utf-8') as f:
+                        current_jobs = json.load(f)
+                    
+                    already_collected = set(urls_to_review)
+                    for j in current_jobs:
+                        if j.get('matches_requirements') == 'pending' and j['url'] not in already_collected:
+                            urls_to_review.append(j['url'])
+                            if len(urls_to_review) >= quota:
+                                break
+            except Exception as e:
+                print(f"An error occurred reading pending jobs for review quota: {e}")
+                
+        if urls_to_review:
+            print(f"INFO: Reviewing {len(urls_to_review)} jobs in this batch (New: {len(new_jobs)}, Existing Pending: {len(urls_to_review) - len(new_jobs)})")
+            try:
+                review_pending_jobs(specific_urls=set(urls_to_review))
+            except Exception as e:
+                print(f"An error occurred during reviewing: {e}")
+        else:
+            print("INFO: No jobs found to review in this iteration.")
             
         try:
             update_git()
