@@ -4,6 +4,7 @@ import os
 import subprocess
 import threading
 import hashlib
+import argparse
 from datetime import datetime
 from urllib.parse import urljoin, quote
 from playwright.sync_api import sync_playwright
@@ -20,35 +21,27 @@ SEEN_URLS_FILE = os.path.join(BASE_DIR, "seen_urls.json")
 CHECKPOINT_FILE = os.path.join(BASE_DIR, "checkpoint.json")
 REQ_FILE = os.path.join(BASE_DIR, "job_requirements.md")
 
-SEARCH_TERMS = [
-    "Legal",
-    "Corporate Law",
-    "Marketing"
-]
-
 SEARCH_SITES = [
-    {"id": "linkedin_fin", "platform": "linkedin", "template": "https://www.linkedin.com/jobs/search?keywords={term}&location=Finland&sortBy=DD"},
-    {"id": "linkedin_ww", "platform": "linkedin", "template": "https://www.linkedin.com/jobs/search?keywords={term}&location=Worldwide&f_WT=2&sortBy=DD"},
-    {"id": "duunitori", "platform": "duunitori", "template": "https://duunitori.fi/tyopaikat?haku={term}"},
-    {"id": "indeed", "platform": "indeed", "template": "https://fi.indeed.com/jobs?q={term}&l=Finland&sort=date"},
-    {"id": "oikotie", "platform": "oikotie", "template": "https://tyopaikat.oikotie.fi/tyopaikat?hakusana={term}"},
-    {"id": "tyomarkkinatori", "platform": "tyomarkkinatori", "template": "https://tyomarkkinatori.fi/henkiloasiakkaat/tyopaikat?q={term}"},
-    {"id": "jobly", "platform": "jobly", "template": "https://www.jobly.fi/tyopaikat?search={term}"},
-    {"id": "meetfrank", "platform": "meetfrank", "template": "https://meetfrank.com/jobs/?search={term}"},
-    {"id": "hub", "platform": "hub", "template": "https://hub.no/jobs?roles={term}"}
+    {"id": "linkedin_fin", "platform": "linkedin", "url": "https://www.linkedin.com/jobs/search?location=Finland&sortBy=DD"},
+    {"id": "linkedin_ww", "platform": "linkedin", "url": "https://www.linkedin.com/jobs/search?location=Worldwide&f_WT=2&sortBy=DD"},
+    {"id": "duunitori", "platform": "duunitori", "url": "https://duunitori.fi/tyopaikat?jarjestys=uusimmat"},
+    {"id": "indeed", "platform": "indeed", "url": "https://fi.indeed.com/jobs?l=Finland&sort=date"},
+    {"id": "oikotie", "platform": "oikotie", "url": "https://tyopaikat.oikotie.fi/tyopaikat?jarjestys=julkaisuaika"},
+    {"id": "tyomarkkinatori", "platform": "tyomarkkinatori", "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/tyopaikat?sort=published,desc"},
+    {"id": "jobly", "platform": "jobly", "url": "https://www.jobly.fi/tyopaikat"},
+    {"id": "meetfrank", "platform": "meetfrank", "url": "https://meetfrank.com/jobs/"},
+    {"id": "hub", "platform": "hub", "url": "https://hub.no/jobs"}
 ]
 
 def generate_targets():
     targets = []
-    for term in SEARCH_TERMS:
-        encoded_term = quote(term)
-        for site in SEARCH_SITES:
-            targets.append({
-                "id": site["id"],
-                "platform": site["platform"],
-                "term": term,
-                "url": site["template"].format(term=encoded_term)
-            })
+    for site in SEARCH_SITES:
+        targets.append({
+            "id": site["id"],
+            "platform": site["platform"],
+            "term": "All",
+            "url": site["url"]
+        })
     return targets
 
 def parse_linkedin(soup):
@@ -95,7 +88,7 @@ def parse_generic(soup, base_url):
                 })
     return jobs
 
-def scrape_all_jobs():
+def scrape_all_jobs(max_jobs=200):
     seen_urls = set()
     if os.path.exists(SEEN_URLS_FILE):
         try:
@@ -119,7 +112,7 @@ def scrape_all_jobs():
         checkpoint_idx = 0
 
     all_extracted_jobs = []
-    MAX_JOBS = 15
+    limit = max_jobs if max_jobs > 0 else float('inf')
 
     with sync_playwright() as p:
         print("Launching Playwright browser...")
@@ -130,7 +123,7 @@ def scrape_all_jobs():
         page = context.new_page()
         
         current_idx = checkpoint_idx
-        while current_idx < len(targets) and len(all_extracted_jobs) < MAX_JOBS:
+        while current_idx < len(targets) and len(all_extracted_jobs) < limit:
             target = targets[current_idx]
             print(f"\nNavigating to {target['url']} (Term: {target['term']}, Site: {target['id']}) ...")
             try:
@@ -239,6 +232,19 @@ def check_requirements_update():
     with open(CHECKPOINT_FILE, 'w') as f:
         json.dump(checkpoint_data, f, indent=2)
 
+def extract_json_from_text(text):
+    """Finds and parses the first JSON object in a text block, handling markdown code fences."""
+    text = text.strip()
+    start_idx = text.find('{')
+    end_idx = text.rfind('}')
+    if start_idx != -1 and end_idx != -1 and end_idx > start_idx:
+        candidate = text[start_idx:end_idx + 1]
+        try:
+            return json.loads(candidate)
+        except json.JSONDecodeError:
+            pass
+    return json.loads(text)
+
 def review_pending_jobs():
     """Visit URLs of pending jobs, extract description, and evaluate using a local LLM."""
     if not os.path.exists(JOBS_FILE):
@@ -292,6 +298,9 @@ def review_pending_jobs():
                 except Exception:
                     text = ""
                 
+                posted_date = "N/A"
+                deadline = "N/A"
+
                 if not text.strip():
                     match, reason = "error", "Could not extract text from page."
                 else:
@@ -310,9 +319,13 @@ URL: {job['url']}
 {text[:15000]}
 
 ### Instructions:
-Return a JSON object with exactly two keys:
+Return a JSON object with exactly four keys:
 - "match": a string, either "yes" or "no".
 - "reason": a short 1-sentence explanation of your decision.
+- "posted_date": a string, the date the job was posted (e.g. '2026-06-12' or 'N/A' if not found).
+- "deadline": a string, the deadline for applying (e.g. '2026-06-30' or 'N/A' if not found).
+
+Do not include any conversational intro/outro or explanations outside the JSON object.
 """
                     headers = {"Content-Type": "application/json"}
                     llm_api_key = os.environ.get("LOCAL_LLM_API_KEY")
@@ -321,8 +334,7 @@ Return a JSON object with exactly two keys:
 
                     payload = {
                         "model": llm_model,
-                        "messages": [{"role": "user", "content": prompt}],
-                        "response_format": {"type": "json_object"}
+                        "messages": [{"role": "user", "content": prompt}]
                     }
 
                     try:
@@ -332,10 +344,12 @@ Return a JSON object with exactly two keys:
                         response_json = response.json()
                         content = response_json['choices'][0]['message']['content']
                         
-                        # The content itself is a JSON string, so we parse it again.
-                        result = json.loads(content)
+                        # Use robust JSON extraction
+                        result = extract_json_from_text(content)
                         match = str(result.get("match", "no")).lower()
                         reason = str(result.get("reason", "No reason provided by LLM."))
+                        posted_date = str(result.get("posted_date", "N/A"))
+                        deadline = str(result.get("deadline", "N/A"))
                         if match not in ["yes", "no"]:
                             match = "no"
                     except (requests.exceptions.RequestException, json.JSONDecodeError, KeyError, IndexError) as llm_err:
@@ -346,13 +360,17 @@ Return a JSON object with exactly two keys:
                 job['visited'] = "yes"
                 job['matches_requirements'] = match
                 job['reason'] = reason
-                print(f" -> {match.upper()}: {reason}")
+                job['posted_date'] = posted_date
+                job['deadline'] = deadline
+                print(f" -> {match.upper()}: {reason} (Posted: {posted_date}, Deadline: {deadline})")
                 
             except Exception as e:
                 print(f" -> ERROR: Failed to evaluate ({e})")
                 job['visited'] = "yes"
                 job['matches_requirements'] = "error"
                 job['reason'] = "Page load or parsing error."
+                job['posted_date'] = "N/A"
+                job['deadline'] = "N/A"
                 
             # Save aggressively after each evaluation
             with open(JOBS_FILE, 'w') as f:
@@ -427,6 +445,29 @@ def listen_for_input():
         pass
 
 def main():
+    parser = argparse.ArgumentParser(description="Job Scraper and Reviewer")
+    parser.add_argument("--git-only", action="store_true", help="Only run the Git commit and push step, then exit.")
+    parser.add_argument("--review-only", action="store_true", help="Only run the local LLM review step on pending jobs, then exit.")
+    parser.add_argument("--scrape-only", action="store_true", help="Only run the scraping step, then exit.")
+    parser.add_argument("--max-jobs", type=int, default=200, help="Maximum number of new jobs to fetch in this run (default 200). Use 0 for unlimited.")
+    args = parser.parse_args()
+
+    max_jobs = args.max_jobs
+
+    if args.git_only:
+        update_git()
+        return
+
+    if args.review_only:
+        check_requirements_update()
+        review_pending_jobs()
+        return
+
+    if args.scrape_only:
+        check_requirements_update()
+        scrape_all_jobs(max_jobs)
+        return
+
     print("INFO: Scraper script starting execution loop...")
     # Start the background thread to listen for user input
     input_thread = threading.Thread(target=listen_for_input, daemon=True)
@@ -439,7 +480,7 @@ def main():
             print(f"An error occurred checking requirements: {e}")
             
         try:
-            scrape_all_jobs()
+            scrape_all_jobs(max_jobs)
         except Exception as e:
             print(f"An error occurred during scraping: {e}")
             

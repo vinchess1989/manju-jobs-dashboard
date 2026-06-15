@@ -4,6 +4,7 @@
 * **Name:** Manju
 * **Current Role:** Unemployed
 * **Years of Experience:** 2 years
+* **Background:** Law degree completed in India (international degree in English). Currently located in Finland and completing supplementary courses in Finnish to obtain equivalence/qualification for a Finnish law degree.
 * **Key Skills:** Corporate Law
 
 ## Hard Rejections
@@ -12,22 +13,21 @@ Immediately discard a job if ANY of the following are true:
 
 ## Target Job Criteria
 
-A job is a match if it satisfies ONE condition from EACH of the following categories:
+A job is a match if it satisfies the criteria in ALL of the following categories:
 
-**1. Domain / Field:**
-* Corporate Law OR any Legal field.
-* *Exception:* If the position requires NO experience, then Marketing, Sales, or Generalist roles are also acceptable.
-
-**2. Location & Work Model:**
+**1. Location & Work Model:**
+Must satisfy at least ONE of the following:
 * Oulu AND On-site
 * Finland AND Hybrid
 * Fully Remote AND (the location is "Worldwide" OR no specific country is mentioned). Must NOT require US residency.
 
-**3. Position Type & Degree Requirements:**
-* Permanent AND accepts an international degree in English.
-* Trainee AND requires a Finland degree.
+**2. Domain, Position Type, & Degree Requirements:**
+Must satisfy at least ONE of the following valid combinations:
+* **Trainee / Internship Role (Legal):** Trainee, internship, or junior legal role, even if it requires a Finnish law degree or Finnish qualification (since she is in Finland and currently doing the supplementary courses needed).
+* **English Law Role:** Any legal, compliance, contract management, or corporate law role (permanent, trainee, or contract) that accepts a law degree in English or an international/Indian law degree (without strictly requiring a Finnish qualification).
+* **Generalist Role:** Any other job (non-legal, e.g. entry-level/generalist business, administration, customer support, marketing, sales) that does not require any specific technical knowledge. Can be permanent, contract, or trainee.
 
-**4. Application Deadline:**
+**3. Application Deadline:**
 * The last date of application MUST be in the future (use a function or your system context to find today's date).
 * If the deadline has already passed, discard the job. If no deadline is explicitly mentioned, assume it is still active.
 

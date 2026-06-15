@@ -249,6 +249,8 @@
         .col-title { font-weight: 600; color: #ffffff; min-width: 12rem; }
         .col-company { min-width: 8rem; }
         .col-location { min-width: 7rem; }
+        .col-posted { min-width: 6.5rem; }
+        .col-deadline { min-width: 6.5rem; }
         .col-visited { width: 5.5rem; text-align: center; }
         .col-matches { width: 7.5rem; text-align: center; }
         .col-reason { min-width: 15rem; font-style: italic; color: #d1d5db; font-size: 0.85rem; line-height: 1.45; }
@@ -529,10 +531,12 @@
                         <th class="col-title" onclick="sortTable(1)">Job Title ↕</th>
                         <th class="col-company" onclick="sortTable(2)">Company ↕</th>
                         <th class="col-location" onclick="sortTable(3)">Location ↕</th>
-                        <th class="col-visited" onclick="sortTable(4)">Visited ↕</th>
-                        <th class="col-matches" onclick="sortTable(5)">Matches ↕</th>
-                        <th class="col-reason" onclick="sortTable(6)">Reason ↕</th>
-                        <th class="col-applied" onclick="sortTable(7)">Applied ↕</th>
+                        <th class="col-posted" onclick="sortTable(4)">Posted ↕</th>
+                        <th class="col-deadline" onclick="sortTable(5)">Deadline ↕</th>
+                        <th class="col-visited" onclick="sortTable(6)">Visited ↕</th>
+                        <th class="col-matches" onclick="sortTable(7)">Matches ↕</th>
+                        <th class="col-reason" onclick="sortTable(8)">Reason ↕</th>
+                        <th class="col-applied" onclick="sortTable(9)">Applied ↕</th>
                         <th class="col-link">Link</th>
                     </tr>
                     <tr class="filter-row">
@@ -540,6 +544,8 @@
                         <th><input type="text" oninput="filterTable()" placeholder="Filter title..."></th>
                         <th><input type="text" oninput="filterTable()" placeholder="Filter company..."></th>
                         <th><input type="text" oninput="filterTable()" placeholder="Filter location..."></th>
+                        <th><input type="text" oninput="filterTable()" placeholder="Filter posted..."></th>
+                        <th><input type="text" oninput="filterTable()" placeholder="Filter deadline..."></th>
                         <th><input type="text" oninput="filterTable()" placeholder="Filter visited..."></th>
                         <th><input type="text" oninput="filterTable()" placeholder="Filter matches..."></th>
                         <th><input type="text" oninput="filterTable()" placeholder="Filter reason..."></th>
@@ -560,12 +566,16 @@
                 
                 const visitedVal = job.visited || 'no';
                 const matchVal = job.matches_requirements || 'pending';
+                const postedVal = job.posted_date || 'N/A';
+                const deadlineVal = job.deadline || 'N/A';
                 
                 tr.innerHTML = `
                     <td class="col-id">${index + 1}</td>
                     <td class="col-title">${job.title || 'Unknown Title'}</td>
                     <td class="col-company">${job.company || 'Unknown Company'}</td>
                     <td class="col-location">📍 ${job.location || 'Unknown Location'}</td>
+                    <td class="col-posted">${postedVal}</td>
+                    <td class="col-deadline">${deadlineVal}</td>
                     <td class="col-visited"><span class="status-pill ${visitedVal}">${visitedVal}</span></td>
                     <td class="col-matches"><span class="status-pill ${matchVal}">${matchVal}</span></td>
                     <td class="col-reason"><em>${job.reason || ''}</em></td>
