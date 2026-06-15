@@ -319,11 +319,13 @@ URL: {job['url']}
 {text[:15000]}
 
 ### Instructions:
-Return a JSON object with exactly four keys:
+Return a JSON object with exactly six keys:
 - "match": a string, either "yes" or "no".
 - "reason": a short 1-sentence explanation of your decision.
 - "posted_date": a string, the date the job was posted (e.g. '2026-06-12' or 'N/A' if not found).
 - "deadline": a string, the deadline for applying (e.g. '2026-06-30' or 'N/A' if not found).
+- "company": a string, the name of the hiring company (e.g. 'Wolt' or 'N/A' if not found).
+- "location": a string, the city and country of the job (e.g. 'Helsinki, Finland' or 'N/A' if not found).
 
 Do not include any conversational intro/outro or explanations outside the JSON object.
 """
@@ -350,6 +352,16 @@ Do not include any conversational intro/outro or explanations outside the JSON o
                         reason = str(result.get("reason", "No reason provided by LLM."))
                         posted_date = str(result.get("posted_date", "N/A"))
                         deadline = str(result.get("deadline", "N/A"))
+                        
+                        # Extract company and location from LLM if scraper had placeholder/unknown
+                        ai_company = str(result.get("company", "N/A"))
+                        ai_location = str(result.get("location", "N/A"))
+                        
+                        if ai_company != "N/A" and (job.get('company') in ["Extract via OpenClaw", "Unknown", "", None]):
+                            job['company'] = ai_company
+                        if ai_location != "N/A" and (job.get('location') in ["Extract via OpenClaw", "Unknown", "", None]):
+                            job['location'] = ai_location
+                            
                         if match not in ["yes", "no"]:
                             match = "no"
                     except (requests.exceptions.RequestException, json.JSONDecodeError, KeyError, IndexError) as llm_err:
@@ -362,7 +374,7 @@ Do not include any conversational intro/outro or explanations outside the JSON o
                 job['reason'] = reason
                 job['posted_date'] = posted_date
                 job['deadline'] = deadline
-                print(f" -> {match.upper()}: {reason} (Posted: {posted_date}, Deadline: {deadline})")
+                print(f" -> {match.upper()}: {reason} (Posted: {posted_date}, Deadline: {deadline}, Company: {job['company']}, Location: {job['location']})")
                 
             except Exception as e:
                 print(f" -> ERROR: Failed to evaluate ({e})")
