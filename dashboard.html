@@ -552,6 +552,11 @@
             
             const dateText = lastMod ? new Date(lastMod).toLocaleString() : new Date().toLocaleString();
             infoBar.innerHTML = `
+                <div class="table-info-item" style="align-items: flex-start; margin-right: auto;">
+                    <span class="table-info-value" style="font-size: 0.825rem; font-weight: 500; color: var(--text-secondary);">
+                        💡 <strong>Tip:</strong> Prefix filters with <code>!</code> or <code>-</code> to exclude matches (e.g., <code>!no</code> to hide all rejected roles)
+                    </span>
+                </div>
                 <div class="table-info-item">
                     <span class="table-info-label">Last Updated</span>
                     <span class="table-info-value">${dateText}</span>
@@ -698,13 +703,27 @@
             rows.forEach(row => {
                 let show = true;
                 inputs.forEach((input, index) => {
-                    const filter = input.value.toLowerCase().trim();
+                    let filter = input.value.toLowerCase().trim();
                     if (filter) {
                         const td = row.getElementsByTagName("td")[index + 1];
                         const val = td && td.hasAttribute("data-value") ? td.getAttribute("data-value").toLowerCase() : (td ? td.textContent.toLowerCase() : "");
                         
-                        if (val.indexOf(filter) === -1) {
-                            show = false;
+                        let isNegative = false;
+                        if (filter.startsWith('!') || filter.startsWith('-')) {
+                            isNegative = true;
+                            filter = filter.substring(1).trim();
+                        }
+                        
+                        if (filter) {
+                            if (isNegative) {
+                                if (val.indexOf(filter) !== -1) {
+                                    show = false;
+                                }
+                            } else {
+                                if (val.indexOf(filter) === -1) {
+                                    show = false;
+                                }
+                            }
                         }
                     }
                 });
