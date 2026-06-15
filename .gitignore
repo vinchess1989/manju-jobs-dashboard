@@ -1,0 +1,18 @@
+# Virtual environment
+venv/
+
+# Environment files with credentials
+.env
+.env.local
+
+# Backups
+backups/
+
+# OS/Editor configs
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp

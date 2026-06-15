@@ -1,0 +1,464 @@
+import json
+import time
+import os
+import subprocess
+import threading
+import hashlib
+from datetime import datetime
+from urllib.parse import urljoin, quote
+from playwright.sync_api import sync_playwright
+from bs4 import BeautifulSoup
+import requests
+from dotenv import load_dotenv
+
+# Load environment variables from .env file if it exists
+load_dotenv()
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+JOBS_FILE = os.path.join(BASE_DIR, "jobs.json")
+SEEN_URLS_FILE = os.path.join(BASE_DIR, "seen_urls.json")
+CHECKPOINT_FILE = os.path.join(BASE_DIR, "checkpoint.json")
+REQ_FILE = os.path.join(BASE_DIR, "job_requirements.md")
+
+SEARCH_TERMS = [
+    "Legal",
+    "Corporate Law",
+    "Marketing"
+]
+
+SEARCH_SITES = [
+    {"id": "linkedin_fin", "platform": "linkedin", "template": "https://www.linkedin.com/jobs/search?keywords={term}&location=Finland&sortBy=DD"},
+    {"id": "linkedin_ww", "platform": "linkedin", "template": "https://www.linkedin.com/jobs/search?keywords={term}&location=Worldwide&f_WT=2&sortBy=DD"},
+    {"id": "duunitori", "platform": "duunitori", "template": "https://duunitori.fi/tyopaikat?haku={term}"},
+    {"id": "indeed", "platform": "indeed", "template": "https://fi.indeed.com/jobs?q={term}&l=Finland&sort=date"},
+    {"id": "oikotie", "platform": "oikotie", "template": "https://tyopaikat.oikotie.fi/tyopaikat?hakusana={term}"},
+    {"id": "tyomarkkinatori", "platform": "tyomarkkinatori", "template": "https://tyomarkkinatori.fi/henkiloasiakkaat/tyopaikat?q={term}"},
+    {"id": "jobly", "platform": "jobly", "template": "https://www.jobly.fi/tyopaikat?search={term}"},
+    {"id": "meetfrank", "platform": "meetfrank", "template": "https://meetfrank.com/jobs/?search={term}"},
+    {"id": "hub", "platform": "hub", "template": "https://hub.no/jobs?roles={term}"}
+]
+
+def generate_targets():
+    targets = []
+    for term in SEARCH_TERMS:
+        encoded_term = quote(term)
+        for site in SEARCH_SITES:
+            targets.append({
+                "id": site["id"],
+                "platform": site["platform"],
+                "term": term,
+                "url": site["template"].format(term=encoded_term)
+            })
+    return targets
+
+def parse_linkedin(soup):
+    jobs = []
+    for card in soup.find_all('div', class_='base-card'):
+        title_elem = card.find('h3', class_='base-search-card__title')
+        company_elem = card.find('h4', class_='base-search-card__subtitle')
+        location_elem = card.find('span', class_='job-search-card__location')
+        url_elem = card.find('a', class_='base-card__full-link')
+        if title_elem and url_elem:
+            title = title_elem.text.strip()
+            if 'senior' in title.lower():
+                continue
+            jobs.append({
+                "title": title,
+                "company": company_elem.text.strip() if company_elem else "Unknown",
+                "location": location_elem.text.strip() if location_elem else "Unknown",
+                "url": url_elem['href'].split('?')[0],
+                "visited": "no",
+                "matches_requirements": "pending",
+                "reason": ""
+            })
+    return jobs
+
+def parse_generic(soup, base_url):
+    jobs = []
+    for a in soup.find_all('a', href=True):
+        href = a['href']
+        # Look for URL paths commonly associated with job postings
+        if any(kw in href.lower() for kw in ['/tyopaikat', '/tyopaikka', '/job', '/avoimet-tyopaikat', '/view', '/rc/clk']):
+            title = a.text.strip()
+            if 'senior' in title.lower():
+                continue
+            # Exclude navigation links like "Read more" or "Show all"
+            if 5 < len(title) < 100 and not any(skip in title.lower() for skip in ['read more', 'lue lisää', 'katso', 'show all']):
+                jobs.append({
+                    "title": title.replace('\n', ' ').strip(),
+                    "company": "Extract via OpenClaw",
+                    "location": "Extract via OpenClaw",
+                    "url": urljoin(base_url, href),
+                    "visited": "no",
+                    "matches_requirements": "pending",
+                    "reason": ""
+                })
+    return jobs
+
+def scrape_all_jobs():
+    seen_urls = set()
+    if os.path.exists(SEEN_URLS_FILE):
+        try:
+            with open(SEEN_URLS_FILE, 'r') as f:
+                seen_urls = set(json.load(f))
+        except Exception:
+            pass
+
+    checkpoint_idx = 0
+    if os.path.exists(CHECKPOINT_FILE):
+        try:
+            with open(CHECKPOINT_FILE, 'r') as f:
+                data = json.load(f)
+                checkpoint_idx = data.get("target_index", 0)
+        except Exception:
+            pass
+
+    targets = generate_targets()
+    if checkpoint_idx >= len(targets):
+        print("Reached end of all targets. Resetting checkpoint to 0.")
+        checkpoint_idx = 0
+
+    all_extracted_jobs = []
+    MAX_JOBS = 15
+
+    with sync_playwright() as p:
+        print("Launching Playwright browser...")
+        browser = p.chromium.launch(headless=True)
+        context = browser.new_context(
+            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        )
+        page = context.new_page()
+        
+        current_idx = checkpoint_idx
+        while current_idx < len(targets) and len(all_extracted_jobs) < MAX_JOBS:
+            target = targets[current_idx]
+            print(f"\nNavigating to {target['url']} (Term: {target['term']}, Site: {target['id']}) ...")
+            try:
+                page.goto(target['url'], timeout=30000)
+                for _ in range(3):
+                    page.mouse.wheel(0, 2000)
+                    time.sleep(1.5)
+                    
+                soup = BeautifulSoup(page.content(), 'html.parser')
+                
+                if target['platform'] == 'linkedin':
+                    jobs = parse_linkedin(soup)
+                else:
+                    jobs = parse_generic(soup, target['url'])
+                    
+                print(f"Found {len(jobs)} potential job links on {target['platform']}.")
+                
+                added = 0
+                for job in jobs:
+                    if len(all_extracted_jobs) >= MAX_JOBS:
+                        break
+                    if job['url'] not in seen_urls:
+                        all_extracted_jobs.append(job)
+                        seen_urls.add(job['url'])
+                        added += 1
+                        
+                print(f"Added {added} new unseen jobs from this source.")
+            except Exception as e:
+                print(f"Failed to scrape {target['id']}: {e}")
+                
+            current_idx += 1
+                
+        browser.close()
+        
+    print(f"\nTotal new jobs fetched in this run: {len(all_extracted_jobs)}")
+    print(f"Stopped at target index: {current_idx} out of {len(targets)}")
+    
+    # Read existing jobs so we can append rather than overwrite
+    existing_jobs = []
+    if os.path.exists(JOBS_FILE):
+        try:
+            with open(JOBS_FILE, 'r') as f:
+                existing_jobs = json.load(f)
+        except Exception:
+            pass
+
+    combined_jobs = existing_jobs + all_extracted_jobs
+
+    # Save combined jobs to jobs.json
+    with open(JOBS_FILE, 'w') as f:
+        json.dump(combined_jobs, f, indent=2)
+
+    # Create a timestamped backup
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    backup_dir = os.path.join(BASE_DIR, "backups")
+    os.makedirs(backup_dir, exist_ok=True)
+    backup_file = os.path.join(backup_dir, f"jobs_backup_{timestamp}.json")
+    with open(backup_file, 'w') as f:
+        json.dump(combined_jobs, f, indent=2)
+
+    print(f"Total jobs currently in jobs.json: {len(combined_jobs)}")
+    print(f"Backup saved to: {backup_file}\n")
+        
+    # Save updated seen urls history
+    with open(SEEN_URLS_FILE, 'w') as f:
+        json.dump(list(seen_urls), f)
+        
+    # Save checkpoint
+    with open(CHECKPOINT_FILE, 'w') as f:
+        json.dump({"target_index": current_idx}, f, indent=2)
+
+def get_file_hash(filepath):
+    if not os.path.exists(filepath):
+        return ""
+    with open(filepath, 'rb') as f:
+        return hashlib.md5(f.read()).hexdigest()
+
+def check_requirements_update():
+    """Check if job_requirements.md has changed, and flag jobs for re-evaluation if it has."""
+    req_hash = get_file_hash(REQ_FILE)
+    if not req_hash:
+        return
+
+    checkpoint_data = {}
+    if os.path.exists(CHECKPOINT_FILE):
+        try:
+            with open(CHECKPOINT_FILE, 'r') as f:
+                checkpoint_data = json.load(f)
+        except Exception:
+            pass
+    
+    saved_hash = checkpoint_data.get("requirements_hash", "")
+    if saved_hash and req_hash != saved_hash:
+        print("INFO: job_requirements.md has changed! Resetting evaluation status for existing jobs...")
+        if os.path.exists(JOBS_FILE):
+            with open(JOBS_FILE, 'r') as f:
+                jobs = json.load(f)
+            for job in jobs:
+                job['visited'] = 'no'
+                job['matches_requirements'] = 'pending'
+                job['reason'] = ''
+            with open(JOBS_FILE, 'w') as f:
+                json.dump(jobs, f, indent=2)
+        
+    checkpoint_data["requirements_hash"] = req_hash
+    with open(CHECKPOINT_FILE, 'w') as f:
+        json.dump(checkpoint_data, f, indent=2)
+
+def review_pending_jobs():
+    """Visit URLs of pending jobs, extract description, and evaluate using a local LLM."""
+    if not os.path.exists(JOBS_FILE):
+        return
+        
+    with open(JOBS_FILE, 'r') as f:
+        jobs = json.load(f)
+        
+    pending_jobs = [j for j in jobs if j.get('matches_requirements') == 'pending']
+    if not pending_jobs:
+        return
+        
+    llm_endpoint = os.environ.get("LOCAL_LLM_ENDPOINT")
+    llm_model = os.environ.get("LOCAL_LLM_MODEL")
+
+    if not llm_endpoint or not llm_model:
+        print("ERROR: LOCAL_LLM_ENDPOINT and LOCAL_LLM_MODEL environment variables must be set to use a local LLM. Skipping review.")
+        print("INFO: Examples to set variables:")
+        print("      Bash (Linux/WSL):    export LOCAL_LLM_ENDPOINT='http://localhost:11434/v1/chat/completions'")
+        print("                           export LOCAL_LLM_MODEL='llama3'")
+        print("      PowerShell (Windows):$env:LOCAL_LLM_ENDPOINT='http://localhost:11434/v1/chat/completions'")
+        print("                           $env:LOCAL_LLM_MODEL='llama3'")
+        print("      CMD (Windows):       set LOCAL_LLM_ENDPOINT=http://localhost:11434/v1/chat/completions")
+        print("                           set LOCAL_LLM_MODEL=llama3")
+        return
+
+    print(f"\nEvaluating {len(pending_jobs)} pending jobs using local LLM at {llm_endpoint} with model {llm_model}...")
+    
+    requirements_text = ""
+    if os.path.exists(REQ_FILE):
+        with open(REQ_FILE, 'r') as f:
+            requirements_text = f.read()
+    
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        context = browser.new_context(
+            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        )
+        page = context.new_page()
+        
+        for job in pending_jobs:
+            if stop_event.is_set():
+                break
+            print(f"Reviewing: {job['title']} at {job['url']}")
+            try:
+                page.goto(job['url'], timeout=30000)
+                time.sleep(1.5) # Wait for page to render
+                
+                try:
+                    text = page.locator('body').inner_text()
+                except Exception:
+                    text = ""
+                
+                if not text.strip():
+                    match, reason = "error", "Could not extract text from page."
+                else:
+                    prompt = f"""Evaluate the following job posting against the candidate's requirements.
+
+### Job Requirements:
+{requirements_text}
+
+### Job Details:
+Title: {job['title']}
+Company: {job['company']}
+Location: {job['location']}
+URL: {job['url']}
+
+### Job Description:
+{text[:15000]}
+
+### Instructions:
+Return a JSON object with exactly two keys:
+- "match": a string, either "yes" or "no".
+- "reason": a short 1-sentence explanation of your decision.
+"""
+                    headers = {"Content-Type": "application/json"}
+                    llm_api_key = os.environ.get("LOCAL_LLM_API_KEY")
+                    if llm_api_key:
+                        headers["Authorization"] = f"Bearer {llm_api_key}"
+
+                    payload = {
+                        "model": llm_model,
+                        "messages": [{"role": "user", "content": prompt}],
+                        "response_format": {"type": "json_object"}
+                    }
+
+                    try:
+                        response = requests.post(llm_endpoint, headers=headers, json=payload, timeout=120)
+                        response.raise_for_status()
+                        
+                        response_json = response.json()
+                        content = response_json['choices'][0]['message']['content']
+                        
+                        # The content itself is a JSON string, so we parse it again.
+                        result = json.loads(content)
+                        match = str(result.get("match", "no")).lower()
+                        reason = str(result.get("reason", "No reason provided by LLM."))
+                        if match not in ["yes", "no"]:
+                            match = "no"
+                    except (requests.exceptions.RequestException, json.JSONDecodeError, KeyError, IndexError) as llm_err:
+                        match = "error"
+                        reason = f"Failed to get or parse local LLM response: {llm_err}"
+
+                # Update job dictionary in-place
+                job['visited'] = "yes"
+                job['matches_requirements'] = match
+                job['reason'] = reason
+                print(f" -> {match.upper()}: {reason}")
+                
+            except Exception as e:
+                print(f" -> ERROR: Failed to evaluate ({e})")
+                job['visited'] = "yes"
+                job['matches_requirements'] = "error"
+                job['reason'] = "Page load or parsing error."
+                
+            # Save aggressively after each evaluation
+            with open(JOBS_FILE, 'w') as f:
+                json.dump(jobs, f, indent=2)
+                
+        browser.close()
+
+def update_git():
+    print("\nUpdating GitHub repository...")
+    try:
+        repo_dir = os.path.dirname(os.path.abspath(__file__))
+        
+        # Clean up the environment to prevent VS Code's git helper from causing socket errors
+        env = os.environ.copy()
+        env.pop("GIT_ASKPASS", None)
+        env["GIT_TERMINAL_PROMPT"] = "0"
+
+        # Check if the folder is inside a Git repository
+        is_git = False
+        check_path = repo_dir
+        while True:
+            if os.path.exists(os.path.join(check_path, ".git")):
+                is_git = True
+                break
+            parent = os.path.dirname(check_path)
+            if parent == check_path:
+                break
+            check_path = parent
+
+        if not is_git:
+            print("INFO: Directory is not a Git repository. Skipping Git update.")
+            return
+
+        # Add updated files
+        subprocess.run(["git", "add", "jobs.json", "seen_urls.json", "checkpoint.json"], cwd=repo_dir, check=True, env=env)
+        # Check if there are changes to commit
+        status = subprocess.run(["git", "status", "--porcelain"], cwd=repo_dir, capture_output=True, text=True, env=env)
+        if status.stdout.strip():
+            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            commit_message = f"Auto-update scraped jobs: {timestamp}"
+            subprocess.run(["git", "commit", "-m", commit_message], cwd=repo_dir, check=True, env=env)
+            
+            # Check for GitHub token in environment variables
+            push_cmd = ["git", "push"]
+            github_token = os.environ.get("GITHUB_TOKEN")
+            if github_token:
+                remote_result = subprocess.run(["git", "config", "--get", "remote.origin.url"], cwd=repo_dir, capture_output=True, text=True)
+                remote_url = remote_result.stdout.strip()
+                if remote_url.startswith("https://"):
+                    auth_url = remote_url.replace("https://", f"https://{github_token}@")
+                    push_cmd = ["git", "push", auth_url]
+
+            try:
+                subprocess.run(push_cmd, cwd=repo_dir, check=True, env=env)
+                print("Successfully pushed updates to GitHub!")
+            except subprocess.CalledProcessError:
+                print("Failed to push to GitHub (Check your GITHUB_TOKEN or internet connection).")
+        else:
+            print("No changes to commit. GitHub is already up to date.")
+    except subprocess.CalledProcessError as e:
+        print(f"Failed to update Git: {e}")
+
+# Event flag to signal when the user wants to stop
+stop_event = threading.Event()
+
+def listen_for_input():
+    """Background task waiting for the user to press Enter."""
+    try:
+        input()
+        stop_event.set()
+    except EOFError:
+        pass
+
+def main():
+    print("INFO: Scraper script starting execution loop...")
+    # Start the background thread to listen for user input
+    input_thread = threading.Thread(target=listen_for_input, daemon=True)
+    input_thread.start()
+
+    while not stop_event.is_set():
+        try:
+            check_requirements_update()
+        except Exception as e:
+            print(f"An error occurred checking requirements: {e}")
+            
+        try:
+            scrape_all_jobs()
+        except Exception as e:
+            print(f"An error occurred during scraping: {e}")
+            
+        try:
+            review_pending_jobs()
+        except Exception as e:
+            print(f"An error occurred during reviewing: {e}")
+            
+        try:
+            update_git()
+        except Exception as e:
+            print(f"An error occurred during Git update: {e}")
+        
+        print("\nWaiting 5 seconds before the next run. Press [Enter] to stop...")
+        
+        # This will wait for up to 5 seconds.
+        if stop_event.wait(timeout=5):
+            print("Stopping the scraper...")
+            break
+
+if __name__ == "__main__":
+    main()
