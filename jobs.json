@@ -2889,18 +2889,6 @@
     "source": "linkedin"
   },
   {
-    "title": "Kampanjavaihtoehdot",
-    "company": "Duunitori Oy",
-    "location": "Extract via OpenClaw",
-    "url": "https://duunitori.fi/rekrytointi/palvelut/tyopaikkailmoitus ",
-    "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "No specific role mentioned, only a general posting about creating job advertisements on Duunitori platform.",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "source": "duunitori"
-  },
-  {
     "title": "jobbland.se",
     "company": "Extract via OpenClaw",
     "location": "Extract via OpenClaw",
@@ -7111,10 +7099,13 @@
     "company": "YCP",
     "location": "Gurugram, Haryana, India",
     "url": "https://in.linkedin.com/jobs/view/india-operations-division-legal-associate-at-ycp-4422002909",
-    "visited": "no",
-    "matches_requirements": "pending",
-    "reason": "",
-    "source": "linkedin"
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The job is located in Gurugram, India, which does not match the requirement to be located in Finland.",
+    "source": "linkedin",
+    "posted_date": "2023-05-24",
+    "deadline": "Open until filled",
+    "description_file": null
   },
   {
     "title": "Legal Counsel",

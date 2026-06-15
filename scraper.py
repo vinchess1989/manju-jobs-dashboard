@@ -72,8 +72,13 @@ def parse_generic(soup, base_url):
         href = a['href']
         # Look for URL paths commonly associated with job postings
         if any(kw in href.lower() for kw in ['/tyopaikka', '/job', '/view', '/rc/clk', '/avoimet-tyopaikat']):
-            # Skip search/list filter queries, sorting options, and base list pages
-            if any(skip in href.lower() for skip in ['?haku=', '?search=', '?q=', 'jarjestys=', '?sort=', 'tyopaikat.oikotie.fi/tyopaikat?']):
+            # Skip search/list filter queries, sorting options, base list pages, and recruitment/pricing/advertising pages
+            if any(skip in href.lower() for skip in [
+                '?haku=', '?search=', '?q=', 'jarjestys=', '?sort=', 
+                'tyopaikat.oikotie.fi/tyopaikat?', 'rekrytointi', 
+                'tyopaikkailmoitus', '/tyonantajalle', '/yhteystiedot',
+                '/palvelut/', '/hinnat', '/pricing'
+            ]):
                 continue
             clean_path = href.lower().split('?')[0].rstrip('/')
             if clean_path.endswith('/tyopaikat') or clean_path.endswith('/avoimet-tyopaikat') or clean_path.endswith('/jobs'):
