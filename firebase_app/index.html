@@ -848,7 +848,7 @@
                     <td class="col-posted">${postedVal}</td>
                     <td class="col-deadline">${deadlineVal}</td>
                     <td class="col-visited" data-value="${visitedVal}"><span class="status-pill ${visitedVal}">${visitedVal}</span></td>
-                    <td class="col-matches" data-value="${matchVal}"><span class="status-pill ${matchVal}">${matchVal}</span></td>
+                    <td class="col-matches" data-value="${matchVal}"><span class="status-pill ${matchVal}" style="cursor: pointer;" onclick="toggleMatch(this, '${job.url}')" title="Click to train the AI by changing this status">${matchVal}</span></td>
                     <td class="col-reason"><em>${job.reason || ''}</em></td>
                     <td class="col-applied" data-value="${appliedStatus}">
                         <button class="status-btn ${appliedStatus === 'yes' ? 'status-yes' : (appliedStatus === 'Reject' ? 'status-reject' : 'status-no')}" onclick="toggleApplied(this, '${job.url}')">${appliedStatus}</button>
@@ -1011,9 +1011,10 @@
                     try {
                         btn.textContent = 'Saving...';
                         btn.disabled = true;
-                        await window.addDoc(window.collection(window.firebaseDb, "rejected_jobs"), {
+                        await window.addDoc(window.collection(window.firebaseDb, "user_feedback"), {
                             url: url,
                             reason: reason,
+                            type: "negative",
                             status: "unread",
                             timestamp: window.serverTimestamp()
                         });
@@ -1042,6 +1043,55 @@
             
             const td = btn.closest('td');
             td.setAttribute('data-value', newState);
+        }
+        
+        async function toggleMatch(span, url) {
+            const current = span.textContent.trim();
+            let newState;
+            let promptText;
+            let type;
+            
+            if (current === 'no' || current === 'maybe') {
+                newState = 'yes';
+                promptText = "Why should this job be a 'yes'? (This trains the AI to accept similar jobs. Max 100 words)";
+                type = "positive";
+            } else if (current === 'yes') {
+                newState = 'no';
+                promptText = "Why should this job be a 'no'? (This trains the AI to reject similar jobs. Max 100 words)";
+                type = "negative";
+            } else {
+                return;
+            }
+
+            const reason = prompt(promptText);
+            if (reason === null) return;
+            if (reason.split(' ').length > 100) { alert("Reason must be less than 100 words."); return; }
+            if (reason.trim() === '') { alert("Reason cannot be empty."); return; }
+
+            if (window.firebaseDb) {
+                const originalText = span.textContent;
+                try {
+                    span.textContent = 'Saving...';
+                    await window.addDoc(window.collection(window.firebaseDb, "user_feedback"), {
+                        url: url,
+                        reason: reason,
+                        type: type,
+                        status: "unread",
+                        timestamp: window.serverTimestamp()
+                    });
+                    alert("Feedback saved! The AI requirements have been updated.");
+                    
+                    span.textContent = newState;
+                    span.className = 'status-pill ' + newState;
+                    span.closest('td').setAttribute('data-value', newState);
+                } catch (e) {
+                    console.error(e);
+                    alert("Failed to save to cloud database.");
+                    span.textContent = originalText;
+                }
+            } else {
+                alert("Firebase not initialized yet.");
+            }
         }    
     </script>
 </body>

@@ -1001,9 +1001,9 @@ def self_heal_dates():
     except Exception as e:
         print(f"Error self-healing dates: {e}")
 
-def poll_firebase_rejections():
-    """Polls the Firebase Firestore REST API for rejected jobs, updates requirements, and deletes them."""
-    url = "https://firestore.googleapis.com/v1/projects/manju-jobs-dashboard/databases/(default)/documents/rejected_jobs"
+def poll_firebase_feedback():
+    """Polls the Firebase Firestore REST API for user feedback, updates requirements, and deletes them."""
+    url = "https://firestore.googleapis.com/v1/projects/manju-jobs-dashboard/databases/(default)/documents/user_feedback"
     try:
         response = requests.get(url, timeout=10)
         if response.status_code != 200:
@@ -1014,9 +1014,11 @@ def poll_firebase_rejections():
         if not documents:
             return
             
-        print(f"\nINFO: Found {len(documents)} new rejected jobs from the cloud dashboard!")
+        print(f"\nINFO: Found {len(documents)} new feedback items from the cloud dashboard!")
         
-        new_rules = []
+        new_positive_rules = []
+        new_negative_rules = []
+        
         for doc in documents:
             doc_name = doc.get("name")
             fields = doc.get("fields", {})
@@ -1026,9 +1028,13 @@ def poll_firebase_rejections():
                 continue
                 
             reason = fields.get("reason", {}).get("stringValue", "")
+            feedback_type = fields.get("type", {}).get("stringValue", "negative")
             
             if reason and reason.strip():
-                new_rules.append(reason.strip())
+                if feedback_type == "positive":
+                    new_positive_rules.append(reason.strip())
+                else:
+                    new_negative_rules.append(reason.strip())
                 
             # Update the document status to "read" so we keep a history in the cloud
             if doc_name:
@@ -1036,16 +1042,20 @@ def poll_firebase_rejections():
                 payload = {"fields": {"status": {"stringValue": "read"}}}
                 requests.patch(update_url, json=payload, timeout=10)
                 
-        if new_rules:
-            # Append to job_requirements.md
+        if new_positive_rules or new_negative_rules:
             with open(REQ_FILE, 'a', encoding='utf-8') as f:
-                f.write("\n\n### Automatically Added Negative Constraints (from UI Rejections):\n")
-                for rule in new_rules:
-                    f.write(f"- NEGATIVE CONSTRAINT: The user explicitly rejected a previous job because: '{rule}'. Do NOT match jobs that have this issue.\n")
-            print(f"INFO: Successfully updated job_requirements.md with {len(new_rules)} new rules!")
+                if new_negative_rules:
+                    f.write("\n\n### Automatically Added Negative Constraints (from UI Rejections):\n")
+                    for rule in new_negative_rules:
+                        f.write(f"- NEGATIVE CONSTRAINT: The user explicitly rejected a previous job because: '{rule}'. Do NOT match jobs that have this issue.\n")
+                if new_positive_rules:
+                    f.write("\n\n### Automatically Added Positive Constraints (from UI Approvals):\n")
+                    for rule in new_positive_rules:
+                        f.write(f"- POSITIVE CONSTRAINT: The user explicitly approved a previous job because: '{rule}'. Make sure to MATCH jobs that have this characteristic.\n")
+            print(f"INFO: Successfully updated job_requirements.md with {len(new_positive_rules)} positive and {len(new_negative_rules)} negative rules!")
             
     except Exception as e:
-        print(f"Error polling Firebase rejections: {e}")
+        print(f"Error polling Firebase feedback: {e}")
 
 def main():
     self_heal_dates()
@@ -1141,7 +1151,7 @@ def main():
 
     while not stop_event.is_set():
         try:
-            poll_firebase_rejections()
+            poll_firebase_feedback()
         except Exception as e:
             print(f"Error polling firebase: {e}")
             
