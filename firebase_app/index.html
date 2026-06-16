@@ -638,8 +638,8 @@
         const auth=firebase.auth();
         const db=firebase.firestore();
 
-        // SECURITY GATE
-        const ALLOWED_EMAILS=[ 'vineethkaimal1989@gmail.com', 'munchnambiar@gmail.com' ];
+        // SECURITY GATE (for Write Access)
+        const ALLOWED_EMAILS=[ 'vneethkaimal1989@gmail.com', 'munchnambiar@gmail.com' ];
         
         let currentUser = null;
         let appliedJobsState = {};
@@ -665,20 +665,12 @@
             
             auth.onAuthStateChanged(user => {
                 if (user) {
-                    if (!ALLOWED_EMAILS.includes(user.email)) {
-                        jobsContainer.innerHTML = '<div class="empty-state">Access Denied. Your email is not authorized to view this dashboard.</div>';
-                        loginBtn.style.display = 'none';
-                        logoutBtn.style.display = 'block';
-                        userEmail.style.display = 'block';
-                        userEmail.textContent = user.email + " (Unauthorized)";
-                        return;
-                    }
-
+                    const isAuthorized = ALLOWED_EMAILS.includes(user.email);
                     currentUser = user;
                     loginBtn.style.display = 'none';
                     logoutBtn.style.display = 'block';
                     userEmail.style.display = 'block';
-                    userEmail.textContent = user.email;
+                    userEmail.textContent = user.email + (isAuthorized ? "" : " (Read-Only)");
                     
                     fetchJobsData();
                     setupUploadListeners();
@@ -869,6 +861,7 @@
             jobsContainer.appendChild(scrollArea);
 
             const tbody = table.querySelector('tbody');
+            const isAuthorized = currentUser && ALLOWED_EMAILS.includes(currentUser.email);
             
             // Helper function to standardize date format
             function formatDate(dateStr) {
@@ -945,15 +938,23 @@
                     <td class="col-deadline">${deadlineVal}</td>
                     <td class="col-sync" data-value="${syncVal}"><span style="font-size: 0.85em; color: ${job.needs_re_review ? 'var(--text-secondary)' : 'var(--color-yes)'};"><i class="fas ${job.needs_re_review ? 'fa-hourglass-half' : 'fa-check-circle'}"></i> ${syncVal}</span></td>
                     <td class="col-matches" data-value="${matchVal}">
+                        ${isAuthorized ? `
                         <select class="status-pill ${matchVal}" onchange="handleMatchChange(this, '${job.url}', '${matchVal}')" title="Train the AI by changing this status">
                             <option value="yes" ${matchVal === 'yes' ? 'selected' : ''}>yes</option>
                             <option value="no" ${matchVal === 'no' ? 'selected' : ''}>no</option>
                             ${matchVal !== 'yes' && matchVal !== 'no' ? `<option value="${matchVal}" selected hidden>${matchVal}</option>` : ''}
                         </select>
+                        ` : `
+                        <span class="status-pill ${matchVal}" style="display:inline-block; text-align:center;">${matchVal}</span>
+                        `}
                     </td>
                     <td class="col-reason"><em>${job.reason || ''}</em></td>
                     <td class="col-applied" data-value="${appliedStatus}">
+                        ${isAuthorized ? `
                         <button class="status-btn ${appliedStatus === 'yes' ? 'status-yes' : (appliedStatus === 'Reject' ? 'status-reject' : 'status-no')}" onclick="toggleApplied(this, '${job.url}')">${appliedStatus}</button>
+                        ` : `
+                        <span class="status-btn ${appliedStatus === 'yes' ? 'status-yes' : (appliedStatus === 'Reject' ? 'status-reject' : 'status-no')}" style="cursor: default; display:inline-block; text-align:center;">${appliedStatus}</span>
+                        `}
                     </td>
                 `;
                 tbody.appendChild(tr);
