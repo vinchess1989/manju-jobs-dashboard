@@ -175,6 +175,71 @@ def parse_generic(soup, base_url):
                 })
     return jobs
 
+def clean_old_backups(backup_dir):
+    """Smart backup retention: keeps 1/hr for 24h, 1/day for 7d, 1/week for 4w."""
+    if not os.path.exists(backup_dir):
+        return
+        
+    import glob
+    from datetime import datetime, timedelta
+    
+    now = datetime.now()
+    files = glob.glob(os.path.join(backup_dir, "jobs_backup_*.json"))
+    
+    parsed_files = []
+    for f in files:
+        basename = os.path.basename(f)
+        try:
+            ts_str = basename.replace("jobs_backup_", "").replace(".json", "")
+            file_time = datetime.strptime(ts_str, "%Y%m%d_%H%M%S")
+            parsed_files.append((f, file_time))
+        except ValueError:
+            continue
+            
+    # Sort files from newest to oldest
+    parsed_files.sort(key=lambda x: x[1], reverse=True)
+    
+    keepers = set()
+    seen_hours = set()
+    seen_days = set()
+    seen_weeks = set()
+    
+    for filepath, file_time in parsed_files:
+        age = now - file_time
+        
+        # Keep latest backup unconditionally to never delete the one we just made
+        if not keepers:
+            keepers.add(filepath)
+            continue
+            
+        if age <= timedelta(hours=24):
+            hour_key = file_time.strftime("%Y%m%d_%H")
+            if hour_key not in seen_hours:
+                seen_hours.add(hour_key)
+                keepers.add(filepath)
+        elif age <= timedelta(days=8):
+            day_key = file_time.strftime("%Y%m%d")
+            if day_key not in seen_days:
+                seen_days.add(day_key)
+                keepers.add(filepath)
+        elif age <= timedelta(days=36):
+            week_key = f"{file_time.isocalendar()[0]}_{file_time.isocalendar()[1]}"
+            if week_key not in seen_weeks:
+                seen_weeks.add(week_key)
+                keepers.add(filepath)
+
+    deleted_count = 0
+    for filepath, _ in parsed_files:
+        if filepath not in keepers:
+            try:
+                os.remove(filepath)
+                deleted_count += 1
+            except Exception:
+                pass
+                
+    if deleted_count > 0:
+        print(f"INFO: Cleaned up {deleted_count} old backups (kept {len(keepers)}).")
+
 def scrape_all_jobs(max_jobs=200):
     seen_urls = set()
     if os.path.exists(SEEN_URLS_FILE):
@@ -276,6 +341,9 @@ def scrape_all_jobs(max_jobs=200):
 
     print(f"Total jobs currently in jobs.json: {len(combined_jobs)}")
     print(f"Backup saved to: {backup_file}\n")
+    
+    # Run smart cleanup
+    clean_old_backups(backup_dir)
         
     # Save updated seen urls history
     with open(SEEN_URLS_FILE, 'w', encoding='utf-8') as f:
@@ -412,34 +480,76 @@ def detect_finnish_text(text):
 
 def standardize_date(date_str):
     """Standardizes various date formats into YYYY-MM-DD."""
-    if not date_str or str(date_str).strip().lower() in ['n/a', 'unknown', 'not specified', 'none', 'null']:
-        return 'N/A'
-    date_str = str(date_str).strip()
-    if 'open' in date_str.lower():
-        return 'Open until filled'
+    if not date_str: return 'N/A'
+    date_str = str(date_str).strip().lower()
+    if date_str in ['n/a', 'unknown', 'not specified', 'none', 'null']: return 'N/A'
+    if 'open' in date_str: return 'Open until filled'
     
     import re
-    from datetime import datetime
-
+    from datetime import datetime, timedelta
+    
+    # Handle ranges like "15.6. - 21.6." by taking the end date
+    if '-' in date_str and not re.match(r'^\d{4}-\d{2}-\d{2}$', date_str):
+        parts = date_str.split('-')
+        date_str = parts[-1].strip()
+        
+    # Standard YYYY-MM-DD
     if re.match(r'^\d{4}-\d{2}-\d{2}$', date_str):
         return date_str
         
+    # Finnish / European DD.MM.YYYY
     fi_match = re.match(r'^(\d{1,2})\.(\d{1,2})\.(\d{4})$', date_str)
     if fi_match:
         return f"{int(fi_match.group(3)):04d}-{int(fi_match.group(2)):02d}-{int(fi_match.group(1)):02d}"
         
+    # Incomplete DD.MM. (assume current year)
+    fi_short = re.match(r'^(\d{1,2})\.(\d{1,2})\.?$', date_str)
+    if fi_short:
+        year = datetime.now().year
+        return f"{year:04d}-{int(fi_short.group(2)):02d}-{int(fi_short.group(1)):02d}"
+        
     try:
-        if 'T' in date_str:
-            d = datetime.fromisoformat(date_str.split('T')[0])
+        if 't' in date_str:
+            d = datetime.fromisoformat(date_str.split('t')[0])
             return d.strftime("%Y-%m-%d")
     except ValueError:
         pass
         
+    today = datetime.now()
+    
+    # "tänään", "eilen"
+    if 'tänään' in date_str or 'today' in date_str:
+        return today.strftime("%Y-%m-%d")
+    if 'eilen' in date_str or 'yesterday' in date_str:
+        return (today - timedelta(days=1)).strftime("%Y-%m-%d")
+        
+    # Relative formats: "X päivä(ä) sitten", "X viikko(a) sitten", "X kuukausi(a) sitten"
+    rel_match = re.search(r'(\d+)\s+(day|päivä|viikko|week|month|kuukaus|hour|tunti|min)', date_str)
+    if rel_match:
+        num = int(rel_match.group(1))
+        unit = rel_match.group(2)
+        if 'day' in unit or 'päivä' in unit:
+            return (today - timedelta(days=num)).strftime("%Y-%m-%d")
+        if 'week' in unit or 'viikko' in unit:
+            return (today - timedelta(weeks=num)).strftime("%Y-%m-%d")
+        if 'month' in unit or 'kuukaus' in unit:
+            return (today - timedelta(days=num*30)).strftime("%Y-%m-%d")
+        if 'hour' in unit or 'tunti' in unit or 'min' in unit:
+            return today.strftime("%Y-%m-%d")
+            
+    # Also "X d ago", "X w ago"
+    short_rel = re.search(r'(\d+)\s*(d|w|m)\s+ago', date_str)
+    if short_rel:
+        num = int(short_rel.group(1))
+        unit = short_rel.group(2)
+        if unit == 'd': return (today - timedelta(days=num)).strftime("%Y-%m-%d")
+        if unit == 'w': return (today - timedelta(weeks=num)).strftime("%Y-%m-%d")
+        if unit == 'm': return (today - timedelta(days=num*30)).strftime("%Y-%m-%d")
+        
     try:
         months = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"]
         months_short = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"]
-        date_lower = date_str.lower().replace(',', '')
-        parts = date_lower.split()
+        parts = date_str.replace(',', '').split()
         if len(parts) >= 3:
             year_part = [p for p in parts if p.isdigit() and len(p) == 4]
             day_part = [p for p in parts if p.isdigit() and len(p) <= 2]
@@ -828,6 +938,25 @@ def listen_for_input():
     except EOFError:
         pass
 
+def print_job_summary():
+    """Reads jobs.json and prints a summary of job statuses."""
+    if not os.path.exists(JOBS_FILE):
+        print("\nStats - No jobs.json file found.")
+        return
+        
+    try:
+        with open(JOBS_FILE, 'r', encoding='utf-8') as f:
+            jobs_data = json.load(f)
+            total_jobs = len(jobs_data)
+            matching_jobs = sum(1 for j in jobs_data if j.get('matches_requirements') == 'yes')
+            maybe_jobs = sum(1 for j in jobs_data if j.get('matches_requirements') == 'maybe')
+            no_jobs = sum(1 for j in jobs_data if j.get('matches_requirements') == 'no')
+            pending_jobs = sum(1 for j in jobs_data if j.get('matches_requirements') == 'pending')
+            
+        print(f"\nStats - Total jobs: {total_jobs} | Yes Match: {matching_jobs} | Maybe Match: {maybe_jobs} | No Match: {no_jobs} | Pending: {pending_jobs}")
+    except Exception as e:
+        print(f"Error reading jobs file for status display: {e}")
+
 def main():
     parser = argparse.ArgumentParser(description="Job Scraper and Reviewer")
     parser.add_argument("--git-only", action="store_true", help="Only run the Git commit and push step, then exit.")
@@ -859,6 +988,7 @@ def main():
             
             clean_blocked_jobs()
             update_git()
+            print_job_summary()
             time.sleep(1)
         return
 
@@ -921,6 +1051,38 @@ def main():
         except Exception as e:
             print(f"An error occurred checking requirements: {e}")
             
+        # 1. Gather all pending jobs
+        pending_jobs = []
+        if os.path.exists(JOBS_FILE):
+            try:
+                with open(JOBS_FILE, 'r', encoding='utf-8') as f:
+                    jobs_data = json.load(f)
+                    pending_jobs = [j for j in jobs_data if j.get('matches_requirements') == 'pending']
+            except Exception as e:
+                print(f"Error reading jobs file: {e}")
+        
+        if pending_jobs:
+            # We have pending jobs, flush a batch of them first
+            print(f"\nINFO: Flushing pending jobs first. {len(pending_jobs)} pending jobs remaining.")
+            batch_urls = [j['url'] for j in pending_jobs[:15]]
+            try:
+                review_pending_jobs(specific_urls=set(batch_urls))
+            except Exception as e:
+                print(f"An error occurred during reviewing: {e}")
+                
+            try:
+                clean_blocked_jobs()
+                update_git()
+            except Exception as e:
+                print(f"An error occurred during Git update: {e}")
+                
+            print_job_summary()
+            print(f"Waiting 5 seconds before the next review batch. Press [Enter] to stop...")
+            if stop_event.wait(timeout=5):
+                print("Stopping the scraper...")
+                break
+            continue
+            
         quota = 15
         new_jobs = []
         
@@ -933,22 +1095,6 @@ def main():
         # Collect URLs to review
         urls_to_review = [j['url'] for j in new_jobs]
         
-        if len(urls_to_review) < quota:
-            remaining_slots = quota - len(urls_to_review)
-            try:
-                if os.path.exists(JOBS_FILE):
-                    with open(JOBS_FILE, 'r', encoding='utf-8') as f:
-                        current_jobs = json.load(f)
-                    
-                    already_collected = set(urls_to_review)
-                    for j in current_jobs:
-                        if j.get('matches_requirements') == 'pending' and j['url'] not in already_collected:
-                            urls_to_review.append(j['url'])
-                            if len(urls_to_review) >= quota:
-                                break
-            except Exception as e:
-                print(f"An error occurred reading pending jobs for review quota: {e}")
-                
         if urls_to_review:
             print(f"INFO: Reviewing {len(urls_to_review)} jobs in this batch (New: {len(new_jobs)}, Existing Pending: {len(urls_to_review) - len(new_jobs)})")
             try:
@@ -964,27 +1110,14 @@ def main():
         except Exception as e:
             print(f"An error occurred during Git update: {e}")
         
-        # Calculate stats for status display
-        total_jobs = 0
-        matching_jobs = 0
-        maybe_jobs = 0
-        if os.path.exists(JOBS_FILE):
-            try:
-                with open(JOBS_FILE, 'r', encoding='utf-8') as f:
-                    jobs_data = json.load(f)
-                    total_jobs = len(jobs_data)
-                    matching_jobs = sum(1 for j in jobs_data if j.get('matches_requirements') == 'yes')
-                    maybe_jobs = sum(1 for j in jobs_data if j.get('matches_requirements') == 'maybe')
-            except Exception as e:
-                print(f"Error reading jobs file for status display: {e}")
+        print_job_summary()
 
         # Determine wait time
         wait_time = 5
         if not new_jobs:
-            wait_time = 60
-            print(f"\nINFO: No new unseen jobs found in this iteration. Increasing wait time to {wait_time} seconds.")
+            wait_time = 600
+            print(f"\nINFO: No new unseen jobs found in this iteration. Increasing wait time to {wait_time} seconds (10 mins).")
         
-        print(f"\nStats - Total jobs listed: {total_jobs} | Yes Match: {matching_jobs} | Maybe Match: {maybe_jobs}")
         print(f"Waiting {wait_time} seconds before the next run. Press [Enter] to stop...")
         
         # This will wait for up to wait_time seconds.
