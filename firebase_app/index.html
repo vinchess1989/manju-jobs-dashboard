@@ -1014,6 +1014,7 @@
                         await window.addDoc(window.collection(window.firebaseDb, "rejected_jobs"), {
                             url: url,
                             reason: reason,
+                            status: "unread",
                             timestamp: window.serverTimestamp()
                         });
                         alert("Rejection reason saved! The scraper will automatically update its requirements shortly.");

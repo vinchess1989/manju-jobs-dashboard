@@ -1020,14 +1020,21 @@ def poll_firebase_rejections():
         for doc in documents:
             doc_name = doc.get("name")
             fields = doc.get("fields", {})
+            status = fields.get("status", {}).get("stringValue", "unread")
+            
+            if status == "read":
+                continue
+                
             reason = fields.get("reason", {}).get("stringValue", "")
             
             if reason and reason.strip():
                 new_rules.append(reason.strip())
                 
-            # Delete the document so we don't process it again
+            # Update the document status to "read" so we keep a history in the cloud
             if doc_name:
-                requests.delete(f"https://firestore.googleapis.com/v1/{doc_name}", timeout=10)
+                update_url = f"https://firestore.googleapis.com/v1/{doc_name}?updateMask.fieldPaths=status"
+                payload = {"fields": {"status": {"stringValue": "read"}}}
+                requests.patch(update_url, json=payload, timeout=10)
                 
         if new_rules:
             # Append to job_requirements.md
