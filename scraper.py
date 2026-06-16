@@ -1077,7 +1077,7 @@ def main():
             with open(JOBS_FILE, 'r', encoding='utf-8') as f:
                 jobs = json.load(f)
             
-            pending_urls = [j['url'] for j in jobs if j.get('matches_requirements') == 'pending']
+            pending_urls = [j['url'] for j in jobs if j.get('matches_requirements') == 'pending' or j.get('needs_re_review') == True]
             if not pending_urls:
                 print("INFO: No more pending jobs to review.")
                 break
@@ -1165,7 +1165,7 @@ def main():
             try:
                 with open(JOBS_FILE, 'r', encoding='utf-8') as f:
                     jobs_data = json.load(f)
-                    pending_jobs = [j for j in jobs_data if j.get('matches_requirements') == 'pending']
+                    pending_jobs = [j for j in jobs_data if j.get('matches_requirements') == 'pending' or j.get('needs_re_review') == True]
             except Exception as e:
                 print(f"Error reading jobs file: {e}")
         
