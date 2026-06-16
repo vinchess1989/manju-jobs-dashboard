@@ -785,8 +785,22 @@ Do not include any conversational intro/outro or explanations outside the JSON o
                         result = extract_json_from_text(content)
                         match = str(result.get("match", "no")).lower()
                         reason = str(result.get("reason", "No reason provided by LLM."))
-                        posted_date = standardize_date(result.get("posted_date", "N/A"))
-                        deadline = standardize_date(result.get("deadline", "N/A"))
+                        
+                        # Only accept AI dates if we don't already have a valid one
+                        import re
+                        ai_posted = standardize_date(result.get("posted_date", "N/A"))
+                        current_posted = job.get("posted_date", "N/A")
+                        if current_posted == "N/A" or not re.match(r'^\d{4}-\d{2}-\d{2}$', str(current_posted)):
+                            posted_date = ai_posted
+                        else:
+                            posted_date = current_posted
+                            
+                        ai_deadline = standardize_date(result.get("deadline", "N/A"))
+                        current_deadline = job.get("deadline", "N/A")
+                        if current_deadline == "N/A" or (not re.match(r'^\d{4}-\d{2}-\d{2}$', str(current_deadline)) and 'open' not in str(current_deadline).lower()):
+                            deadline = ai_deadline
+                        else:
+                            deadline = current_deadline
                         
                         # Extract company and location from LLM if scraper had placeholder/unknown
                         ai_company = str(result.get("company", "N/A"))
