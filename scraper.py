@@ -1001,6 +1001,45 @@ def self_heal_dates():
     except Exception as e:
         print(f"Error self-healing dates: {e}")
 
+def poll_firebase_rejections():
+    """Polls the Firebase Firestore REST API for rejected jobs, updates requirements, and deletes them."""
+    url = "https://firestore.googleapis.com/v1/projects/manju-jobs-dashboard/databases/(default)/documents/rejected_jobs"
+    try:
+        response = requests.get(url, timeout=10)
+        if response.status_code != 200:
+            return # Database not created, or empty, or permission denied
+            
+        data = response.json()
+        documents = data.get("documents", [])
+        if not documents:
+            return
+            
+        print(f"\nINFO: Found {len(documents)} new rejected jobs from the cloud dashboard!")
+        
+        new_rules = []
+        for doc in documents:
+            doc_name = doc.get("name")
+            fields = doc.get("fields", {})
+            reason = fields.get("reason", {}).get("stringValue", "")
+            
+            if reason and reason.strip():
+                new_rules.append(reason.strip())
+                
+            # Delete the document so we don't process it again
+            if doc_name:
+                requests.delete(f"https://firestore.googleapis.com/v1/{doc_name}", timeout=10)
+                
+        if new_rules:
+            # Append to job_requirements.md
+            with open(REQ_FILE, 'a', encoding='utf-8') as f:
+                f.write("\n\n### Automatically Added Negative Constraints (from UI Rejections):\n")
+                for rule in new_rules:
+                    f.write(f"- NEGATIVE CONSTRAINT: The user explicitly rejected a previous job because: '{rule}'. Do NOT match jobs that have this issue.\n")
+            print(f"INFO: Successfully updated job_requirements.md with {len(new_rules)} new rules!")
+            
+    except Exception as e:
+        print(f"Error polling Firebase rejections: {e}")
+
 def main():
     self_heal_dates()
     parser = argparse.ArgumentParser(description="Job Scraper and Reviewer")
@@ -1094,6 +1133,11 @@ def main():
     input_thread.start()
 
     while not stop_event.is_set():
+        try:
+            poll_firebase_rejections()
+        except Exception as e:
+            print(f"Error polling firebase: {e}")
+            
         try:
             check_requirements_update()
         except Exception as e:
