@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +8,9 @@
     <!-- Premium Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap"
+        rel="stylesheet">
     <style>
         :root {
             --bg-primary: #0a0d16;
@@ -17,7 +20,7 @@
             --text-primary: #f3f4f6;
             --text-secondary: #9ca3af;
             --accent-glow: rgba(99, 102, 241, 0.2);
-            
+
             /* Status Colors */
             --color-yes: #10b981;
             --color-yes-bg: rgba(16, 185, 129, 0.1);
@@ -45,7 +48,7 @@
             color: var(--text-primary);
             min-height: 100vh;
             overflow-x: hidden;
-            background-image: 
+            background-image:
                 radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.05) 0%, transparent 40%),
                 radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.05) 0%, transparent 40%);
             padding: 2rem;
@@ -198,7 +201,8 @@
             font-size: 0.925rem;
         }
 
-        th, td {
+        th,
+        td {
             padding: 1rem 0.75rem;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
@@ -247,19 +251,74 @@
         }
 
         /* Column specific styles */
-        .col-id { width: 3.5rem; text-align: center; color: var(--text-secondary); }
-        .col-job-id { font-family: 'Space Grotesk', sans-serif; font-size: 0.8rem; font-weight: 600; color: #a78bfa; text-align: center; width: 5.5rem; }
-        .col-title { font-weight: 600; color: #ffffff; min-width: 12rem; }
-        .col-company { min-width: 8rem; }
-        .col-location { min-width: 7rem; }
-        .col-source { min-width: 7.5rem; }
-        .col-posted { min-width: 6.5rem; }
-        .col-deadline { min-width: 6.5rem; }
-        .col-visited { width: 5.5rem; text-align: center; }
-        .col-matches { width: 7.5rem; text-align: center; }
-        .col-reason { min-width: 15rem; font-style: italic; color: #d1d5db; font-size: 0.85rem; line-height: 1.45; }
-        .col-applied { width: 6.5rem; text-align: center; }
-        .col-link { width: 5rem; text-align: center; }
+        .col-id {
+            width: 3.5rem;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        .col-job-id {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #a78bfa;
+            text-align: center;
+            width: 5.5rem;
+        }
+
+        .col-title {
+            font-weight: 600;
+            color: #ffffff;
+            min-width: 12rem;
+        }
+
+        .col-company {
+            min-width: 8rem;
+        }
+
+        .col-location {
+            min-width: 7rem;
+        }
+
+        .col-source {
+            min-width: 7.5rem;
+        }
+
+        .col-posted {
+            min-width: 6.5rem;
+        }
+
+        .col-deadline {
+            min-width: 6.5rem;
+        }
+
+        .col-visited {
+            width: 5.5rem;
+            text-align: center;
+        }
+
+        .col-matches {
+            width: 7.5rem;
+            text-align: center;
+        }
+
+        .col-reason {
+            min-width: 15rem;
+            font-style: italic;
+            color: #d1d5db;
+            font-size: 0.85rem;
+            line-height: 1.45;
+        }
+
+        .col-applied {
+            width: 6.5rem;
+            text-align: center;
+        }
+
+        .col-link {
+            width: 5rem;
+            text-align: center;
+        }
 
         /* Badges & Actions */
         .status-pill {
@@ -410,15 +469,23 @@
         }
 
         @keyframes spin {
-            to { transform: rotate(360deg); }
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         @media (max-width: 1024px) {
-            body { padding: 1rem; }
-            .table-container { padding: 1rem; }
+            body {
+                padding: 1rem;
+            }
+
+            .table-container {
+                padding: 1rem;
+            }
         }
     </style>
 </head>
+
 <body>
 
     <header>
@@ -436,7 +503,8 @@
     <section class="upload-zone" id="upload-zone">
         <div class="upload-icon">📥</div>
         <h3 class="upload-title">Drop your jobs.json file here</h3>
-        <p class="upload-desc">Or click to select it. Drag and drop is required if you are viewing this page directly via file://</p>
+        <p class="upload-desc">Or click to select it. Drag and drop is required if you are viewing this page directly
+            via file://</p>
         <input type="file" id="file-input" style="display: none;" accept=".json">
     </section>
 
@@ -530,7 +598,7 @@
 
         function onDataLoaded(jobs, lastMod, statusMsg) {
             allJobs = jobs;
-            
+
             // Set Connection indicators
             fileStatusDot.classList.add('connected');
             fileStatusText.textContent = statusMsg;
@@ -549,7 +617,7 @@
             // 1. Info bar
             const infoBar = document.createElement('div');
             infoBar.className = 'table-info-bar';
-            
+
             const dateText = lastMod ? new Date(lastMod).toLocaleString() : new Date().toLocaleString();
             infoBar.innerHTML = `
                 <div class="table-info-item" style="align-items: flex-start; margin-right: auto;">
@@ -608,7 +676,7 @@
             jobsContainer.appendChild(table);
 
             const tbody = table.querySelector('tbody');
-            
+
             // Helper function to extract hostname/source fallback
             function getSourceFromUrl(url) {
                 if (!url) return 'Unknown';
@@ -624,7 +692,7 @@
                 try {
                     const hostname = new URL(url).hostname;
                     return hostname.replace('www.', '');
-                } catch(e) {
+                } catch (e) {
                     return 'Unknown';
                 }
             }
@@ -633,14 +701,14 @@
             allJobs.forEach((job, index) => {
                 const appliedStatus = localStorage.getItem('applied_' + job.url) || 'no';
                 const tr = document.createElement('tr');
-                
+
                 const visitedVal = job.visited || 'no';
                 const matchVal = job.matches_requirements || 'pending';
                 const postedVal = job.posted_date || 'N/A';
                 const deadlineVal = job.deadline || 'N/A';
                 const sourceVal = job.source || getSourceFromUrl(job.url) || 'Unknown';
                 const jobIdVal = job.id || 'N/A';
-                
+
                 tr.innerHTML = `
                     <td class="col-id">${index + 1}</td>
                     <td class="col-job-id">${jobIdVal}</td>
@@ -669,21 +737,21 @@
             const tbody = document.querySelector('table tbody');
             if (!tbody) return;
             const rows = Array.from(tbody.querySelectorAll('tr'));
-            
+
             sortAsc = (lastSortedCol === n) ? !sortAsc : true;
             lastSortedCol = n;
-            
+
             rows.sort((a, b) => {
                 let x = a.getElementsByTagName("td")[n];
                 let y = b.getElementsByTagName("td")[n];
-                
+
                 x = x.hasAttribute("data-value") ? x.getAttribute("data-value") : x.textContent.trim();
                 y = y.hasAttribute("data-value") ? y.getAttribute("data-value") : y.textContent.trim();
-                
+
                 if (n === 0) return sortAsc ? parseInt(x) - parseInt(y) : parseInt(y) - parseInt(x);
-                return sortAsc ? x.localeCompare(y, undefined, {sensitivity: 'base'}) : y.localeCompare(x, undefined, {sensitivity: 'base'});
+                return sortAsc ? x.localeCompare(y, undefined, { sensitivity: 'base' }) : y.localeCompare(x, undefined, { sensitivity: 'base' });
             });
-            
+
             rows.forEach(row => tbody.appendChild(row));
         }
 
@@ -693,13 +761,13 @@
             let visibleCount = 0;
             let totalCount = rows.length;
             let activeFilter = false;
-            
+
             inputs.forEach(input => {
                 if (input.value.toLowerCase().trim()) {
                     activeFilter = true;
                 }
             });
-            
+
             rows.forEach(row => {
                 let show = true;
                 inputs.forEach((input, index) => {
@@ -707,13 +775,13 @@
                     if (filter) {
                         const td = row.getElementsByTagName("td")[index + 1];
                         const val = td && td.hasAttribute("data-value") ? td.getAttribute("data-value").toLowerCase().trim() : (td ? td.textContent.toLowerCase().trim() : "");
-                        
+
                         let isNegative = false;
                         if (filter && (filter[0] === '!' || filter[0] === '-')) {
                             isNegative = true;
                             filter = filter.substring(1).trim();
                         }
-                        
+
                         if (filter) {
                             if (isNegative) {
                                 if (val.indexOf(filter) !== -1) {
@@ -732,7 +800,7 @@
                     visibleCount++;
                 }
             });
-            
+
             const counter = document.getElementById('listings-counter');
             if (counter) {
                 if (activeFilter) {
@@ -746,13 +814,14 @@
         function toggleApplied(btn, jobUrl) {
             const currentStatus = btn.textContent.trim();
             const newStatus = currentStatus === 'no' ? 'yes' : 'no';
-            
+
             btn.textContent = newStatus;
             btn.className = 'status-btn ' + (newStatus === 'yes' ? 'status-yes' : 'status-no');
             btn.parentElement.setAttribute('data-value', newStatus);
-            
+
             localStorage.setItem('applied_' + jobUrl, newStatus);
         }
     </script>
 </body>
+
 </html>
