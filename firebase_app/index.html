@@ -153,7 +153,6 @@
             font-size: 0.85rem;
         }
 
-        /* Table container */
         .table-container {
             width: 100%;
             background: var(--bg-card);
@@ -163,6 +162,8 @@
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
             backdrop-filter: blur(12px);
             overflow-x: auto;
+            max-height: calc(100vh - 160px);
+            overflow-y: auto;
         }
 
         .table-info-bar {
@@ -195,9 +196,17 @@
 
         table {
             width: 100%;
-            border-collapse: collapse;
+            border-collapse: separate;
+            border-spacing: 0;
             text-align: left;
             font-size: 0.925rem;
+        }
+
+        thead {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            background-color: #121727;
         }
 
         th, td {
@@ -206,7 +215,6 @@
         }
 
         th {
-            background-color: rgba(255, 255, 255, 0.02);
             color: #ffffff;
             font-weight: 700;
             font-family: 'Space Grotesk', sans-serif;
