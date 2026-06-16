@@ -957,7 +957,38 @@ def print_job_summary():
     except Exception as e:
         print(f"Error reading jobs file for status display: {e}")
 
+def self_heal_dates():
+    """Run through existing jobs in jobs.json and standardize their dates using the native scraper logic."""
+    if not os.path.exists(JOBS_FILE):
+        return
+    try:
+        with open(JOBS_FILE, 'r', encoding='utf-8') as f:
+            jobs = json.load(f)
+            
+        changed = False
+        for job in jobs:
+            p = str(job.get('posted_date', ''))
+            d = str(job.get('deadline', ''))
+            
+            new_p = standardize_date(p)
+            new_d = standardize_date(d)
+            
+            if new_p != p:
+                job['posted_date'] = new_p
+                changed = True
+            if new_d != d:
+                job['deadline'] = new_d
+                changed = True
+                
+        if changed:
+            print("INFO: Natively standardized messy dates in jobs.json!")
+            with open(JOBS_FILE, 'w', encoding='utf-8') as f:
+                json.dump(jobs, f, indent=2)
+    except Exception as e:
+        print(f"Error self-healing dates: {e}")
+
 def main():
+    self_heal_dates()
     parser = argparse.ArgumentParser(description="Job Scraper and Reviewer")
     parser.add_argument("--git-only", action="store_true", help="Only run the Git commit and push step, then exit.")
     parser.add_argument("--review-only", action="store_true", help="Only run the local LLM review step on pending jobs, then exit.")
@@ -1039,6 +1070,9 @@ def main():
                 
             time.sleep(1)
         return
+
+    # Self-heal dates before main loop
+    self_heal_dates()
 
     print("INFO: Scraper script starting execution loop...")
     # Start the background thread to listen for user input
