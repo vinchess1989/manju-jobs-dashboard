@@ -279,8 +279,29 @@
         }
 
         .status-pill.no {
-            background: var(--color-no-bg);
+            background-color: var(--color-no-bg);
             color: var(--color-no);
+        }
+        
+        select.status-pill {
+            appearance: none;
+            cursor: pointer;
+            padding-right: 24px;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 8px center;
+            background-size: 12px;
+            border: 1px solid transparent;
+            transition: all 0.2s ease;
+        }
+        
+        select.status-pill:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        select.status-pill option {
+            background-color: var(--surface-light);
+            color: var(--text-primary);
         }
 
         .status-pill.pending {
@@ -848,7 +869,13 @@
                     <td class="col-posted">${postedVal}</td>
                     <td class="col-deadline">${deadlineVal}</td>
                     <td class="col-visited" data-value="${visitedVal}"><span class="status-pill ${visitedVal}">${visitedVal}</span></td>
-                    <td class="col-matches" data-value="${matchVal}"><span class="status-pill ${matchVal}" style="cursor: pointer;" onclick="toggleMatch(this, '${job.url}')" title="Click to train the AI by changing this status">${matchVal}</span></td>
+                    <td class="col-matches" data-value="${matchVal}">
+                        <select class="status-pill ${matchVal}" onchange="handleMatchChange(this, '${job.url}', '${matchVal}')" title="Train the AI by changing this status">
+                            <option value="yes" ${matchVal === 'yes' ? 'selected' : ''}>yes</option>
+                            <option value="no" ${matchVal === 'no' ? 'selected' : ''}>no</option>
+                            ${matchVal !== 'yes' && matchVal !== 'no' ? `<option value="${matchVal}" selected hidden>${matchVal}</option>` : ''}
+                        </select>
+                    </td>
                     <td class="col-reason"><em>${job.reason || ''}</em></td>
                     <td class="col-applied" data-value="${appliedStatus}">
                         <button class="status-btn ${appliedStatus === 'yes' ? 'status-yes' : (appliedStatus === 'Reject' ? 'status-reject' : 'status-no')}" onclick="toggleApplied(this, '${job.url}')">${appliedStatus}</button>
@@ -1045,18 +1072,15 @@
             td.setAttribute('data-value', newState);
         }
         
-        async function toggleMatch(span, url) {
-            const current = span.textContent.trim();
-            let newState;
+        async function handleMatchChange(select, url, originalValue) {
+            const newState = select.value;
             let promptText;
             let type;
             
-            if (current === 'no' || current === 'maybe') {
-                newState = 'yes';
+            if (newState === 'yes') {
                 promptText = "Why should this job be a 'yes'? (This trains the AI to accept similar jobs. Max 100 words)";
                 type = "positive";
-            } else if (current === 'yes') {
-                newState = 'no';
+            } else if (newState === 'no') {
                 promptText = "Why should this job be a 'no'? (This trains the AI to reject similar jobs. Max 100 words)";
                 type = "negative";
             } else {
@@ -1064,14 +1088,20 @@
             }
 
             const reason = prompt(promptText);
-            if (reason === null) return;
-            if (reason.split(' ').length > 100) { alert("Reason must be less than 100 words."); return; }
-            if (reason.trim() === '') { alert("Reason cannot be empty."); return; }
+            if (reason === null) {
+                select.value = originalValue;
+                return;
+            }
+            if (reason.split(' ').length > 100 || reason.trim() === '') { 
+                alert("Invalid reason. Reason must be 1-100 words."); 
+                select.value = originalValue;
+                return; 
+            }
 
             if (window.firebaseDb) {
-                const originalText = span.textContent;
+                const originalText = select.options[select.selectedIndex].text;
                 try {
-                    span.textContent = 'Saving...';
+                    select.disabled = true;
                     await window.addDoc(window.collection(window.firebaseDb, "user_feedback"), {
                         url: url,
                         reason: reason,
@@ -1081,16 +1111,19 @@
                     });
                     alert("Feedback saved! The AI requirements have been updated.");
                     
-                    span.textContent = newState;
-                    span.className = 'status-pill ' + newState;
-                    span.closest('td').setAttribute('data-value', newState);
+                    select.disabled = false;
+                    select.className = 'status-pill ' + newState;
+                    select.closest('td').setAttribute('data-value', newState);
+                    select.setAttribute('onchange', `handleMatchChange(this, '${url}', '${newState}')`);
                 } catch (e) {
                     console.error(e);
                     alert("Failed to save to cloud database.");
-                    span.textContent = originalText;
+                    select.value = originalValue;
+                    select.disabled = false;
                 }
             } else {
                 alert("Firebase not initialized yet.");
+                select.value = originalValue;
             }
         }    
     </script>
