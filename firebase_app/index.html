@@ -247,6 +247,33 @@
             box-shadow: 0 0 8px var(--accent-glow);
             background: rgba(0, 0, 0, 0.4);
         }
+        
+        .resizable-header {
+            resize: horizontal;
+            overflow: auto;
+            min-width: 60px;
+            padding: 1rem 0.75rem;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        th.resizable-th {
+            padding: 0;
+        }
+
+        .active-filters-summary {
+            font-size: 0.65rem;
+            color: var(--accent-color);
+            font-weight: 500;
+            line-height: 1.2;
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
 
         /* Column specific styles */
         .col-id { width: 3.5rem; text-align: center; color: var(--text-secondary); }
@@ -257,12 +284,10 @@
         .col-source { min-width: 7.5rem; }
         .col-posted { min-width: 6.5rem; }
         .col-deadline { min-width: 6.5rem; }
-        .col-visited { width: 5.5rem; text-align: center; }
         .col-sync { width: 6.5rem; text-align: center; }
         .col-matches { width: 7.5rem; text-align: center; }
         .col-reason { min-width: 15rem; font-style: italic; color: #d1d5db; font-size: 0.85rem; line-height: 1.45; }
         .col-applied { width: 6.5rem; text-align: center; }
-        .col-link { width: 5rem; text-align: center; }
 
         /* Badges & Actions */
         .status-pill {
@@ -747,10 +772,13 @@
             
             const dateText = lastMod ? new Date(lastMod).toLocaleString() : new Date().toLocaleString();
             infoBar.innerHTML = `
-                <div class="table-info-item" style="align-items: flex-start; margin-right: auto;">
-                    <span class="table-info-value" style="font-size: 0.825rem; font-weight: 500; color: var(--text-secondary);">
+                <div class="table-info-item" style="align-items: flex-start; margin-right: auto; flex-direction: row; gap: 15px;">
+                    <span class="table-info-value" style="font-size: 0.825rem; font-weight: 500; color: var(--text-secondary); margin-top: 5px;">
                         💡 <strong>Tip:</strong> Check multiple options in the column dropdowns to filter. They will be combined (e.g., matching "LinkedIn" OR "Duunitori").
                     </span>
+                    <button onclick="window.resetAllFilters()" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #d1d5db; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 0.75rem; transition: background 0.2s;">
+                        <i class="fas fa-filter-slash"></i> Clear Filters
+                    </button>
                 </div>
                 <div class="table-info-item">
                     <span class="table-info-label">Last Updated</span>
@@ -768,20 +796,18 @@
             table.innerHTML = `
                 <thead>
                     <tr>
-                        <th class="col-id" onclick="sortTable(0)"># ↕</th>
-                        <th class="col-job-id" onclick="sortTable(1)">Job ID ↕</th>
-                        <th class="col-title" onclick="sortTable(2)">Job Title ↕</th>
-                        <th class="col-company" onclick="sortTable(3)">Company ↕</th>
-                        <th class="col-location" onclick="sortTable(4)">Location ↕</th>
-                        <th class="col-source" onclick="sortTable(5)">Source ↕</th>
-                        <th class="col-posted" onclick="sortTable(6)">Posted ↕</th>
-                        <th class="col-deadline" onclick="sortTable(7)">Deadline ↕</th>
-                        <th class="col-visited" onclick="sortTable(8)">Visited ↕</th>
-                        <th class="col-sync" onclick="sortTable(9)">Sync ↕</th>
-                        <th class="col-matches" onclick="sortTable(10)">Matches ↕</th>
-                        <th class="col-reason" onclick="sortTable(11)">Reason ↕</th>
-                        <th class="col-applied" onclick="sortTable(12)">Applied ↕</th>
-                        <th class="col-link">Link</th>
+                        <th class="col-id resizable-th"><div class="resizable-header" onclick="sortTable(0)"><div class="active-filters-summary" id="active-filters-0"></div># ↕</div></th>
+                        <th class="col-job-id resizable-th"><div class="resizable-header" onclick="sortTable(1)"><div class="active-filters-summary" id="active-filters-1"></div>Job ID ↕</div></th>
+                        <th class="col-title resizable-th"><div class="resizable-header" onclick="sortTable(2)"><div class="active-filters-summary" id="active-filters-2"></div>Job Title ↕</div></th>
+                        <th class="col-company resizable-th"><div class="resizable-header" onclick="sortTable(3)"><div class="active-filters-summary" id="active-filters-3"></div>Company ↕</div></th>
+                        <th class="col-location resizable-th"><div class="resizable-header" onclick="sortTable(4)"><div class="active-filters-summary" id="active-filters-4"></div>Location ↕</div></th>
+                        <th class="col-source resizable-th"><div class="resizable-header" onclick="sortTable(5)"><div class="active-filters-summary" id="active-filters-5"></div>Source ↕</div></th>
+                        <th class="col-posted resizable-th"><div class="resizable-header" onclick="sortTable(6)"><div class="active-filters-summary" id="active-filters-6"></div>Posted ↕</div></th>
+                        <th class="col-deadline resizable-th"><div class="resizable-header" onclick="sortTable(7)"><div class="active-filters-summary" id="active-filters-7"></div>Deadline ↕</div></th>
+                        <th class="col-sync resizable-th"><div class="resizable-header" onclick="sortTable(8)"><div class="active-filters-summary" id="active-filters-8"></div>Sync ↕</div></th>
+                        <th class="col-matches resizable-th"><div class="resizable-header" onclick="sortTable(9)"><div class="active-filters-summary" id="active-filters-9"></div>Matches ↕</div></th>
+                        <th class="col-reason resizable-th"><div class="resizable-header" onclick="sortTable(10)"><div class="active-filters-summary" id="active-filters-10"></div>Reason ↕</div></th>
+                        <th class="col-applied resizable-th"><div class="resizable-header" onclick="sortTable(11)"><div class="active-filters-summary" id="active-filters-11"></div>Applied ↕</div></th>
                     </tr>
                     <tr class="filter-row">
                         <th></th>
@@ -796,8 +822,6 @@
                         <th><div id="filter-col-9"></div></th>
                         <th><div id="filter-col-10"></div></th>
                         <th><div id="filter-col-11"></div></th>
-                        <th><div id="filter-col-12"></div></th>
-                        <th></th>
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -868,13 +892,15 @@
                 tr.innerHTML = `
                     <td class="col-id">${index + 1}</td>
                     <td class="col-job-id">${jobIdVal}</td>
-                    <td class="col-title">${job.title || 'Unknown Title'}</td>
+                    <td class="col-title" data-value="${job.title || 'Unknown Title'}">
+                        <a href="${job.url}" target="_blank" style="color: var(--text-primary); text-decoration: underline; text-decoration-color: rgba(255,255,255,0.3); text-underline-offset: 3px;">${job.title || 'Unknown Title'}</a>
+                        ${job.description_file ? `<a href="job_descriptions/${job.description_file}" target="_blank" style="font-size: 0.7em; vertical-align: super; color: var(--color-yes); margin-left: 4px; text-decoration: none;" title="View extracted job description">[TXT]</a>` : ''}
+                    </td>
                     <td class="col-company">${job.company || 'Unknown Company'}</td>
                     <td class="col-location">📍 ${job.location || 'Unknown Location'}</td>
                     <td class="col-source" data-value="${sourceVal}"><span class="source-tag">${sourceVal}</span></td>
                     <td class="col-posted">${postedVal}</td>
                     <td class="col-deadline">${deadlineVal}</td>
-                    <td class="col-visited" data-value="${visitedVal}"><span class="status-pill ${visitedVal}">${visitedVal}</span></td>
                     <td class="col-sync" data-value="${syncVal}"><span style="font-size: 0.85em; color: ${job.needs_re_review ? 'var(--text-secondary)' : 'var(--color-yes)'};"><i class="fas ${job.needs_re_review ? 'fa-hourglass-half' : 'fa-check-circle'}"></i> ${syncVal}</span></td>
                     <td class="col-matches" data-value="${matchVal}">
                         <select class="status-pill ${matchVal}" onchange="handleMatchChange(this, '${job.url}', '${matchVal}')" title="Train the AI by changing this status">
@@ -887,10 +913,6 @@
                     <td class="col-applied" data-value="${appliedStatus}">
                         <button class="status-btn ${appliedStatus === 'yes' ? 'status-yes' : (appliedStatus === 'Reject' ? 'status-reject' : 'status-no')}" onclick="toggleApplied(this, '${job.url}')">${appliedStatus}</button>
                     </td>
-                    <td class="col-link">
-                        <a href="${job.url || '#'}" target="_blank" class="apply-btn" style="margin-bottom: 0.25rem; display: block;">View</a>
-                        ${job.description_file ? `<a href="${job.description_file}" target="_blank" class="desc-btn" style="display: block;">Text</a>` : ''}
-                    </td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -898,12 +920,26 @@
             buildMultiSelectFilters();
         }
 
+        window.toggleAllFilters = function(colIndex, checkState, event) {
+            event.stopPropagation();
+            const container = document.getElementById(`filter-col-${colIndex}`);
+            if (!container) return;
+            const checkboxes = container.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(cb => { cb.checked = checkState; });
+            filterTable();
+        };
+
+        window.resetAllFilters = function() {
+            document.querySelectorAll('.ms-dropdown input[type="checkbox"]').forEach(cb => cb.checked = false);
+            filterTable();
+        };
+
         function buildMultiSelectFilters() {
             const tbody = document.querySelector('table tbody');
             const rows = Array.from(tbody.querySelectorAll('tr'));
-            const colNames = ['ID', 'Title', 'Company', 'Location', 'Source', 'Posted', 'Deadline', 'Visited', 'Sync', 'Matches', 'Reason', 'Applied'];
+            const colNames = ['ID', 'Title', 'Company', 'Location', 'Source', 'Posted', 'Deadline', 'Sync', 'Matches', 'Reason', 'Applied'];
             
-            for (let i = 1; i <= 12; i++) {
+            for (let i = 1; i <= 11; i++) {
                 const uniqueValues = new Set();
                 rows.forEach(row => {
                     const td = row.getElementsByTagName("td")[i];
@@ -917,7 +953,12 @@
                 const container = document.getElementById(`filter-col-${i}`);
                 if (!container) continue;
                 
-                let optionsHtml = '';
+                let optionsHtml = `
+                    <div style="padding: 4px 8px; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; gap: 8px; margin-bottom: 4px;">
+                        <button type="button" onclick="window.toggleAllFilters(${i}, true, event)" style="background:none; border:none; color:#a78bfa; font-size:0.75rem; cursor:pointer; padding:0;">Select All</button>
+                        <button type="button" onclick="window.toggleAllFilters(${i}, false, event)" style="background:none; border:none; color:var(--text-secondary); font-size:0.75rem; cursor:pointer; padding:0;">Clear</button>
+                    </div>
+                `;
                 sortedVals.forEach(val => {
                     optionsHtml += `<label class="ms-option"><input type="checkbox" value="${val.replace(/"/g, '&quot;')}"> ${val}</label>`;
                 });
@@ -988,6 +1029,18 @@
                 const container = document.getElementById(`filter-col-${i}`);
                 if (!container) continue;
                 const checked = Array.from(container.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value);
+                
+                const summaryDiv = document.getElementById(`active-filters-${i}`);
+                if (summaryDiv) {
+                    if (checked.length > 0) {
+                        summaryDiv.innerText = checked.length <= 2 ? checked.join(', ') : `${checked[0]}, ${checked[1]} +${checked.length - 2}`;
+                        summaryDiv.title = checked.join(', ');
+                    } else {
+                        summaryDiv.innerText = '';
+                        summaryDiv.title = '';
+                    }
+                }
+                
                 if (checked.length > 0) {
                     filters[i] = checked;
                 }
