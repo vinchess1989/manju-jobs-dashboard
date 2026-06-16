@@ -20,6 +20,73 @@ JOBS_FILE = os.path.join(BASE_DIR, "jobs.json")
 SEEN_URLS_FILE = os.path.join(BASE_DIR, "seen_urls.json")
 CHECKPOINT_FILE = os.path.join(BASE_DIR, "checkpoint.json")
 REQ_FILE = os.path.join(BASE_DIR, "job_requirements.md")
+DELETED_FILE = os.path.join(BASE_DIR, "deleted.json")
+
+def clean_blocked_jobs():
+    """Finds and moves blocked jobs (senior, director, manager, johtaja, päällikkö, or US residency) from jobs.json to deleted.json."""
+    if not os.path.exists(JOBS_FILE):
+        return
+
+    try:
+        with open(JOBS_FILE, 'r', encoding='utf-8') as f:
+            jobs = json.load(f)
+    except Exception as e:
+        print(f"Error reading {JOBS_FILE} during cleanup: {e}")
+        return
+
+    deleted_jobs = []
+    if os.path.exists(DELETED_FILE):
+        try:
+            with open(DELETED_FILE, 'r', encoding='utf-8') as f:
+                deleted_jobs = json.load(f)
+        except Exception:
+            pass
+
+    blocked_keywords = ['senior', 'director', 'manager', 'johtaja', 'päällikkö']
+    cleaned_jobs = []
+    moved_count = 0
+
+    seen_deleted = {j.get('url') for j in deleted_jobs if j.get('url')}
+
+    for job in jobs:
+        title = job.get('title', '').lower()
+        reason = job.get('reason', '').lower()
+        
+        is_blocked = False
+        deletion_reason = ""
+
+        # Check keywords
+        for kw in blocked_keywords:
+            if kw in title:
+                is_blocked = True
+                deletion_reason = f"Title contains blocked keyword '{kw}'"
+                break
+
+        # Check US residency
+        if not is_blocked:
+            if "us residency" in reason or "requires us" in reason or "united states residency" in reason:
+                is_blocked = True
+                deletion_reason = "Requires US residency"
+
+        if is_blocked:
+            job['deletion_reason'] = deletion_reason
+            if job.get('url') not in seen_deleted:
+                deleted_jobs.append(job)
+                seen_deleted.add(job.get('url'))
+            moved_count += 1
+        else:
+            cleaned_jobs.append(job)
+
+    if moved_count > 0:
+        print(f"INFO: Moved {moved_count} blocked jobs (senior/director/manager/johtaja/päällikkö/US residency) to deleted.json.")
+        try:
+            with open(JOBS_FILE, 'w', encoding='utf-8') as f:
+                json.dump(cleaned_jobs, f, indent=2)
+            with open(DELETED_FILE, 'w', encoding='utf-8') as f:
+                json.dump(deleted_jobs, f, indent=2)
+        except Exception as e:
+            print(f"Error saving files during cleanup: {e}")
+
 
 SEARCH_SITES = [
     {"id": "linkedin_fin", "platform": "linkedin", "url": "https://www.linkedin.com/jobs/search?location=Finland&sortBy=DD"},
@@ -77,7 +144,8 @@ def parse_generic(soup, base_url):
                 '?haku=', '?search=', '?q=', 'jarjestys=', '?sort=', 
                 'tyopaikat.oikotie.fi/tyopaikat?', 'rekrytointi', 
                 'tyopaikkailmoitus', '/tyonantajalle', '/yhteystiedot',
-                '/palvelut/', '/hinnat', '/pricing'
+                '/palvelut/', '/hinnat', '/pricing', '/job-bookmarks-anon',
+                'destination=search'
             ]):
                 continue
             clean_path = href.lower().split('?')[0].rstrip('/')
@@ -86,13 +154,21 @@ def parse_generic(soup, base_url):
             title = a.text.strip()
             if 'senior' in title.lower():
                 continue
-            # Exclude navigation links like "Read more" or "Show all"
             if 5 < len(title) < 100 and not any(skip in title.lower() for skip in ['read more', 'lue lisää', 'katso', 'show all']):
+                raw_url = urljoin(base_url, href)
+                # Normalize Indeed URLs to prevent duplicates
+                if "indeed.com/rc/clk" in raw_url and "jk=" in raw_url:
+                    import urllib.parse
+                    parsed = urllib.parse.urlparse(raw_url)
+                    qs = urllib.parse.parse_qs(parsed.query)
+                    if 'jk' in qs:
+                        raw_url = f"{parsed.scheme}://{parsed.netloc}{parsed.path}?jk={qs['jk'][0]}"
+                        
                 jobs.append({
                     "title": title.replace('\n', ' ').strip(),
                     "company": "Extract via OpenClaw",
                     "location": "Extract via OpenClaw",
-                    "url": urljoin(base_url, href),
+                    "url": raw_url,
                     "visited": "no",
                     "matches_requirements": "pending",
                     "reason": ""
@@ -103,7 +179,7 @@ def scrape_all_jobs(max_jobs=200):
     seen_urls = set()
     if os.path.exists(SEEN_URLS_FILE):
         try:
-            with open(SEEN_URLS_FILE, 'r') as f:
+            with open(SEEN_URLS_FILE, 'r', encoding='utf-8') as f:
                 seen_urls = set(json.load(f))
         except Exception:
             pass
@@ -111,7 +187,7 @@ def scrape_all_jobs(max_jobs=200):
     checkpoint_idx = 0
     if os.path.exists(CHECKPOINT_FILE):
         try:
-            with open(CHECKPOINT_FILE, 'r') as f:
+            with open(CHECKPOINT_FILE, 'r', encoding='utf-8') as f:
                 data = json.load(f)
                 checkpoint_idx = data.get("target_index", 0)
         except Exception:
@@ -131,6 +207,7 @@ def scrape_all_jobs(max_jobs=200):
         context = browser.new_context(
             user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
         )
+        context.add_init_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
         page = context.new_page()
         
         current_idx = checkpoint_idx
@@ -178,7 +255,7 @@ def scrape_all_jobs(max_jobs=200):
     existing_jobs = []
     if os.path.exists(JOBS_FILE):
         try:
-            with open(JOBS_FILE, 'r') as f:
+            with open(JOBS_FILE, 'r', encoding='utf-8') as f:
                 existing_jobs = json.load(f)
         except Exception:
             pass
@@ -186,7 +263,7 @@ def scrape_all_jobs(max_jobs=200):
     combined_jobs = existing_jobs + all_extracted_jobs
 
     # Save combined jobs to jobs.json
-    with open(JOBS_FILE, 'w') as f:
+    with open(JOBS_FILE, 'w', encoding='utf-8') as f:
         json.dump(combined_jobs, f, indent=2)
 
     # Create a timestamped backup
@@ -194,18 +271,18 @@ def scrape_all_jobs(max_jobs=200):
     backup_dir = os.path.join(BASE_DIR, "backups")
     os.makedirs(backup_dir, exist_ok=True)
     backup_file = os.path.join(backup_dir, f"jobs_backup_{timestamp}.json")
-    with open(backup_file, 'w') as f:
+    with open(backup_file, 'w', encoding='utf-8') as f:
         json.dump(combined_jobs, f, indent=2)
 
     print(f"Total jobs currently in jobs.json: {len(combined_jobs)}")
     print(f"Backup saved to: {backup_file}\n")
         
     # Save updated seen urls history
-    with open(SEEN_URLS_FILE, 'w') as f:
+    with open(SEEN_URLS_FILE, 'w', encoding='utf-8') as f:
         json.dump(list(seen_urls), f)
         
     # Save checkpoint
-    with open(CHECKPOINT_FILE, 'w') as f:
+    with open(CHECKPOINT_FILE, 'w', encoding='utf-8') as f:
         json.dump({"target_index": current_idx}, f, indent=2)
         
     return all_extracted_jobs
@@ -225,7 +302,7 @@ def check_requirements_update():
     checkpoint_data = {}
     if os.path.exists(CHECKPOINT_FILE):
         try:
-            with open(CHECKPOINT_FILE, 'r') as f:
+            with open(CHECKPOINT_FILE, 'r', encoding='utf-8') as f:
                 checkpoint_data = json.load(f)
         except Exception:
             pass
@@ -234,17 +311,17 @@ def check_requirements_update():
     if saved_hash and req_hash != saved_hash:
         print("INFO: job_requirements.md has changed! Resetting evaluation status for existing jobs...")
         if os.path.exists(JOBS_FILE):
-            with open(JOBS_FILE, 'r') as f:
+            with open(JOBS_FILE, 'r', encoding='utf-8') as f:
                 jobs = json.load(f)
             for job in jobs:
                 job['visited'] = 'no'
                 job['matches_requirements'] = 'pending'
                 job['reason'] = ''
-            with open(JOBS_FILE, 'w') as f:
+            with open(JOBS_FILE, 'w', encoding='utf-8') as f:
                 json.dump(jobs, f, indent=2)
         
     checkpoint_data["requirements_hash"] = req_hash
-    with open(CHECKPOINT_FILE, 'w') as f:
+    with open(CHECKPOINT_FILE, 'w', encoding='utf-8') as f:
         json.dump(checkpoint_data, f, indent=2)
 
 def extract_json_from_text(text):
@@ -260,12 +337,217 @@ def extract_json_from_text(text):
             pass
     return json.loads(text)
 
+def clean_page_text(text):
+    """Strip cookie banners, navigation, and footer boilerplate from scraped job page text.
+    
+    This preprocessing improves LLM accuracy by removing noise that causes hallucinations
+    (e.g., the LLM extracting 'Indeed' as company or confusing 'korkeakoulututkinto' with 'Oulu').
+    """
+    import re
+    
+    lines = text.split('\n')
+    cleaned_lines = []
+    
+    # Common boilerplate patterns to skip (case-insensitive matching)
+    skip_patterns = [
+        # Cookie consent / GDPR banners
+        'evästeasetukset', 'evästekäytäntö', 'hyväksy kaikki eväste',
+        'hylkää kaikki', 'käytämme evästeitä',
+        'cookie settings', 'accept all cookies', 'reject all',
+        # Navigation / chrome
+        'siirry sivun pääsisältöön', 'pääsisällön alku',
+        'kirjaudu sisään', 'työnantajat / lähetä',
+        'skip to main content', 'sign in',
+        # Search UI
+        'etsi työpaikkoja', 'find jobs', 'search jobs',
+        # Footer
+        '© 20', 'indeed ja saavutettavuus', 'tietosuojakeskus',
+        'dsa-ilmoitukset', 'verkkoturvallisuussivu',
+        'selaa työpaikkoja', 'maat',
+        'privacy center', 'accessibility',
+        # Action prompts
+        'sinun on luotava indeed-tili', 'hae työpaikkaa yrityksen sivustolla',
+        'tee ilmoitus työpaikasta',
+        # Anti-bot
+        'checking your browser', 'ddos-guard', 'please stand by',
+        'please allow up to',
+    ]
+    
+    # Single-word nav items to skip (exact match on stripped line)
+    nav_words = {'koti', 'home', 'mitä', 'missä', 'about', 'ohje', 'ehdot'}
+    
+    for line in lines:
+        stripped = line.strip()
+        if not stripped:
+            continue
+        lower = stripped.lower()
+        
+        # Skip lines that match boilerplate patterns
+        if any(pat in lower for pat in skip_patterns):
+            continue
+        
+        # Skip single nav words
+        if lower in nav_words:
+            continue
+        
+        # Skip very short lines that are just UI labels (1-2 chars or just &nbsp;)
+        if len(stripped) <= 2 or stripped == '&nbsp;':
+            continue
+        
+        cleaned_lines.append(stripped)
+    
+    return '\n'.join(cleaned_lines)
+
+def detect_finnish_text(text):
+    """Check if text appears to be written in Finnish based on common Finnish words."""
+    finnish_indicators = [
+        'työpaikka', 'työnkuvaus', 'hakuaika', 'kelpoisuus', 'tehtävä',
+        'työsuhde', 'vakituinen', 'palkkaus', 'työssä', 'hae työpaikka',
+        'sijainti', 'arvostamme', 'edellyttää', 'yhteystiedot',
+        'työpaikan tiedot', 'työnantaja', 'kokemus', 'koulutus'
+    ]
+    text_lower = text.lower()
+    matches = sum(1 for word in finnish_indicators if word in text_lower)
+    return matches >= 2
+
+def standardize_date(date_str):
+    """Standardizes various date formats into YYYY-MM-DD."""
+    if not date_str or str(date_str).strip().lower() in ['n/a', 'unknown', 'not specified', 'none', 'null']:
+        return 'N/A'
+    date_str = str(date_str).strip()
+    if 'open' in date_str.lower():
+        return 'Open until filled'
+    
+    import re
+    from datetime import datetime
+
+    if re.match(r'^\d{4}-\d{2}-\d{2}$', date_str):
+        return date_str
+        
+    fi_match = re.match(r'^(\d{1,2})\.(\d{1,2})\.(\d{4})$', date_str)
+    if fi_match:
+        return f"{int(fi_match.group(3)):04d}-{int(fi_match.group(2)):02d}-{int(fi_match.group(1)):02d}"
+        
+    try:
+        if 'T' in date_str:
+            d = datetime.fromisoformat(date_str.split('T')[0])
+            return d.strftime("%Y-%m-%d")
+    except ValueError:
+        pass
+        
+    try:
+        months = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"]
+        months_short = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"]
+        date_lower = date_str.lower().replace(',', '')
+        parts = date_lower.split()
+        if len(parts) >= 3:
+            year_part = [p for p in parts if p.isdigit() and len(p) == 4]
+            day_part = [p for p in parts if p.isdigit() and len(p) <= 2]
+            month_part = [p for p in parts if p in months or p in months_short]
+            if year_part and day_part and month_part:
+                m_str = month_part[0]
+                m_idx = months.index(m_str) + 1 if m_str in months else months_short.index(m_str) + 1
+                y = int(year_part[0])
+                d = int(day_part[0])
+                return f"{y:04d}-{m_idx:02d}-{d:02d}"
+    except Exception:
+        pass
+
+    return date_str
+
+def extract_location_from_text(text):
+    """Extract location from job page text using regex patterns.
+    
+    Looks for Finnish postal codes (NNNNN CityName), 'Sijainti' headers, 
+    and known Finnish city names. Returns the best match or None.
+    """
+    import re
+    
+    lines = text.split('\n')
+    
+    # Pattern 1: Finnish postal code format "NNNNN CityName"
+    postal_pattern = re.compile(r'\b(\d{5})\s+([A-ZÄÖÅ][a-zäöå]+(?:\s+[A-ZÄÖÅ][a-zäöå]+)?)\b')
+    for line in lines:
+        match = postal_pattern.search(line.strip())
+        if match:
+            city = match.group(2).strip()
+            return f"{city}, Finland"
+    
+    # Pattern 2: Line after "Sijainti" header
+    for i, line in enumerate(lines):
+        if line.strip().lower() == 'sijainti' and i + 1 < len(lines):
+            next_line = lines[i + 1].strip()
+            if next_line and len(next_line) > 2:
+                # If it's a postal code line, extract city
+                match = postal_pattern.search(next_line)
+                if match:
+                    return f"{match.group(2).strip()}, Finland"
+                # Otherwise use the line as-is (might be a city name)
+                if len(next_line) < 60:
+                    return f"{next_line}, Finland"
+    
+    # Pattern 3: Known Finnish cities mentioned in text
+    finnish_cities = [
+        'Helsinki', 'Espoo', 'Tampere', 'Vantaa', 'Oulu', 'Turku',
+        'Jyväskylä', 'Lahti', 'Kuopio', 'Pori', 'Kouvola', 'Joensuu',
+        'Lappeenranta', 'Hämeenlinna', 'Vaasa', 'Seinäjoki', 'Rovaniemi',
+        'Mikkeli', 'Kotka', 'Salo', 'Porvoo', 'Kokkola', 'Lohja',
+        'Hyvinkää', 'Järvenpää', 'Rauma', 'Kajaani', 'Kerava', 'Savonlinna',
+        'Nokia', 'Riihimäki', 'Kangasala', 'Lieto', 'Raisio', 'Kirkkonummi',
+        'Ylöjärvi', 'Kaarina', 'Tornio', 'Siilinjärvi', 'Hollola', 'Sipoo',
+        'Iisalmi', 'Naantali', 'Lempäälä', 'Heinola', 'Hausjärvi', 'Kiuruvesi'
+    ]
+    text_words = set(re.findall(r'\b[A-ZÄÖÅa-zäöå]+\b', text))
+    for city in finnish_cities:
+        if city in text_words or city.lower() in {w.lower() for w in text_words}:
+            return f"{city}, Finland"
+    
+    return None
+
+def extract_company_from_text(text, job_title):
+    """Extract company name from job page text using structural patterns.
+    
+    Looks for the company name that typically appears right after or near the job title
+    in Finnish job board pages.
+    """
+    lines = text.split('\n')
+    
+    # Pattern 1: Line immediately after the job title
+    for i, line in enumerate(lines):
+        stripped = line.strip()
+        if stripped and job_title and stripped.lower() == job_title.lower():
+            # The next non-empty line is typically the company name
+            for j in range(i + 1, min(i + 3, len(lines))):
+                next_line = lines[j].strip()
+                if next_line and len(next_line) > 2 and len(next_line) < 80:
+                    # Skip postal codes and known non-company lines
+                    import re
+                    if re.match(r'^\d{5}\s', next_line):
+                        continue
+                    if next_line.lower() in ['vakituinen', 'sijainti', 'työpaikan tiedot', 'työpaikan tyyppi']:
+                        continue
+                    return next_line
+    
+    # Pattern 2: Look for "kunta" (municipality), "Oy" (company), "kaupunki" (city govt) patterns  
+    import re
+    company_patterns = [
+        re.compile(r'\b([A-ZÄÖÅ][a-zäöå]+(?:\s+[A-ZÄÖÅ][a-zäöå]+)*\s+(?:kunta|kaupunki|Oy|Ab|Oyj|ry))\b'),
+        re.compile(r'\b([A-ZÄÖÅ][a-zäöå]+n\s+kaupunki)\b'),  # e.g., "Liedon kaupunki"
+        re.compile(r'\b([A-ZÄÖÅ][a-zäöå]+n\s+kunta)\b'),  # e.g., "Hausjärven kunta"
+    ]
+    for pattern in company_patterns:
+        match = pattern.search(text)
+        if match:
+            return match.group(1).strip()
+    
+    return None
+
 def review_pending_jobs(specific_urls=None):
     """Visit URLs of pending jobs, extract description, and evaluate using a local LLM."""
     if not os.path.exists(JOBS_FILE):
         return
         
-    with open(JOBS_FILE, 'r') as f:
+    with open(JOBS_FILE, 'r', encoding='utf-8') as f:
         jobs = json.load(f)
         
     if specific_urls is not None:
@@ -302,6 +584,7 @@ def review_pending_jobs(specific_urls=None):
         context = browser.new_context(
             user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
         )
+        context.add_init_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
         page = context.new_page()
         
         for job in pending_jobs:
@@ -310,19 +593,41 @@ def review_pending_jobs(specific_urls=None):
             print(f"Reviewing: {job['title']} at {job['url']}")
             try:
                 page.goto(job['url'], timeout=30000)
-                time.sleep(1.5) # Wait for page to render
                 
-                try:
-                    text = page.locator('body').inner_text()
-                except Exception:
-                    text = ""
+                # Smart wait: detect DDoS guard / anti-bot pages and retry
+                text = ""
+                ddos_keywords = ['ddos-guard', 'checking your browser', 'please stand by', 'please allow up to']
+                max_retries = 4
+                for attempt in range(max_retries):
+                    wait_time = 1.5 if attempt == 0 else 3.0
+                    time.sleep(wait_time)
+                    try:
+                        text = page.locator('body').inner_text()
+                    except Exception:
+                        text = ""
+                    
+                    text_lower = text.lower().strip()
+                    # Check if the page is still showing a DDoS guard / anti-bot interstitial
+                    if any(kw in text_lower for kw in ddos_keywords) and len(text) < 1500:
+                        print(f"  [Attempt {attempt + 1}/{max_retries}] Anti-bot page detected, waiting longer...")
+                        continue
+                    else:
+                        break
                 
                 posted_date = "N/A"
                 deadline = "N/A"
 
-                if not text.strip():
-                    match, reason = "error", "Could not extract text from page."
+                # Sanity check: if text is empty or still a DDoS guard page, treat as error
+                text_lower_check = text.lower().strip()
+                is_ddos_page = any(kw in text_lower_check for kw in ddos_keywords) and len(text) < 1500
+                if not text.strip() or is_ddos_page:
+                    match, reason = "error", "Could not extract text from page (anti-bot protection or empty page)."
                 else:
+                    # Clean page text to remove cookie banners, nav, footers
+                    cleaned_text = clean_page_text(text)
+                    is_finnish = detect_finnish_text(cleaned_text)
+                    
+                    today_str = datetime.now().strftime("%Y-%m-%d")
                     prompt = f"""Evaluate the following job posting against the candidate's requirements.
 
 ### Job Requirements:
@@ -335,17 +640,18 @@ Location: {job['location']}
 URL: {job['url']}
 
 ### Job Description:
-{text[:15000]}
+{cleaned_text[:15000]}
 
 ### Instructions:
 Return a JSON object with exactly six keys:
-- "match": a string, either "yes" or "no".
+- "match": a string, either "yes", "maybe", or "no".
 - "reason": a short 1-sentence explanation of your decision.
-- "posted_date": a string, the date the job was posted formatted strictly as YYYY-MM-DD (e.g. '2026-06-12'). If a relative date like '3 days ago' is mentioned, calculate it relative to today's date (2026-06-15). If not found, return 'N/A'.
+- "posted_date": a string, the date the job was posted formatted strictly as YYYY-MM-DD (e.g. '2026-06-12'). If a relative date like '3 days ago' is mentioned, calculate it relative to today's date ({today_str}). If not found, return 'N/A'.
 - "deadline": a string, the deadline for applying formatted strictly as YYYY-MM-DD (e.g. '2026-06-30'). Ignore any times (e.g. if deadline is 15.6.2026 23:59, return '2026-06-15'). If it is open-ended or 'open until filled', return 'Open until filled'. If not found, return 'N/A'.
-- "company": a string, the name of the hiring company (e.g. 'Wolt' or 'N/A' if not found).
-- "location": a string, the city and country of the job (e.g. 'Helsinki, Finland' or 'N/A' if not found).
+- "company": a string, the name of the hiring company as stated in the job posting (e.g. 'Wolt' or 'N/A' if not found). Do NOT use the job board name (e.g. do NOT return 'Indeed' or 'LinkedIn').
+- "location": a string, the city and country of the job as explicitly stated in the posting (e.g. 'Helsinki, Finland' or 'Lieto, Finland'). Extract the ACTUAL city name from the job description text. If the description is in Finnish and no specific location is mentioned, return 'Finland'. Return 'N/A' only if truly unknown.
 
+IMPORTANT: Extract company and location ONLY from information explicitly stated in the job description text. Do NOT guess or hallucinate values.
 Do not include any conversational intro/outro or explanations outside the JSON object.
 """
                     headers = {"Content-Type": "application/json"}
@@ -369,8 +675,8 @@ Do not include any conversational intro/outro or explanations outside the JSON o
                         result = extract_json_from_text(content)
                         match = str(result.get("match", "no")).lower()
                         reason = str(result.get("reason", "No reason provided by LLM."))
-                        posted_date = str(result.get("posted_date", "N/A"))
-                        deadline = str(result.get("deadline", "N/A"))
+                        posted_date = standardize_date(result.get("posted_date", "N/A"))
+                        deadline = standardize_date(result.get("deadline", "N/A"))
                         
                         # Extract company and location from LLM if scraper had placeholder/unknown
                         ai_company = str(result.get("company", "N/A"))
@@ -380,8 +686,22 @@ Do not include any conversational intro/outro or explanations outside the JSON o
                             job['company'] = ai_company
                         if ai_location != "N/A" and (job.get('location') in ["Extract via OpenClaw", "Unknown", "", None]):
                             job['location'] = ai_location
+                        
+                        # Regex-based extraction: more reliable than LLM for structured Finnish data
+                        regex_location = extract_location_from_text(cleaned_text)
+                        regex_company = extract_company_from_text(cleaned_text, job.get('title', ''))
+                        
+                        # Override with regex results if LLM failed or returned placeholder
+                        if regex_location and (job.get('location') in ["Extract via OpenClaw", "Unknown", "", None, "N/A"]):
+                            job['location'] = regex_location
+                        if regex_company and (job.get('company') in ["Extract via OpenClaw", "Unknown", "", None, "N/A"]):
+                            job['company'] = regex_company
+                        
+                        # Final fallback: if location is still unknown but text is Finnish, infer Finland
+                        if job.get('location') in ["Extract via OpenClaw", "Unknown", "", None, "N/A"] and is_finnish:
+                            job['location'] = "Finland"
                             
-                        if match not in ["yes", "no"]:
+                        if match not in ["yes", "maybe", "no"]:
                             match = "no"
                     except (requests.exceptions.RequestException, json.JSONDecodeError, KeyError, IndexError) as llm_err:
                         match = "error"
@@ -437,7 +757,7 @@ Do not include any conversational intro/outro or explanations outside the JSON o
                 job['description_file'] = None
                 
             # Save aggressively after each evaluation
-            with open(JOBS_FILE, 'w') as f:
+            with open(JOBS_FILE, 'w', encoding='utf-8') as f:
                 json.dump(jobs, f, indent=2)
                 
         browser.close()
@@ -537,6 +857,7 @@ def main():
             print(f"\nINFO: Reviewing batch of {len(batch_urls)} pending jobs (Remaining pending: {len(pending_urls)})...")
             review_pending_jobs(specific_urls=set(batch_urls))
             
+            clean_blocked_jobs()
             update_git()
             time.sleep(1)
         return
@@ -551,7 +872,7 @@ def main():
             checkpoint_idx = 0
             if os.path.exists(CHECKPOINT_FILE):
                 try:
-                    with open(CHECKPOINT_FILE, 'r') as f:
+                    with open(CHECKPOINT_FILE, 'r', encoding='utf-8') as f:
                         checkpoint_idx = json.load(f).get("target_index", 0)
                 except Exception:
                     pass
@@ -565,7 +886,7 @@ def main():
             new_checkpoint_idx = 0
             if os.path.exists(CHECKPOINT_FILE):
                 try:
-                    with open(CHECKPOINT_FILE, 'r') as f:
+                    with open(CHECKPOINT_FILE, 'r', encoding='utf-8') as f:
                         new_checkpoint_idx = json.load(f).get("target_index", 0)
                 except Exception:
                     pass
@@ -579,6 +900,7 @@ def main():
                 for i in range(0, new_checkpoint_idx):
                     visited_indices.add(i)
                     
+            clean_blocked_jobs()
             update_git()
             
             if not new_jobs and new_checkpoint_idx == checkpoint_idx:
@@ -637,14 +959,36 @@ def main():
             print("INFO: No jobs found to review in this iteration.")
             
         try:
+            clean_blocked_jobs()
             update_git()
         except Exception as e:
             print(f"An error occurred during Git update: {e}")
         
-        print("\nWaiting 5 seconds before the next run. Press [Enter] to stop...")
+        # Calculate stats for status display
+        total_jobs = 0
+        matching_jobs = 0
+        maybe_jobs = 0
+        if os.path.exists(JOBS_FILE):
+            try:
+                with open(JOBS_FILE, 'r', encoding='utf-8') as f:
+                    jobs_data = json.load(f)
+                    total_jobs = len(jobs_data)
+                    matching_jobs = sum(1 for j in jobs_data if j.get('matches_requirements') == 'yes')
+                    maybe_jobs = sum(1 for j in jobs_data if j.get('matches_requirements') == 'maybe')
+            except Exception as e:
+                print(f"Error reading jobs file for status display: {e}")
+
+        # Determine wait time
+        wait_time = 5
+        if not new_jobs:
+            wait_time = 60
+            print(f"\nINFO: No new unseen jobs found in this iteration. Increasing wait time to {wait_time} seconds.")
         
-        # This will wait for up to 5 seconds.
-        if stop_event.wait(timeout=5):
+        print(f"\nStats - Total jobs listed: {total_jobs} | Yes Match: {matching_jobs} | Maybe Match: {maybe_jobs}")
+        print(f"Waiting {wait_time} seconds before the next run. Press [Enter] to stop...")
+        
+        # This will wait for up to wait_time seconds.
+        if stop_event.wait(timeout=wait_time):
             print("Stopping the scraper...")
             break
 
