@@ -264,11 +264,11 @@
         }
 
         .active-filters-summary {
-            font-size: 0.65rem;
-            color: var(--accent-color);
-            font-weight: 500;
+            font-size: 0.7rem;
+            color: #22d3ee;
+            font-weight: 600;
             line-height: 1.2;
-            margin-bottom: 2px;
+            margin-top: 4px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -816,18 +816,18 @@
             table.innerHTML = `
                 <thead>
                     <tr>
-                        <th class="col-id resizable-th"><div class="resizable-header" onclick="sortTable(0)"><div class="active-filters-summary" id="active-filters-0"></div># ↕</div></th>
-                        <th class="col-job-id resizable-th"><div class="resizable-header" onclick="sortTable(1)"><div class="active-filters-summary" id="active-filters-1"></div>Job ID ↕</div></th>
-                        <th class="col-title resizable-th"><div class="resizable-header" onclick="sortTable(2)"><div class="active-filters-summary" id="active-filters-2"></div>Job Title ↕</div></th>
-                        <th class="col-company resizable-th"><div class="resizable-header" onclick="sortTable(3)"><div class="active-filters-summary" id="active-filters-3"></div>Company ↕</div></th>
-                        <th class="col-location resizable-th"><div class="resizable-header" onclick="sortTable(4)"><div class="active-filters-summary" id="active-filters-4"></div>Location ↕</div></th>
-                        <th class="col-source resizable-th"><div class="resizable-header" onclick="sortTable(5)"><div class="active-filters-summary" id="active-filters-5"></div>Source ↕</div></th>
-                        <th class="col-posted resizable-th"><div class="resizable-header" onclick="sortTable(6)"><div class="active-filters-summary" id="active-filters-6"></div>Posted ↕</div></th>
-                        <th class="col-deadline resizable-th"><div class="resizable-header" onclick="sortTable(7)"><div class="active-filters-summary" id="active-filters-7"></div>Deadline ↕</div></th>
-                        <th class="col-sync resizable-th"><div class="resizable-header" onclick="sortTable(8)"><div class="active-filters-summary" id="active-filters-8"></div>Sync ↕</div></th>
-                        <th class="col-matches resizable-th"><div class="resizable-header" onclick="sortTable(9)"><div class="active-filters-summary" id="active-filters-9"></div>Matches ↕</div></th>
-                        <th class="col-reason resizable-th"><div class="resizable-header" onclick="sortTable(10)"><div class="active-filters-summary" id="active-filters-10"></div>Reason ↕</div></th>
-                        <th class="col-applied resizable-th"><div class="resizable-header" onclick="sortTable(11)"><div class="active-filters-summary" id="active-filters-11"></div>Applied ↕</div></th>
+                        <th class="col-id resizable-th"><div class="resizable-header" onclick="sortTable(0)"># ↕<div class="active-filters-summary" id="active-filters-0"></div></div></th>
+                        <th class="col-job-id resizable-th"><div class="resizable-header" onclick="sortTable(1)">Job ID ↕<div class="active-filters-summary" id="active-filters-1"></div></div></th>
+                        <th class="col-title resizable-th"><div class="resizable-header" onclick="sortTable(2)">Job Title ↕<div class="active-filters-summary" id="active-filters-2"></div></div></th>
+                        <th class="col-company resizable-th"><div class="resizable-header" onclick="sortTable(3)">Company ↕<div class="active-filters-summary" id="active-filters-3"></div></div></th>
+                        <th class="col-location resizable-th"><div class="resizable-header" onclick="sortTable(4)">Location ↕<div class="active-filters-summary" id="active-filters-4"></div></div></th>
+                        <th class="col-source resizable-th"><div class="resizable-header" onclick="sortTable(5)">Source ↕<div class="active-filters-summary" id="active-filters-5"></div></div></th>
+                        <th class="col-posted resizable-th"><div class="resizable-header" onclick="sortTable(6)">Posted ↕<div class="active-filters-summary" id="active-filters-6"></div></div></th>
+                        <th class="col-deadline resizable-th"><div class="resizable-header" onclick="sortTable(7)">Deadline ↕<div class="active-filters-summary" id="active-filters-7"></div></div></th>
+                        <th class="col-sync resizable-th"><div class="resizable-header" onclick="sortTable(8)">Sync ↕<div class="active-filters-summary" id="active-filters-8"></div></div></th>
+                        <th class="col-matches resizable-th"><div class="resizable-header" onclick="sortTable(9)">Matches ↕<div class="active-filters-summary" id="active-filters-9"></div></div></th>
+                        <th class="col-reason resizable-th"><div class="resizable-header" onclick="sortTable(10)">Reason ↕<div class="active-filters-summary" id="active-filters-10"></div></div></th>
+                        <th class="col-applied resizable-th"><div class="resizable-header" onclick="sortTable(11)">Applied ↕<div class="active-filters-summary" id="active-filters-11"></div></div></th>
                     </tr>
                     <tr class="filter-row">
                         <th></th>
@@ -953,6 +953,10 @@
 
         window.resetAllFilters = function() {
             document.querySelectorAll('.ms-dropdown input[type="checkbox"]').forEach(cb => cb.checked = false);
+            const postedInput = document.getElementById('posted-days-filter');
+            const deadlineInput = document.getElementById('deadline-days-filter');
+            if(postedInput) postedInput.value = '';
+            if(deadlineInput) deadlineInput.value = '';
             filterTable();
         };
 
@@ -975,11 +979,27 @@
                 const container = document.getElementById(`filter-col-${i}`);
                 if (!container) continue;
                 
+                let customDateInput = '';
+                if (i === 6) {
+                    customDateInput = `
+                        <div style="padding: 4px 8px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                            <input type="number" id="posted-days-filter" placeholder="Within X days..." style="width: 100%; padding: 4px; font-size: 0.75rem; background: rgba(0,0,0,0.3); color: white; border: 1px solid var(--border-color); border-radius: 4px;" onkeyup="filterTable()" onchange="filterTable()" min="0">
+                        </div>
+                    `;
+                } else if (i === 7) {
+                    customDateInput = `
+                        <div style="padding: 4px 8px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                            <input type="number" id="deadline-days-filter" placeholder="Next X days..." style="width: 100%; padding: 4px; font-size: 0.75rem; background: rgba(0,0,0,0.3); color: white; border: 1px solid var(--border-color); border-radius: 4px;" onkeyup="filterTable()" onchange="filterTable()" min="0">
+                        </div>
+                    `;
+                }
+                
                 let optionsHtml = `
                     <div style="padding: 4px 8px; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; gap: 8px; margin-bottom: 4px;">
                         <button type="button" onclick="window.toggleAllFilters(${i}, true, event)" style="background:none; border:none; color:#a78bfa; font-size:0.75rem; cursor:pointer; padding:0;">Select All</button>
                         <button type="button" onclick="window.toggleAllFilters(${i}, false, event)" style="background:none; border:none; color:var(--text-secondary); font-size:0.75rem; cursor:pointer; padding:0;">Clear</button>
                     </div>
+                    ${customDateInput}
                 `;
                 sortedVals.forEach(val => {
                     optionsHtml += `<label class="ms-option"><input type="checkbox" value="${val.replace(/"/g, '&quot;')}"> ${val}</label>`;
@@ -1046,24 +1066,37 @@
             if (!tbody) return;
             const rows = Array.from(tbody.querySelectorAll('tr'));
             
+            const postedDaysInput = document.getElementById('posted-days-filter');
+            const deadlineDaysInput = document.getElementById('deadline-days-filter');
+            const postedLimit = (postedDaysInput && postedDaysInput.value) ? parseInt(postedDaysInput.value) : null;
+            const deadlineLimit = (deadlineDaysInput && deadlineDaysInput.value) ? parseInt(deadlineDaysInput.value) : null;
+
+            const today = new Date();
+            today.setHours(0,0,0,0);
+            
             const filters = {};
             for (let i = 1; i <= 11; i++) {
                 const container = document.getElementById(`filter-col-${i}`);
                 if (!container) continue;
                 const checked = Array.from(container.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value);
                 
+                let summaryTexts = [...checked];
+                if (i === 6 && postedLimit !== null && !isNaN(postedLimit)) summaryTexts.unshift(`< ${postedLimit}d`);
+                if (i === 7 && deadlineLimit !== null && !isNaN(deadlineLimit)) summaryTexts.unshift(`< ${deadlineLimit}d`);
+                
                 const summaryDiv = document.getElementById(`active-filters-${i}`);
                 if (summaryDiv) {
-                    if (checked.length > 0) {
-                        summaryDiv.innerText = checked.length <= 2 ? checked.join(', ') : `${checked[0]}, ${checked[1]} +${checked.length - 2}`;
-                        summaryDiv.title = checked.join(', ');
+                    if (summaryTexts.length > 0) {
+                        let text = summaryTexts.length <= 2 ? summaryTexts.join(', ') : `${summaryTexts[0]}, ${summaryTexts[1]} +${summaryTexts.length - 2}`;
+                        summaryDiv.innerText = `[${text}]`;
+                        summaryDiv.title = summaryTexts.join(', ');
                     } else {
                         summaryDiv.innerText = '';
                         summaryDiv.title = '';
                     }
                 }
                 
-                if (checked.length > 0) {
+                if (checked.length > 0 || (i === 6 && postedLimit !== null && !isNaN(postedLimit)) || (i === 7 && deadlineLimit !== null && !isNaN(deadlineLimit))) {
                     filters[i] = checked;
                 }
             }
@@ -1078,7 +1111,36 @@
                         const td = row.getElementsByTagName("td")[i];
                         if (td) {
                             const val = td.hasAttribute("data-value") ? td.getAttribute("data-value") : td.textContent.trim();
-                            if (!filters[i].includes(val)) {
+                            
+                            let passesCheckbox = filters[i].length === 0 || filters[i].includes(val);
+                            
+                            if (i === 6 && postedLimit !== null && !isNaN(postedLimit)) {
+                                let passesDate = false;
+                                if (val && val !== 'N/A' && val !== 'Open until filled' && val !== 'Unknown') {
+                                    const d = new Date(val);
+                                    if (!isNaN(d.getTime())) {
+                                        const diffTime = today - d;
+                                        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                                        if (diffDays >= 0 && diffDays <= postedLimit) passesDate = true;
+                                    }
+                                }
+                                passesCheckbox = filters[i].length === 0 ? passesDate : (passesCheckbox || passesDate);
+                            }
+                            
+                            if (i === 7 && deadlineLimit !== null && !isNaN(deadlineLimit)) {
+                                let passesDate = false;
+                                if (val && val !== 'N/A' && val !== 'Open until filled' && val !== 'Unknown') {
+                                    const d = new Date(val);
+                                    if (!isNaN(d.getTime())) {
+                                        const diffTime = d - today;
+                                        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                                        if (diffDays >= 0 && diffDays <= deadlineLimit) passesDate = true;
+                                    }
+                                }
+                                passesCheckbox = filters[i].length === 0 ? passesDate : (passesCheckbox || passesDate);
+                            }
+                            
+                            if (!passesCheckbox) {
                                 show = false;
                                 break;
                             }
