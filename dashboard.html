@@ -311,9 +311,16 @@
         }
 
         .status-btn.status-no {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: var(--border-color);
+            background-color: rgba(255, 255, 255, 0.05);
             color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+
+        .status-reject {
+            background-color: var(--color-no-bg);
+            color: var(--color-no);
+            border: 1px solid var(--color-no);
+            box-shadow: 0 0 10px rgba(239, 68, 68, 0.2);
         }
 
         .status-btn.status-no:hover {
@@ -744,7 +751,7 @@
                     <td class="col-matches" data-value="${matchVal}"><span class="status-pill ${matchVal}">${matchVal}</span></td>
                     <td class="col-reason"><em>${job.reason || ''}</em></td>
                     <td class="col-applied" data-value="${appliedStatus}">
-                        <button class="status-btn ${appliedStatus === 'yes' ? 'status-yes' : 'status-no'}" onclick="toggleApplied(this, '${job.url}')">${appliedStatus}</button>
+                        <button class="status-btn ${appliedStatus === 'yes' ? 'status-yes' : (appliedStatus === 'Reject' ? 'status-reject' : 'status-no')}" onclick="toggleApplied(this, '${job.url}')">${appliedStatus}</button>
                     </td>
                     <td class="col-link">
                         <a href="${job.url || '#'}" target="_blank" class="apply-btn" style="margin-bottom: 0.25rem; display: block;">View</a>
@@ -879,16 +886,82 @@
             }
         }
 
-        function toggleApplied(btn, jobUrl) {
-            const currentStatus = btn.textContent.trim();
-            const newStatus = currentStatus === 'no' ? 'yes' : 'no';
+        async function toggleApplied(btn, url) {
+            const current = btn.textContent.trim();
+            let newState;
+            if (current === 'no') newState = 'yes';
+            else if (current === 'yes') newState = 'Reject';
+            else newState = 'no';
             
-            btn.textContent = newStatus;
-            btn.className = 'status-btn ' + (newStatus === 'yes' ? 'status-yes' : 'status-no');
-            btn.parentElement.setAttribute('data-value', newStatus);
+            if (newState === 'Reject') {
+                const reason = prompt("Why are you rejecting this job? (This will update the AI's requirements. Max 100 words)");
+                if (reason === null) return; // cancelled
+                if (reason.split(' ').length > 100) {
+                    alert("Reason must be less than 100 words.");
+                    return;
+                }
+                if (reason.trim() === '') {
+                    alert("Reason cannot be empty.");
+                    return;
+                }
+                
+                // Save to Firestore
+                if (window.firebaseDb) {
+                    try {
+                        btn.textContent = 'Saving...';
+                        btn.disabled = true;
+                        await window.addDoc(window.collection(window.firebaseDb, "rejected_jobs"), {
+                            url: url,
+                            reason: reason,
+                            timestamp: window.serverTimestamp()
+                        });
+                        alert("Rejection reason saved! The scraper will automatically update its requirements shortly.");
+                        btn.disabled = false;
+                    } catch (e) {
+                        console.error(e);
+                        alert("Failed to save to cloud database. Has Firestore been initialized?");
+                        btn.textContent = current;
+                        btn.disabled = false;
+                        return;
+                    }
+                } else {
+                    alert("Firebase not initialized yet.");
+                    return;
+                }
+            }
+
+            localStorage.setItem('applied_' + url, newState);
+            btn.textContent = newState;
             
-            localStorage.setItem('applied_' + jobUrl, newStatus);
+            btn.className = 'status-btn';
+            if (newState === 'yes') btn.classList.add('status-yes');
+            else if (newState === 'no') btn.classList.add('status-no');
+            else btn.classList.add('status-reject');
+            
+            const td = btn.closest('td');
+            td.setAttribute('data-value', newState);
         }
     </script>
 </body>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  const firebaseConfig = {
+      projectId: "manju-jobs-dashboard",
+      appId: "1:429610244337:web:6117ee37d384af03b33150",
+      storageBucket: "manju-jobs-dashboard.firebasestorage.app",
+      apiKey: "AIzaSyAWBGcQjYZ0oGlxkGMl5Rrm5eHxOZBRqa4",
+      authDomain: "manju-jobs-dashboard.firebaseapp.com",
+      messagingSenderId: "429610244337",
+      measurementId: "G-EQ4XK63BVW"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  window.firebaseDb = db;
+  window.addDoc = addDoc;
+  window.collection = collection;
+  window.serverTimestamp = serverTimestamp;
+</script>
 </html>
