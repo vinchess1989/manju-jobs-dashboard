@@ -609,6 +609,25 @@
 
             const tbody = table.querySelector('tbody');
             
+            // Helper function to standardize date format
+            function formatDate(dateStr) {
+                if (!dateStr || dateStr.toLowerCase() === 'n/a' || dateStr.toLowerCase() === 'unknown' || dateStr.toLowerCase() === 'not specified') return 'N/A';
+                try {
+                    const d = new Date(dateStr);
+                    if (isNaN(d.getTime())) {
+                        const fiMatch = dateStr.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})/);
+                        if (fiMatch) {
+                            const fd = new Date(`${fiMatch[3]}-${fiMatch[2].padStart(2, '0')}-${fiMatch[1].padStart(2, '0')}`);
+                            if (!isNaN(fd.getTime())) return fd.toISOString().split('T')[0];
+                        }
+                        return dateStr;
+                    }
+                    return d.toISOString().split('T')[0];
+                } catch(e) {
+                    return dateStr;
+                }
+            }
+
             // Helper function to extract hostname/source fallback
             function getSourceFromUrl(url) {
                 if (!url) return 'Unknown';
@@ -636,8 +655,8 @@
                 
                 const visitedVal = job.visited || 'no';
                 const matchVal = job.matches_requirements || 'pending';
-                const postedVal = job.posted_date || 'N/A';
-                const deadlineVal = job.deadline || 'N/A';
+                const postedVal = formatDate(job.posted_date);
+                const deadlineVal = formatDate(job.deadline);
                 const sourceVal = job.source || getSourceFromUrl(job.url) || 'Unknown';
                 const jobIdVal = job.id || 'N/A';
                 
