@@ -960,6 +960,7 @@
             });
             
             buildMultiSelectFilters();
+            filterTable();
         }
 
         window.toggleAllFilters = function(colIndex, checkState, event) {
@@ -1122,6 +1123,7 @@
             }
             
             let visibleCount = 0;
+            let counts = { yes: 0, maybe: 0, no: 0, pending: 0, rereview: 0 };
             
             rows.forEach(row => {
                 let show = true;
@@ -1169,12 +1171,36 @@
                 }
                 
                 row.style.display = show ? "" : "none";
-                if (show) visibleCount++;
+                if (show) {
+                    visibleCount++;
+                    const tdMatches = row.getElementsByTagName("td")[9];
+                    const tdSync = row.getElementsByTagName("td")[8];
+                    if (tdMatches) {
+                        const mVal = tdMatches.getAttribute("data-value");
+                        if (mVal === 'yes') counts.yes++;
+                        else if (mVal === 'maybe') counts.maybe++;
+                        else if (mVal === 'no') counts.no++;
+                        else if (mVal === 'pending') counts.pending++;
+                    }
+                    if (tdSync) {
+                        if (tdSync.getAttribute("data-value") === 'Needs Re-review') counts.rereview++;
+                    }
+                }
             });
             
             const counter = document.getElementById('listings-counter');
             if (counter) {
-                counter.textContent = visibleCount + ' / ' + allJobs.length;
+                let text = `<strong>${visibleCount}</strong>`;
+                if (visibleCount !== allJobs.length) {
+                    text += ` (filtered from ${allJobs.length})`;
+                }
+                text += ` <span style="margin: 0 10px; opacity: 0.3;">|</span> `;
+                text += `<span style="color: var(--color-yes); font-weight: 600;">Yes: ${counts.yes}</span> &nbsp;&nbsp; `;
+                text += `<span style="color: var(--color-maybe); font-weight: 600;">Maybe: ${counts.maybe}</span> &nbsp;&nbsp; `;
+                text += `<span style="color: var(--color-no); font-weight: 600;">No: ${counts.no}</span> &nbsp;&nbsp; `;
+                text += `<span style="color: var(--color-pending); font-weight: 600;">Pending: ${counts.pending}</span> &nbsp;&nbsp; `;
+                text += `<span style="color: #a78bfa; font-weight: 600;">Re-review: ${counts.rereview}</span>`;
+                counter.innerHTML = text;
             }
         }
 
