@@ -8,6 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <!-- Add FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --bg-primary: #0a0d16;
@@ -256,6 +258,7 @@
         .col-posted { min-width: 6.5rem; }
         .col-deadline { min-width: 6.5rem; }
         .col-visited { width: 5.5rem; text-align: center; }
+        .col-sync { width: 6.5rem; text-align: center; }
         .col-matches { width: 7.5rem; text-align: center; }
         .col-reason { min-width: 15rem; font-style: italic; color: #d1d5db; font-size: 0.85rem; line-height: 1.45; }
         .col-applied { width: 6.5rem; text-align: center; }
@@ -774,9 +777,10 @@
                         <th class="col-posted" onclick="sortTable(6)">Posted ↕</th>
                         <th class="col-deadline" onclick="sortTable(7)">Deadline ↕</th>
                         <th class="col-visited" onclick="sortTable(8)">Visited ↕</th>
-                        <th class="col-matches" onclick="sortTable(9)">Matches ↕</th>
-                        <th class="col-reason" onclick="sortTable(10)">Reason ↕</th>
-                        <th class="col-applied" onclick="sortTable(11)">Applied ↕</th>
+                        <th class="col-sync" onclick="sortTable(9)">Sync ↕</th>
+                        <th class="col-matches" onclick="sortTable(10)">Matches ↕</th>
+                        <th class="col-reason" onclick="sortTable(11)">Reason ↕</th>
+                        <th class="col-applied" onclick="sortTable(12)">Applied ↕</th>
                         <th class="col-link">Link</th>
                     </tr>
                     <tr class="filter-row">
@@ -792,6 +796,7 @@
                         <th><div id="filter-col-9"></div></th>
                         <th><div id="filter-col-10"></div></th>
                         <th><div id="filter-col-11"></div></th>
+                        <th><div id="filter-col-12"></div></th>
                         <th></th>
                     </tr>
                 </thead>
@@ -857,6 +862,7 @@
                 const postedVal = formatDate(job.posted_date);
                 const deadlineVal = formatDate(job.deadline);
                 const sourceVal = job.source || getSourceFromUrl(job.url) || 'Unknown';
+                const syncVal = job.needs_re_review ? 'Queued' : 'Up to Date';
                 const jobIdVal = job.id || 'N/A';
                 
                 tr.innerHTML = `
@@ -869,6 +875,7 @@
                     <td class="col-posted">${postedVal}</td>
                     <td class="col-deadline">${deadlineVal}</td>
                     <td class="col-visited" data-value="${visitedVal}"><span class="status-pill ${visitedVal}">${visitedVal}</span></td>
+                    <td class="col-sync" data-value="${syncVal}"><span style="font-size: 0.85em; color: ${job.needs_re_review ? 'var(--text-secondary)' : 'var(--color-yes)'};"><i class="fas ${job.needs_re_review ? 'fa-hourglass-half' : 'fa-check-circle'}"></i> ${syncVal}</span></td>
                     <td class="col-matches" data-value="${matchVal}">
                         <select class="status-pill ${matchVal}" onchange="handleMatchChange(this, '${job.url}', '${matchVal}')" title="Train the AI by changing this status">
                             <option value="yes" ${matchVal === 'yes' ? 'selected' : ''}>yes</option>
@@ -894,9 +901,9 @@
         function buildMultiSelectFilters() {
             const tbody = document.querySelector('table tbody');
             const rows = Array.from(tbody.querySelectorAll('tr'));
-            const colNames = ['ID', 'Title', 'Company', 'Location', 'Source', 'Posted', 'Deadline', 'Visited', 'Matches', 'Reason', 'Applied'];
+            const colNames = ['ID', 'Title', 'Company', 'Location', 'Source', 'Posted', 'Deadline', 'Visited', 'Sync', 'Matches', 'Reason', 'Applied'];
             
-            for (let i = 1; i <= 11; i++) {
+            for (let i = 1; i <= 12; i++) {
                 const uniqueValues = new Set();
                 rows.forEach(row => {
                     const td = row.getElementsByTagName("td")[i];
