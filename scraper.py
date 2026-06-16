@@ -1185,8 +1185,14 @@ def main():
                 print(f"An error occurred during Git update: {e}")
                 
             print_job_summary()
-            print(f"Waiting 5 seconds before the next review batch. Press [Enter] to stop...")
-            if stop_event.wait(timeout=5):
+            print("Waiting 5 seconds before moving to scrape new jobs. Press [Enter] or Ctrl+C to stop...")
+            
+            slept = 0
+            while slept < 5 and not stop_event.is_set():
+                time.sleep(0.5)
+                slept += 0.5
+                
+            if stop_event.is_set():
                 print("Stopping the scraper...")
                 break
             continue
@@ -1226,12 +1232,21 @@ def main():
             wait_time = 600
             print(f"\nINFO: No new unseen jobs found in this iteration. Increasing wait time to {wait_time} seconds (10 mins).")
         
-        print(f"Waiting {wait_time} seconds before the next run. Press [Enter] to stop...")
+        print(f"Waiting {wait_time} seconds before the next run. Press [Enter] or Ctrl+C to stop...")
         
-        # This will wait for up to wait_time seconds.
-        if stop_event.wait(timeout=wait_time):
+        # This loop waits in small increments so KeyboardInterrupt can be caught immediately on Windows
+        slept = 0
+        while slept < wait_time and not stop_event.is_set():
+            time.sleep(0.5)
+            slept += 0.5
+            
+        if stop_event.is_set():
             print("Stopping the scraper...")
             break
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("\nINFO: Scraper stopped by user (Ctrl+C).")
+        stop_event.set()
