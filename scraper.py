@@ -736,7 +736,14 @@ def review_pending_jobs(specific_urls=None):
                     is_finnish = detect_finnish_text(cleaned_text)
                     
                     today_str = datetime.now().strftime("%Y-%m-%d")
-                    prompt = f"""Evaluate the following job posting against the candidate's requirements.
+                    prompt = f"""Please act as an expert job reviewer. Read the following job description and evaluate it against the requirements.
+        
+        Important Date Vocabulary for Finnish Jobs:
+        - "Julkaistu" means Posted Date.
+        - "Haku päättyy", "Hakuaika päättyy", or "Viimeinen hakupäivä" means Deadline Date.
+        Do NOT confuse the posted date with the deadline date!
+
+        Respond ONLY with a valid JSON object matching this exact structure:
 
 ### Job Requirements:
 {requirements_text}
