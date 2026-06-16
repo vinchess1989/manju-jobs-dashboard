@@ -382,9 +382,7 @@ def check_requirements_update():
             with open(JOBS_FILE, 'r', encoding='utf-8') as f:
                 jobs = json.load(f)
             for job in jobs:
-                job['visited'] = 'no'
-                job['matches_requirements'] = 'pending'
-                job['reason'] = ''
+                job['needs_re_review'] = True
             with open(JOBS_FILE, 'w', encoding='utf-8') as f:
                 json.dump(jobs, f, indent=2)
         
@@ -661,9 +659,9 @@ def review_pending_jobs(specific_urls=None):
         jobs = json.load(f)
         
     if specific_urls is not None:
-        pending_jobs = [j for j in jobs if j.get('matches_requirements') == 'pending' and j['url'] in specific_urls]
+        pending_jobs = [j for j in jobs if (j.get('matches_requirements') == 'pending' or j.get('needs_re_review') == True) and j['url'] in specific_urls]
     else:
-        pending_jobs = [j for j in jobs if j.get('matches_requirements') == 'pending']
+        pending_jobs = [j for j in jobs if j.get('matches_requirements') == 'pending' or j.get('needs_re_review') == True]
         
     if not pending_jobs:
         return
@@ -837,6 +835,7 @@ Do not include any conversational intro/outro or explanations outside the JSON o
                 job['reason'] = reason
                 job['posted_date'] = posted_date
                 job['deadline'] = deadline
+                job.pop('needs_re_review', None)
                 
                 # If a posting matches requirements, save job description text to a file inside job_descriptions/
                 if match == 'yes':
