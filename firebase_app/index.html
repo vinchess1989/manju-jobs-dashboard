@@ -304,11 +304,31 @@
         .status-pill.yes {
             background: var(--color-yes-bg);
             color: var(--color-yes);
+            border: 1px solid rgba(16, 185, 129, 0.2);
         }
 
-        .status-pill.no {
-            background-color: var(--color-no-bg);
-            color: var(--color-no);
+        .status-pill.no, .status-pill.Reject {
+            background: rgba(239, 68, 68, 0.15);
+            color: #fca5a5;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .status-pill.maybe {
+            background: rgba(245, 158, 11, 0.15);
+            color: #fcd34d;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .status-pill.pending, .status-pill.unread {
+            background: rgba(99, 102, 241, 0.15);
+            color: #a5b4fc;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+        }
+
+        select.status-pill option {
+            background-color: var(--bg-card);
+            color: var(--text-primary);
+            font-weight: 500;
         }
         
         select.status-pill {
@@ -893,8 +913,10 @@
                     <td class="col-id">${index + 1}</td>
                     <td class="col-job-id">${jobIdVal}</td>
                     <td class="col-title" data-value="${job.title || 'Unknown Title'}">
-                        <a href="${job.url}" target="_blank" style="color: var(--text-primary); text-decoration: underline; text-decoration-color: rgba(255,255,255,0.3); text-underline-offset: 3px;">${job.title || 'Unknown Title'}</a>
-                        ${job.description_file ? `<a href="job_descriptions/${job.description_file}" target="_blank" style="font-size: 0.7em; vertical-align: super; color: var(--color-yes); margin-left: 4px; text-decoration: none;" title="View extracted job description">[TXT]</a>` : ''}
+                        <div style="display: flex; justify-content: space-between; align-items: center; gap: 15px;">
+                            <a href="${job.url}" target="_blank" style="color: var(--text-primary); text-decoration: underline; text-decoration-color: rgba(255,255,255,0.3); text-underline-offset: 3px;">${job.title || 'Unknown Title'}</a>
+                            ${job.description_file ? `<a href="${job.description_file.startsWith('job_descriptions/') ? job.description_file : `job_descriptions/${job.description_file}`}" target="_blank" style="font-size: 0.7em; color: var(--color-yes); text-decoration: none; border: 1px solid rgba(16,185,129,0.3); padding: 2px 6px; border-radius: 4px; white-space: nowrap;" title="View extracted job description">[TXT]</a>` : ''}
+                        </div>
                     </td>
                     <td class="col-company">${job.company || 'Unknown Company'}</td>
                     <td class="col-location">📍 ${job.location || 'Unknown Location'}</td>
@@ -1152,10 +1174,15 @@
                 select.value = originalValue;
                 return;
             }
-            if (reason.split(' ').length > 100 || reason.trim() === '') { 
-                alert("Invalid reason. Reason must be 1-100 words."); 
+            if (reason.split(' ').length > 100) { 
+                alert("Invalid reason. Reason must be less than 100 words."); 
                 select.value = originalValue;
                 return; 
+            }
+            
+            const isBlank = reason.trim() === '';
+            if (isBlank) {
+                alert("Status updated without a feedback reason. The AI matching rules will not be updated.");
             }
 
             if (window.firebaseDb) {
@@ -1169,7 +1196,10 @@
                         status: "unread",
                         timestamp: window.serverTimestamp()
                     });
-                    alert("Feedback saved! The AI requirements have been updated.");
+                    
+                    if (!isBlank) {
+                        alert("Feedback saved! The AI requirements have been updated.");
+                    }
                     
                     select.disabled = false;
                     select.className = 'status-pill ' + newState;
