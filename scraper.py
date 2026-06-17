@@ -573,13 +573,21 @@ def extract_location_from_text(text):
     
     lines = text.split('\n')
     
+    # Oulu region municipalities for standardization
+    oulu_region = {'Oulu', 'Kempele', 'Liminka', 'Haukipudas', 'Oulunsalo', 'Kiiminki', 'Tyrnävä', 'Muhos', 'Lumijoki', 'Hailuoto'}
+    
+    def format_city(c):
+        if c in oulu_region:
+            return "Oulu Region, Finland"
+        return f"{c}, Finland"
+
     # Pattern 1: Finnish postal code format "NNNNN CityName"
     postal_pattern = re.compile(r'\b(\d{5})\s+([A-ZÄÖÅ][a-zäöå]+(?:\s+[A-ZÄÖÅ][a-zäöå]+)?)\b')
     for line in lines:
         match = postal_pattern.search(line.strip())
         if match:
             city = match.group(2).strip()
-            return f"{city}, Finland"
+            return format_city(city)
     
     # Pattern 2: Line after "Sijainti" header
     for i, line in enumerate(lines):
@@ -589,10 +597,10 @@ def extract_location_from_text(text):
                 # If it's a postal code line, extract city
                 match = postal_pattern.search(next_line)
                 if match:
-                    return f"{match.group(2).strip()}, Finland"
+                    return format_city(match.group(2).strip())
                 # Otherwise use the line as-is (might be a city name)
                 if len(next_line) < 60:
-                    return f"{next_line}, Finland"
+                    return format_city(next_line)
     
     # Pattern 3: Known Finnish cities mentioned in text
     finnish_cities = [
@@ -608,7 +616,7 @@ def extract_location_from_text(text):
     text_words = set(re.findall(r'\b[A-ZÄÖÅa-zäöå]+\b', text))
     for city in finnish_cities:
         if city in text_words or city.lower() in {w.lower() for w in text_words}:
-            return f"{city}, Finland"
+            return format_city(city)
     
     return None
 
@@ -764,7 +772,7 @@ Return a JSON object with exactly six keys:
 - "posted_date": a string, the date the job was posted formatted strictly as YYYY-MM-DD (e.g. '2026-06-12'). If a relative date like '3 days ago' is mentioned, calculate it relative to today's date ({today_str}). If not found, return 'N/A'.
 - "deadline": a string, the deadline for applying formatted strictly as YYYY-MM-DD (e.g. '2026-06-30'). Ignore any times (e.g. if deadline is 15.6.2026 23:59, return '2026-06-15'). If it is open-ended or 'open until filled', return 'Open until filled'. If not found, return 'N/A'.
 - "company": a string, the name of the hiring company as stated in the job posting (e.g. 'Wolt' or 'N/A' if not found). Do NOT use the job board name (e.g. do NOT return 'Indeed' or 'LinkedIn').
-- "location": a string, the city and country of the job as explicitly stated in the posting (e.g. 'Helsinki, Finland' or 'Lieto, Finland'). Extract the ACTUAL city name from the job description text. If the description is in Finnish and no specific location is mentioned, return 'Finland'. Return 'N/A' only if truly unknown.
+- "location": a string, the city and country of the job. If the job is anywhere in Finland, append ', Finland' to the city (e.g. 'Helsinki, Finland'). If the job is in Oulu or its neighboring municipalities (e.g., Kempele, Liminka, Haukipudas, Oulunsalo, Kiiminki), ALWAYS return EXACTLY 'Oulu Region, Finland'. If the description is in Finnish and no specific location is mentioned, return 'Finland'. Return 'N/A' only if truly unknown.
 
 IMPORTANT: Extract company and location ONLY from information explicitly stated in the job description text. Do NOT guess or hallucinate values.
 Do not include any conversational intro/outro or explanations outside the JSON object.
