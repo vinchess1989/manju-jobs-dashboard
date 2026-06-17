@@ -5,7 +5,7 @@ import subprocess
 import threading
 import hashlib
 import argparse
-from datetime import datetime
+from datetime import datetime, timedelta
 from urllib.parse import urljoin, quote
 from playwright.sync_api import sync_playwright
 from bs4 import BeautifulSoup
@@ -67,6 +67,20 @@ def clean_blocked_jobs():
             if "us residency" in reason or "requires us" in reason or "united states residency" in reason:
                 is_blocked = True
                 deletion_reason = "Requires US residency"
+                
+        # Check expired deadline (> 2 days passed) and not reviewed by user
+        if not is_blocked and job.get('user_review') != 'done':
+            deadline_str = job.get('deadline', '')
+            if deadline_str:
+                import re
+                if re.match(r'^\d{4}-\d{2}-\d{2}$', deadline_str):
+                    try:
+                        deadline_date = datetime.strptime(deadline_str, "%Y-%m-%d")
+                        if datetime.now() > deadline_date + timedelta(days=2):
+                            is_blocked = True
+                            deletion_reason = f"Deadline ({deadline_str}) passed by more than 2 days and unreviewed"
+                    except ValueError:
+                        pass
 
         if is_blocked:
             job['deletion_reason'] = deletion_reason
@@ -78,7 +92,7 @@ def clean_blocked_jobs():
             cleaned_jobs.append(job)
 
     if moved_count > 0:
-        print(f"INFO: Moved {moved_count} blocked jobs (senior/director/manager/johtaja/päällikkö/US residency) to deleted.json.")
+        print(f"INFO: Moved {moved_count} blocked jobs (senior/director/manager/expired/US residency) to deleted.json.")
         try:
             with open(JOBS_FILE, 'w', encoding='utf-8') as f:
                 json.dump(cleaned_jobs, f, indent=2)
