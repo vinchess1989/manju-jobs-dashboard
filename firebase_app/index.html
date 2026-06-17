@@ -700,7 +700,7 @@
         const db=firebase.firestore();
 
         // SECURITY GATE (for Write Access)
-        const ALLOWED_EMAILS=[ 'vneethkaimal1989@gmail.com', 'munchnambiar@gmail.com', 'vineethkaimal1989@gmail.com', 'vneeth@gmail.com', 'manju.jobs@gmail.com' ];
+        const ALLOWED_EMAILS=[ 'vineethkaimal1989@gmail.com', 'munchnambiar@gmail.com' ];
         
         let currentUser = null;
         let appliedJobsState = {};
@@ -1286,42 +1286,7 @@
             else newState = 'no';
             
             if (newState === 'Reject') {
-                const reason = prompt("Why are you rejecting this job? (This will update the AI's requirements. Max 100 words)");
-                if (reason === null) return; // cancelled
-                if (reason.split(' ').length > 100) {
-                    alert("Reason must be less than 100 words.");
-                    return;
-                }
-                if (reason.trim() === '') {
-                    alert("Reason cannot be empty.");
-                    return;
-                }
-                
-                // Save to Firestore
-                if (window.firebaseDb) {
-                    try {
-                        btn.textContent = 'Saving...';
-                        btn.disabled = true;
-                        await window.addDoc(window.collection(window.firebaseDb, "user_feedback"), {
-                            url: url,
-                            reason: reason,
-                            type: "negative",
-                            status: "unread",
-                            timestamp: window.serverTimestamp()
-                        });
-                        alert("Rejection reason saved! The scraper will automatically update its requirements shortly.");
-                        btn.disabled = false;
-                    } catch (e) {
-                        console.error(e);
-                        alert("Failed to save to cloud database. Has Firestore been initialized?");
-                        btn.textContent = current;
-                        btn.disabled = false;
-                        return;
-                    }
-                } else {
-                    alert("Firebase not initialized yet.");
-                    return;
-                }
+                // Just cycle to Reject without prompting for a reason
             }
 
             localStorage.setItem('applied_' + url, newState);

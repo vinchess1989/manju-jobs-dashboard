@@ -4,11 +4,8 @@ service cloud.firestore {
   
     function isAuthorized() {
       return request.auth != null && (
-        request.auth.token.email == "vneeth@gmail.com" || 
-        request.auth.token.email == "manju.jobs@gmail.com" ||
-        request.auth.token.email == "vineethkaimal1989@gmail.com" ||
         request.auth.token.email == "munchnambiar@gmail.com" ||
-        request.auth.token.email == "vneethkaimal1989@gmail.com"
+        request.auth.token.email == "vineethkaimal1989@gmail.com"
       );
     }
 
