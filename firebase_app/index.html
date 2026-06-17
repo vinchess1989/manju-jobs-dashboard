@@ -318,6 +318,14 @@
             text-transform: capitalize;
         }
 
+        select.status-pill option {
+            background-color: #1a1e2e;
+            color: white;
+            font-weight: normal;
+        }
+
+        .status-yes { background: var(--color-yes-bg); color: var(--color-yes); border: 1px solid rgba(16, 185, 129, 0.2); }
+
         .status-pill.yes {
             background: var(--color-yes-bg);
             color: var(--color-yes);
@@ -342,12 +350,6 @@
             border: 1px solid rgba(99, 102, 241, 0.2);
         }
 
-        select.status-pill option {
-            background-color: var(--bg-card);
-            color: var(--text-primary);
-            font-weight: 500;
-        }
-        
         select.status-pill {
             appearance: none;
             cursor: pointer;
@@ -362,26 +364,6 @@
         
         select.status-pill:hover {
             border-color: rgba(255, 255, 255, 0.2);
-        }
-        
-        select.status-pill option {
-            background-color: var(--surface-light);
-            color: var(--text-primary);
-        }
-
-        .status-pill.pending {
-            background: var(--color-pending-bg);
-            color: var(--color-pending);
-        }
-
-        .status-pill.error {
-            background: var(--color-error-bg);
-            color: var(--color-error);
-        }
-
-        .status-pill.maybe {
-            background: var(--color-maybe-bg);
-            color: var(--color-maybe);
         }
 
         .status-btn {
@@ -978,11 +960,12 @@
             // 3. Rows
             allJobs.forEach((job, index) => {
                 const jobIdSafe = job.id || job.url.replace(/[\.\#\$\/\[\]]/g, '_');
-                let appliedStatus = localStorage.getItem('applied_' + job.url) || 'no';
+                let appliedStatus = appliedJobsState[job.url]?.applied || 'no';
+                let userReview = appliedJobsState[job.url]?.user_review || 'pending';
                 
                 const tr = document.createElement('tr');
+                tr.setAttribute('data-url', job.url);
                 
-                const visitedVal = job.visited || 'no';
                 const matchVal = job.matches_requirements || 'pending';
                 const postedVal = formatDate(job.posted_date);
                 const deadlineVal = formatDate(job.deadline);
@@ -1019,18 +1002,22 @@
                     <td class="col-reason"><div class="reason-cell" title="${(job.reason || '').replace(/"/g, '&quot;')}">${job.reason || ''}</div></td>
                     <td class="col-applied" data-value="${appliedStatus}">
                         ${isAuthorized ? `
-                        <button class="status-btn ${appliedStatus === 'yes' ? 'status-yes' : (appliedStatus === 'Reject' ? 'status-reject' : 'status-no')}" onclick="toggleApplied(this, '${job.url}')">${appliedStatus}</button>
+                        <select class="status-pill ${appliedStatus === 'yes' ? 'yes' : (appliedStatus === 'Reject' ? 'no' : 'no')}" onchange="toggleApplied(this, '${job.url}')">
+                            <option value="no" ${appliedStatus === 'no' ? 'selected' : ''}>no</option>
+                            <option value="yes" ${appliedStatus === 'yes' ? 'selected' : ''}>yes</option>
+                            <option value="Reject" ${appliedStatus === 'Reject' ? 'selected' : ''}>Reject</option>
+                        </select>
                         ` : `
                         <span class="status-btn ${appliedStatus === 'yes' ? 'status-yes' : (appliedStatus === 'Reject' ? 'status-reject' : 'status-no')}" style="cursor: default; display:inline-block; text-align:center;">${appliedStatus}</span>
                         `}
                     </td>
-                    <td class="col-user-review" data-value="${localStorage.getItem('user_review_' + job.url) || job.user_review || 'pending'}">
+                    <td class="col-user-review" data-value="${userReview}">
                         ${isAuthorized ? `
-                        <select class="status-pill ${(localStorage.getItem('user_review_' + job.url) || job.user_review || 'pending') === 'done' ? 'yes' : 'pending'}" onchange="handleUserReviewChange(this, '${job.url}', '${localStorage.getItem('user_review_' + job.url) || job.user_review || 'pending'}')">
-                            <option value="pending" ${(localStorage.getItem('user_review_' + job.url) || job.user_review || 'pending') === 'pending' ? 'selected' : ''}>pending</option>
-                            <option value="done" ${(localStorage.getItem('user_review_' + job.url) || job.user_review || 'pending') === 'done' ? 'selected' : ''}>done</option>
+                        <select class="status-pill ${userReview === 'done' ? 'yes' : 'pending'}" onchange="handleUserReviewChange(this, '${job.url}', '${userReview}')">
+                            <option value="pending" ${userReview === 'pending' ? 'selected' : ''}>pending</option>
+                            <option value="done" ${userReview === 'done' ? 'selected' : ''}>done</option>
                         </select>
-                        ` : `<span class="status-pill ${(localStorage.getItem('user_review_' + job.url) || job.user_review || 'pending') === 'done' ? 'yes' : 'pending'}">${localStorage.getItem('user_review_' + job.url) || job.user_review || 'pending'}</span>`}
+                        ` : `<span class="status-pill ${userReview === 'done' ? 'yes' : 'pending'}">${userReview}</span>`}
                     </td>
                 `;
                 tbody.appendChild(tr);
@@ -1317,26 +1304,14 @@
             if (reviewedCounter) reviewedCounter.textContent = reviewedCount;
         }
 
-        async function toggleApplied(btn, url) {
-            const current = btn.textContent.trim();
-            let newState;
-            if (current === 'no') newState = 'yes';
-            else if (current === 'yes') newState = 'Reject';
-            else newState = 'no';
+        async function toggleApplied(select, url) {
+            const newState = select.value;
             
-            if (newState === 'Reject') {
-                // Just cycle to Reject without prompting for a reason
-            }
-
             localStorage.setItem('applied_' + url, newState);
-            btn.textContent = newState;
             
-            btn.className = 'status-btn';
-            if (newState === 'yes') btn.classList.add('status-yes');
-            else if (newState === 'no') btn.classList.add('status-no');
-            else btn.classList.add('status-reject');
+            select.className = 'status-pill ' + (newState === 'yes' ? 'yes' : (newState === 'Reject' ? 'reject' : 'no'));
             
-            const td = btn.closest('td');
+            const td = select.closest('td');
             td.setAttribute('data-value', newState);
             
             filterTable(); // Recalculate summary counts
@@ -1374,16 +1349,15 @@
                 alert("Status updated without a feedback reason. The AI matching rules will not be updated.");
             }
 
-            if (window.firebaseDb) {
-                const originalText = select.options[select.selectedIndex].text;
+            if (typeof db !== 'undefined' && db !== null) {
                 try {
                     select.disabled = true;
-                    await window.addDoc(window.collection(window.firebaseDb, "user_feedback"), {
+                    await db.collection("user_feedback").add({
                         url: url,
                         reason: reason,
                         type: type,
                         status: "unread",
-                        timestamp: window.serverTimestamp()
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
                     });
                     
                     if (!isBlank) {
@@ -1407,28 +1381,80 @@
                 alert("Firebase not initialized yet.");
                 select.value = originalValue;
             }
+        }
+        
+        async function handleUserReviewChange(select, url, originalValue) {
+            const newState = select.value;
+            
+            if (typeof db !== 'undefined' && db !== null) {
+                try {
+                    select.disabled = true;
+                    await db.collection("user_feedback").add({
+                        url: url,
+                        type: "user_review_update",
+                        user_review: newState,
+                        status: "unread",
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    
+                    select.disabled = false;
+                    select.className = 'status-pill ' + (newState === 'done' ? 'yes' : 'pending');
+                    select.closest('td').setAttribute('data-value', newState);
+                    select.setAttribute('onchange', `handleUserReviewChange(this, '${url}', '${newState}')`);
+                    localStorage.setItem('user_review_' + url, newState);
+                    
+                    filterTable(); // Update counts
+                } catch (e) {
+                    console.error(e);
+                    alert("Failed to save review status to cloud database.");
+                    select.value = originalValue;
+                    select.disabled = false;
+                }
+            } else {
+                alert("Firebase not initialized yet.");
+                select.value = originalValue;
+            }
+        }
+        
+        async function autoMarkUserReviewDone(url) {
+            let currentReview = localStorage.getItem('user_review_' + url);
+            if (currentReview === 'done') return;
+            
+            const tbody = document.getElementById('jobs-body');
+            if (!tbody) return;
+            
+            const rows = tbody.querySelectorAll('tr');
+            let selectElem = null;
+            for (let row of rows) {
+                if (row.getAttribute('data-url') === url) {
+                    const td = row.getElementsByTagName("td")[12];
+                    if (td) {
+                        selectElem = td.querySelector('select');
+                    }
+                    break;
+                }
+            }
+            
+            if (selectElem) {
+                selectElem.value = 'done';
+                handleUserReviewChange(selectElem, url, 'pending');
+            } else {
+                localStorage.setItem('user_review_' + url, 'done');
+                if (typeof db !== 'undefined' && db !== null) {
+                    try {
+                        await db.collection("user_feedback").add({
+                            url: url,
+                            type: "user_review_update",
+                            user_review: 'done',
+                            status: "unread",
+                            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                        });
+                    } catch (e) {
+                        console.error("Auto review sync failed", e);
+                    }
+                }
+            }
         }    
     </script>
 </body>
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-  const firebaseConfig = {
-      projectId: "manju-jobs-dashboard",
-      appId: "1:429610244337:web:6117ee37d384af03b33150",
-      storageBucket: "manju-jobs-dashboard.firebasestorage.app",
-      apiKey: "AIzaSyAWBGcQjYZ0oGlxkGMl5Rrm5eHxOZBRqa4",
-      authDomain: "manju-jobs-dashboard.firebaseapp.com",
-      messagingSenderId: "429610244337",
-      measurementId: "G-EQ4XK63BVW"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  window.firebaseDb = db;
-  window.addDoc = addDoc;
-  window.collection = collection;
-  window.serverTimestamp = serverTimestamp;
-</script>
 </html>
