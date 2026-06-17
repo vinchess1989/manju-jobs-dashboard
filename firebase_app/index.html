@@ -543,6 +543,30 @@
             }
         }
 
+        /* Allow zooming out to see full table in mobile landscape */
+        @media (max-width: 950px) and (orientation: landscape) {
+            body {
+                min-width: max-content;
+                padding: 1rem;
+            }
+            .table-container {
+                overflow: visible;
+            }
+            .table-scroll-area {
+                overflow-x: visible;
+                overflow-y: visible;
+                max-height: none;
+            }
+            header {
+                flex-direction: row !important;
+                align-items: center !important;
+            }
+            .table-info-bar {
+                flex-direction: row !important;
+                align-items: center !important;
+            }
+        }
+
         /* Multi-select Dropdown Styles */
         .filter-row th {
             position: relative;
