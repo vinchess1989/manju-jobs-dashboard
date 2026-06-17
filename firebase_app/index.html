@@ -960,8 +960,8 @@
             // 3. Rows
             allJobs.forEach((job, index) => {
                 const jobIdSafe = job.id || job.url.replace(/[\.\#\$\/\[\]]/g, '_');
-                let appliedStatus = appliedJobsState[job.url]?.applied || 'no';
-                let userReview = appliedJobsState[job.url]?.user_review || 'pending';
+                let appliedStatus = localStorage.getItem('applied_' + job.url) || appliedJobsState[job.url]?.applied || 'no';
+                let userReview = localStorage.getItem('user_review_' + job.url) || appliedJobsState[job.url]?.user_review || job.user_review || 'pending';
                 
                 const tr = document.createElement('tr');
                 tr.setAttribute('data-url', job.url);
