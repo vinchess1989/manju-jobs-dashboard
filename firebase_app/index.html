@@ -700,7 +700,7 @@
         const db=firebase.firestore();
 
         // SECURITY GATE (for Write Access)
-        const ALLOWED_EMAILS=[ 'vneethkaimal1989@gmail.com', 'munchnambiar@gmail.com' ];
+        const ALLOWED_EMAILS=[ 'vneethkaimal1989@gmail.com', 'munchnambiar@gmail.com', 'vineethkaimal1989@gmail.com', 'vneeth@gmail.com', 'manju.jobs@gmail.com' ];
         
         let currentUser = null;
         let appliedJobsState = {};
@@ -967,12 +967,8 @@
             // 3. Rows
             allJobs.forEach((job, index) => {
                 const jobIdSafe = job.id || job.url.replace(/[\.\#\$\/\[\]]/g, '_');
-                let appliedStatus = 'no';
-                if (currentUser && appliedJobsState[jobIdSafe]) {
-                    appliedStatus = appliedJobsState[jobIdSafe];
-                } else if (!currentUser) {
-                    appliedStatus = localStorage.getItem('applied_' + job.url) || 'no';
-                }
+                let appliedStatus = localStorage.getItem('applied_' + job.url) || 'no';
+                
                 const tr = document.createElement('tr');
                 
                 const visitedVal = job.visited || 'no';
