@@ -382,7 +382,8 @@ def check_requirements_update():
             with open(JOBS_FILE, 'r', encoding='utf-8') as f:
                 jobs = json.load(f)
             for job in jobs:
-                job['needs_re_review'] = True
+                if job.get('user_review') != 'done':
+                    job['needs_re_review'] = True
             with open(JOBS_FILE, 'w', encoding='utf-8') as f:
                 json.dump(jobs, f, indent=2)
         
@@ -1047,6 +1048,7 @@ def poll_firebase_feedback():
         
         new_positive_rules = []
         new_negative_rules = []
+        user_review_updates = {}
         
         for doc in documents:
             doc_name = doc.get("name")
@@ -1056,8 +1058,22 @@ def poll_firebase_feedback():
             if status == "read":
                 continue
                 
-            reason = fields.get("reason", {}).get("stringValue", "")
             feedback_type = fields.get("type", {}).get("stringValue", "negative")
+            
+            if feedback_type == "user_review_update":
+                new_status = fields.get("user_review", {}).get("stringValue", "pending")
+                url_field = fields.get("url", {}).get("stringValue", "")
+                if url_field:
+                    user_review_updates[url_field] = new_status
+                
+                # Update status to "read"
+                if doc_name:
+                    update_url = f"https://firestore.googleapis.com/v1/{doc_name}?updateMask.fieldPaths=status"
+                    payload = {"fields": {"status": {"stringValue": "read"}}}
+                    requests.patch(update_url, json=payload, timeout=10)
+                continue
+                
+            reason = fields.get("reason", {}).get("stringValue", "")
             
             if reason and reason.strip():
                 if feedback_type == "positive":
@@ -1082,6 +1098,23 @@ def poll_firebase_feedback():
                     for rule in new_positive_rules:
                         f.write(f"- POSITIVE CONSTRAINT: The user explicitly approved a previous job because: '{rule}'. Make sure to MATCH jobs that have this characteristic.\n")
             print(f"INFO: Successfully updated job_requirements.md with {len(new_positive_rules)} positive and {len(new_negative_rules)} negative rules!")
+            
+        if user_review_updates:
+            try:
+                if os.path.exists(JOBS_FILE):
+                    with open(JOBS_FILE, 'r', encoding='utf-8') as f:
+                        jobs = json.load(f)
+                    changed = False
+                    for j in jobs:
+                        if j.get('url') in user_review_updates:
+                            j['user_review'] = user_review_updates[j['url']]
+                            changed = True
+                    if changed:
+                        with open(JOBS_FILE, 'w', encoding='utf-8') as f:
+                            json.dump(jobs, f, indent=2)
+                    print(f"INFO: Successfully synced user_review status for {len(user_review_updates)} jobs from the cloud.")
+            except Exception as e:
+                print(f"Error syncing user review status: {e}")
             
     except Exception as e:
         print(f"Error polling Firebase feedback: {e}")

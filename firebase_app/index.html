@@ -292,18 +292,19 @@
         }
 
         /* Column specific styles */
-        .col-id { width: 3.5rem; text-align: center; color: var(--text-secondary); }
-        .col-job-id { font-family: 'Space Grotesk', sans-serif; font-size: 0.8rem; font-weight: 600; color: #a78bfa; text-align: center; width: 5.5rem; }
-        .col-title { font-weight: 600; color: #ffffff; min-width: 12rem; }
-        .col-company { min-width: 8rem; }
-        .col-location { min-width: 7rem; }
-        .col-source { min-width: 7.5rem; }
-        .col-posted { min-width: 6.5rem; }
-        .col-deadline { min-width: 6.5rem; }
-        .col-sync { width: 6.5rem; text-align: center; }
-        .col-matches { width: 7.5rem; text-align: center; }
-        .col-reason { min-width: 15rem; font-style: italic; color: #d1d5db; font-size: 0.85rem; line-height: 1.45; }
-        .col-applied { width: 6.5rem; text-align: center; }
+        .col-id { width: 50px; min-width: 50px; }
+        .col-job-id { width: 100px; min-width: 100px; }
+        .col-title { width: 280px; min-width: 200px; }
+        .col-company { width: 140px; min-width: 120px; }
+        .col-location { width: 150px; min-width: 120px; }
+        .col-source { width: 100px; min-width: 100px; }
+        .col-posted { width: 100px; min-width: 90px; }
+        .col-deadline { width: 100px; min-width: 90px; }
+        .col-sync { width: 110px; min-width: 100px; }
+        .col-matches { width: 130px; min-width: 120px; }
+        .col-reason { width: 200px; min-width: 150px; }
+        .col-applied { width: 100px; min-width: 90px; }
+        .col-user-review { width: 120px; min-width: 110px; }
 
         /* Badges & Actions */
         .status-pill {
@@ -874,6 +875,14 @@
                     <span class="table-info-value">${dateText}</span>
                 </div>
                 <div class="table-info-item">
+                    <span class="table-info-label">Applied</span>
+                    <span class="table-info-value" id="applied-counter">0</span>
+                </div>
+                <div class="table-info-item">
+                    <span class="table-info-label">Reviewed</span>
+                    <span class="table-info-value" id="reviewed-counter">0</span>
+                </div>
+                <div class="table-info-item">
                     <span class="table-info-label">Total Listings</span>
                     <span class="table-info-value" id="listings-counter">${allJobs.length}</span>
                 </div>
@@ -900,6 +909,7 @@
                         <th class="col-matches resizable-th"><div class="resizable-header" onclick="sortTable(9)">Matches ↕<div class="active-filters-summary" id="active-filters-9"></div></div></th>
                         <th class="col-reason resizable-th"><div class="resizable-header" onclick="sortTable(10)">Reason ↕<div class="active-filters-summary" id="active-filters-10"></div></div></th>
                         <th class="col-applied resizable-th"><div class="resizable-header" onclick="sortTable(11)">Applied ↕<div class="active-filters-summary" id="active-filters-11"></div></div></th>
+                        <th class="col-user-review resizable-th"><div class="resizable-header" onclick="sortTable(12)">User Review ↕<div class="active-filters-summary" id="active-filters-12"></div></div></th>
                     </tr>
                     <tr class="filter-row">
                         <th></th>
@@ -914,6 +924,7 @@
                         <th><div id="filter-col-9"></div></th>
                         <th><div id="filter-col-10"></div></th>
                         <th><div id="filter-col-11"></div></th>
+                        <th><div id="filter-col-12"></div></th>
                     </tr>
                 </thead>
                 <tbody id="jobs-body"></tbody>
@@ -1005,13 +1016,21 @@
                         <span class="status-pill ${matchVal}" style="display:inline-block; text-align:center;">${matchVal}</span>
                         `}
                     </td>
-                    <td class="col-reason"><em>${job.reason || ''}</em></td>
+                    <td class="col-reason"><div class="reason-cell" title="${(job.reason || '').replace(/"/g, '&quot;')}">${job.reason || ''}</div></td>
                     <td class="col-applied" data-value="${appliedStatus}">
                         ${isAuthorized ? `
                         <button class="status-btn ${appliedStatus === 'yes' ? 'status-yes' : (appliedStatus === 'Reject' ? 'status-reject' : 'status-no')}" onclick="toggleApplied(this, '${job.url}')">${appliedStatus}</button>
                         ` : `
                         <span class="status-btn ${appliedStatus === 'yes' ? 'status-yes' : (appliedStatus === 'Reject' ? 'status-reject' : 'status-no')}" style="cursor: default; display:inline-block; text-align:center;">${appliedStatus}</span>
                         `}
+                    </td>
+                    <td class="col-user-review" data-value="${localStorage.getItem('user_review_' + job.url) || job.user_review || 'pending'}">
+                        ${isAuthorized ? `
+                        <select class="status-pill ${(localStorage.getItem('user_review_' + job.url) || job.user_review || 'pending') === 'done' ? 'yes' : 'pending'}" onchange="handleUserReviewChange(this, '${job.url}', '${localStorage.getItem('user_review_' + job.url) || job.user_review || 'pending'}')">
+                            <option value="pending" ${(localStorage.getItem('user_review_' + job.url) || job.user_review || 'pending') === 'pending' ? 'selected' : ''}>pending</option>
+                            <option value="done" ${(localStorage.getItem('user_review_' + job.url) || job.user_review || 'pending') === 'done' ? 'selected' : ''}>done</option>
+                        </select>
+                        ` : `<span class="status-pill ${(localStorage.getItem('user_review_' + job.url) || job.user_review || 'pending') === 'done' ? 'yes' : 'pending'}">${localStorage.getItem('user_review_' + job.url) || job.user_review || 'pending'}</span>`}
                     </td>
                 `;
                 tbody.appendChild(tr);
@@ -1042,9 +1061,9 @@
         function buildMultiSelectFilters() {
             const tbody = document.querySelector('table tbody');
             const rows = Array.from(tbody.querySelectorAll('tr'));
-            const colNames = ['ID', 'Title', 'Company', 'Location', 'Source', 'Posted', 'Deadline', 'Sync', 'Matches', 'Reason', 'Applied'];
             
-            for (let i = 1; i <= 11; i++) {
+            // Build the multi-select dropdowns for columns 1 to 12
+            for (let i = 1; i <= 12; i++) {
                 const uniqueValues = new Set();
                 rows.forEach(row => {
                     const td = row.getElementsByTagName("td")[i];
@@ -1170,7 +1189,7 @@
             today.setHours(0,0,0,0);
             
             const filters = {};
-            for (let i = 1; i <= 11; i++) {
+            for (let i = 1; i <= 12; i++) {
                 const container = document.getElementById(`filter-col-${i}`);
                 if (!container) continue;
                 const checked = Array.from(container.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value);
@@ -1198,11 +1217,13 @@
             
             let visibleCount = 0;
             let counts = { yes: 0, maybe: 0, no: 0, pending: 0, rereview: 0 };
+            let appliedCount = 0;
+            let reviewedCount = 0;
             
             rows.forEach(row => {
                 let show = true;
                 
-                for (let i = 1; i <= 11; i++) {
+                for (let i = 1; i <= 12; i++) {
                     if (filters[i]) {
                         const td = row.getElementsByTagName("td")[i];
                         if (td) {
@@ -1259,6 +1280,18 @@
                     if (tdSync) {
                         if (tdSync.getAttribute("data-value") === 'Needs Re-review') counts.rereview++;
                     }
+                    
+                    const tdApplied = row.getElementsByTagName("td")[11];
+                    if (tdApplied) {
+                        const aVal = tdApplied.getAttribute("data-value");
+                        if (aVal === 'yes' || aVal === 'Reject') appliedCount++;
+                    }
+                    
+                    const tdReview = row.getElementsByTagName("td")[12];
+                    if (tdReview) {
+                        const rVal = tdReview.getAttribute("data-value");
+                        if (rVal === 'done') reviewedCount++;
+                    }
                 }
             });
             
@@ -1276,6 +1309,12 @@
                 text += `<span style="color: #a78bfa; font-weight: 600;">Re-review: ${counts.rereview}</span>`;
                 counter.innerHTML = text;
             }
+            
+            const appliedCounter = document.getElementById('applied-counter');
+            if (appliedCounter) appliedCounter.textContent = appliedCount;
+            
+            const reviewedCounter = document.getElementById('reviewed-counter');
+            if (reviewedCounter) reviewedCounter.textContent = reviewedCount;
         }
 
         async function toggleApplied(btn, url) {
@@ -1299,6 +1338,9 @@
             
             const td = btn.closest('td');
             td.setAttribute('data-value', newState);
+            
+            filterTable(); // Recalculate summary counts
+            autoMarkUserReviewDone(url);
         }
         
         async function handleMatchChange(select, url, originalValue) {
@@ -1352,6 +1394,9 @@
                     select.className = 'status-pill ' + newState;
                     select.closest('td').setAttribute('data-value', newState);
                     select.setAttribute('onchange', `handleMatchChange(this, '${url}', '${newState}')`);
+                    
+                    filterTable(); // Recalculate summary counts
+                    autoMarkUserReviewDone(url);
                 } catch (e) {
                     console.error(e);
                     alert("Failed to save to cloud database.");
