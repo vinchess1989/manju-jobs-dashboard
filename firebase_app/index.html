@@ -545,17 +545,21 @@
 
         /* Allow zooming out to see full table in mobile landscape */
         @media (max-width: 950px) and (orientation: landscape) {
-            body {
+            html, body {
                 min-width: max-content;
+                overflow-x: visible !important;
+            }
+            body {
                 padding: 1rem;
             }
             .table-container {
-                overflow: visible;
+                overflow: visible !important;
+                width: max-content;
             }
             .table-scroll-area {
-                overflow-x: visible;
-                overflow-y: visible;
-                max-height: none;
+                overflow-x: visible !important;
+                overflow-y: visible !important;
+                max-height: none !important;
             }
             header {
                 flex-direction: row !important;
