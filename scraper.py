@@ -578,6 +578,8 @@ def extract_location_from_text(text):
     helsinki_region = {'Helsinki', 'Espoo', 'Vantaa', 'Kauniainen', 'Kerava', 'Sipoo', 'Kirkkonummi', 'Tuusula', 'Järvenpää', 'Nurmijärvi', 'Vihti', 'Porvoo', 'Lohja', 'Hyvinkää', 'Mäntsälä'}
     turku_region = {'Turku', 'Kaarina', 'Raisio', 'Naantali', 'Lieto', 'Parainen', 'Paimio', 'Masku', 'Rusko', 'Nousiainen', 'Salo'}
     tampere_region = {'Tampere', 'Nokia', 'Ylöjärvi', 'Kangasala', 'Lempäälä', 'Pirkkala', 'Orivesi', 'Valkeakoski', 'Vesilahti', 'Hämeenkyrö'}
+    jyvaskyla_region = {'Jyväskylä', 'Muurame', 'Laukaa', 'Äänekoski', 'Jämsä', 'Keuruu', 'Petäjävesi', 'Toivakka', 'Uurainen'}
+    rovaniemi_region = {'Rovaniemi', 'Ranua', 'Pello', 'Ylitornio', 'Kemijärvi', 'Sodankylä'}
     
     def format_city(c):
         if c in oulu_region:
@@ -588,6 +590,10 @@ def extract_location_from_text(text):
             return "Turku Region, Finland"
         if c in tampere_region:
             return "Tampere Region, Finland"
+        if c in jyvaskyla_region:
+            return "Jyväskylä Region, Finland"
+        if c in rovaniemi_region:
+            return "Rovaniemi Region, Finland"
         return f"{c}, Finland"
 
     # Pattern 1: Finnish postal code format "NNNNN CityName"
@@ -781,7 +787,7 @@ Return a JSON object with exactly six keys:
 - "posted_date": a string, the date the job was posted formatted strictly as YYYY-MM-DD (e.g. '2026-06-12'). If a relative date like '3 days ago' is mentioned, calculate it relative to today's date ({today_str}). If not found, return 'N/A'.
 - "deadline": a string, the deadline for applying formatted strictly as YYYY-MM-DD (e.g. '2026-06-30'). Ignore any times (e.g. if deadline is 15.6.2026 23:59, return '2026-06-15'). If it is open-ended or 'open until filled', return 'Open until filled'. If not found, return 'N/A'.
 - "company": a string, the name of the hiring company as stated in the job posting (e.g. 'Wolt' or 'N/A' if not found). Do NOT use the job board name (e.g. do NOT return 'Indeed' or 'LinkedIn').
-- "location": a string, the city and country of the job. If the job is in Oulu or neighboring municipalities, ALWAYS return EXACTLY 'Oulu Region, Finland'. If it is in Helsinki, Espoo, Vantaa, or neighboring municipalities, return EXACTLY 'Helsinki Region, Finland'. If Turku or neighbors, return 'Turku Region, Finland'. If Tampere or neighbors, return 'Tampere Region, Finland'. For all other jobs in Finland, append ', Finland' to the city. Return 'N/A' only if truly unknown.
+- "location": a string, the city and country of the job. If the job is in Oulu or neighboring municipalities, ALWAYS return EXACTLY 'Oulu Region, Finland'. If it is in Helsinki, Espoo, Vantaa, or neighboring municipalities, return EXACTLY 'Helsinki Region, Finland'. If Turku or neighbors, return 'Turku Region, Finland'. If Tampere or neighbors, return 'Tampere Region, Finland'. If Jyväskylä or neighbors, return 'Jyväskylä Region, Finland'. If Rovaniemi or neighbors, return 'Rovaniemi Region, Finland'. For all other jobs in Finland, append ', Finland' to the city. Return 'N/A' only if truly unknown.
 
 IMPORTANT: Extract company and location ONLY from information explicitly stated in the job description text. Do NOT guess or hallucinate values.
 Do not include any conversational intro/outro or explanations outside the JSON object.
