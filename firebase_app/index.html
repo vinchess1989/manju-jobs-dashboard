@@ -1054,6 +1054,9 @@
                         <button type="button" onclick="window.toggleAllFilters(${i}, true, event)" style="background:none; border:none; color:#a78bfa; font-size:0.75rem; cursor:pointer; padding:0;">Select All</button>
                         <button type="button" onclick="window.toggleAllFilters(${i}, false, event)" style="background:none; border:none; color:var(--text-secondary); font-size:0.75rem; cursor:pointer; padding:0;">Clear</button>
                     </div>
+                    <div style="padding: 0 8px 8px 8px; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 4px;">
+                        <input type="text" placeholder="Search..." oninput="filterMsOptions(this)" onclick="event.stopPropagation()" style="width: 100%; padding: 4px 8px; border-radius: 4px; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); color: white; font-size: 0.8rem; outline: none;">
+                    </div>
                     ${customDateInput}
                 `;
                 sortedVals.forEach(val => {
@@ -1093,6 +1096,19 @@
                 document.querySelectorAll('.ms-dropdown').forEach(d => d.classList.remove('open'));
             }
         });
+        
+        window.filterMsOptions = function(input) {
+            const query = input.value.toLowerCase();
+            const options = input.closest('.ms-dropdown').querySelectorAll('.ms-option');
+            options.forEach(opt => {
+                const text = opt.textContent.toLowerCase();
+                if (text.includes(query)) {
+                    opt.style.display = 'flex';
+                } else {
+                    opt.style.display = 'none';
+                }
+            });
+        };
 
         function sortTable(n) {
             const tbody = document.querySelector('table tbody');
