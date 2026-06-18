@@ -1087,6 +1087,22 @@ def poll_firebase_feedback():
                     requests.patch(update_url, json=payload, timeout=10)
                 continue
                 
+
+            if feedback_type == "applied_update":
+                new_status = fields.get("applied", {}).get("stringValue", "no")
+                url_field = fields.get("url", {}).get("stringValue", "")
+                if url_field:
+                    if 'applied_updates' not in locals():
+                        applied_updates = {}
+                    applied_updates[url_field] = new_status
+                
+                # Update status to "read"
+                if doc_name:
+                    update_url = f"https://firestore.googleapis.com/v1/{doc_name}?updateMask.fieldPaths=status"
+                    payload = {"fields": {"status": {"stringValue": "read"}}}
+                    requests.patch(update_url, json=payload, timeout=10)
+                continue
+
             reason = fields.get("reason", {}).get("stringValue", "")
             
             if reason and reason.strip():
@@ -1113,6 +1129,24 @@ def poll_firebase_feedback():
                         f.write(f"- POSITIVE CONSTRAINT: The user explicitly approved a previous job because: '{rule}'. Make sure to MATCH jobs that have this characteristic.\n")
             print(f"INFO: Successfully updated job_requirements.md with {len(new_positive_rules)} positive and {len(new_negative_rules)} negative rules!")
             
+
+        if locals().get('applied_updates'):
+            try:
+                if os.path.exists(JOBS_FILE):
+                    with open(JOBS_FILE, 'r', encoding='utf-8') as f:
+                        jobs = json.load(f)
+                    changed = False
+                    for j in jobs:
+                        if j.get('url') in applied_updates:
+                            j['applied'] = applied_updates[j['url']]
+                            changed = True
+                    if changed:
+                        with open(JOBS_FILE, 'w', encoding='utf-8') as f:
+                            json.dump(jobs, f, indent=2)
+                    print(f"INFO: Successfully synced applied status for {len(applied_updates)} jobs from the cloud.")
+            except Exception as e:
+                print(f"Error syncing applied status: {e}")
+
         if user_review_updates:
             try:
                 if os.path.exists(JOBS_FILE):

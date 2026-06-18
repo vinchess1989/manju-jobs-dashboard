@@ -157,7 +157,7 @@
             width: 100%;
             background: var(--bg-card);
             border: 1px solid var(--border-color);
-            border-radius: 1.25rem;
+            border-radius: 1.25rem 1.25rem 0 0;
             padding: 1.5rem;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
             backdrop-filter: blur(12px);
@@ -691,6 +691,9 @@
 
         let allJobs = [];
         let sortAsc = true;
+        let currentPage = 1;
+        const itemsPerPage = 100;
+        let filteredRows = [];
         let lastSortedCol = -1;
 
         const fileStatusDot = document.getElementById('file-status-dot');
@@ -1002,7 +1005,7 @@
                     <td class="col-reason"><div class="reason-cell" title="${(job.reason || '').replace(/"/g, '&quot;')}">${job.reason || ''}</div></td>
                     <td class="col-applied" data-value="${appliedStatus}">
                         ${isAuthorized ? `
-                        <select class="status-pill ${appliedStatus === 'yes' ? 'yes' : (appliedStatus === 'Reject' ? 'no' : 'no')}" onchange="toggleApplied(this, '${job.url}')">
+                        <select class="status-pill ${appliedStatus === 'yes' ? 'yes' : (appliedStatus === 'Reject' ? 'no' : 'no')}" onchange="toggleApplied(this, '${job.url}', '${appliedStatus}')">
                             <option value="no" ${appliedStatus === 'no' ? 'selected' : ''}>no</option>
                             <option value="yes" ${appliedStatus === 'yes' ? 'selected' : ''}>yes</option>
                             <option value="Reject" ${appliedStatus === 'Reject' ? 'selected' : ''}>Reject</option>
@@ -1160,6 +1163,8 @@
             });
             
             rows.forEach(row => tbody.appendChild(row));
+            
+            filterTable();
         }
 
         function filterTable() {
@@ -1207,6 +1212,7 @@
             let appliedCount = 0;
             let reviewedCount = 0;
             
+            filteredRows = [];
             rows.forEach(row => {
                 let show = true;
                 
@@ -1252,8 +1258,8 @@
                     }
                 }
                 
-                row.style.display = show ? "" : "none";
                 if (show) {
+                    filteredRows.push(row);
                     visibleCount++;
                     const tdMatches = row.getElementsByTagName("td")[9];
                     const tdSync = row.getElementsByTagName("td")[8];
@@ -1265,7 +1271,7 @@
                         else if (mVal === 'pending') counts.pending++;
                     }
                     if (tdSync) {
-                        if (tdSync.getAttribute("data-value") === 'Needs Re-review') counts.rereview++;
+                        if (tdSync.getAttribute("data-value") === 'Queued') counts.rereview++;
                     }
                     
                     const tdApplied = row.getElementsByTagName("td")[11];
@@ -1302,20 +1308,104 @@
             
             const reviewedCounter = document.getElementById('reviewed-counter');
             if (reviewedCounter) reviewedCounter.textContent = reviewedCount;
+            
+            renderPage(1);
         }
 
-        async function toggleApplied(select, url) {
+        function renderPage(page) {
+            currentPage = page;
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            
+            const tbody = document.querySelector('table tbody');
+            const rows = Array.from(tbody.querySelectorAll('tr'));
+            
+            rows.forEach(row => {
+                row.style.display = 'none';
+            });
+            
+            for (let i = start; i < end && i < filteredRows.length; i++) {
+                filteredRows[i].style.display = '';
+            }
+            
+            updatePaginationUI();
+        }
+
+        function updatePaginationUI() {
+            let container = document.getElementById('pagination-container');
+            if (!container) {
+                container = document.createElement('div');
+                container.id = 'pagination-container';
+                container.style = 'display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: var(--bg-card); border-top: 1px solid var(--border-color); border-radius: 0 0 1.25rem 1.25rem;';
+                
+                const tableContainer = document.querySelector('.table-container');
+                if (tableContainer) {
+                    tableContainer.appendChild(container);
+                }
+            }
+            
+            const totalPages = Math.ceil(filteredRows.length / itemsPerPage) || 1;
+            
+            container.innerHTML = `
+                <div style="font-size: 0.85rem; color: var(--text-secondary);">
+                    Showing ${(currentPage - 1) * itemsPerPage + (filteredRows.length > 0 ? 1 : 0)} to ${Math.min(currentPage * itemsPerPage, filteredRows.length)} of ${filteredRows.length} entries
+                </div>
+                <div style="display: flex; gap: 0.5rem;">
+                    <button onclick="changePage(-1)" style="padding: 0.4rem 0.8rem; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: white; border-radius: 0.5rem; cursor: ${currentPage > 1 ? 'pointer' : 'not-allowed'}; opacity: ${currentPage > 1 ? '1' : '0.5'};" ${currentPage <= 1 ? 'disabled' : ''}>Previous</button>
+                    <div style="padding: 0.4rem 0.8rem; background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.3); color: white; border-radius: 0.5rem;">Page ${currentPage} of ${totalPages}</div>
+                    <button onclick="changePage(1)" style="padding: 0.4rem 0.8rem; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: white; border-radius: 0.5rem; cursor: ${currentPage < totalPages ? 'pointer' : 'not-allowed'}; opacity: ${currentPage < totalPages ? '1' : '0.5'};" ${currentPage >= totalPages ? 'disabled' : ''}>Next</button>
+                </div>
+            `;
+        }
+        
+        window.changePage = function(delta) {
+            const totalPages = Math.ceil(filteredRows.length / itemsPerPage) || 1;
+            let newPage = currentPage + delta;
+            if (newPage < 1) newPage = 1;
+            if (newPage > totalPages) newPage = totalPages;
+            
+            if (newPage !== currentPage) {
+                renderPage(newPage);
+                const scrollArea = document.querySelector('.table-scroll-area');
+                if (scrollArea) scrollArea.scrollTop = 0;
+            }
+        };
+
+        async function toggleApplied(select, url, originalValue) {
             const newState = select.value;
             
             localStorage.setItem('applied_' + url, newState);
             
-            select.className = 'status-pill ' + (newState === 'yes' ? 'yes' : (newState === 'Reject' ? 'reject' : 'no'));
-            
-            const td = select.closest('td');
-            td.setAttribute('data-value', newState);
-            
-            filterTable(); // Recalculate summary counts
-            autoMarkUserReviewDone(url);
+            if (typeof db !== 'undefined' && db !== null) {
+                try {
+                    select.disabled = true;
+                    await db.collection("user_feedback").add({
+                        url: url,
+                        type: "applied_update",
+                        applied: newState,
+                        status: "unread",
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    
+                    select.disabled = false;
+                    select.className = 'status-pill ' + (newState === 'yes' ? 'yes' : (newState === 'Reject' ? 'no' : 'no'));
+                    select.closest('td').setAttribute('data-value', newState);
+                    select.setAttribute('onchange', `toggleApplied(this, '${url}', '${newState}')`);
+                    
+                    filterTable(); 
+                    autoMarkUserReviewDone(url);
+                } catch (e) {
+                    console.error(e);
+                    alert("Failed to sync applied status to cloud.");
+                    select.value = originalValue;
+                    select.disabled = false;
+                }
+            } else {
+                select.className = 'status-pill ' + (newState === 'yes' ? 'yes' : (newState === 'Reject' ? 'no' : 'no'));
+                select.closest('td').setAttribute('data-value', newState);
+                filterTable(); 
+                autoMarkUserReviewDone(url);
+            }
         }
         
         async function handleMatchChange(select, url, originalValue) {
