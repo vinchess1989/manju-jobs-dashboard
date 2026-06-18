@@ -686,7 +686,7 @@
         const ALLOWED_EMAILS=[ 'vineethkaimal1989@gmail.com', 'munchnambiar@gmail.com' ];
         
         let currentUser = null;
-        let appliedJobsState = {};
+        let sharedJobsState = {};
         let firestoreUnsubscribe = null;
 
         let allJobs = [];
@@ -963,13 +963,13 @@
             // 3. Rows
             allJobs.forEach((job, index) => {
                 const jobIdSafe = job.id || job.url.replace(/[\.\#\$\/\[\]]/g, '_');
-                let appliedStatus = localStorage.getItem('applied_' + job.url) || (appliedJobsState[job.url] && appliedJobsState[job.url].applied) || job.applied || 'no';
-                let userReview = localStorage.getItem('user_review_' + job.url) || appliedJobsState[job.url]?.user_review || job.user_review || 'pending';
+                let appliedStatus = localStorage.getItem('applied_' + job.url) || (sharedJobsState[job.url] && sharedJobsState[job.url].applied) || job.applied || 'no';
+                let userReview = localStorage.getItem('user_review_' + job.url) || (sharedJobsState[job.url] && sharedJobsState[job.url].user_review) || job.user_review || 'pending';
                 
                 const tr = document.createElement('tr');
                 tr.setAttribute('data-url', job.url);
                 
-                const matchVal = job.matches_requirements || 'pending';
+                const matchVal = (sharedJobsState[job.url] && sharedJobsState[job.url].matches_requirements) || job.matches_requirements || 'pending';
                 const postedVal = formatDate(job.posted_date);
                 const deadlineVal = formatDate(job.deadline);
                 const sourceVal = job.source || getSourceFromUrl(job.url) || 'Unknown';
@@ -1386,6 +1386,10 @@
                         status: "unread",
                         timestamp: firebase.firestore.FieldValue.serverTimestamp()
                     });
+                    
+                    await db.collection("shared_state").doc("job_status").set({
+                        [url]: { applied: newState }
+                    }, { merge: true });
                     
                     select.disabled = false;
                     select.className = 'status-pill ' + (newState === 'yes' ? 'yes' : (newState === 'Reject' ? 'no' : 'no'));

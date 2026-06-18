@@ -1063,6 +1063,8 @@ def poll_firebase_feedback():
         new_positive_rules = []
         new_negative_rules = []
         user_review_updates = {}
+        match_updates = {}
+        processed_urls = set()
         
         for doc in documents:
             doc_name = doc.get("name")
@@ -1073,6 +1075,9 @@ def poll_firebase_feedback():
                 continue
                 
             feedback_type = fields.get("type", {}).get("stringValue", "negative")
+            url_field = fields.get("url", {}).get("stringValue", "")
+            if url_field:
+                processed_urls.add(url_field)
             
             if feedback_type == "user_review_update":
                 new_status = fields.get("user_review", {}).get("stringValue", "pending")
@@ -1105,6 +1110,13 @@ def poll_firebase_feedback():
 
             reason = fields.get("reason", {}).get("stringValue", "")
             
+            if feedback_type == "positive":
+                if url_field:
+                    match_updates[url_field] = "yes"
+            else:
+                if url_field:
+                    match_updates[url_field] = "no"
+
             if reason and reason.strip():
                 if feedback_type == "positive":
                     new_positive_rules.append(reason.strip())
@@ -1164,6 +1176,34 @@ def poll_firebase_feedback():
             except Exception as e:
                 print(f"Error syncing user review status: {e}")
             
+    
+        if match_updates:
+            try:
+                if os.path.exists(JOBS_FILE):
+                    with open(JOBS_FILE, 'r', encoding='utf-8') as f:
+                        jobs = json.load(f)
+                    changed = False
+                    for j in jobs:
+                        if j.get('url') in match_updates:
+                            j['matches_requirements'] = match_updates[j['url']]
+                            changed = True
+                    if changed:
+                        with open(JOBS_FILE, 'w', encoding='utf-8') as f:
+                            json.dump(jobs, f, indent=2)
+                    print(f"INFO: Successfully synced matches_requirements for {len(match_updates)} jobs from the cloud.")
+            except Exception as e:
+                print(f"Error syncing match updates: {e}")
+        
+        # Wipe shared_state since all updates are now safely in jobs.json
+        if locals().get('applied_updates') or user_review_updates or match_updates:
+            try:
+                wipe_url = url.replace('user_feedback', 'shared_state/job_status')
+                requests.delete(wipe_url, timeout=10)
+                print("INFO: Cleared shared_state temporary queue.")
+            except Exception as e:
+                print(f"Error clearing shared_state: {e}")
+
+                
     except Exception as e:
         print(f"Error polling Firebase feedback: {e}")
 
