@@ -1169,8 +1169,8 @@ def update_git():
                 firebase_app_dir = os.path.join(repo_dir, "firebase_app")
                 if os.path.exists(os.path.join(firebase_app_dir, "firebase.json")):
                     try:
-                        subprocess.run(["firebase", "deploy", "--only", "hosting", "--non-interactive"],
-                                       cwd=firebase_app_dir, check=True, env=env, timeout=120)
+                        subprocess.run("firebase deploy --only hosting --non-interactive",
+                                       cwd=firebase_app_dir, check=True, env=env, timeout=120, shell=True)
                         print("Successfully deployed dashboard to Firebase Hosting.")
                     except (subprocess.CalledProcessError, FileNotFoundError, subprocess.TimeoutExpired) as fe:
                         print(f"Firebase deploy skipped or failed (run 'firebase deploy' manually if needed): {fe}")
@@ -1206,8 +1206,10 @@ def print_job_summary():
             maybe_jobs = sum(1 for j in jobs_data if j.get('matches_requirements') == 'maybe')
             no_jobs = sum(1 for j in jobs_data if j.get('matches_requirements') == 'no')
             pending_jobs = sum(1 for j in jobs_data if j.get('matches_requirements') == 'pending')
-            
-        print(f"\nStats - Total jobs: {total_jobs} | Yes Match: {matching_jobs} | Maybe Match: {maybe_jobs} | No Match: {no_jobs} | Pending: {pending_jobs}")
+            re_review_jobs = sum(1 for j in jobs_data if j.get('needs_re_review') is True)
+
+        re_review_str = f" | Re-review: {re_review_jobs}" if re_review_jobs else ""
+        print(f"\nStats - Total jobs: {total_jobs} | Yes Match: {matching_jobs} | Maybe Match: {maybe_jobs} | No Match: {no_jobs} | Pending: {pending_jobs}{re_review_str}")
     except Exception as e:
         print(f"Error reading jobs file for status display: {e}")
 
