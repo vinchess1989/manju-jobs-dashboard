@@ -375,11 +375,61 @@ def get_file_hash(filepath):
     with open(filepath, 'rb') as f:
         return hashlib.md5(f.read()).hexdigest()
 
+def classify_requirements_change(old_content, new_content):
+    """Ask the local LLM whether a requirements change exclusively adds constraints.
+    Returns True if only new restrictions were added (stricter), False otherwise."""
+    llm_endpoint = os.environ.get("LOCAL_LLM_ENDPOINT")
+    llm_model = os.environ.get("LOCAL_LLM_MODEL")
+
+    if not llm_endpoint or not llm_model:
+        return False  # No LLM available — fall back to re-reviewing all jobs
+
+    prompt = f"""You are analyzing changes to a job matching requirements document.
+
+### OLD REQUIREMENTS:
+{old_content}
+
+### NEW REQUIREMENTS:
+{new_content}
+
+Determine whether the change ONLY adds new restrictions or exclusions (making requirements stricter), or whether it removes or relaxes any existing constraint.
+
+Respond with ONLY a JSON object with one key:
+- "only_adds_constraints": true if the change exclusively adds new hard rejections, exclusions, or restrictions without removing or relaxing any existing criteria; false if any existing constraint was removed, loosened, or if new positive/match criteria were added that could cause previously-rejected jobs to now match.
+
+Example: {{"only_adds_constraints": true}}"""
+
+    headers = {"Content-Type": "application/json"}
+    llm_api_key = os.environ.get("LOCAL_LLM_API_KEY")
+    if llm_api_key:
+        headers["Authorization"] = f"Bearer {llm_api_key}"
+
+    payload = {
+        "model": llm_model,
+        "messages": [{"role": "user", "content": prompt}]
+    }
+
+    try:
+        response = requests.post(llm_endpoint, headers=headers, json=payload, timeout=30)
+        response.raise_for_status()
+        content = response.json()['choices'][0]['message']['content']
+        result = extract_json_from_text(content)
+        return bool(result.get("only_adds_constraints", False))
+    except Exception as e:
+        print(f"WARN: Could not classify requirements change via LLM ({e}). Will re-review all jobs.")
+        return False
+
+
 def check_requirements_update():
     """Check if job_requirements.md has changed, and flag jobs for re-evaluation if it has."""
     req_hash = get_file_hash(REQ_FILE)
     if not req_hash:
         return
+
+    new_content = ""
+    if os.path.exists(REQ_FILE):
+        with open(REQ_FILE, 'r', encoding='utf-8') as f:
+            new_content = f.read()
 
     checkpoint_data = {}
     if os.path.exists(CHECKPOINT_FILE):
@@ -388,20 +438,39 @@ def check_requirements_update():
                 checkpoint_data = json.load(f)
         except Exception:
             pass
-    
+
     saved_hash = checkpoint_data.get("requirements_hash", "")
     if saved_hash and req_hash != saved_hash:
-        print("INFO: job_requirements.md has changed! Resetting evaluation status for existing jobs...")
+        print("INFO: job_requirements.md has changed! Analyzing the type of change...")
+        old_content = checkpoint_data.get("requirements_content", "")
+
+        only_adds_constraints = False
+        if old_content:
+            only_adds_constraints = classify_requirements_change(old_content, new_content)
+
+        if only_adds_constraints:
+            print("INFO: Change only adds constraints — re-reviewing only jobs previously marked 'yes' or 'maybe'.")
+            status_filter = {'yes', 'maybe'}
+        else:
+            print("INFO: Change may loosen or alter constraints — re-reviewing all non-done jobs.")
+            status_filter = None
+
         if os.path.exists(JOBS_FILE):
             with open(JOBS_FILE, 'r', encoding='utf-8') as f:
                 jobs = json.load(f)
+            count = 0
             for job in jobs:
-                if job.get('user_review') != 'done':
+                if job.get('user_review') == 'done':
+                    continue
+                if status_filter is None or job.get('matches_requirements') in status_filter:
                     job['needs_re_review'] = True
+                    count += 1
+            print(f"INFO: Flagged {count} jobs for re-review.")
             with open(JOBS_FILE, 'w', encoding='utf-8') as f:
                 json.dump(jobs, f, indent=2)
-        
+
     checkpoint_data["requirements_hash"] = req_hash
+    checkpoint_data["requirements_content"] = new_content
     with open(CHECKPOINT_FILE, 'w', encoding='utf-8') as f:
         json.dump(checkpoint_data, f, indent=2)
 
@@ -650,6 +719,41 @@ def extract_location_from_text(text):
     
     return None
 
+_LOCATION_REGIONS = {
+    # city (lowercase) -> canonical region string
+    **{c.lower(): "Oulu Region, Finland" for c in
+       ['Oulu', 'Kempele', 'Liminka', 'Haukipudas', 'Oulunsalo', 'Kiiminki', 'Tyrnävä', 'Muhos', 'Lumijoki', 'Hailuoto']},
+    **{c.lower(): "Helsinki Region, Finland" for c in
+       ['Helsinki', 'Espoo', 'Vantaa', 'Kauniainen', 'Kerava', 'Sipoo', 'Kirkkonummi', 'Tuusula',
+        'Järvenpää', 'Nurmijärvi', 'Vihti', 'Porvoo', 'Lohja', 'Hyvinkää', 'Mäntsälä']},
+    **{c.lower(): "Turku Region, Finland" for c in
+       ['Turku', 'Kaarina', 'Raisio', 'Naantali', 'Lieto', 'Parainen', 'Paimio', 'Masku', 'Rusko', 'Nousiainen', 'Salo']},
+    **{c.lower(): "Tampere Region, Finland" for c in
+       ['Tampere', 'Nokia', 'Ylöjärvi', 'Kangasala', 'Lempäälä', 'Pirkkala', 'Orivesi', 'Valkeakoski', 'Vesilahti', 'Hämeenkyrö']},
+    **{c.lower(): "Jyväskylä Region, Finland" for c in
+       ['Jyväskylä', 'Muurame', 'Laukaa', 'Äänekoski', 'Jämsä', 'Keuruu', 'Petäjävesi', 'Toivakka', 'Uurainen']},
+    **{c.lower(): "Rovaniemi Region, Finland" for c in
+       ['Rovaniemi', 'Ranua', 'Pello', 'Ylitornio', 'Kemijärvi', 'Sodankylä']},
+}
+
+def normalize_location(location_str):
+    """Validate and correct an LLM-returned location string against known city→region mappings.
+
+    Returns the corrected string, or the original if no known city is found in it.
+    Prevents misclassification where e.g. 'Espoo' ends up tagged as 'Oulu Region'.
+    """
+    if not location_str or location_str == "N/A":
+        return location_str
+    lower = location_str.lower()
+    # Scan for any known city name inside the string
+    for city_lower, canonical in _LOCATION_REGIONS.items():
+        if city_lower in lower:
+            if location_str != canonical:
+                print(f"INFO: Correcting location '{location_str}' → '{canonical}' (city: {city_lower})")
+            return canonical
+    return location_str
+
+
 def extract_company_from_text(text, job_title):
     """Extract company name from job page text using structural patterns.
     
@@ -802,7 +906,15 @@ Return a JSON object with exactly six keys:
 - "posted_date": a string, the date the job was posted formatted strictly as YYYY-MM-DD (e.g. '2026-06-12'). If a relative date like '3 days ago' is mentioned, calculate it relative to today's date ({today_str}). If not found, return 'N/A'.
 - "deadline": a string, the deadline for applying formatted strictly as YYYY-MM-DD (e.g. '2026-06-30'). Ignore any times (e.g. if deadline is 15.6.2026 23:59, return '2026-06-15'). If it is open-ended or 'open until filled', return 'Open until filled'. If not found, return 'N/A'.
 - "company": a string, the name of the hiring company as stated in the job posting (e.g. 'Wolt' or 'N/A' if not found). Do NOT use the job board name (e.g. do NOT return 'Indeed' or 'LinkedIn').
-- "location": a string, the city and country of the job. If the job is in Oulu or neighboring municipalities, ALWAYS return EXACTLY 'Oulu Region, Finland'. If it is in Helsinki, Espoo, Vantaa, or neighboring municipalities, return EXACTLY 'Helsinki Region, Finland'. If Turku or neighbors, return 'Turku Region, Finland'. If Tampere or neighbors, return 'Tampere Region, Finland'. If Jyväskylä or neighbors, return 'Jyväskylä Region, Finland'. If Rovaniemi or neighbors, return 'Rovaniemi Region, Finland'. For all other jobs in Finland, append ', Finland' to the city. Return 'N/A' only if truly unknown.
+- "location": a string, the PRIMARY work location of the job. Map it to EXACTLY one of the strings below based on the city — do NOT mix up regions:
+  * 'Oulu Region, Finland' — if city is one of: Oulu, Kempele, Liminka, Haukipudas, Oulunsalo, Kiiminki, Tyrnävä, Muhos, Lumijoki, Hailuoto
+  * 'Helsinki Region, Finland' — if city is one of: Helsinki, Espoo, Vantaa, Kauniainen, Kerava, Sipoo, Kirkkonummi, Tuusula, Järvenpää, Nurmijärvi, Vihti, Porvoo, Lohja, Hyvinkää, Mäntsälä
+  * 'Turku Region, Finland' — if city is one of: Turku, Kaarina, Raisio, Naantali, Lieto, Parainen, Paimio, Masku, Rusko, Nousiainen, Salo
+  * 'Tampere Region, Finland' — if city is one of: Tampere, Nokia, Ylöjärvi, Kangasala, Lempäälä, Pirkkala, Orivesi, Valkeakoski, Vesilahti, Hämeenkyrö
+  * 'Jyväskylä Region, Finland' — if city is one of: Jyväskylä, Muurame, Laukaa, Äänekoski, Jämsä, Keuruu, Petäjävesi, Toivakka, Uurainen
+  * 'Rovaniemi Region, Finland' — if city is one of: Rovaniemi, Ranua, Pello, Ylitornio, Kemijärvi, Sodankylä
+  * For any other Finnish city, return 'CityName, Finland'. Return 'N/A' only if truly unknown.
+  IMPORTANT: Use only the PRIMARY work location. Ignore offices mentioned in passing. Espoo and Vantaa are Helsinki Region — NEVER Oulu Region.
 
 IMPORTANT: Extract company and location ONLY from information explicitly stated in the job description text. Do NOT guess or hallucinate values.
 Do not include any conversational intro/outro or explanations outside the JSON object.
@@ -847,12 +959,15 @@ Do not include any conversational intro/outro or explanations outside the JSON o
                         
                         # Extract company and location from LLM if scraper had placeholder/unknown
                         ai_company = str(result.get("company", "N/A"))
-                        ai_location = str(result.get("location", "N/A"))
-                        
+                        ai_location = normalize_location(str(result.get("location", "N/A")))
+
                         if ai_company != "N/A" and (job.get('company') in ["Extract via OpenClaw", "Unknown", "", None]):
                             job['company'] = ai_company
                         if ai_location != "N/A" and (job.get('location') in ["Extract via OpenClaw", "Unknown", "", None]):
                             job['location'] = ai_location
+                        # Normalize the existing location to fix any historical misclassifications
+                        elif job.get('location'):
+                            job['location'] = normalize_location(job['location'])
                         
                         # Regex-based extraction: more reliable than LLM for structured Finnish data
                         regex_location = extract_location_from_text(cleaned_text)
@@ -956,8 +1071,10 @@ def update_git():
             print("INFO: Directory is not a Git repository. Skipping Git update.")
             return
 
-        # Add updated files
-        subprocess.run(["git", "add", "jobs.json", "seen_urls.json", "checkpoint.json", "dashboard.html", "job_descriptions"], cwd=repo_dir, check=True, env=env)
+        # Add updated files (including dashboard HTML and scraper changes)
+        subprocess.run(["git", "add", "jobs.json", "seen_urls.json", "checkpoint.json", "dashboard.html",
+                        "job_descriptions", "job_requirements.md",
+                        "firebase_app/index.html", "scraper.py"], cwd=repo_dir, check=True, env=env)
         # Check if there are changes to commit
         status = subprocess.run(["git", "status", "--porcelain"], cwd=repo_dir, capture_output=True, text=True, env=env)
         if status.stdout.strip():
@@ -978,6 +1095,15 @@ def update_git():
             try:
                 subprocess.run(push_cmd, cwd=repo_dir, check=True, env=env)
                 print("Successfully pushed updates to GitHub!")
+                # Deploy dashboard to Firebase Hosting if the CLI is available
+                firebase_app_dir = os.path.join(repo_dir, "firebase_app")
+                if os.path.exists(os.path.join(firebase_app_dir, "firebase.json")):
+                    try:
+                        subprocess.run(["firebase", "deploy", "--only", "hosting", "--non-interactive"],
+                                       cwd=firebase_app_dir, check=True, env=env, timeout=120)
+                        print("Successfully deployed dashboard to Firebase Hosting.")
+                    except (subprocess.CalledProcessError, FileNotFoundError, subprocess.TimeoutExpired) as fe:
+                        print(f"Firebase deploy skipped or failed (run 'firebase deploy' manually if needed): {fe}")
             except subprocess.CalledProcessError:
                 print("Failed to push to GitHub (Check your GITHUB_TOKEN or internet connection).")
         else:
@@ -1015,6 +1141,28 @@ def print_job_summary():
     except Exception as e:
         print(f"Error reading jobs file for status display: {e}")
 
+def self_heal_locations():
+    """One-time pass: normalize every job's location field against the known city→region map."""
+    if not os.path.exists(JOBS_FILE):
+        return
+    try:
+        with open(JOBS_FILE, 'r', encoding='utf-8') as f:
+            jobs = json.load(f)
+        changed = False
+        for job in jobs:
+            loc = job.get('location', '')
+            fixed = normalize_location(loc)
+            if fixed and fixed != loc:
+                job['location'] = fixed
+                changed = True
+        if changed:
+            with open(JOBS_FILE, 'w', encoding='utf-8') as f:
+                json.dump(jobs, f, indent=2)
+            print("INFO: self_heal_locations: corrected location misclassifications in jobs.json.")
+    except Exception as e:
+        print(f"Error during self_heal_locations: {e}")
+
+
 def self_heal_dates():
     """Run through existing jobs in jobs.json and standardize their dates using the native scraper logic."""
     if not os.path.exists(JOBS_FILE):
@@ -1044,6 +1192,40 @@ def self_heal_dates():
                 json.dump(jobs, f, indent=2)
     except Exception as e:
         print(f"Error self-healing dates: {e}")
+
+def is_meaningful_reason(reason):
+    """Returns True if reason is substantive enough to add to job requirements."""
+    stripped = reason.strip().lower()
+    if len(stripped.split()) < 3:
+        return False
+    test_words = ('test', 'testing', 'try', 'trying', 'debug', 'hello', 'foo', 'bar', 'abc', 'asdf', 'sample', 'check', 'again')
+    if stripped.split()[0] in test_words:
+        return False
+    return True
+
+
+def send_email_notification(subject, body):
+    """Send an email via Gmail SMTP. Requires GMAIL_SENDER and GMAIL_APP_PASSWORD env vars."""
+    import smtplib
+    from email.mime.text import MIMEText
+    sender = os.environ.get("GMAIL_SENDER")
+    app_password = os.environ.get("GMAIL_APP_PASSWORD")
+    recipient = os.environ.get("NOTIFICATION_EMAIL", sender)
+    if not sender or not app_password:
+        print("INFO: Email notification skipped (GMAIL_SENDER / GMAIL_APP_PASSWORD not set).")
+        return
+    try:
+        msg = MIMEText(body)
+        msg["Subject"] = subject
+        msg["From"] = sender
+        msg["To"] = recipient
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+            server.login(sender, app_password)
+            server.sendmail(sender, [recipient], msg.as_string())
+        print(f"INFO: Email notification sent to {recipient}.")
+    except Exception as e:
+        print(f"WARN: Failed to send email notification: {e}")
+
 
 def poll_firebase_feedback():
     """Polls the Firebase Firestore REST API for user feedback, updates requirements, and deletes them."""
@@ -1109,19 +1291,22 @@ def poll_firebase_feedback():
                 continue
 
             reason = fields.get("reason", {}).get("stringValue", "")
-            
+
             if feedback_type == "positive":
                 if url_field:
-                    match_updates[url_field] = "yes"
+                    match_updates[url_field] = ("yes", reason.strip())
             else:
                 if url_field:
-                    match_updates[url_field] = "no"
+                    match_updates[url_field] = ("no", reason.strip())
 
             if reason and reason.strip():
-                if feedback_type == "positive":
-                    new_positive_rules.append(reason.strip())
+                if is_meaningful_reason(reason.strip()):
+                    if feedback_type == "positive":
+                        new_positive_rules.append(reason.strip())
+                    else:
+                        new_negative_rules.append(reason.strip())
                 else:
-                    new_negative_rules.append(reason.strip())
+                    print(f"INFO: Skipping low-quality reason (not added to requirements): '{reason.strip()}'")
                 
             # Update the document status to "read" so we keep a history in the cloud
             if doc_name:
@@ -1185,7 +1370,10 @@ def poll_firebase_feedback():
                     changed = False
                     for j in jobs:
                         if j.get('url') in match_updates:
-                            j['matches_requirements'] = match_updates[j['url']]
+                            new_status, user_reason = match_updates[j['url']]
+                            j['matches_requirements'] = new_status
+                            # Always overwrite user_reason so stale reasons are cleared when no reason is given
+                            j['user_reason'] = user_reason
                             changed = True
                     if changed:
                         with open(JOBS_FILE, 'w', encoding='utf-8') as f:
@@ -1207,8 +1395,72 @@ def poll_firebase_feedback():
     except Exception as e:
         print(f"Error polling Firebase feedback: {e}")
 
+FIRESTORE_BASE = "https://firestore.googleapis.com/v1/projects/manju-jobs-dashboard/databases/(default)/documents"
+
+
+def poll_re_review_request():
+    """Check Firebase for a user-triggered re-review request and run it synchronously."""
+    doc_url = f"{FIRESTORE_BASE}/shared_state/re_review_request"
+    try:
+        response = requests.get(doc_url, timeout=10)
+        if response.status_code != 200:
+            return
+        data = response.json()
+        fields = data.get("fields", {})
+        status = fields.get("status", {}).get("stringValue", "")
+        if status != "requested":
+            return
+
+        print("INFO: Re-review request received from dashboard. Flagging jobs...")
+        requests.patch(
+            f"{doc_url}?updateMask.fieldPaths=status",
+            json={"fields": {"status": {"stringValue": "in_progress"}}},
+            timeout=10
+        )
+
+        count = 0
+        if os.path.exists(JOBS_FILE):
+            with open(JOBS_FILE, 'r', encoding='utf-8') as f:
+                jobs = json.load(f)
+            for job in jobs:
+                if job.get('user_review') == 'done':
+                    continue
+                if job.get('matches_requirements') in {'yes', 'maybe', 'pending', 'error'}:
+                    job['needs_re_review'] = True
+                    count += 1
+            with open(JOBS_FILE, 'w', encoding='utf-8') as f:
+                json.dump(jobs, f, indent=2)
+        print(f"INFO: Flagged {count} jobs for re-review (user-triggered).")
+
+        while not stop_event.is_set():
+            with open(JOBS_FILE, 'r', encoding='utf-8') as f:
+                jobs = json.load(f)
+            batch = [j for j in jobs if j.get('needs_re_review') == True]
+            if not batch:
+                break
+            review_pending_jobs(specific_urls={j['url'] for j in batch[:15]})
+
+        completed_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        requests.patch(
+            f"{doc_url}?updateMask.fieldPaths=status&updateMask.fieldPaths=completedAt",
+            json={"fields": {
+                "status": {"stringValue": "completed"},
+                "completedAt": {"stringValue": completed_at}
+            }},
+            timeout=10
+        )
+        send_email_notification(
+            "Re-review complete — Manju Job Dashboard",
+            f"The re-review of matching jobs finished at {completed_at}.\nCheck the dashboard for updated results."
+        )
+        print(f"INFO: Re-review complete at {completed_at}.")
+    except Exception as e:
+        print(f"Error handling re-review request: {e}")
+
+
 def main():
     self_heal_dates()
+    self_heal_locations()
     parser = argparse.ArgumentParser(description="Job Scraper and Reviewer")
     parser.add_argument("--git-only", action="store_true", help="Only run the Git commit and push step, then exit.")
     parser.add_argument("--review-only", action="store_true", help="Only run the local LLM review step on pending jobs, then exit.")
@@ -1291,8 +1543,9 @@ def main():
             time.sleep(1)
         return
 
-    # Self-heal dates before main loop
+    # Self-heal dates and locations before main loop
     self_heal_dates()
+    self_heal_locations()
 
     print("INFO: Scraper script starting execution loop...")
     # Start the background thread to listen for user input
@@ -1304,7 +1557,12 @@ def main():
             poll_firebase_feedback()
         except Exception as e:
             print(f"Error polling firebase: {e}")
-            
+
+        try:
+            poll_re_review_request()
+        except Exception as e:
+            print(f"Error handling re-review request: {e}")
+
         try:
             check_requirements_update()
         except Exception as e:
