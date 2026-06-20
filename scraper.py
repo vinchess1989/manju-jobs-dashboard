@@ -462,6 +462,8 @@ def check_requirements_update():
             for job in jobs:
                 if job.get('user_review') == 'done':
                     continue
+                if job.get('applied') == 'yes':
+                    continue
                 if status_filter is None or job.get('matches_requirements') in status_filter:
                     job['needs_re_review'] = True
                     count += 1
@@ -800,10 +802,17 @@ def review_pending_jobs(specific_urls=None):
     with open(JOBS_FILE, 'r', encoding='utf-8') as f:
         jobs = json.load(f)
         
+    def _is_reviewable(j):
+        if j.get('user_review') == 'done':
+            return False
+        if j.get('applied') == 'yes':
+            return False
+        return j.get('matches_requirements') == 'pending' or j.get('needs_re_review') == True
+
     if specific_urls is not None:
-        pending_jobs = [j for j in jobs if (j.get('matches_requirements') == 'pending' or j.get('needs_re_review') == True) and j['url'] in specific_urls]
+        pending_jobs = [j for j in jobs if _is_reviewable(j) and j['url'] in specific_urls]
     else:
-        pending_jobs = [j for j in jobs if j.get('matches_requirements') == 'pending' or j.get('needs_re_review') == True]
+        pending_jobs = [j for j in jobs if _is_reviewable(j)]
         
     if not pending_jobs:
         return
@@ -1411,26 +1420,41 @@ def poll_re_review_request():
         if status != "requested":
             return
 
-        print("INFO: Re-review request received from dashboard. Flagging jobs...")
+        print("INFO: " + "=" * 60)
+        print("INFO: RE-REVIEW TRIGGERED BY USER (dashboard button)")
         requests.patch(
             f"{doc_url}?updateMask.fieldPaths=status",
             json={"fields": {"status": {"stringValue": "in_progress"}}},
             timeout=10
         )
 
-        count = 0
+        by_status = {}
+        skip_done = 0
+        skip_applied = 0
+        eligible = {'yes', 'maybe', 'pending', 'error'}
+
         if os.path.exists(JOBS_FILE):
             with open(JOBS_FILE, 'r', encoding='utf-8') as f:
                 jobs = json.load(f)
             for job in jobs:
                 if job.get('user_review') == 'done':
+                    skip_done += 1
                     continue
-                if job.get('matches_requirements') in {'yes', 'maybe', 'pending', 'error'}:
+                if job.get('applied') == 'yes':
+                    skip_applied += 1
+                    continue
+                s = job.get('matches_requirements', '')
+                if s in eligible:
                     job['needs_re_review'] = True
-                    count += 1
+                    by_status[s] = by_status.get(s, 0) + 1
             with open(JOBS_FILE, 'w', encoding='utf-8') as f:
                 json.dump(jobs, f, indent=2)
-        print(f"INFO: Flagged {count} jobs for re-review (user-triggered).")
+
+        total = sum(by_status.values())
+        scope_parts = [f"{s}={n}" for s, n in sorted(by_status.items())]
+        print(f"INFO: Scope     : {' | '.join(scope_parts) if scope_parts else 'nothing to review'} → {total} job(s) queued")
+        print(f"INFO: Skipping  : user_review=done ({skip_done})  applied=yes ({skip_applied})")
+        print("INFO: " + "=" * 60)
 
         while not stop_event.is_set():
             with open(JOBS_FILE, 'r', encoding='utf-8') as f:
@@ -1449,11 +1473,13 @@ def poll_re_review_request():
             }},
             timeout=10
         )
+        print("INFO: " + "=" * 60)
+        print(f"INFO: RE-REVIEW COMPLETE at {completed_at}  ({total} job(s) reviewed)")
+        print("INFO: " + "=" * 60)
         send_email_notification(
             "Re-review complete — Manju Job Dashboard",
             f"The re-review of matching jobs finished at {completed_at}.\nCheck the dashboard for updated results."
         )
-        print(f"INFO: Re-review complete at {completed_at}.")
     except Exception as e:
         print(f"Error handling re-review request: {e}")
 
@@ -1643,11 +1669,25 @@ def main():
         
         print(f"Waiting {wait_time} seconds before the next run. Press [Enter] or Ctrl+C to stop...")
         
-        # This loop waits in small increments so KeyboardInterrupt can be caught immediately on Windows
+        # This loop waits in small increments so KeyboardInterrupt can be caught immediately on Windows.
+        # Also polls Firestore every 15 s so a Re-Review request wakes the scraper immediately.
         slept = 0
+        next_firebase_poll = 15.0
         while slept < wait_time and not stop_event.is_set():
             time.sleep(0.5)
             slept += 0.5
+            if slept >= next_firebase_poll:
+                next_firebase_poll += 15.0
+                try:
+                    doc_url = f"{FIRESTORE_BASE}/shared_state/re_review_request"
+                    resp = requests.get(doc_url, timeout=5)
+                    if resp.status_code == 200:
+                        status = resp.json().get("fields", {}).get("status", {}).get("stringValue", "")
+                        if status == "requested":
+                            print("INFO: Re-review request detected during wait — waking up early.")
+                            break
+                except Exception:
+                    pass
             
         if stop_event.is_set():
             print("Stopping the scraper...")
