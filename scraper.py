@@ -315,6 +315,16 @@ def scrape_all_jobs(max_jobs=200):
         except Exception:
             pass
 
+    # Seed seen_urls from existing jobs so a stale seen_urls.json can't cause duplicates
+    existing_jobs = []
+    if os.path.exists(JOBS_FILE):
+        try:
+            with open(JOBS_FILE, 'r', encoding='utf-8') as f:
+                existing_jobs = json.load(f)
+            seen_urls.update(j['url'] for j in existing_jobs)
+        except Exception:
+            pass
+
     checkpoint_idx = 0
     if os.path.exists(CHECKPOINT_FILE):
         try:
@@ -382,16 +392,12 @@ def scrape_all_jobs(max_jobs=200):
     print(f"\nTotal new jobs fetched in this run: {len(all_extracted_jobs)}")
     print(f"Stopped at target index: {current_idx} out of {len(targets)}")
     
-    # Read existing jobs so we can append rather than overwrite
-    existing_jobs = []
-    if os.path.exists(JOBS_FILE):
-        try:
-            with open(JOBS_FILE, 'r', encoding='utf-8') as f:
-                existing_jobs = json.load(f)
-        except Exception:
-            pass
-
-    combined_jobs = existing_jobs + all_extracted_jobs
+    # Merge: filter out any URLs already in existing_jobs (guards against seen_urls desync)
+    existing_urls = {j['url'] for j in existing_jobs}
+    deduped_new = [j for j in all_extracted_jobs if j['url'] not in existing_urls]
+    if len(deduped_new) < len(all_extracted_jobs):
+        print(f"INFO: Dropped {len(all_extracted_jobs) - len(deduped_new)} duplicate URLs at merge time.")
+    combined_jobs = existing_jobs + deduped_new
 
     # Save combined jobs to jobs.json
     with open(JOBS_FILE, 'w', encoding='utf-8') as f:
