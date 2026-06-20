@@ -1468,10 +1468,12 @@ def poll_re_review_request():
     try:
         response = requests.get(doc_url, timeout=10)
         if response.status_code != 200:
+            print(f"INFO: poll_re_review: Firestore GET returned {response.status_code} — skipping.")
             return
         data = response.json()
         fields = data.get("fields", {})
         status = fields.get("status", {}).get("stringValue", "")
+        print(f"INFO: poll_re_review: status='{status}'")
         if status != "requested":
             return
 

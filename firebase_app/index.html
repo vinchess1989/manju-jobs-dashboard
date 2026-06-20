@@ -757,10 +757,12 @@
                     });
 
                     // Live status for Re-Review button
+                    let reReviewStaleTimer = null;
                     db.collection('shared_state').doc('re_review_request').onSnapshot(doc => {
                         const btn = document.getElementById('re-review-btn');
                         const statusEl = document.getElementById('re-review-status');
                         if (!btn || !statusEl) return;
+                        if (reReviewStaleTimer) { clearTimeout(reReviewStaleTimer); reReviewStaleTimer = null; }
                         if (!doc.exists) {
                             btn.disabled = false;
                             statusEl.textContent = '';
@@ -771,10 +773,22 @@
                             btn.disabled = true;
                             statusEl.style.color = '#f59e0b';
                             statusEl.textContent = 'Queued…';
+                            // Stale guard: if scraper doesn't pick it up within 10 min, re-enable
+                            reReviewStaleTimer = setTimeout(() => {
+                                btn.disabled = false;
+                                statusEl.style.color = '#ef4444';
+                                statusEl.textContent = 'Timed out — try again';
+                            }, 10 * 60 * 1000);
                         } else if (s === 'in_progress') {
                             btn.disabled = true;
                             statusEl.style.color = '#60a5fa';
                             statusEl.textContent = 'Reviewing…';
+                            // Stale guard: allow 30 min for actual review to complete
+                            reReviewStaleTimer = setTimeout(() => {
+                                btn.disabled = false;
+                                statusEl.style.color = '#ef4444';
+                                statusEl.textContent = 'Timed out — try again';
+                            }, 30 * 60 * 1000);
                         } else if (s === 'completed') {
                             btn.disabled = false;
                             statusEl.style.color = '#10b981';
@@ -1392,17 +1406,19 @@
             
             const counter = document.getElementById('listings-counter');
             if (counter) {
-                let text = `<strong>${visibleCount}</strong>`;
+                let text = `<strong id="stat-total" style="cursor:help;border-bottom:1px dashed rgba(255,255,255,0.4);">${visibleCount}</strong>`;
                 if (visibleCount !== allJobs.length) {
                     text += ` (filtered from ${allJobs.length})`;
                 }
                 text += ` <span style="margin: 0 10px; opacity: 0.3;">|</span> `;
-                text += `<span style="color: var(--color-yes); font-weight: 600;">Yes: ${counts.yes}</span> &nbsp;&nbsp; `;
+                text += `<span id="stat-yes" style="color: var(--color-yes); font-weight: 600; cursor:help; border-bottom:1px dashed rgba(16,185,129,0.5);">Yes: ${counts.yes}</span> &nbsp;&nbsp; `;
                 text += `<span style="color: var(--color-maybe); font-weight: 600;">Maybe: ${counts.maybe}</span> &nbsp;&nbsp; `;
                 text += `<span style="color: var(--color-no); font-weight: 600;">No: ${counts.no}</span> &nbsp;&nbsp; `;
                 text += `<span style="color: var(--color-pending); font-weight: 600;">Pending: ${counts.pending}</span> &nbsp;&nbsp; `;
                 text += `<span style="color: #a78bfa; font-weight: 600;">Re-review: ${counts.rereview}</span>`;
                 counter.innerHTML = text;
+                _attachChartHover(document.getElementById('stat-yes'), 'yes');
+                _attachChartHover(document.getElementById('stat-total'), 'total');
             }
             
             const appliedCounter = document.getElementById('applied-counter');
@@ -1695,7 +1711,97 @@
                     }
                 }
             }
-        }    
+        }
+
+        // ── History trend chart ────────────────────────────────────────────────
+        let _chartHistory = null;
+        async function _loadChartHistory() {
+            if (_chartHistory !== null) return _chartHistory;
+            try {
+                const r = await fetch('https://raw.githubusercontent.com/vinchess1989/manju-jobs-dashboard/main/jobs_history.json?nocache=' + Date.now());
+                _chartHistory = r.ok ? await r.json() : [];
+            } catch (e) { _chartHistory = []; }
+            return _chartHistory;
+        }
+        function _renderChart(canvas, data, metric) {
+            const ctx = canvas.getContext('2d');
+            const W = canvas.width, H = canvas.height;
+            ctx.clearRect(0, 0, W, H);
+            if (!data || data.length < 2) {
+                ctx.fillStyle = 'rgba(255,255,255,0.4)'; ctx.font = '11px sans-serif'; ctx.textAlign = 'center';
+                ctx.fillText('Not enough data yet', W / 2, H / 2); return;
+            }
+            const LINES = metric === 'yes'
+                ? [{ key: 'yes', color: '#10b981', label: 'Yes' }, { key: 'maybe', color: '#f59e0b', label: 'Maybe' }]
+                : [{ key: 'total', color: '#a5b4fc', label: 'Total' }, { key: 'yes', color: '#10b981', label: 'Yes' }];
+            const allVals = data.flatMap(d => LINES.map(l => d[l.key] ?? 0));
+            const minVal = Math.max(0, Math.min(...allVals) - 1), maxVal = Math.max(...allVals) + 1, range = maxVal - minVal || 1;
+            const pL = 38, pR = 10, pT = 22, pB = 22, cW = W - pL - pR, cH = H - pT - pB;
+            ctx.strokeStyle = 'rgba(255,255,255,0.06)'; ctx.lineWidth = 1;
+            for (let i = 0; i <= 4; i++) {
+                const y = pT + cH * i / 4;
+                ctx.beginPath(); ctx.moveTo(pL, y); ctx.lineTo(pL + cW, y); ctx.stroke();
+                ctx.fillStyle = 'rgba(255,255,255,0.35)'; ctx.font = '9px sans-serif'; ctx.textAlign = 'right';
+                ctx.fillText(Math.round(maxVal - range * i / 4), pL - 3, y + 3);
+            }
+            LINES.forEach(line => {
+                ctx.strokeStyle = line.color; ctx.lineWidth = 2; ctx.lineJoin = 'round'; ctx.beginPath();
+                data.forEach((d, i) => {
+                    const x = pL + (i / (data.length - 1)) * cW;
+                    const y = pT + cH - ((d[line.key] ?? 0) - minVal) / range * cH;
+                    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+                }); ctx.stroke();
+                if (data.length <= 40) {
+                    ctx.fillStyle = line.color;
+                    data.forEach((d, i) => {
+                        const x = pL + (i / (data.length - 1)) * cW;
+                        const y = pT + cH - ((d[line.key] ?? 0) - minVal) / range * cH;
+                        ctx.beginPath(); ctx.arc(x, y, 2.5, 0, Math.PI * 2); ctx.fill();
+                    });
+                }
+            });
+            const fmt = d => new Date(d.timestamp).toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+            ctx.fillStyle = 'rgba(255,255,255,0.4)'; ctx.font = '9px sans-serif';
+            ctx.textAlign = 'left'; ctx.fillText(fmt(data[0]), pL, H - 5);
+            ctx.textAlign = 'right'; ctx.fillText(fmt(data[data.length - 1]), pL + cW, H - 5);
+            let lx = pL;
+            LINES.forEach(line => {
+                ctx.strokeStyle = line.color; ctx.lineWidth = 2;
+                ctx.beginPath(); ctx.moveTo(lx, pT - 7); ctx.lineTo(lx + 14, pT - 7); ctx.stroke();
+                ctx.fillStyle = 'rgba(255,255,255,0.75)'; ctx.font = '9px sans-serif'; ctx.textAlign = 'left';
+                ctx.fillText(line.label, lx + 16, pT - 3);
+                lx += 16 + ctx.measureText(line.label).width + 20;
+            });
+        }
+        async function _showChartTooltip(el, metric) {
+            const tip = document.getElementById('chart-tooltip');
+            document.getElementById('chart-tooltip-title').textContent =
+                metric === 'yes' ? 'Yes & Maybe matches over time' : 'Total listings & Yes matches over time';
+            tip.style.display = 'block';
+            const rect = el.getBoundingClientRect();
+            const tipW = 350, tipH = 185;
+            let left = rect.left + rect.width / 2 - tipW / 2;
+            let top = rect.top - tipH - 14 + window.scrollY;
+            if (left < 8) left = 8;
+            if (left + tipW > window.innerWidth - 8) left = window.innerWidth - tipW - 8;
+            if (top < window.scrollY + 8) top = rect.bottom + 14 + window.scrollY;
+            tip.style.left = left + 'px'; tip.style.top = top + 'px';
+            const data = await _loadChartHistory();
+            _renderChart(document.getElementById('chart-tooltip-canvas'), data, metric);
+        }
+        function _hideChartTooltip() { document.getElementById('chart-tooltip').style.display = 'none'; }
+        function _attachChartHover(el, metric) {
+            if (!el) return;
+            el.addEventListener('mouseenter', () => _showChartTooltip(el, metric));
+            el.addEventListener('mouseleave', _hideChartTooltip);
+        }
+        // ── End history trend chart ────────────────────────────────────────────
     </script>
+
+    <!-- History trend chart tooltip -->
+    <div id="chart-tooltip" style="display:none;position:absolute;z-index:9999;background:#161b2e;border:1px solid rgba(255,255,255,0.12);border-radius:0.75rem;padding:0.75rem 1rem 0.6rem;box-shadow:0 20px 50px rgba(0,0,0,0.75);pointer-events:none;width:350px;">
+        <div id="chart-tooltip-title" style="font-size:0.72rem;font-weight:600;color:rgba(255,255,255,0.55);margin-bottom:0.5rem;font-family:'Space Grotesk',sans-serif;letter-spacing:0.04em;text-transform:uppercase;"></div>
+        <canvas id="chart-tooltip-canvas" width="318" height="130"></canvas>
+    </div>
 </body>
 </html>
