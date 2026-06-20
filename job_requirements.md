@@ -5,65 +5,62 @@
 * **Current Role:** Unemployed
 * **Years of Experience:** 2 years
 * **Background:** Law degree completed in India (international degree in English). Currently located in Finland and completing supplementary courses in Finnish to obtain equivalence/qualification for a Finnish law degree.
-* **Key Skills:** Corporate Law
+* **Key Skills:** Office administration, document management, customer service, corporate law background.
 * **Driving:** Has a valid driving license and can use her personal car for work if required.
 
 ## Hard Rejections
 Immediately discard a job if ANY of the following are true:
-* The job title contains "Senior". The candidate does not have enough experience for senior roles.
-* The job requires domain-specific technical expertise in any of the following fields: carpentry, electrical work, construction, cooking/chef, security guard, special education, nursing, or teaching. Discard even if the role appears entry-level.
-* The job is a trade or manual-labour role requiring specific vocational training, such as: welding (hitsaaja, TIG-hitsaaja), metalwork/fabrication (särmääjä, koneistaja), scaffold assembly (telineasentaja), asbestos/demolition work, crane/heavy equipment operation, refrigeration installation (kylmäasentaja), or any similar skilled-trade position. These are NOT covered by the "Generalist / No-Requirement Role" exception — they require trade-specific qualifications.
-* The job is in the medical or healthcare field requiring clinical training, such as: physician (lääkäri, ylilääkäri), pharmacist (farmaseutti), nurse practitioner, lab technician (laboratoriohoitaja), masseur/physiotherapist (hieroja), or any other role requiring a medical or healthcare degree. Note: "nursing" already covers many of these, but apply this rule broadly to all clinical roles.
-* The job title is clearly unrelated to both law and general office/service work — e.g. husky guide, dog handler, pest control specialist, retinal photographer, diver, etc.
+* The job title contains "Senior", "Manager", "Head of", "Director", or "Lead". The candidate does not have enough experience for these levels.
+* The job requires domain-specific technical expertise in: carpentry, electrical work, construction, cooking/chef, security guard, special education, nursing, or teaching.
+* The job is a trade or manual-labour role requiring specific vocational training: welding, metalwork/fabrication, scaffold assembly, asbestos/demolition, crane/heavy equipment operation, refrigeration installation, or any similar skilled-trade position.
+* The job is in the medical or healthcare field requiring clinical training: physician (lääkäri), pharmacist (farmaseutti), nurse practitioner, lab technician (laboratoriohoitaja), physiotherapist, or any role requiring a medical/healthcare degree.
+* The job requires a specific technical degree (engineering, IT/software development, science, architecture) as a hard requirement — unless the posting explicitly says the degree requirement can be waived with experience.
+* The job title is clearly unrelated to office or service work — e.g. husky guide, dog handler, pest control, diver, retinal photographer, etc.
+* Construction experts or construction-related roles.
 
 ## Target Job Criteria
 
-A job is a match if it satisfies the criteria in ALL of the following categories:
+A job is a match if it satisfies ALL of the following:
 
 **1. Location & Work Model:**
 * **Yes Match:** Must satisfy at least ONE of the following:
-  * Oulu AND On-site
-  * Finland AND Hybrid
-  * Fully Remote AND (the location is "Worldwide" OR no specific country is mentioned). Must NOT require US residency.
-* **Maybe Match:** If the job is located in a different location in Finland (outside Oulu) and does not have a hybrid/remote option (i.e. on-site in Helsinki, Tampere, etc.), mark it as "maybe" (instead of "no"), provided it satisfies all other criteria.
-* **Location Inference:** If the job description is written in Finnish and no location is specified, set/assume the location as Finland.
-* **Remote jobs listed under a specific foreign country (UK, USA, Spain, India, etc.):** These do NOT automatically qualify as "Fully Remote / Worldwide". They only qualify if the posting explicitly states it is open to applicants from anywhere / outside that country. If the posting is country-specific (e.g. "Remote – United Kingdom"), treat the location as that country and apply the standard location rules (which will result in "no" for most non-Finland postings).
+  * Oulu AND On-site (or hybrid)
+  * Anywhere in Finland AND Hybrid or Remote
+  * Fully Remote AND (location is "Worldwide" OR no specific country mentioned). Must NOT require EU/Finnish residency or US residency.
+* **Maybe Match:** On-site role outside Oulu (Helsinki, Tampere, Turku, etc.) that passes all other criteria.
+* **Location Inference:** If the job description is in Finnish and no location is specified, assume Finland.
+* **Country-specific remote jobs (UK, USA, India, etc.):** Only qualify as remote if the posting explicitly states it is open to applicants from anywhere. Otherwise treat as that country (→ "no").
 
+**2. Role Type — Primary: Generalist Office Roles:**
+This is the PRIMARY match category. Match if the role is any entry-level or mid-level office/service position that does NOT require a specific technical degree. Examples include (but are not limited to):
+* **Administration & Coordination:** office assistant, office coordinator, administrative assistant, executive assistant, receptionist, project coordinator, operations assistant, back-office support.
+* **Customer Service & Sales:** customer service representative, customer support agent, sales assistant, account coordinator, helpdesk agent, inside sales.
+* **HR & People:** HR assistant, HR coordinator, recruitment coordinator, people ops assistant, talent acquisition support.
+* **Finance & Accounting Support:** accounts assistant, invoicing clerk, billing coordinator, payroll assistant — entry-level only, no CPA/accountant qualification required.
+* **Marketing & Communications:** marketing assistant, communications assistant, content coordinator, social media assistant.
+* **Data & Document Management:** data entry clerk, document controller, records coordinator, quality assistant.
+* **Logistics & Supply Chain Support:** logistics coordinator, supply chain assistant, procurement assistant — office-based, no warehouse/forklift work.
+* **Legal & Compliance (Secondary):** Any legal, compliance, contract management, or corporate law role (trainee, junior, or permanent) that accepts an international/Indian law degree OR is a Finnish trainee role (laki-/lakiharjoittelu).
 
-**2. Domain, Position Type, & Degree Requirements:**
-Must satisfy at least ONE of the following valid combinations:
-* **Trainee / Internship Role (Legal):** Trainee, internship, or junior legal role, even if it requires a Finnish law degree or Finnish qualification (since she is in Finland and currently doing the supplementary courses needed).
-* **English Law Role:** Any legal, compliance, contract management, or corporate law role (permanent, trainee, or contract) that accepts a law degree in English or an international/Indian law degree (without strictly requiring a Finnish qualification).
-* **Generalist / No-Requirement Role:** If it's an entry level job and it doesn't require any specific technical degree or experience, consider as a match even though it doesn't directly match the candidate's key skills (e.g. entry-level business, administration, customer support, marketing, sales, etc). Can be permanent, contract, or trainee.
+A role qualifies if it is entry-level or does not list a strict degree requirement beyond a general bachelor's or equivalent.
 
 **3. Application Deadline:**
-* The last date of application MUST be in the future (use a function or your system context to find today's date).
-* If the deadline has already passed, discard the job. If no deadline is explicitly mentioned, assume it is still active.
+* The application deadline MUST be in the future relative to today's date.
+* If the deadline has already passed, discard. If no deadline is mentioned, assume it is still active.
 
-* **Salary Expectation:** None
+**Salary Expectation:** None
 
 ## Agent Instructions
-When evaluating a job posting, you MUST use your web fetch tool to visit the URL to check the application deadline and read the full job description. Logically check if it fits the combinations defined above.
+When evaluating a job posting, use your web fetch tool to visit the URL and read the full description. Then apply checks in this order:
 
-**Critical evaluation order — apply these checks in sequence:**
-1. **Read the actual job title and description first.** Do not infer the role type from the company name or location alone. A job in Oulu is not automatically a "legal" or "generalist" role.
-2. **Apply Hard Rejections first.** If the role is a trade (welder, carpenter, electrician), medical (doctor, pharmacist, nurse), cooking, teaching, or special education job, discard it immediately — location does not matter.
-3. **Then check Domain criteria.** The role must fit one of the three valid combinations (Legal Trainee, English Law Role, or Generalist No-Requirement). Entry-level sales, admin, customer service, marketing qualify as generalist. Skilled trades do NOT.
-4. **Then check Location.** Only after passing the above checks.
-5. **Then check Deadline.** Reject if the deadline has already passed relative to today's date.
+1. **Read the full job title and description.** Do not infer from the company name or location alone.
+2. **Apply Hard Rejections.** Trade, clinical/medical, senior-level, or purely technical roles → discard immediately.
+3. **Check Role Type.** Does it fit a generalist office/service role or a legal role? If yes → proceed. If the role requires a specific technical degree (IT, engineering, science) as a hard requirement → "no".
+4. **Check Location.**
+5. **Check Deadline.**
 
-**Tracking Evaluations:** After evaluating a "pending" job in `jobs.json`, you MUST update that specific job's entry directly within `jobs.json` in-place. Set `"visited": "yes"`, update `"matches_requirements"` to `"yes"` (if it matched), `"maybe"` (if it is a maybe match), or `"no"` (if it was discarded), and set `"reason"` to a brief 1-sentence explanation of your decision. Do NOT delete any records from the file!
+**Tracking Evaluations:** After evaluating a "pending" job in `jobs.json`, update that job's entry in-place: set `"visited": "yes"`, set `"matches_requirements"` to `"yes"`, `"maybe"`, or `"no"`, and set `"reason"` to a brief 1-sentence explanation. Do NOT delete records.
 
-### Automatically Added Negative Constraints (from UI Rejections):
-- NEGATIVE CONSTRAINT: The user explicitly rejected a previous job because: 'Construction experts'. Do NOT match jobs that have this issue.
-- NEGATIVE CONSTRAINT: The user explicitly rejected a previous job because: 'carpenter job'. Do NOT match jobs that have this issue.
-- NEGATIVE CONSTRAINT: The user explicitly rejected a previous job because: 'requires msc or PhD in technical areas like electrical or telecommunications'. Do NOT match jobs that have this issue.
-
-
-### Automatically Added Positive Constraints (from UI Approvals):
-- POSITIVE CONSTRAINT: The user explicitly approved a previous job because: 'testing reason'. Make sure to MATCH jobs that have this characteristic.
-
-
-### Automatically Added Positive Constraints (from UI Approvals):
-- POSITIVE CONSTRAINT: The user explicitly approved a previous job because: 'testing again'. Make sure to MATCH jobs that have this characteristic.
-- POSITIVE CONSTRAINT: The user explicitly approved a previous job because: 'testing again and agian'. Make sure to MATCH jobs that have this characteristic.
+### Negative Constraints (from user feedback):
+- Do NOT match jobs that require MSc or PhD in technical areas like electrical or telecommunications.
+- Do NOT match carpenter jobs or construction expert roles.
