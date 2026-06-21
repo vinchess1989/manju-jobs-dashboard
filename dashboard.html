@@ -869,6 +869,8 @@
             const ctx = canvas.getContext('2d');
             const W = canvas.width, H = canvas.height;
             ctx.clearRect(0, 0, W, H);
+            const _cutoffMs = new Date('2026-06-19T00:00:00').getTime();
+            data = (data || []).filter(d => new Date(d.timestamp).getTime() >= _cutoffMs);
             if (!data || data.length < 2) {
                 ctx.fillStyle = 'rgba(255,255,255,0.4)'; ctx.font = '11px sans-serif'; ctx.textAlign = 'center';
                 ctx.fillText('Not enough data yet', W / 2, H / 2); return;
