@@ -730,7 +730,7 @@
 
             // 3. Rows
             allJobs.forEach((job, index) => {
-                const appliedStatus = localStorage.getItem('applied_' + job.url) || 'no';
+                const appliedStatus = job.applied === 'yes' ? 'yes' : (localStorage.getItem('applied_' + job.url) || 'no');
                 const tr = document.createElement('tr');
                 
                 const visitedVal = job.visited || 'no';
