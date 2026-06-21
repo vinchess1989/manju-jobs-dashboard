@@ -165,15 +165,33 @@ def clean_blocked_jobs():
 
 
 SEARCH_SITES = [
+    # ── Broad sweeps (date-sorted, all roles) ──────────────────────────────
     {"id": "linkedin_fin", "platform": "linkedin", "url": "https://www.linkedin.com/jobs/search?location=Finland&sortBy=DD"},
-    {"id": "linkedin_ww", "platform": "linkedin", "url": "https://www.linkedin.com/jobs/search?location=Worldwide&f_WT=2&sortBy=DD"},
-    {"id": "duunitori", "platform": "duunitori", "url": "https://duunitori.fi/tyopaikat?jarjestys=uusimmat"},
-    {"id": "indeed", "platform": "indeed", "url": "https://fi.indeed.com/jobs?l=Finland&sort=date"},
-    {"id": "oikotie", "platform": "oikotie", "url": "https://tyopaikat.oikotie.fi/tyopaikat?jarjestys=julkaisuaika"},
+    {"id": "linkedin_ww",  "platform": "linkedin", "url": "https://www.linkedin.com/jobs/search?location=Worldwide&f_WT=2&sortBy=DD"},
+    {"id": "duunitori",    "platform": "duunitori", "url": "https://duunitori.fi/tyopaikat?jarjestys=uusimmat"},
+    {"id": "indeed",       "platform": "indeed",    "url": "https://fi.indeed.com/jobs?l=Finland&sort=date"},
+    {"id": "oikotie",      "platform": "oikotie",   "url": "https://tyopaikat.oikotie.fi/tyopaikat?jarjestys=julkaisuaika"},
     {"id": "tyomarkkinatori", "platform": "tyomarkkinatori", "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat?sort=published,desc"},
-    {"id": "jobly", "platform": "jobly", "url": "https://www.jobly.fi/tyopaikat"},
-    {"id": "meetfrank", "platform": "meetfrank", "url": "https://meetfrank.com/jobs/"},
-    {"id": "hub", "platform": "hub", "url": "https://hub.no/jobs"}
+    {"id": "jobly",        "platform": "jobly",     "url": "https://www.jobly.fi/tyopaikat"},
+    {"id": "meetfrank",    "platform": "meetfrank", "url": "https://meetfrank.com/jobs/"},
+    {"id": "hub",          "platform": "hub",        "url": "https://hub.no/jobs"},
+
+    # ── Targeted: Legal roles (LL.M. + Finnish bar path) ──────────────────
+    {"id": "linkedin_juristi",       "platform": "linkedin",   "url": "https://www.linkedin.com/jobs/search?keywords=juristi&location=Finland&sortBy=DD"},
+    {"id": "linkedin_lakiharjoittelu","platform": "linkedin",  "url": "https://www.linkedin.com/jobs/search?keywords=lakiharjoittelija&location=Finland&sortBy=DD"},
+    {"id": "linkedin_compliance_ww", "platform": "linkedin",   "url": "https://www.linkedin.com/jobs/search?keywords=compliance&location=Worldwide&f_WT=2&sortBy=DD"},
+    {"id": "duunitori_juristi",      "platform": "duunitori",  "url": "https://duunitori.fi/tyopaikat?haku=juristi&jarjestys=uusimmat"},
+    {"id": "duunitori_lakimies",     "platform": "duunitori",  "url": "https://duunitori.fi/tyopaikat?haku=lakimies&jarjestys=uusimmat"},
+    {"id": "duunitori_lakiharjoittelu","platform": "duunitori","url": "https://duunitori.fi/tyopaikat?haku=lakiharjoittelija&jarjestys=uusimmat"},
+
+    # ── Targeted: Events & Communications (IHO experience) ────────────────
+    {"id": "linkedin_event_fi",      "platform": "linkedin",   "url": "https://www.linkedin.com/jobs/search?keywords=event+coordinator&location=Finland&sortBy=DD"},
+    {"id": "duunitori_tapahtuma",    "platform": "duunitori",  "url": "https://duunitori.fi/tyopaikat?haku=tapahtuma&jarjestys=uusimmat"},
+    {"id": "duunitori_viestinta",    "platform": "duunitori",  "url": "https://duunitori.fi/tyopaikat?haku=viestint%C3%A4&jarjestys=uusimmat"},
+
+    # ── Targeted: General office/coordination (Finnish B2) ────────────────
+    {"id": "duunitori_koordinaattori","platform": "duunitori", "url": "https://duunitori.fi/tyopaikat?haku=koordinaattori&jarjestys=uusimmat"},
+    {"id": "duunitori_toimistosihteeri","platform": "duunitori","url": "https://duunitori.fi/tyopaikat?haku=toimistosihteeri&jarjestys=uusimmat"},
 ]
 
 def generate_targets():
