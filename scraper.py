@@ -231,53 +231,57 @@ def clean_blocked_jobs():
             print(f"Error saving files during cleanup: {e}")
 
 
-# ── Keyword terms searched across every keyword-capable site ──────────────
+# ── Keyword terms — each has an English and Finnish variant ──────────────
+# "lakiharjoittelija" and "legal trainee" are the same concept; merged here.
 _KEYWORD_TERMS = [
-    # Legal (Finnish)
-    "juristi",
-    "lakimies",
-    "lakiharjoittelija",
-    # Legal / Compliance (English)
-    "compliance",
-    "legal trainee",
-    # Events & Communications
-    "event coordinator",
-    "tapahtuma",
-    "viestintä",
-    # Office / Admin
-    "koordinaattori",
-    "toimistosihteeri",
+    {"en": "legal counsel",         "fi": "juristi"},
+    {"en": "lawyer",                "fi": "lakimies"},
+    {"en": "legal trainee",         "fi": "lakiharjoittelija"},
+    {"en": "compliance",            "fi": "compliance"},
+    {"en": "event coordinator",     "fi": "tapahtumakoordinaattori"},
+    {"en": "event",                 "fi": "tapahtuma"},
+    {"en": "communications",        "fi": "viestintä"},
+    {"en": "coordinator",           "fi": "koordinaattori"},
+    {"en": "office secretary",      "fi": "toimistosihteeri"},
 ]
 
 # ── Sites that accept a keyword injected into the URL ─────────────────────
+# "lang" controls which variant of _KEYWORD_TERMS is used:
+#   "en" → term["en"]  (LinkedIn is an English-language platform)
+#   "fi" → term["fi"]  (Duunitori, fi.indeed.com, Jobly are Finnish-locale)
 _KEYWORD_SITE_TEMPLATES = [
     {
         "id_prefix": "linkedin_fi",
         "platform": "linkedin",
+        "lang": "en",
         "pages": 3,
         "url_template": "https://www.linkedin.com/jobs/search?keywords={term_enc}&location=Finland&sortBy=DD",
     },
     {
         "id_prefix": "linkedin_ww",
         "platform": "linkedin",
+        "lang": "en",
         "pages": 3,
         "url_template": "https://www.linkedin.com/jobs/search?keywords={term_enc}&f_WT=2&sortBy=DD",
     },
     {
         "id_prefix": "duunitori",
         "platform": "duunitori",
+        "lang": "fi",
         "scroll_count": 12,
         "url_template": "https://duunitori.fi/tyopaikat?haku={term_enc}&jarjestys=uusimmat",
     },
     {
         "id_prefix": "indeed",
         "platform": "indeed",
+        "lang": "fi",
         "pages": 3,
         "url_template": "https://fi.indeed.com/jobs?q={term_enc}&l=Finland&sort=date",
     },
     {
         "id_prefix": "jobly",
         "platform": "jobly",
+        "lang": "fi",
         "scroll_count": 10,
         "url_template": "https://www.jobly.fi/tyopaikat?search={term_enc}",
     },
@@ -329,11 +333,13 @@ def generate_targets():
             targets.append({'id': tid, 'platform': site['platform'], 'term': 'All',
                             'url': url, 'scroll_count': scroll_count})
 
-    # 2. Every keyword × every keyword-capable site
+    # 2. Every keyword × every keyword-capable site (language-matched)
     for term in _KEYWORD_TERMS:
-        slug = _term_slug(term)
-        term_enc = quote_plus(term)
+        slug = _term_slug(term["en"])  # slug always from English for stable IDs
         for tmpl in _KEYWORD_SITE_TEMPLATES:
+            lang = tmpl.get("lang", "en")
+            search_term = term.get(lang, term["en"])  # fall back to EN if no FI variant
+            term_enc = quote_plus(search_term)
             base_url = tmpl['url_template'].replace('{term_enc}', term_enc)
             max_pages = tmpl.get('pages', 1)
             scroll_count = tmpl.get('scroll_count', _DEFAULT_SCROLL_COUNT)
@@ -341,7 +347,7 @@ def generate_targets():
             for page_idx in range(max_pages):
                 url = _page_url(base_url, tmpl['platform'], page_idx)
                 tid = base_id if page_idx == 0 else f"{base_id}_p{page_idx + 1}"
-                targets.append({'id': tid, 'platform': tmpl['platform'], 'term': term,
+                targets.append({'id': tid, 'platform': tmpl['platform'], 'term': search_term,
                                 'url': url, 'scroll_count': scroll_count})
 
     return targets
