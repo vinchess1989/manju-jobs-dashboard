@@ -166,43 +166,64 @@ def clean_blocked_jobs():
 
 SEARCH_SITES = [
     # ── Broad sweeps (date-sorted, all roles) ──────────────────────────────
-    {"id": "linkedin_fin", "platform": "linkedin", "url": "https://www.linkedin.com/jobs/search?location=Finland&sortBy=DD"},
-    {"id": "linkedin_ww",  "platform": "linkedin", "url": "https://www.linkedin.com/jobs/search?location=Worldwide&f_WT=2&sortBy=DD"},
-    {"id": "duunitori",    "platform": "duunitori", "url": "https://duunitori.fi/tyopaikat?jarjestys=uusimmat"},
-    {"id": "indeed",       "platform": "indeed",    "url": "https://fi.indeed.com/jobs?l=Finland&sort=date"},
-    {"id": "oikotie",      "platform": "oikotie",   "url": "https://tyopaikat.oikotie.fi/tyopaikat?jarjestys=julkaisuaika"},
-    {"id": "tyomarkkinatori", "platform": "tyomarkkinatori", "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat?sort=published,desc"},
-    {"id": "jobly",        "platform": "jobly",     "url": "https://www.jobly.fi/tyopaikat"},
-    {"id": "meetfrank",    "platform": "meetfrank", "url": "https://meetfrank.com/jobs/"},
-    {"id": "hub",          "platform": "hub",        "url": "https://hub.no/jobs"},
+    # pages: how many URL-offset pages to fetch (LinkedIn +25/page, Indeed +10/page)
+    # scroll_count: how many scroll actions on infinite-scroll sites
+    {"id": "linkedin_fin", "platform": "linkedin", "pages": 4, "url": "https://www.linkedin.com/jobs/search?location=Finland&sortBy=DD"},
+    {"id": "linkedin_ww",  "platform": "linkedin", "pages": 4, "url": "https://www.linkedin.com/jobs/search?location=Worldwide&f_WT=2&sortBy=DD"},
+    {"id": "duunitori",    "platform": "duunitori", "scroll_count": 12, "url": "https://duunitori.fi/tyopaikat?jarjestys=uusimmat"},
+    {"id": "indeed",       "platform": "indeed",    "pages": 4, "url": "https://fi.indeed.com/jobs?l=Finland&sort=date"},
+    {"id": "oikotie",      "platform": "oikotie",   "scroll_count": 12, "url": "https://tyopaikat.oikotie.fi/tyopaikat?jarjestys=julkaisuaika"},
+    {"id": "tyomarkkinatori", "platform": "tyomarkkinatori", "scroll_count": 10, "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat?sort=published,desc"},
+    {"id": "jobly",        "platform": "jobly",     "scroll_count": 10, "url": "https://www.jobly.fi/tyopaikat"},
+    {"id": "meetfrank",    "platform": "meetfrank", "scroll_count": 10, "url": "https://meetfrank.com/jobs/"},
+    {"id": "hub",          "platform": "hub",        "scroll_count": 8,  "url": "https://hub.no/jobs"},
 
     # ── Targeted: Legal roles (LL.M. + Finnish bar path) ──────────────────
-    {"id": "linkedin_juristi",       "platform": "linkedin",   "url": "https://www.linkedin.com/jobs/search?keywords=juristi&location=Finland&sortBy=DD"},
-    {"id": "linkedin_lakiharjoittelu","platform": "linkedin",  "url": "https://www.linkedin.com/jobs/search?keywords=lakiharjoittelija&location=Finland&sortBy=DD"},
-    {"id": "linkedin_compliance_ww", "platform": "linkedin",   "url": "https://www.linkedin.com/jobs/search?keywords=compliance&location=Worldwide&f_WT=2&sortBy=DD"},
-    {"id": "duunitori_juristi",      "platform": "duunitori",  "url": "https://duunitori.fi/tyopaikat?haku=juristi&jarjestys=uusimmat"},
-    {"id": "duunitori_lakimies",     "platform": "duunitori",  "url": "https://duunitori.fi/tyopaikat?haku=lakimies&jarjestys=uusimmat"},
-    {"id": "duunitori_lakiharjoittelu","platform": "duunitori","url": "https://duunitori.fi/tyopaikat?haku=lakiharjoittelija&jarjestys=uusimmat"},
+    {"id": "linkedin_juristi",        "platform": "linkedin",  "pages": 5, "url": "https://www.linkedin.com/jobs/search?keywords=juristi&location=Finland&sortBy=DD"},
+    {"id": "linkedin_lakiharjoittelu","platform": "linkedin",  "pages": 5, "url": "https://www.linkedin.com/jobs/search?keywords=lakiharjoittelija&location=Finland&sortBy=DD"},
+    {"id": "linkedin_compliance_ww",  "platform": "linkedin",  "pages": 5, "url": "https://www.linkedin.com/jobs/search?keywords=compliance&location=Worldwide&f_WT=2&sortBy=DD"},
+    {"id": "duunitori_juristi",       "platform": "duunitori", "scroll_count": 15, "url": "https://duunitori.fi/tyopaikat?haku=juristi&jarjestys=uusimmat"},
+    {"id": "duunitori_lakimies",      "platform": "duunitori", "scroll_count": 15, "url": "https://duunitori.fi/tyopaikat?haku=lakimies&jarjestys=uusimmat"},
+    {"id": "duunitori_lakiharjoittelu","platform": "duunitori","scroll_count": 15, "url": "https://duunitori.fi/tyopaikat?haku=lakiharjoittelija&jarjestys=uusimmat"},
 
     # ── Targeted: Events & Communications (IHO experience) ────────────────
-    {"id": "linkedin_event_fi",      "platform": "linkedin",   "url": "https://www.linkedin.com/jobs/search?keywords=event+coordinator&location=Finland&sortBy=DD"},
-    {"id": "duunitori_tapahtuma",    "platform": "duunitori",  "url": "https://duunitori.fi/tyopaikat?haku=tapahtuma&jarjestys=uusimmat"},
-    {"id": "duunitori_viestinta",    "platform": "duunitori",  "url": "https://duunitori.fi/tyopaikat?haku=viestint%C3%A4&jarjestys=uusimmat"},
+    {"id": "linkedin_event_fi",       "platform": "linkedin",  "pages": 5, "url": "https://www.linkedin.com/jobs/search?keywords=event+coordinator&location=Finland&sortBy=DD"},
+    {"id": "duunitori_tapahtuma",     "platform": "duunitori", "scroll_count": 12, "url": "https://duunitori.fi/tyopaikat?haku=tapahtuma&jarjestys=uusimmat"},
+    {"id": "duunitori_viestinta",     "platform": "duunitori", "scroll_count": 12, "url": "https://duunitori.fi/tyopaikat?haku=viestint%C3%A4&jarjestys=uusimmat"},
 
     # ── Targeted: General office/coordination (Finnish B2) ────────────────
-    {"id": "duunitori_koordinaattori","platform": "duunitori", "url": "https://duunitori.fi/tyopaikat?haku=koordinaattori&jarjestys=uusimmat"},
-    {"id": "duunitori_toimistosihteeri","platform": "duunitori","url": "https://duunitori.fi/tyopaikat?haku=toimistosihteeri&jarjestys=uusimmat"},
+    {"id": "duunitori_koordinaattori",  "platform": "duunitori", "scroll_count": 12, "url": "https://duunitori.fi/tyopaikat?haku=koordinaattori&jarjestys=uusimmat"},
+    {"id": "duunitori_toimistosihteeri","platform": "duunitori", "scroll_count": 12, "url": "https://duunitori.fi/tyopaikat?haku=toimistosihteeri&jarjestys=uusimmat"},
 ]
+
+# How many scroll actions per platform for sites not using URL pagination
+_DEFAULT_SCROLL_COUNT = 8
+
+def _page_url(base_url: str, platform: str, page_idx: int) -> str:
+    """Return the URL for a given 0-based page index."""
+    if page_idx == 0:
+        return base_url
+    if platform == 'linkedin':
+        return base_url + f'&start={page_idx * 25}'
+    if platform == 'indeed':
+        return base_url + f'&start={page_idx * 10}'
+    return base_url  # fallback: unsupported platform, stay on page 0
 
 def generate_targets():
     targets = []
     for site in SEARCH_SITES:
-        targets.append({
-            "id": site["id"],
-            "platform": site["platform"],
-            "term": "All",
-            "url": site["url"]
-        })
+        max_pages = site.get('pages', 1)
+        scroll_count = site.get('scroll_count', _DEFAULT_SCROLL_COUNT)
+        for page_idx in range(max_pages):
+            url = _page_url(site['url'], site['platform'], page_idx)
+            target_id = site['id'] if page_idx == 0 else f"{site['id']}_p{page_idx + 1}"
+            targets.append({
+                'id': target_id,
+                'platform': site['platform'],
+                'term': 'All',
+                'url': url,
+                'scroll_count': scroll_count,
+            })
     return targets
 
 def parse_linkedin(soup):
@@ -437,7 +458,8 @@ def scrape_all_jobs(max_jobs=200):
             print(f"\nNavigating to {target['url']} (Term: {target['term']}, Site: {target['id']}) ...")
             try:
                 page.goto(target['url'], timeout=30000)
-                for _ in range(3):
+                scroll_count = target.get('scroll_count', _DEFAULT_SCROLL_COUNT)
+                for _ in range(scroll_count):
                     page.mouse.wheel(0, 2000)
                     time.sleep(1.5)
                     
