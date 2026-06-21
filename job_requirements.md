@@ -1,11 +1,20 @@
 # Job Search Requirements
 
 ## Candidate Profile
-* **Name:** Manju
-* **Current Role:** Unemployed
-* **Years of Experience:** 2 years
-* **Background:** Law degree completed in India (international degree in English). Currently located in Finland and completing supplementary courses in Finnish to obtain equivalence/qualification for a Finnish law degree.
-* **Key Skills:** Office administration, document management, customer service, corporate law background.
+* **Name:** Manju Krishna Haridas
+* **Current Role:** Actively seeking employment; completing supplementary law studies for Finnish bar qualification.
+* **Education:**
+  * LL.M. Business and Corporate Law — Symbiosis International University, India (2020–2021) | **First Rank Holder (Top of Class)**
+  * LL.B. — University of Calicut, India (2009–2014) | **First Class Honours**
+  * Supplementary Law Studies (Finnish Bar Qualification) — University of Lapland (2025–Present) | OPH recognition decision received
+  * Towards University (KOHY) Studies — University of Oulu (2025–2026) | Academic integration + advanced Finnish
+  * Integration Training — OSAO, Oulu (2023–2024)
+* **Work Experience:**
+  * Intern — International House Oulu, Finland (09/2024–10/2024 & 01/2025–04/2025): event management (14 community events), digital service deployment (OuluBot), communications & social media, advisory to international residents.
+  * Legal Associate — Poise Legal, India (10/2021–05/2022): drafted/reviewed 5–7 commercial agreements per month (NDAs, Service Agreements), legal analysis on Company & Contract Law, full contract lifecycle management for 4 corporate clients.
+  * Junior Lawyer — Juris Nexus, India (09/2015–01/2016): litigation support, trial preparation, client representation in civil and family matters.
+* **Key Skills:** Contract Law & Drafting, Regulatory Compliance, Legal Research & Analysis, Project Coordination, Event Management, Client Advisory, Document Management, MS Office, Social Media Management, Digital Service Deployment.
+* **Languages:** English (C1 / Native-level), Finnish (B2 — Intermediate, actively improving), Malayalam (Native).
 * **Driving:** Has a valid driving license and can use her personal car for work if required.
 
 ## Hard Rejections
@@ -37,12 +46,15 @@ This is the PRIMARY match category. Match if the role is any entry-level or mid-
 * **Customer Service & Sales:** customer service representative, customer support agent, sales assistant, account coordinator, helpdesk agent, inside sales.
 * **HR & People:** HR assistant, HR coordinator, recruitment coordinator, people ops assistant, talent acquisition support.
 * **Finance & Accounting Support:** accounts assistant, invoicing clerk, billing coordinator, payroll assistant — entry-level only, no CPA/accountant qualification required.
-* **Marketing & Communications:** marketing assistant, communications assistant, content coordinator, social media assistant.
+* **Events & Communications:** event coordinator, event assistant, community coordinator, communications assistant, content coordinator, social media assistant — strong match given Manju's IHO experience organising 14+ community events and producing social media content.
+* **Marketing & Digital:** marketing assistant, digital content assistant — supported by her social media management and OuluBot digital deployment experience.
 * **Data & Document Management:** data entry clerk, document controller, records coordinator, quality assistant.
 * **Logistics & Supply Chain Support:** logistics coordinator, supply chain assistant, procurement assistant — office-based, no warehouse/forklift work.
-* **Legal & Compliance (Secondary):** Any legal, compliance, contract management, or corporate law role (trainee, junior, or permanent) that accepts an international/Indian law degree OR is a Finnish trainee role (laki-/lakiharjoittelu).
+* **Legal & Compliance (Priority Secondary):** Any legal, compliance, contract management, or corporate law role (trainee, junior, or permanent) that accepts an international/Indian law degree OR is a Finnish trainee role (laki-/lakiharjoittelu). Her LL.M. First Rank + active Finnish bar path (OPH recognised) make these strong fits.
 
 A role qualifies if it is entry-level or does not list a strict degree requirement beyond a general bachelor's or equivalent.
+
+**Language note:** Manju's Finnish is B2 (Intermediate). Roles requiring fluent Finnish (C1+) as a hard requirement should be marked "no". Roles where Finnish is preferred but not mandatory, or where English is the working language, are fine to match.
 
 **3. Application Deadline:**
 * The application deadline MUST be in the future relative to today's date.
