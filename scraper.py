@@ -631,7 +631,13 @@ def scrape_all_jobs(max_jobs=200):
                 print(f"Added {added} new unseen jobs from this source.")
             except Exception as e:
                 print(f"Failed to scrape {target['id']}: {e}")
-                
+                # Reset page to a clean state so the next goto() isn't interrupted
+                # by an unresolved navigation left behind by this failure.
+                try:
+                    page.goto("about:blank", timeout=5000)
+                except Exception:
+                    pass
+
             current_idx += 1
                 
         browser.close()
