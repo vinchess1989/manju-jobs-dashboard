@@ -24,7 +24,9 @@ DELETED_FILE = os.path.join(BASE_DIR, "deleted.json")
 HISTORY_FILE = os.path.join(BASE_DIR, "jobs_history.json")
 
 def clean_blocked_jobs():
-    """Finds and moves blocked jobs (senior, director, manager, johtaja, päällikkö, or US residency) from jobs.json to deleted.json."""
+    """Finds and moves hard-rejected jobs from jobs.json to deleted.json based on job_requirements.md criteria."""
+    import re as _re
+
     if not os.path.exists(JOBS_FILE):
         return
 
@@ -43,45 +45,104 @@ def clean_blocked_jobs():
         except Exception:
             pass
 
-    blocked_keywords = ['senior', 'director', 'manager', 'johtaja', 'päällikkö']
+    # Substring keywords checked against lowercased title
+    blocked_title_keywords = [
+        # Seniority / leadership levels
+        'senior', 'director', 'manager', 'head of', 'vice president',
+        'toimitusjohtaja',         # Finnish: CEO
+        'johtaja', 'päällikkö',    # Finnish: manager / chief
+        # Vocational / trade roles
+        'welder', 'welding', 'electrician', 'carpenter', 'carpentry',
+        'scaffolding', 'asbestos', 'hairdresser', 'barber', 'chef', 'forklift',
+        'parturi', 'kampaaja',     # Finnish: barber / hairdresser
+        'hitsaaja',                # Finnish: welder
+        'sähköasentaja',           # Finnish: electrician
+        'putkimies', 'putkiasentaja',   # Finnish: plumber
+        'rakennusmies', 'rakennusmestari',  # Finnish: construction worker
+        'lvi-asentaja',            # Finnish: HVAC installer
+        # Construction (general)
+        'construction',
+        # Medical / healthcare
+        'physician', 'nurse', 'pharmacist', 'physiotherapist', 'midwife', 'dentist',
+        'sairaanhoitaja',          # Finnish: nurse
+        'lähihoitaja',             # Finnish: practical nurse / care aide
+        'lääkäri',                 # Finnish: doctor
+        'farmaseutti',             # Finnish: pharmacist
+        'laboratoriohoitaja',      # Finnish: lab technician
+        'fysioterapeutti',         # Finnish: physiotherapist
+        'terveydenhoitaja',        # Finnish: public health nurse
+        'kätilö',                  # Finnish: midwife
+        'hammaslääkäri',           # Finnish: dentist
+        'eläinlääkäri',            # Finnish: vet
+        # Teaching / academic
+        'professor', 'professori', 'doctoral', 'postdoctoral', 'teacher',
+        'opettaja', 'lehtori',     # Finnish: teacher / lecturer
+        # Security guard
+        'security guard', 'vartija',
+        # Clearly unrelated
+        'husky guide', 'dog handler', 'pest control',
+    ]
+
+    # Word-boundary patterns for short ambiguous words (to avoid substring false positives)
+    _WORD_BOUNDARY_PATTERNS = [
+        (_re.compile(r'\blead\b', _re.IGNORECASE), 'lead'),
+        (_re.compile(r'\bvp\b',   _re.IGNORECASE), 'vp'),
+        (_re.compile(r'\bchief\b', _re.IGNORECASE), 'chief'),
+    ]
+
     cleaned_jobs = []
     moved_count = 0
 
     seen_deleted = {j.get('url') for j in deleted_jobs if j.get('url')}
 
     for job in jobs:
-        title = job.get('title', '').lower()
+        # Never auto-delete jobs the user has already explicitly reviewed
+        if job.get('user_review') == 'done' or job.get('applied') == 'yes':
+            cleaned_jobs.append(job)
+            continue
+
+        title_lower = job.get('title', '').lower()
+        title_orig  = job.get('title', '')
         reason = job.get('reason', '').lower()
-        
+
         is_blocked = False
         deletion_reason = ""
 
-        # Check keywords
-        for kw in blocked_keywords:
-            if kw in title:
+        # 1. Substring keyword check on title
+        for kw in blocked_title_keywords:
+            if kw in title_lower:
                 is_blocked = True
-                deletion_reason = f"Title contains blocked keyword '{kw}'"
+                deletion_reason = f"Title contains hard-rejection keyword '{kw}'"
                 break
 
-        # Check US residency
+        # 2. Word-boundary check for ambiguous leadership terms
         if not is_blocked:
-            if "us residency" in reason or "requires us" in reason or "united states residency" in reason:
+            for pattern, label in _WORD_BOUNDARY_PATTERNS:
+                if pattern.search(title_orig):
+                    is_blocked = True
+                    deletion_reason = f"Title contains seniority keyword '{label}'"
+                    break
+
+        # 3. US residency required (detected in LLM reason)
+        if not is_blocked:
+            if ("us residency" in reason or "requires us" in reason or
+                    "united states residency" in reason or
+                    "work authorization in the us" in reason or
+                    "us work authorization" in reason):
                 is_blocked = True
                 deletion_reason = "Requires US residency"
-                
-        # Check expired deadline (> 2 days passed) and not reviewed by user
-        if not is_blocked and job.get('user_review') != 'done':
+
+        # 4. Expired deadline (> 2 days passed)
+        if not is_blocked:
             deadline_str = job.get('deadline', '')
-            if deadline_str:
-                import re
-                if re.match(r'^\d{4}-\d{2}-\d{2}$', deadline_str):
-                    try:
-                        deadline_date = datetime.strptime(deadline_str, "%Y-%m-%d")
-                        if datetime.now() > deadline_date + timedelta(days=2):
-                            is_blocked = True
-                            deletion_reason = f"Deadline ({deadline_str}) passed by more than 2 days and unreviewed"
-                    except ValueError:
-                        pass
+            if deadline_str and _re.match(r'^\d{4}-\d{2}-\d{2}$', deadline_str):
+                try:
+                    deadline_date = datetime.strptime(deadline_str, "%Y-%m-%d")
+                    if datetime.now() > deadline_date + timedelta(days=2):
+                        is_blocked = True
+                        deletion_reason = f"Deadline ({deadline_str}) passed by more than 2 days and unreviewed"
+                except ValueError:
+                    pass
 
         if is_blocked:
             job['deletion_reason'] = deletion_reason
@@ -93,7 +154,7 @@ def clean_blocked_jobs():
             cleaned_jobs.append(job)
 
     if moved_count > 0:
-        print(f"INFO: Moved {moved_count} blocked jobs (senior/director/manager/expired/US residency) to deleted.json.")
+        print(f"INFO: Moved {moved_count} hard-rejected jobs to deleted.json.")
         try:
             with open(JOBS_FILE, 'w', encoding='utf-8') as f:
                 json.dump(cleaned_jobs, f, indent=2)
