@@ -875,6 +875,8 @@
             }
             const LINES = metric === 'yes'
                 ? [{ key: 'yes', color: '#10b981', label: 'Yes' }, { key: 'maybe', color: '#f59e0b', label: 'Maybe' }]
+                : metric === 'applied'
+                ? [{ key: 'applied', color: '#f472b6', label: 'Applied' }]
                 : [{ key: 'total', color: '#a5b4fc', label: 'Total' }, { key: 'yes', color: '#10b981', label: 'Yes' }];
             const allVals = data.flatMap(d => LINES.map(l => d[l.key] ?? 0));
             const minVal = Math.max(0, Math.min(...allVals) - 1), maxVal = Math.max(...allVals) + 1, range = maxVal - minVal || 1;
@@ -918,7 +920,9 @@
         async function _showChartTooltip(el, metric) {
             const tip = document.getElementById('chart-tooltip');
             document.getElementById('chart-tooltip-title').textContent =
-                metric === 'yes' ? 'Yes & Maybe matches over time' : 'Total listings & Yes matches over time';
+                metric === 'yes' ? 'Yes & Maybe matches over time'
+                : metric === 'applied' ? 'Applied jobs over time'
+                : 'Total listings & Yes matches over time';
             tip.style.display = 'block';
             const rect = el.getBoundingClientRect();
             const tipW = 350, tipH = 185;
@@ -954,6 +958,7 @@
 
             let visibleCount = 0;
             let counts = { yes: 0, no: 0, maybe: 0, pending: 0 };
+            let appliedCount = 0;
             const n = _rowCache.length;
             const displayBits = new Uint8Array(n); // 0=hide, 1=show
 
@@ -972,6 +977,7 @@
                     else if (mv === 'no') counts.no++;
                     else if (mv === 'maybe') counts.maybe++;
                     else if (mv === 'pending') counts.pending++;
+                    if (vals[11] === 'yes') appliedCount++;
                 }
             }
 
@@ -993,9 +999,12 @@
                 text += `<span style="color:var(--color-maybe);font-weight:600;">Maybe: ${counts.maybe}</span>&nbsp;&nbsp; `;
                 text += `<span style="color:var(--color-no);font-weight:600;">No: ${counts.no}</span>&nbsp;&nbsp; `;
                 text += `<span style="color:var(--color-pending);font-weight:600;">Pending: ${counts.pending}</span>`;
+                if (appliedCount > 0)
+                    text += `&nbsp;&nbsp; <span style="opacity:0.3;">|</span> &nbsp;<span id="stat-applied" style="color:#f472b6;font-weight:600;cursor:help;border-bottom:1px dashed rgba(244,114,182,0.5);">Applied: ${appliedCount}</span>`;
                 counter.innerHTML = text;
                 _attachChartHover(document.getElementById('stat-yes'), 'yes');
                 _attachChartHover(document.getElementById('stat-total'), 'total');
+                _attachChartHover(document.getElementById('stat-applied'), 'applied');
             }
         }
 

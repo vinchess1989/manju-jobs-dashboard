@@ -264,6 +264,7 @@ def save_history_snapshot(jobs):
         "no": sum(1 for j in jobs if j.get('matches_requirements') == 'no'),
         "maybe": sum(1 for j in jobs if j.get('matches_requirements') == 'maybe'),
         "pending": sum(1 for j in jobs if j.get('matches_requirements') == 'pending'),
+        "applied": sum(1 for j in jobs if j.get('applied') == 'yes'),
     }
     history = []
     if os.path.exists(HISTORY_FILE):
