@@ -172,7 +172,6 @@ SEARCH_SITES = [
     {"id": "linkedin_ww",  "platform": "linkedin", "pages": 4, "url": "https://www.linkedin.com/jobs/search?location=Worldwide&f_WT=2&sortBy=DD"},
     {"id": "duunitori",    "platform": "duunitori", "scroll_count": 12, "url": "https://duunitori.fi/tyopaikat?jarjestys=uusimmat"},
     {"id": "indeed",       "platform": "indeed",    "pages": 4, "url": "https://fi.indeed.com/jobs?l=Finland&sort=date"},
-    {"id": "oikotie",      "platform": "oikotie",   "scroll_count": 12, "url": "https://tyopaikat.oikotie.fi/tyopaikat?jarjestys=julkaisuaika"},
     {"id": "tyomarkkinatori", "platform": "tyomarkkinatori", "scroll_count": 10, "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat?sort=published,desc"},
     {"id": "jobly",        "platform": "jobly",     "scroll_count": 10, "url": "https://www.jobly.fi/tyopaikat"},
     {"id": "meetfrank",    "platform": "meetfrank", "scroll_count": 10, "url": "https://meetfrank.com/jobs/"},
@@ -256,11 +255,10 @@ def parse_generic(soup, base_url):
         if any(kw in href.lower() for kw in ['/tyopaikka', '/job', '/view', '/rc/clk', '/avoimet-tyopaikat']):
             # Skip search/list filter queries, sorting options, base list pages, and recruitment/pricing/advertising pages
             if any(skip in href.lower() for skip in [
-                '?haku=', '?search=', '?q=', 'jarjestys=', '?sort=', 
-                'tyopaikat.oikotie.fi/tyopaikat?', 'rekrytointi', 
+                '?haku=', '?search=', '?q=', 'jarjestys=', '?sort=',
+                'tyopaikat.oikotie.fi/tyopaikat?', 'rekrytointi',
                 'tyopaikkailmoitus', '/tyonantajalle', '/yhteystiedot',
                 '/palvelut/', '/hinnat', '/pricing', '/job-bookmarks-anon',
-                'destination=search'
             ]):
                 continue
             clean_path = href.lower().split('?')[0].rstrip('/')
@@ -458,18 +456,38 @@ def scrape_all_jobs(max_jobs=200):
             print(f"\nNavigating to {target['url']} (Term: {target['term']}, Site: {target['id']}) ...")
             try:
                 page.goto(target['url'], timeout=30000)
+
+                # Dismiss GDPR / cookie consent banners (Indeed uses OneTrust)
+                if target['platform'] == 'indeed':
+                    for selector in [
+                        '#onetrust-accept-btn-handler',
+                        'button[id*="accept"]',
+                        'button[aria-label*="accept" i]',
+                    ]:
+                        try:
+                            page.click(selector, timeout=4000)
+                            time.sleep(1)
+                            break
+                        except Exception:
+                            pass
+
                 scroll_count = target.get('scroll_count', _DEFAULT_SCROLL_COUNT)
                 for _ in range(scroll_count):
                     page.mouse.wheel(0, 2000)
                     time.sleep(1.5)
-                    
+
                 soup = BeautifulSoup(page.content(), 'html.parser')
-                
+
                 if target['platform'] == 'linkedin':
                     jobs = parse_linkedin(soup)
                 else:
                     jobs = parse_generic(soup, target['url'])
-                    
+
+                if len(jobs) == 0 and target['platform'] == 'indeed':
+                    title = soup.title.string.strip() if soup.title else '(no title)'
+                    anchors = len(soup.find_all('a', href=True))
+                    print(f"  [indeed-debug] page title: {title!r}  total anchors: {anchors}")
+
                 print(f"Found {len(jobs)} potential job links on {target['platform']}.")
                 
                 added = 0
