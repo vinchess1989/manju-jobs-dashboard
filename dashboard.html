@@ -529,6 +529,7 @@
         let allJobs = [];
         let sortAsc = true;
         let lastSortedCol = -1;
+        let _rowCache = null; // [{el, vals[]}] — pre-cached cell values for fast filtering
 
         const fileStatusDot = document.getElementById('file-status-dot');
         const fileStatusText = document.getElementById('file-status-text');
@@ -622,6 +623,7 @@
         }
 
         function buildTable(lastMod) {
+            _rowCache = null; // invalidate cache whenever table is rebuilt
             jobsContainer.innerHTML = '';
 
             // 1. Info bar
@@ -764,19 +766,28 @@
             buildMultiSelectFilters();
         }
 
-        function buildMultiSelectFilters() {
+        function _buildRowCache() {
             const tbody = document.querySelector('table tbody');
-            const rows = Array.from(tbody.querySelectorAll('tr'));
+            if (!tbody) return;
+            const rows = tbody.querySelectorAll('tr');
+            _rowCache = Array.from(rows, row => {
+                const tds = row.getElementsByTagName('td');
+                const vals = Array.from(tds, td =>
+                    td.hasAttribute('data-value') ? td.getAttribute('data-value') : td.textContent.trim()
+                );
+                return { el: row, vals };
+            });
+        }
+
+        function buildMultiSelectFilters() {
+            _buildRowCache();
             const colNames = ['ID', 'Title', 'Company', 'Location', 'Source', 'Posted', 'Deadline', 'Visited', 'Matches', 'Reason', 'Applied'];
-            
+
             for (let i = 1; i <= 11; i++) {
                 const uniqueValues = new Set();
-                rows.forEach(row => {
-                    const td = row.getElementsByTagName("td")[i];
-                    if (td) {
-                        const val = td.hasAttribute("data-value") ? td.getAttribute("data-value") : td.textContent.trim();
-                        if (val) uniqueValues.add(val);
-                    }
+                _rowCache.forEach(({ vals }) => {
+                    const val = vals[i];
+                    if (val) uniqueValues.add(val);
                 });
                 
                 const sortedVals = Array.from(uniqueValues).sort((a, b) => a.localeCompare(b, undefined, {sensitivity: 'base'}));
@@ -929,50 +940,45 @@
         // ── End history trend chart ────────────────────────────────────────────
 
         function filterTable() {
-            const tbody = document.querySelector('table tbody');
-            if (!tbody) return;
-            const rows = Array.from(tbody.querySelectorAll('tr'));
+            if (!_rowCache) _buildRowCache();
 
+            // Collect active filters (pure JS, no DOM reads in hot loop)
             const filters = {};
             for (let i = 1; i <= 11; i++) {
                 const container = document.getElementById(`filter-col-${i}`);
                 if (!container) continue;
-                const checked = Array.from(container.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value);
-                if (checked.length > 0) {
-                    filters[i] = checked;
-                }
+                const checked = Array.from(container.querySelectorAll('input[type="checkbox"]:checked'), cb => cb.value);
+                if (checked.length) filters[i] = new Set(checked);
             }
+            const filterEntries = Object.entries(filters);
 
             let visibleCount = 0;
             let counts = { yes: 0, no: 0, maybe: 0, pending: 0 };
+            const n = _rowCache.length;
+            const displayBits = new Uint8Array(n); // 0=hide, 1=show
 
-            rows.forEach(row => {
+            for (let r = 0; r < n; r++) {
+                const { vals } = _rowCache[r];
                 let show = true;
-
-                for (let i = 1; i <= 11; i++) {
-                    if (filters[i]) {
-                        const td = row.getElementsByTagName("td")[i];
-                        if (td) {
-                            const val = td.hasAttribute("data-value") ? td.getAttribute("data-value") : td.textContent.trim();
-                            if (!filters[i].includes(val)) {
-                                show = false;
-                                break;
-                            }
-                        }
-                    }
+                for (let f = 0; f < filterEntries.length; f++) {
+                    const [col, allowed] = filterEntries[f];
+                    if (!allowed.has(vals[+col] || '')) { show = false; break; }
                 }
-
-                row.style.display = show ? "" : "none";
                 if (show) {
+                    displayBits[r] = 1;
                     visibleCount++;
-                    const matchTd = row.getElementsByTagName("td")[9];
-                    if (matchTd) {
-                        const v = matchTd.hasAttribute('data-value') ? matchTd.getAttribute('data-value') : matchTd.textContent.trim();
-                        if (v === 'yes') counts.yes++;
-                        else if (v === 'no') counts.no++;
-                        else if (v === 'maybe') counts.maybe++;
-                        else if (v === 'pending') counts.pending++;
-                    }
+                    const mv = vals[9];
+                    if (mv === 'yes') counts.yes++;
+                    else if (mv === 'no') counts.no++;
+                    else if (mv === 'maybe') counts.maybe++;
+                    else if (mv === 'pending') counts.pending++;
+                }
+            }
+
+            // Batch all DOM writes in one rAF to avoid repeated reflow
+            requestAnimationFrame(() => {
+                for (let r = 0; r < n; r++) {
+                    _rowCache[r].el.style.display = displayBits[r] ? '' : 'none';
                 }
             });
             const counter = document.getElementById('listings-counter');
