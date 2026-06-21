@@ -29,8 +29,9 @@ LOGS_DIR = os.path.join(BASE_DIR, "logs")
 class TeeLogger:
     """Mirrors every print() to both the terminal and a daily log file.
 
-    Also supports start_capture() / stop_capture() to collect lines from a
-    specific code section (e.g. one scrape run) for downstream analysis.
+    start_capture() / stop_capture() collect lines from one scrape batch.
+    Lines from each batch are accumulated in _cycle_buf; flush_cycle() returns
+    and clears it so analyze_scrape_run_log() sees the whole cycle at once.
     """
 
     def __init__(self, log_path: str):
@@ -39,6 +40,7 @@ class TeeLogger:
         self._log_file = open(log_path, 'a', encoding='utf-8', buffering=1)
         self._capture_buf: list[str] = []
         self._capturing = False
+        self._cycle_buf: list[str] = []  # accumulates across batches in a full cycle
 
     def write(self, msg: str):
         self._stdout.write(msg)
@@ -57,15 +59,34 @@ class TeeLogger:
         self._capture_buf.clear()
         self._capturing = True
 
-    def stop_capture(self) -> list[str]:
+    def stop_capture(self):
+        """Stop capturing; append this batch's lines to the cycle buffer."""
         self._capturing = False
-        return ''.join(self._capture_buf).splitlines()
+        lines = ''.join(self._capture_buf).splitlines()
+        self._cycle_buf.extend(lines)
+
+    def flush_cycle(self) -> list[str]:
+        """Return the full cycle's accumulated lines and reset for the next cycle."""
+        lines = list(self._cycle_buf)
+        self._cycle_buf.clear()
+        return lines
 
     def __getattr__(self, name):
         return getattr(self._stdout, name)
 
 
 _tee_logger: TeeLogger | None = None
+
+
+def _checkpoint_reached_end() -> bool:
+    """True if the last scrape_all_jobs() call visited the final target."""
+    try:
+        with open(CHECKPOINT_FILE, 'r', encoding='utf-8') as f:
+            idx = json.load(f).get("target_index", 0)
+        return idx >= len(generate_targets())
+    except Exception:
+        return False
+
 
 def clean_blocked_jobs():
     """Finds and moves hard-rejected jobs from jobs.json to deleted.json based on job_requirements.md criteria."""
@@ -1835,7 +1856,9 @@ def main():
                 _tee_logger.start_capture()
             new_jobs = scrape_all_jobs(max_jobs=15)
             if _tee_logger:
-                analyze_scrape_run_log(_tee_logger.stop_capture())
+                _tee_logger.stop_capture()
+                if _checkpoint_reached_end():
+                    analyze_scrape_run_log(_tee_logger.flush_cycle())
             
             new_checkpoint_idx = 0
             if os.path.exists(CHECKPOINT_FILE):
@@ -1936,7 +1959,9 @@ def main():
                 _tee_logger.start_capture()
             new_jobs = scrape_all_jobs(max_jobs=quota)
             if _tee_logger:
-                analyze_scrape_run_log(_tee_logger.stop_capture())
+                _tee_logger.stop_capture()
+                if _checkpoint_reached_end():
+                    analyze_scrape_run_log(_tee_logger.flush_cycle())
         except Exception as e:
             if _tee_logger:
                 _tee_logger.stop_capture()
