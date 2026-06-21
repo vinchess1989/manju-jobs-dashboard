@@ -14,7 +14,8 @@ service cloud.firestore {
     }
     
     match /shared_state/{docId} {
-      allow read, write: if isAuthorized();
+      allow read, update: if true;
+      allow create, delete: if isAuthorized();
     }
     
     match /user_feedback/{docId} {
