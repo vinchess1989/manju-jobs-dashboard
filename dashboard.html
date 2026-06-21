@@ -869,11 +869,20 @@
             const ctx = canvas.getContext('2d');
             const W = canvas.width, H = canvas.height;
             ctx.clearRect(0, 0, W, H);
-            const _cutoffMs = new Date('2026-06-19T00:00:00').getTime();
+            const _cutoffMs = new Date('2026-06-15T00:00:00').getTime();
             data = (data || []).filter(d => new Date(d.timestamp).getTime() >= _cutoffMs);
+            // Downsample: keep last entry per calendar day
+            const _byDay = {};
+            data.forEach(d => { _byDay[d.timestamp.slice(0, 10)] = d; });
+            data = Object.values(_byDay).sort((a, b) => a.timestamp < b.timestamp ? -1 : 1);
             if (!data || data.length < 2) {
                 ctx.fillStyle = 'rgba(255,255,255,0.4)'; ctx.font = '11px sans-serif'; ctx.textAlign = 'center';
                 ctx.fillText('Not enough data yet', W / 2, H / 2); return;
+            }
+            const _key0 = metric === 'yes' ? 'yes' : metric === 'applied' ? 'applied' : 'total';
+            if (data.every(d => (d[_key0] ?? 0) === 0)) {
+                ctx.fillStyle = 'rgba(255,255,255,0.4)'; ctx.font = '11px sans-serif'; ctx.textAlign = 'center';
+                ctx.fillText('No data yet', W / 2, H / 2); return;
             }
             const LINES = metric === 'yes'
                 ? [{ key: 'yes', color: '#10b981', label: 'Yes' }, { key: 'maybe', color: '#f59e0b', label: 'Maybe' }]
