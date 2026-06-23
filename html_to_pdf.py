@@ -1,35 +1,56 @@
-"""Convert an HTML resume to a single A4 PDF using Playwright (headless Chromium)."""
+﻿#!/usr/bin/env python3
+"""
+Convert HTML resume/cover letter files to PDF using Playwright (headless Chromium).
 
-import asyncio
+Usage:
+    python html_to_pdf.py file1.html [file2.html ...]
+
+Output: same path as input with .pdf extension.
+
+Requires:
+    pip install playwright
+    playwright install chromium
+"""
+
 import sys
+import os
+import argparse
 from pathlib import Path
-from playwright.async_api import async_playwright
 
 
-async def html_to_pdf(html_path: str, out_path: str | None = None) -> str:
-    src = Path(html_path).resolve()
-    if not src.exists():
-        raise FileNotFoundError(src)
+def html_to_pdf(html_path: str) -> str:
+    from playwright.sync_api import sync_playwright
 
-    dest = Path(out_path) if out_path else src.with_suffix(".pdf")
+    html_path = os.path.abspath(html_path)
+    pdf_path = str(Path(html_path).with_suffix(".pdf"))
 
-    async with async_playwright() as p:
-        browser = await p.chromium.launch()
-        page = await browser.new_page()
-        await page.goto(src.as_uri(), wait_until="networkidle")
-        await page.pdf(
-            path=str(dest),
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        page = browser.new_page()
+        page.goto(f"file:///{html_path.replace(os.sep, '/')}", wait_until="networkidle")
+        page.pdf(
+            path=pdf_path,
             format="A4",
             print_background=True,
-            prefer_css_page_size=True,   # honours @page { size: A4 } in the HTML
+            margin={"top": "0", "right": "0", "bottom": "0", "left": "0"},
         )
-        await browser.close()
+        browser.close()
 
-    print(f"PDF saved: {dest}")
-    return str(dest)
+    print(f"  PDF: {pdf_path}")
+    return pdf_path
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Convert HTML files to PDF via Playwright.")
+    parser.add_argument("files", nargs="+", help="HTML file(s) to convert")
+    args = parser.parse_args()
+
+    for f in args.files:
+        if not os.path.exists(f):
+            print(f"ERROR: File not found: {f}")
+            continue
+        html_to_pdf(f)
 
 
 if __name__ == "__main__":
-    html_file = sys.argv[1] if len(sys.argv) > 1 else r"C:\Users\vinee\Manju_jobs_private\Resumes\f6aaa66f_resume.html"
-    out_file  = sys.argv[2] if len(sys.argv) > 2 else None
-    asyncio.run(html_to_pdf(html_file, out_file))
+    main()
