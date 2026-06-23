@@ -83,22 +83,18 @@ git -C "<PRIVATE>" push
 ```
 
 ## Step 5 — Update Firestore
-Create/append to `<PUBLIC>\input.csv`:
-```
-job_id,resume_url,cover_letter_url
-<job_id>,https://github.com/munchnambiar/Manju-jobs/blob/main/Resumes/<job_id>/Manju_Krishna_<Title>_<Company>_resume.pdf,https://github.com/munchnambiar/Manju-jobs/blob/main/Resumes/<job_id>/Manju_Krishna_<Title>_<Company>_cover_letter.pdf
-```
-Then run:
+Run from the PUBLIC repo directory. This scans the actual PDF filenames on disk, constructs
+the correct GitHub URLs, and uploads only entries not yet in Firestore:
 ```
 cd "<PUBLIC>"
-python upload_resume_links.py --input input.csv
+python sync_resume_links.py --upload
 ```
 
 ## Step 6 — Push public repo
 ```
 cd "<PUBLIC>"
 git add input.csv
-git commit -m "Update input.csv with resume links for batch <n>"
+git commit -m "Update resume links for batch <n>"
 git push origin main
 ```
 
