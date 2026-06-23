@@ -260,6 +260,7 @@
         .col-reason { min-width: 15rem; font-style: italic; color: #d1d5db; font-size: 0.85rem; line-height: 1.45; }
         .col-applied { width: 6.5rem; text-align: center; }
         .col-link { width: 5rem; text-align: center; }
+        .col-docs { width: 5rem; text-align: center; }
 
         /* Badges & Actions */
         .status-pill {
@@ -666,6 +667,7 @@
                         <th class="col-reason" onclick="sortTable(10)">Reason ↕</th>
                         <th class="col-applied" onclick="sortTable(11)">Applied ↕</th>
                         <th class="col-link">Link</th>
+                        <th class="col-docs">Docs</th>
                     </tr>
                     <tr class="filter-row">
                         <th></th>
@@ -680,6 +682,7 @@
                         <th><div id="filter-col-9"></div></th>
                         <th><div id="filter-col-10"></div></th>
                         <th><div id="filter-col-11"></div></th>
+                        <th></th>
                         <th></th>
                     </tr>
                 </thead>
@@ -758,6 +761,10 @@
                     <td class="col-link">
                         <a href="${job.url || '#'}" target="_blank" class="apply-btn" style="margin-bottom: 0.25rem; display: block;">View</a>
                         ${job.description_file ? `<a href="${job.description_file}" target="_blank" class="desc-btn" style="display: block;">Text</a>` : ''}
+                    </td>
+                    <td class="col-docs">
+                        ${job.resume_link ? `<a href="${job.resume_link}" target="_blank" class="apply-btn" style="margin-bottom: 0.25rem; display: block;">CV</a>` : ''}
+                        ${job.cover_letter_link ? `<a href="${job.cover_letter_link}" target="_blank" class="desc-btn" style="display: block;">Letter</a>` : ''}
                     </td>
                 `;
                 tbody.appendChild(tr);
