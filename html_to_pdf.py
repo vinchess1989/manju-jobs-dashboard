@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """
 Convert HTML resume/cover letter files to PDF using Playwright (headless Chromium).
 
@@ -16,6 +16,7 @@ import sys
 import os
 import argparse
 from pathlib import Path
+
 
 def html_to_pdf(html_path: str) -> str:
     from playwright.sync_api import sync_playwright

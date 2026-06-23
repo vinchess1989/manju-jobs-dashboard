@@ -98,3 +98,7 @@ When evaluating a job posting, use your web fetch tool to visit the URL and read
 
 ### Automatically Added Negative Constraints (from UI Rejections):
 - NEGATIVE CONSTRAINT: The user explicitly rejected a previous job because: 'Needs lahihoitaja degree'. Do NOT match jobs that have this issue.
+
+
+### Automatically Added Negative Constraints (from UI Rejections):
+- NEGATIVE CONSTRAINT: The user explicitly rejected a previous job because: 'Needs hands on payroll processing expereince'. Do NOT match jobs that have this issue.
