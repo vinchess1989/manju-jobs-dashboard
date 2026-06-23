@@ -1,10 +1,13 @@
 import argparse
 import json
 import re
+import sys
 import urllib.request
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 
 JOBS_URL = "https://vinchess1989.github.io/manju-jobs-dashboard/jobs.json"
+
+VALID_CONDITIONS = ("matching", "applied", "posted-days", "deadline-days", "location")
 
 
 def fetch_jobs(url):
@@ -24,93 +27,106 @@ def parse_date(date_str):
 
 
 def days_until(date_str):
-    """Return days from today until date_str, or None if unparseable."""
     parsed = parse_date(date_str)
     if parsed is None:
         return None
-    delta = parsed - datetime.now(timezone.utc)
-    return delta.days
+    return (parsed - datetime.now(timezone.utc)).days
 
 
 def days_since_posted(date_str):
-    """Return days since posted, or None if unparseable."""
     parsed = parse_date(date_str)
     if parsed is None:
         return None
-    delta = datetime.now(timezone.utc) - parsed
-    return delta.days
+    return (datetime.now(timezone.utc) - parsed).days
+
+
+def evaluate_condition(job, cond, args):
+    """Return True/False if condition is active, None if not specified by user."""
+    if cond == "matching":
+        if args.matching is None:
+            return None
+        val = (job.get("matches_requirements") or "").lower()
+        return val == "yes" if args.matching else val != "yes"
+    if cond == "applied":
+        if args.applied is None:
+            return None
+        is_applied = (job.get("user_review") or "").lower() in ("applied", "done")
+        return is_applied if args.applied else not is_applied
+    if cond == "posted-days":
+        if args.posted_days is None:
+            return None
+        age = days_since_posted(job.get("posted_date", ""))
+        return age is not None and age <= args.posted_days
+    if cond == "deadline-days":
+        if args.deadline_days is None:
+            return None
+        remaining = days_until(job.get("deadline", ""))
+        # Unparseable deadline (N/A, open-ended) treated as always valid
+        return remaining is None or remaining >= args.deadline_days
+    if cond == "location":
+        if not args.location:
+            return None
+        return bool(re.search(args.location, job.get("location") or "", re.IGNORECASE))
+    return None
 
 
 def apply_filters(jobs, args):
+    or_pairs = args.or_pairs or []
+    or_grouped = {cond for pair in or_pairs for cond in pair}
+    standalone = [c for c in VALID_CONDITIONS if c not in or_grouped]
+
     results = []
     for job in jobs:
-        # --- matches_requirements filter ---
-        if args.matching is not None:
-            val = (job.get("matches_requirements") or "").lower()
-            if args.matching and val != "yes":
-                continue
-            if not args.matching and val == "yes":
-                continue
+        # AND: every standalone condition must pass
+        if any(evaluate_condition(job, c, args) is False for c in standalone):
+            continue
 
-        # --- applied / user_review filter ---
-        if args.applied is not None:
-            review = (job.get("user_review") or "").lower()
-            is_applied = review in ("applied", "done")
-            if args.applied and not is_applied:
-                continue
-            if not args.applied and is_applied:
-                continue
-
-        # --- posted-days / deadline-days: OR or AND depending on --date-logic ---
-        if args.posted_days is not None or args.deadline_days is not None:
-            passes_posted = False
-            passes_deadline = False
-
-            if args.posted_days is not None:
-                age = days_since_posted(job.get("posted_date", ""))
-                passes_posted = age is not None and age <= args.posted_days
-
-            if args.deadline_days is not None:
-                remaining = days_until(job.get("deadline", ""))
-                # Unparseable deadline (N/A, open-ended) treated as always valid
-                passes_deadline = remaining is None or remaining >= args.deadline_days
-
-            use_or = args.date_logic == "or"
-            if use_or:
-                if not (passes_posted or passes_deadline):
-                    continue
-            else:
-                if args.posted_days is not None and not passes_posted:
-                    continue
-                if args.deadline_days is not None and not passes_deadline:
-                    continue
-
-        # --- location regex filter ---
-        if args.location:
-            location = job.get("location") or ""
-            if not re.search(args.location, location, re.IGNORECASE):
-                continue
+        # OR groups: within each group, at least one active condition must pass
+        failed_group = False
+        for pair in or_pairs:
+            active = [evaluate_condition(job, c, args) for c in pair]
+            active = [r for r in active if r is not None]
+            if active and not any(active):
+                failed_group = True
+                break
+        if failed_group:
+            continue
 
         results.append(job)
 
     return results
 
 
+def condition_label(cond, args):
+    """Human-readable label for a condition, or None if not active."""
+    if cond == "matching":
+        return f"matching={'yes' if args.matching else 'no'}" if args.matching is not None else None
+    if cond == "applied":
+        return f"applied={'yes' if args.applied else 'no'}" if args.applied is not None else None
+    if cond == "posted-days":
+        return f"posted within {args.posted_days}d" if args.posted_days is not None else None
+    if cond == "deadline-days":
+        return f"deadline >={args.deadline_days}d away" if args.deadline_days is not None else None
+    if cond == "location":
+        return f"location~/{args.location}/" if args.location else None
+    return None
+
+
 def build_filter_summary(args):
+    or_pairs = args.or_pairs or []
+    or_grouped = {cond for pair in or_pairs for cond in pair}
+
     parts = []
-    if args.matching is not None:
-        parts.append(f"matching={'yes' if args.matching else 'no'}")
-    if args.applied is not None:
-        parts.append(f"applied={'yes' if args.applied else 'no'}")
-    if args.posted_days is not None and args.deadline_days is not None:
-        logic = args.date_logic.upper()
-        parts.append(f"(posted within {args.posted_days}d {logic} deadline >={args.deadline_days}d away)")
-    elif args.posted_days is not None:
-        parts.append(f"posted within {args.posted_days}d")
-    elif args.deadline_days is not None:
-        parts.append(f"deadline >={args.deadline_days}d away")
-    if args.location:
-        parts.append(f"location~/{args.location}/")
+    for cond in VALID_CONDITIONS:
+        if cond not in or_grouped:
+            label = condition_label(cond, args)
+            if label:
+                parts.append(label)
+
+    for pair in or_pairs:
+        labels = [condition_label(c, args) or c for c in pair]
+        parts.append(f"({' OR '.join(labels)})")
+
     return "  |  ".join(parts) if parts else "none"
 
 
@@ -155,19 +171,21 @@ def main():
     parser = argparse.ArgumentParser(
         description="Filter jobs from the Manju jobs dashboard.",
         formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog="""
+        epilog=f"""
+Condition names for --or: {', '.join(VALID_CONDITIONS)}
+
 Examples:
-  # Matching, not applied, posted in last 3 days (original behaviour)
+  # Matching, not applied, posted in last 3 days (default AND behaviour)
   python find_matching_jobs.py --matching --no-applied --posted-days 3
 
-  # Any job in Finland posted within 7 days with deadline at least 5 days away
-  python find_matching_jobs.py --posted-days 7 --deadline-days 5 --location Finland
+  # Jobs posted within 7 days OR with deadline >=5 days away, in Finland
+  python find_matching_jobs.py --posted-days 7 --deadline-days 5 --location Finland --or posted-days deadline-days
 
   # Show all applied jobs regardless of match
   python find_matching_jobs.py --applied
 
-  # Non-matching jobs in Helsinki posted this week
-  python find_matching_jobs.py --no-matching --posted-days 7 --location Helsinki
+  # Non-matching jobs: recently posted OR deadline soon, in Helsinki
+  python find_matching_jobs.py --no-matching --posted-days 7 --deadline-days 3 --location Helsinki --or posted-days deadline-days
         """,
     )
 
@@ -197,30 +215,33 @@ Examples:
     )
     parser.add_argument(
         "--deadline-days", type=int, metavar="N", default=None,
-        help="Only show jobs whose deadline is at least N days away (jobs with no parseable deadline are always kept)",
+        help="Only show jobs whose deadline is at least N days away (unparseable deadlines always pass)",
     )
     parser.add_argument(
         "--location", metavar="REGEX", default=None,
         help="Only show jobs whose location matches this regex (case-insensitive)",
     )
     parser.add_argument(
-        "--date-logic", choices=["or", "and"], default="or",
-        help="When both --posted-days and --deadline-days are given, combine them with OR (default) or AND",
+        "--or", dest="or_pairs", nargs=2, action="append", metavar="COND",
+        help=(
+            "OR two conditions instead of AND-ing them "
+            f"({', '.join(VALID_CONDITIONS)}). Repeatable for multiple OR pairs."
+        ),
     )
 
     args = parser.parse_args()
 
-    # argparse stores False for store_false even when not provided; fix that
-    # by relying on default=None and the mutually exclusive group
-    # (store_true/store_false always write a value, so we need a workaround)
-    # Re-parse defaults properly using sys.argv inspection:
-    import sys
-    matching_flags = {"--matching", "--no-matching"}
-    applied_flags  = {"--applied", "--no-applied"}
-    if not matching_flags.intersection(sys.argv):
+    # store_true/store_false always write a value; restore None when flag absent
+    if not {"--matching", "--no-matching"}.intersection(sys.argv):
         args.matching = True   # default: only matching jobs
-    if not applied_flags.intersection(sys.argv):
+    if not {"--applied", "--no-applied"}.intersection(sys.argv):
         args.applied = False   # default: only not-applied jobs
+
+    # Validate --or condition names
+    for pair in (args.or_pairs or []):
+        for cond in pair:
+            if cond not in VALID_CONDITIONS:
+                parser.error(f"--or: unknown condition '{cond}'. Valid: {', '.join(VALID_CONDITIONS)}")
 
     print(f"Fetching jobs from {JOBS_URL} ...")
     jobs = fetch_jobs(JOBS_URL)
