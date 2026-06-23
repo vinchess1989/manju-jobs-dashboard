@@ -46,7 +46,7 @@ def evaluate_condition(job, cond, args):
         if args.matching is None:
             return None
         val = (job.get("matches_requirements") or "").lower()
-        return val == "yes" if args.matching else val != "yes"
+        return val in ("yes", "maybe") if args.matching else val not in ("yes", "maybe")
     if cond == "applied":
         if args.applied is None:
             return None
@@ -100,7 +100,7 @@ def apply_filters(jobs, args):
 def condition_label(cond, args):
     """Human-readable label for a condition, or None if not active."""
     if cond == "matching":
-        return f"matching={'yes' if args.matching else 'no'}" if args.matching is not None else None
+        return f"matching={'yes/maybe' if args.matching else 'no'}" if args.matching is not None else None
     if cond == "applied":
         return f"applied={'yes' if args.applied else 'no'}" if args.applied is not None else None
     if cond == "posted-days":
@@ -192,7 +192,7 @@ Examples:
     match_group = parser.add_mutually_exclusive_group()
     match_group.add_argument(
         "--matching", dest="matching", action="store_true", default=None,
-        help="Only show jobs where matches_requirements=yes",
+        help="Only show jobs where matches_requirements=yes or maybe",
     )
     match_group.add_argument(
         "--no-matching", dest="matching", action="store_false",
