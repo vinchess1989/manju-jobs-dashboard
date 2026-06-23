@@ -380,6 +380,9 @@ def parse_generic(soup, base_url):
         href = a['href']
         # Look for URL paths commonly associated with job postings
         if any(kw in href.lower() for kw in ['/tyopaikka', '/job', '/view', '/rc/clk', '/avoimet-tyopaikat']):
+            # Skip PDFs and static HTML info pages — real job detail URLs never end with a file extension
+            if any(href.lower().split('?')[0].endswith(ext) for ext in ('.pdf', '.html', '.htm', '.doc', '.docx')):
+                continue
             # Skip search/list filter queries, sorting options, base list pages, and recruitment/pricing/advertising pages
             if any(skip in href.lower() for skip in [
                 '?haku=', '?search=', '?q=', 'jarjestys=', '?sort=',
@@ -1451,11 +1454,12 @@ def update_git():
 
         # Add updated files (including dashboard HTML and scraper changes)
         subprocess.run(["git", "add", "jobs.json", "seen_urls.json", "checkpoint.json", "dashboard.html",
-                        "job_descriptions", "job_requirements.md",
+                        "job_descriptions", "job_requirements.md", "deleted.json",
                         "firebase_app/index.html", "scraper.py", "jobs_history.json"], cwd=repo_dir, check=True, env=env)
-        # Check if there are changes to commit
-        status = subprocess.run(["git", "status", "--porcelain"], cwd=repo_dir, capture_output=True, text=True, env=env)
-        if status.stdout.strip():
+        # Only commit if something was actually staged (git diff --cached avoids false positives
+        # from unstaged working-tree changes like .firebase cache or other untracked files)
+        staged = subprocess.run(["git", "diff", "--cached", "--name-only"], cwd=repo_dir, capture_output=True, text=True, env=env)
+        if staged.stdout.strip():
             timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             commit_message = f"Auto-update scraped jobs: {timestamp}"
             subprocess.run(["git", "commit", "-m", commit_message], cwd=repo_dir, check=True, env=env)
