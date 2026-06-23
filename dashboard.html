@@ -683,7 +683,7 @@
                         <th><div id="filter-col-10"></div></th>
                         <th><div id="filter-col-11"></div></th>
                         <th></th>
-                        <th></th>
+                        <th><div id="filter-col-13"></div></th>
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -742,6 +742,7 @@
                 const deadlineVal = formatDate(job.deadline);
                 const sourceVal = job.source || getSourceFromUrl(job.url) || 'Unknown';
                 const jobIdVal = job.id || 'N/A';
+                const docsVal = (job.resume_link && job.cover_letter_link) ? 'CV+Letter' : job.resume_link ? 'CV' : job.cover_letter_link ? 'Letter' : 'None';
                 
                 tr.innerHTML = `
                     <td class="col-id">${index + 1}</td>
@@ -762,7 +763,7 @@
                         <a href="${job.url || '#'}" target="_blank" class="apply-btn" style="margin-bottom: 0.25rem; display: block;">View</a>
                         ${job.description_file ? `<a href="${job.description_file}" target="_blank" class="desc-btn" style="display: block;">Text</a>` : ''}
                     </td>
-                    <td class="col-docs">
+                    <td class="col-docs" data-value="${docsVal}">
                         ${job.resume_link ? `<a href="${job.resume_link}" target="_blank" class="apply-btn" style="margin-bottom: 0.25rem; display: block;">CV</a>` : ''}
                         ${job.cover_letter_link ? `<a href="${job.cover_letter_link}" target="_blank" class="desc-btn" style="display: block;">Letter</a>` : ''}
                     </td>
@@ -788,9 +789,9 @@
 
         function buildMultiSelectFilters() {
             _buildRowCache();
-            const colNames = ['ID', 'Title', 'Company', 'Location', 'Source', 'Posted', 'Deadline', 'Visited', 'Matches', 'Reason', 'Applied'];
+            const filterCols = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13];
 
-            for (let i = 1; i <= 11; i++) {
+            for (const i of filterCols) {
                 const uniqueValues = new Set();
                 _rowCache.forEach(({ vals }) => {
                     const val = vals[i];
@@ -970,7 +971,7 @@
 
             // Collect active filters (pure JS, no DOM reads in hot loop)
             const filters = {};
-            for (let i = 1; i <= 11; i++) {
+            for (const i of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13]) {
                 const container = document.getElementById(`filter-col-${i}`);
                 if (!container) continue;
                 const checked = Array.from(container.querySelectorAll('input[type="checkbox"]:checked'), cb => cb.value);
