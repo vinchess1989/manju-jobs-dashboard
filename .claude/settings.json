@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(git *)",
+      "PowerShell(python *)",
+      "PowerShell(firebase *)",
+      "PowerShell(New-Item *)",
+      "PowerShell(Get-ChildItem *)",
+      "PowerShell(Get-Content *)",
+      "PowerShell(Copy-Item *)",
+      "PowerShell(.\\publish_dashboards.ps1)",
+      "PowerShell(cd *)",
+      "WebFetch",
+      "WebSearch"
+    ]
+  }
+}

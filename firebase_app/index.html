@@ -963,7 +963,7 @@
                         <th class="col-user-reason resizable-th"><div class="resizable-header" onclick="sortTable(11)">User Reason ↕<div class="active-filters-summary" id="active-filters-11"></div></div></th>
                         <th class="col-applied resizable-th"><div class="resizable-header" onclick="sortTable(12)">Applied ↕<div class="active-filters-summary" id="active-filters-12"></div></div></th>
                         <th class="col-user-review resizable-th"><div class="resizable-header" onclick="sortTable(13)">User Review ↕<div class="active-filters-summary" id="active-filters-13"></div></div></th>
-                        <th class="col-docs resizable-th"><div class="resizable-header">Docs</div></th>
+                        <th class="col-docs resizable-th"><div class="resizable-header" onclick="sortTable(14)">Docs ↕<div class="active-filters-summary" id="active-filters-14"></div></div></th>
                     </tr>
                     <tr class="filter-row">
                         <th></th>
@@ -1202,7 +1202,7 @@
                     if (deadlineInput && saved.deadlineLimit !== null && saved.deadlineLimit !== undefined) deadlineInput.value = saved.deadlineLimit;
                     
                     if (saved.colFilters) {
-                        for (let i = 1; i <= 12; i++) {
+                        for (let i = 1; i <= 14; i++) {
                             const container = document.getElementById(`filter-col-${i}`);
                             if (!container) continue;
                             if (saved.colFilters[i]) {
