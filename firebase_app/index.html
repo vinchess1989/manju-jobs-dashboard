@@ -963,6 +963,7 @@
                         <th class="col-user-reason resizable-th"><div class="resizable-header" onclick="sortTable(11)">User Reason ↕<div class="active-filters-summary" id="active-filters-11"></div></div></th>
                         <th class="col-applied resizable-th"><div class="resizable-header" onclick="sortTable(12)">Applied ↕<div class="active-filters-summary" id="active-filters-12"></div></div></th>
                         <th class="col-user-review resizable-th"><div class="resizable-header" onclick="sortTable(13)">User Review ↕<div class="active-filters-summary" id="active-filters-13"></div></div></th>
+                        <th class="col-docs resizable-th"><div class="resizable-header">Docs</div></th>
                     </tr>
                     <tr class="filter-row">
                         <th></th>
@@ -979,6 +980,7 @@
                         <th><div id="filter-col-11"></div></th>
                         <th><div id="filter-col-12"></div></th>
                         <th><div id="filter-col-13"></div></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody id="jobs-body"></tbody>
@@ -1092,6 +1094,10 @@
                             <option value="done" ${userReview === 'done' ? 'selected' : ''}>done</option>
                         </select>
                         ` : `<span class="status-pill ${userReview === 'done' ? 'yes' : 'pending'}">${userReview}</span>`}
+                    </td>
+                    <td class="col-docs" style="text-align:center; white-space:nowrap;">
+                        ${job.resume_link ? `<a href="${job.resume_link}" target="_blank" style="font-size:0.75em; color:var(--color-yes); text-decoration:none; border:1px solid rgba(16,185,129,0.3); padding:2px 6px; border-radius:4px; display:inline-block; margin-bottom:3px;">CV</a>` : ''}
+                        ${job.cover_letter_link ? `<a href="${job.cover_letter_link}" target="_blank" style="font-size:0.75em; color:var(--color-maybe); text-decoration:none; border:1px solid rgba(96,165,250,0.3); padding:2px 6px; border-radius:4px; display:inline-block;">Letter</a>` : ''}
                     </td>
                 `;
                 tbody.appendChild(tr);
