@@ -1463,16 +1463,19 @@ def update_git():
             return
 
         # Add updated files (including dashboard HTML and scraper changes)
+        print("Staging files with git add...")
         subprocess.run(["git", "add", "jobs.json", "seen_urls.json", "checkpoint.json", "dashboard.html",
                         "job_descriptions", "job_requirements.md", "deleted.json",
                         "firebase_app/index.html", "scraper.py", "jobs_history.json"], 
                        cwd=repo_dir, check=True, env=env, capture_output=True, text=True)
         
         # Only commit if something was actually staged
+        print("Checking for changes to commit...")
         staged = subprocess.run(["git", "diff", "--cached", "--name-only"], cwd=repo_dir, capture_output=True, text=True, env=env)
         if staged.stdout.strip():
             timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             commit_message = f"Auto-update scraped jobs: {timestamp}"
+            print(f"Committing changes: {commit_message}")
             subprocess.run(["git", "commit", "-m", commit_message], cwd=repo_dir, check=True, env=env, capture_output=True, text=True)
             
             # Check for GitHub token in environment variables
@@ -1486,23 +1489,29 @@ def update_git():
                     push_cmd = ["git", "push", auth_url]
 
             try:
+                print("Pushing to GitHub...")
                 subprocess.run(push_cmd, cwd=repo_dir, check=True, env=env, capture_output=True, text=True)
                 print("Successfully pushed updates to GitHub!")
                 # Deploy dashboard to Firebase Hosting if the CLI is available
                 firebase_app_dir = os.path.join(repo_dir, "firebase_app")
                 if os.path.exists(os.path.join(firebase_app_dir, "firebase.json")):
                     try:
+                        print("Deploying to Firebase Hosting...")
                         subprocess.run("firebase deploy --only hosting --non-interactive",
                                        cwd=firebase_app_dir, check=True, env=env, timeout=120, shell=True)
                         print("Successfully deployed dashboard to Firebase Hosting.")
                     except (subprocess.CalledProcessError, FileNotFoundError, subprocess.TimeoutExpired) as fe:
-                        print(f"Firebase deploy skipped or failed (run 'firebase deploy' manually if needed): {fe}")
-            except subprocess.CalledProcessError:
-                print("Failed to push to GitHub (Check your GITHUB_TOKEN or internet connection).")
+                        print(f"Firebase deploy skipped or failed: {fe}")
+            except subprocess.CalledProcessError as e:
+                print(f"Failed to push to GitHub. Error: {e}")
+                if hasattr(e, 'stderr') and e.stderr:
+                    print(f"Git Push Stderr: {e.stderr}")
         else:
             print("No changes to commit. GitHub is already up to date.")
     except subprocess.CalledProcessError as e:
         print(f"Failed to update Git: {e}")
+        if hasattr(e, 'stderr') and e.stderr:
+            print(f"Git Error Details: {e.stderr}")
 
 # Event flag to signal when the user wants to stop
 stop_event = threading.Event()
