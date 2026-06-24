@@ -1985,8 +1985,8 @@ def main():
 
     print("INFO: Scraper script starting execution loop...")
     # Start the background thread to listen for user input
-    input_thread = threading.Thread(target=listen_for_input, daemon=True)
-    input_thread.start()
+    # input_thread = threading.Thread(target=listen_for_input, daemon=True)
+    # input_thread.start()
 
     while not stop_event.is_set():
         run_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
