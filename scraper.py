@@ -2020,7 +2020,7 @@ def main():
         if pending_jobs:
             # We have pending jobs, flush a batch of them first
             print(f"\nINFO: Flushing pending jobs first. {len(pending_jobs)} pending jobs remaining.")
-            batch_urls = [j['url'] for j in pending_jobs[:15]]
+            batch_urls = [j['url'] for j in pending_jobs[:1]]
             try:
                 review_pending_jobs(specific_urls=set(batch_urls))
             except Exception as e:
@@ -2043,7 +2043,7 @@ def main():
             if stop_event.is_set():
                 print("Stopping the scraper...")
                 break
-            continue
+            break
             
         quota = 15
         new_jobs = []
