@@ -996,7 +996,6 @@
             const llmBar = document.createElement('div');
             llmBar.id = 'llm-filter-bar';
             llmBar.className = 'llm-filter-bar';
-            llmBar.style.display = 'none';
             jobsContainer.appendChild(llmBar);
 
             // 2. Table structure
@@ -1203,13 +1202,14 @@
             });
             const container = document.getElementById('llm-filter-bar');
             if (!container) return;
-            if (models.size === 0) { container.style.display = 'none'; return; }
             container.style.display = 'flex';
             const sorted = Array.from(models).sort();
+            const noneYet = models.size === 0 ? `<span style="font-size:0.72rem; color:var(--text-secondary); opacity:0.6;">(no model data yet — run evaluator/upload)</span>` : '';
             container.innerHTML = `
                 <span style="font-size:0.78rem; color:var(--text-secondary); white-space:nowrap; align-self:center; margin-right:4px;">LLM:</span>
                 <button class="llm-pill ${selectedLlmModels.size === 0 ? 'active' : ''}" onclick="window.toggleLlmFilter(null)">All</button>
                 ${sorted.map(m => `<button class="llm-pill ${selectedLlmModels.has(m) ? 'active' : ''}" onclick="window.toggleLlmFilter('${m.replace(/'/g, "\\'")}')" title="${m}">${m}</button>`).join('')}
+                ${noneYet}
             `;
         }
 

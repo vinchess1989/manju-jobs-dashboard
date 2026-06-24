@@ -118,7 +118,7 @@ def main():
     print(f"  Loaded {len(id_to_url)} job IDs.")
 
     try:
-        with open(args.input, newline="", encoding="utf-8") as f:
+        with open(args.input, newline="", encoding="utf-8-sig") as f:
             reader = csv.reader(f)
             rows = [row for row in reader if row and not row[0].strip().startswith("#")]
     except FileNotFoundError:
