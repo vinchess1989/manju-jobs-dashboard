@@ -285,6 +285,13 @@ _KEYWORD_SITE_TEMPLATES = [
         "scroll_count": 10,
         "url_template": "https://www.jobly.fi/tyopaikat?search={term_enc}",
     },
+    {
+        "id_prefix": "kuntarekry",
+        "platform": "kuntarekry",
+        "lang": "fi",
+        "scroll_count": 8,
+        "url_template": "https://www.kuntarekry.fi/fi/tyopaikat/?sq={term_enc}&sort=-publish_time",
+    },
 ]
 
 # ── Broad sweeps (no keyword, date-sorted, catches roles not in keyword list)
@@ -295,8 +302,8 @@ BROAD_SWEEPS = [
     {"id": "indeed",          "platform": "indeed",          "pages": 4,         "url": "https://fi.indeed.com/jobs?l=Finland&sort=date"},
     {"id": "tyomarkkinatori", "platform": "tyomarkkinatori", "scroll_count": 10, "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat?sort=published,desc"},
     {"id": "jobly",           "platform": "jobly",           "scroll_count": 10, "url": "https://www.jobly.fi/tyopaikat"},
+    {"id": "kuntarekry",      "platform": "kuntarekry",      "scroll_count": 10, "url": "https://www.kuntarekry.fi/fi/tyopaikat/?sort=-publish_time"},
     {"id": "meetfrank",       "platform": "meetfrank",       "scroll_count": 10, "url": "https://meetfrank.com/jobs/"},
-    {"id": "hub",             "platform": "hub",             "scroll_count": 8,  "url": "https://hub.no/jobs"},
 ]
 
 _DEFAULT_SCROLL_COUNT = 8
@@ -379,7 +386,7 @@ def parse_generic(soup, base_url):
     for a in soup.find_all('a', href=True):
         href = a['href']
         # Look for URL paths commonly associated with job postings
-        if any(kw in href.lower() for kw in ['/tyopaikka', '/job', '/view', '/rc/clk', '/avoimet-tyopaikat']):
+        if any(kw in href.lower() for kw in ['/tyopaikka', '/job', '/view', '/rc/clk', '/avoimet-tyopaikat', '/tyopaikat/']):
             # Skip PDFs and static HTML info pages — real job detail URLs never end with a file extension
             if any(href.lower().split('?')[0].endswith(ext) for ext in ('.pdf', '.html', '.htm', '.doc', '.docx')):
                 continue
@@ -1435,6 +1442,7 @@ def update_git():
         env = os.environ.copy()
         env.pop("GIT_ASKPASS", None)
         env["GIT_TERMINAL_PROMPT"] = "0"
+        env["GCM_INTERACTIVE"] = "false"  # Prevent Git Credential Manager from hanging headlessly
 
         # Check if the folder is inside a Git repository
         is_git = False
@@ -1969,6 +1977,8 @@ def main():
     input_thread.start()
 
     while not stop_event.is_set():
+        run_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        print(f"\n{'='*60}\n[{run_time}] STARTING NEW PIPELINE BATCH\n{'='*60}")
         try:
             poll_firebase_feedback()
         except Exception as e:

@@ -1,5 +1,10 @@
 # Resume Generation Workflow — Next Session Prompt
 
+### Primary Orchestrator Agent Session
+- **Conversation ID:** `062adaef-2845-407e-958e-be22ad8a52ee`
+- **Purpose:** This session holds the background tasks (cron jobs) that monitor `orchestrator.log` for broken search sites and dynamically evaluate the local LLM outputs. 
+- **To Resume/Manage:** If you need to kill or check the status of those background tasks, paste this Conversation ID into *any* chat and tell the agent: "Check the background tasks for conversation 062adaef-2845-407e-958e-be22ad8a52ee using the manage_task tool."
+
 ## Repo locations
 - PUBLIC:  `c:\Users\vinee\manju_jobs`           (vinchess1989/manju-jobs-dashboard)
 - PRIVATE: `c:\Users\vinee\Manju_jobs_private`   (munchnambiar/Manju-jobs)

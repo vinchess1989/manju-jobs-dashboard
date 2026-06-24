@@ -102,3 +102,13 @@ When evaluating a job posting, use your web fetch tool to visit the URL and read
 
 ### Automatically Added Negative Constraints (from UI Rejections):
 - NEGATIVE CONSTRAINT: The user explicitly rejected a previous job because: 'Needs hands on payroll processing expereince'. Do NOT match jobs that have this issue.
+
+
+### Automatically Added Negative Constraints (from UI Rejections):
+- NEGATIVE CONSTRAINT: The user explicitly rejected a previous job because: 'Should meet these conditions:
+- you are 15-24 years old
+- you have reached the age of 50
+- you have not completed a matriculation examination, a degree referred to in the Act on Vocational Education and Training, or a comparable foreign upper secondary education
+- you are entitled to an integration plan referred to in the Act on the Promotion of Integration
+- you have not been in gainful employment during the previous six months
+- as an unemployed job seeker, your chances of finding a suitable job have been significantly reduced due to a disability or illness.'. Do NOT match jobs that have this issue.

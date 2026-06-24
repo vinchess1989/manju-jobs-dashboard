@@ -719,6 +719,9 @@
         const itemsPerPage = 100;
         let filteredRows = [];
         let lastSortedCol = -1;
+        let _rowCache = null; // pre-cached rows for fast filtering
+        const sessionNoChanges = new Set(); // URLs set to "no" by user this session
+        let showArchivedNo = false;
 
         const fileStatusDot = document.getElementById('file-status-dot');
         const fileStatusText = document.getElementById('file-status-text');
@@ -906,7 +909,17 @@
         }
 
         function buildTable(lastMod) {
+            _rowCache = null;
             jobsContainer.innerHTML = '';
+
+            // Pre-compute archived count for info bar
+            let archivedCount = 0;
+            if (!showArchivedNo) {
+                allJobs.forEach(job => {
+                    const mv = (sharedJobsState[job.url] && sharedJobsState[job.url].matches_requirements) || job.matches_requirements || 'pending';
+                    if (mv === 'no' && !sessionNoChanges.has(job.url)) archivedCount++;
+                });
+            }
 
             // 1. Info bar
             const infoBar = document.createElement('div');
@@ -921,6 +934,7 @@
                     <button onclick="window.resetAllFilters()" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #d1d5db; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 0.75rem; transition: background 0.2s;">
                         <i class="fas fa-filter-slash"></i> Clear Filters
                     </button>
+                    ${archivedCount > 0 ? `<button onclick="window.unarchiveAllNo()" style="background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: #fca5a5; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 0.75rem; transition: background 0.2s;"><i class="fas fa-box-open"></i> Show ${archivedCount} Archived (No)</button>` : ''}
                 </div>
                 <div class="table-info-item">
                     <span class="table-info-label">Last Updated</span>
@@ -936,7 +950,7 @@
                 </div>
                 <div class="table-info-item">
                     <span class="table-info-label">Total Listings</span>
-                    <span class="table-info-value" id="listings-counter">${allJobs.length}</span>
+                    <span class="table-info-value" id="listings-counter">${allJobs.length - archivedCount}</span>
                 </div>
             `;
             jobsContainer.appendChild(infoBar);
@@ -1033,14 +1047,16 @@
 
             // 3. Rows
             allJobs.forEach((job, index) => {
+                const matchVal = (sharedJobsState[job.url] && sharedJobsState[job.url].matches_requirements) || job.matches_requirements || 'pending';
+                if (matchVal === 'no' && !sessionNoChanges.has(job.url) && !showArchivedNo) return;
+
                 const jobIdSafe = job.id || job.url.replace(/[\.\#\$\/\[\]]/g, '_');
                 let appliedStatus = (sharedJobsState[job.url] && sharedJobsState[job.url].applied) || job.applied || 'no';
                 let userReview = (sharedJobsState[job.url] && sharedJobsState[job.url].user_review) || job.user_review || 'pending';
-                
+
                 const tr = document.createElement('tr');
                 tr.setAttribute('data-url', job.url);
-                
-                const matchVal = (sharedJobsState[job.url] && sharedJobsState[job.url].matches_requirements) || job.matches_requirements || 'pending';
+
                 const postedVal = formatDate(job.posted_date);
                 const deadlineVal = formatDate(job.deadline);
                 const sourceVal = job.source || getSourceFromUrl(job.url) || 'Unknown';
@@ -1125,19 +1141,33 @@
             filterTable();
         };
 
-        function buildMultiSelectFilters() {
+        function _buildRowCache() {
             const tbody = document.querySelector('table tbody');
-            const rows = Array.from(tbody.querySelectorAll('tr'));
-            
+            if (!tbody) return;
+            const rows = tbody.querySelectorAll('tr');
+            _rowCache = Array.from(rows, row => {
+                const tds = row.getElementsByTagName('td');
+                const vals = Array.from(tds, td =>
+                    td.hasAttribute('data-value') ? td.getAttribute('data-value') : td.textContent.trim()
+                );
+                const parseMs = v => {
+                    if (!v || v === 'N/A' || v === 'Open until filled' || v === 'Unknown') return null;
+                    const d = new Date(v);
+                    return isNaN(d.getTime()) ? null : d.getTime();
+                };
+                return { el: row, vals, postedMs: parseMs(vals[6]), deadlineMs: parseMs(vals[7]) };
+            });
+        }
+
+        function buildMultiSelectFilters() {
+            if (!_rowCache) _buildRowCache();
+
             // Build the multi-select dropdowns for columns 1 to 14
             for (let i = 1; i <= 14; i++) {
                 const uniqueValues = new Set();
-                rows.forEach(row => {
-                    const td = row.getElementsByTagName("td")[i];
-                    if (td) {
-                        const val = td.hasAttribute("data-value") ? td.getAttribute("data-value") : td.textContent.trim();
-                        if (val) uniqueValues.add(val);
-                    }
+                _rowCache.forEach(({ vals }) => {
+                    const val = vals[i];
+                    if (val) uniqueValues.add(val);
                 });
                 
                 const sortedVals = Array.from(uniqueValues).sort((a, b) => a.localeCompare(b, undefined, {sensitivity: 'base'}));
@@ -1277,10 +1307,8 @@
         }
 
         function filterTable() {
-            const tbody = document.querySelector('table tbody');
-            if (!tbody) return;
-            const rows = Array.from(tbody.querySelectorAll('tr'));
-            
+            if (!_rowCache) _buildRowCache();
+
             const postedDaysInput = document.getElementById('posted-days-filter');
             const deadlineDaysInput = document.getElementById('deadline-days-filter');
             const postedLimit = (postedDaysInput && postedDaysInput.value) ? parseInt(postedDaysInput.value) : null;
@@ -1288,17 +1316,17 @@
 
             const today = new Date();
             today.setHours(0,0,0,0);
-            
+
             const filters = {};
             for (let i = 1; i <= 14; i++) {
                 const container = document.getElementById(`filter-col-${i}`);
                 if (!container) continue;
                 const checked = Array.from(container.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value);
-                
+
                 let summaryTexts = [...checked];
                 if (i === 6 && postedLimit !== null && !isNaN(postedLimit)) summaryTexts.unshift(`< ${postedLimit}d`);
                 if (i === 7 && deadlineLimit !== null && !isNaN(deadlineLimit)) summaryTexts.unshift(`< ${deadlineLimit}d`);
-                
+
                 const summaryDiv = document.getElementById(`active-filters-${i}`);
                 if (summaryDiv) {
                     if (summaryTexts.length > 0) {
@@ -1310,12 +1338,12 @@
                         summaryDiv.title = '';
                     }
                 }
-                
+
                 if (checked.length > 0 || (i === 6 && postedLimit !== null && !isNaN(postedLimit)) || (i === 7 && deadlineLimit !== null && !isNaN(deadlineLimit))) {
                     filters[i] = checked;
                 }
             }
-            
+
             // Save filters to localStorage
             try {
                 const projectId = typeof firebaseConfig !== 'undefined' ? firebaseConfig.projectId : 'default';
@@ -1328,93 +1356,62 @@
             } catch (e) {
                 console.error("Error saving filters", e);
             }
-            
+
             let visibleCount = 0;
             let counts = { yes: 0, maybe: 0, no: 0, pending: 0, rereview: 0 };
             let appliedCount = 0;
             let reviewedCount = 0;
-            
             filteredRows = [];
-            rows.forEach(row => {
+            const todayMs = today.getTime();
+            const DAY_MS = 86400000;
+
+            for (let r = 0; r < _rowCache.length; r++) {
+                const entry = _rowCache[r];
+                const { vals, postedMs, deadlineMs } = entry;
                 let show = true;
-                
+
                 for (let i = 1; i <= 14; i++) {
-                    if (filters[i]) {
-                        const td = row.getElementsByTagName("td")[i];
-                        if (td) {
-                            const val = td.hasAttribute("data-value") ? td.getAttribute("data-value") : td.textContent.trim();
-                            
-                            let passesCheckbox = filters[i].length === 0 || filters[i].includes(val);
-                            
-                            if (i === 6 && postedLimit !== null && !isNaN(postedLimit)) {
-                                let passesDate = false;
-                                if (val && val !== 'N/A' && val !== 'Open until filled' && val !== 'Unknown') {
-                                    const d = new Date(val);
-                                    if (!isNaN(d.getTime())) {
-                                        const diffTime = today - d;
-                                        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                                        if (diffDays >= 0 && diffDays <= postedLimit) passesDate = true;
-                                    }
-                                }
-                                passesCheckbox = filters[i].length === 0 ? passesDate : (passesCheckbox || passesDate);
-                            }
-                            
-                            if (i === 7 && deadlineLimit !== null && !isNaN(deadlineLimit)) {
-                                let passesDate = false;
-                                if (val && val !== 'N/A' && val !== 'Open until filled' && val !== 'Unknown') {
-                                    const d = new Date(val);
-                                    if (!isNaN(d.getTime())) {
-                                        const diffTime = d - today;
-                                        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                                        if (diffDays >= 0 && diffDays <= deadlineLimit) passesDate = true;
-                                    }
-                                }
-                                passesCheckbox = filters[i].length === 0 ? passesDate : (passesCheckbox || passesDate);
-                            }
-                            
-                            if (!passesCheckbox) {
-                                show = false;
-                                break;
-                            }
-                        }
+                    if (!filters[i]) continue;
+                    const val = vals[i] || '';
+                    let passesCheckbox = filters[i].length === 0 || filters[i].includes(val);
+
+                    if (i === 6 && postedLimit !== null && !isNaN(postedLimit)) {
+                        const passesDate = postedMs !== null &&
+                            Math.ceil((todayMs - postedMs) / DAY_MS) >= 0 &&
+                            Math.ceil((todayMs - postedMs) / DAY_MS) <= postedLimit;
+                        passesCheckbox = filters[i].length === 0 ? passesDate : (passesCheckbox || passesDate);
                     }
+
+                    if (i === 7 && deadlineLimit !== null && !isNaN(deadlineLimit)) {
+                        const passesDate = deadlineMs !== null &&
+                            Math.ceil((deadlineMs - todayMs) / DAY_MS) >= 0 &&
+                            Math.ceil((deadlineMs - todayMs) / DAY_MS) <= deadlineLimit;
+                        passesCheckbox = filters[i].length === 0 ? passesDate : (passesCheckbox || passesDate);
+                    }
+
+                    if (!passesCheckbox) { show = false; break; }
                 }
-                
+
                 if (show) {
-                    filteredRows.push(row);
+                    filteredRows.push(entry.el);
                     visibleCount++;
-                    const tdMatches = row.getElementsByTagName("td")[9];
-                    const tdSync = row.getElementsByTagName("td")[8];
-                    if (tdMatches) {
-                        const mVal = tdMatches.getAttribute("data-value");
-                        if (mVal === 'yes') counts.yes++;
-                        else if (mVal === 'maybe') counts.maybe++;
-                        else if (mVal === 'no') counts.no++;
-                        else if (mVal === 'pending') counts.pending++;
-                    }
-                    if (tdSync) {
-                        if (tdSync.getAttribute("data-value") === 'Queued') counts.rereview++;
-                    }
-                    
-                    const tdApplied = row.getElementsByTagName("td")[12];
-                    if (tdApplied) {
-                        const aVal = tdApplied.getAttribute("data-value");
-                        if (aVal === 'yes') appliedCount++;
-                    }
-                    
-                    const tdReview = row.getElementsByTagName("td")[13];
-                    if (tdReview) {
-                        const rVal = tdReview.getAttribute("data-value");
-                        if (rVal === 'done') reviewedCount++;
-                    }
+                    const mVal = vals[9];
+                    if (mVal === 'yes') counts.yes++;
+                    else if (mVal === 'maybe') counts.maybe++;
+                    else if (mVal === 'no') counts.no++;
+                    else if (mVal === 'pending') counts.pending++;
+                    if (vals[8] === 'Queued') counts.rereview++;
+                    if (vals[12] === 'yes') appliedCount++;
+                    if (vals[13] === 'done') reviewedCount++;
                 }
-            });
-            
+            }
+
+            const activeTotal = _rowCache ? _rowCache.length : allJobs.length;
             const counter = document.getElementById('listings-counter');
             if (counter) {
                 let text = `<strong id="stat-total" style="cursor:help;border-bottom:1px dashed rgba(255,255,255,0.4);">${visibleCount}</strong>`;
-                if (visibleCount !== allJobs.length) {
-                    text += ` (filtered from ${allJobs.length})`;
+                if (visibleCount !== activeTotal) {
+                    text += ` (filtered from ${activeTotal})`;
                 }
                 text += ` <span style="margin: 0 10px; opacity: 0.3;">|</span> `;
                 text += `<span id="stat-yes" style="color: var(--color-yes); font-weight: 600; cursor:help; border-bottom:1px dashed rgba(16,185,129,0.5);">Yes: ${counts.yes}</span> &nbsp;&nbsp; `;
@@ -1426,7 +1423,7 @@
                 _attachChartHover(document.getElementById('stat-yes'), 'yes');
                 _attachChartHover(document.getElementById('stat-total'), 'total');
             }
-            
+
             const appliedCounter = document.getElementById('applied-counter');
             if (appliedCounter) {
                 appliedCounter.textContent = appliedCount;
@@ -1437,10 +1434,10 @@
                     appliedCounter._chartHoverAttached = true;
                 }
             }
-            
+
             const reviewedCounter = document.getElementById('reviewed-counter');
             if (reviewedCounter) reviewedCounter.textContent = reviewedCount;
-            
+
             renderPage(1);
         }
 
@@ -1448,18 +1445,17 @@
             currentPage = page;
             const start = (currentPage - 1) * itemsPerPage;
             const end = start + itemsPerPage;
-            
-            const tbody = document.querySelector('table tbody');
-            const rows = Array.from(tbody.querySelectorAll('tr'));
-            
-            rows.forEach(row => {
-                row.style.display = 'none';
-            });
-            
+
+            if (_rowCache) {
+                for (let r = 0; r < _rowCache.length; r++) _rowCache[r].el.style.display = 'none';
+            } else {
+                const tbody = document.querySelector('table tbody');
+                if (tbody) Array.from(tbody.querySelectorAll('tr')).forEach(row => { row.style.display = 'none'; });
+            }
             for (let i = start; i < end && i < filteredRows.length; i++) {
                 filteredRows[i].style.display = '';
             }
-            
+
             updatePaginationUI();
         }
 
@@ -1611,7 +1607,15 @@
                     select.className = 'status-pill ' + newState;
                     select.closest('td').setAttribute('data-value', newState);
                     select.setAttribute('onchange', `handleMatchChange(this, '${url}', '${newState}')`);
-                    
+
+                    if (newState === 'no') sessionNoChanges.add(url);
+                    else sessionNoChanges.delete(url);
+                    // Update cached match value so filter counts stay current
+                    if (_rowCache) {
+                        const ce = _rowCache.find(e => e.el.getAttribute('data-url') === url);
+                        if (ce) ce.vals[9] = newState;
+                    }
+
                     filterTable(); // Recalculate summary counts
                     autoMarkUserReviewDone(url);
                 } catch (e) {
@@ -1625,6 +1629,11 @@
                 select.value = originalValue;
             }
         }
+
+        window.unarchiveAllNo = function() {
+            showArchivedNo = true;
+            buildTable();
+        };
         
         async function handleUserReviewChange(select, url, originalValue) {
             const newState = select.value;
@@ -1743,13 +1752,14 @@
             ctx.clearRect(0, 0, W, H);
             const _cutoffMs = new Date('2026-06-15T00:00:00').getTime();
             data = (data || []).filter(d => new Date(d.timestamp).getTime() >= _cutoffMs);
-            const _byDay = {}, _byDayApplied = {};
+            const _bySlot = {}, _bySlotApplied = {};
             data.forEach(d => {
-                const day = d.timestamp.slice(0, 10);
-                _byDay[day] = d;
-                if (d.applied != null && d.applied > (_byDayApplied[day] ?? 0)) _byDayApplied[day] = d.applied;
+                const _dt = new Date(d.timestamp);
+                const slot = d.timestamp.slice(0, 10) + 'T' + String(Math.floor(_dt.getHours() / 6) * 6).padStart(2, '0');
+                _bySlot[slot] = d;
+                if (d.applied != null && d.applied > (_bySlotApplied[slot] ?? 0)) _bySlotApplied[slot] = d.applied;
             });
-            data = Object.keys(_byDay).sort().map(day => ({ ..._byDay[day], applied: _byDayApplied[day] ?? 0 }));
+            data = Object.keys(_bySlot).sort().map(slot => ({ ..._bySlot[slot], applied: _bySlotApplied[slot] ?? 0 }));
             if (!data || data.length < 2) {
                 ctx.fillStyle = 'rgba(255,255,255,0.4)'; ctx.font = '11px sans-serif'; ctx.textAlign = 'center';
                 ctx.fillText('Not enough data yet', W / 2, H / 2); return;
@@ -1766,7 +1776,7 @@
                 : [{ key: 'total', color: '#a5b4fc', label: 'Total' }, { key: 'yes', color: '#10b981', label: 'Yes' }];
             const allVals = data.flatMap(d => LINES.map(l => d[l.key] ?? 0));
             const minVal = Math.max(0, Math.min(...allVals) - 1), maxVal = Math.max(...allVals) + 1, range = maxVal - minVal || 1;
-            const pL = 38, pR = 10, pT = 22, pB = 22, cW = W - pL - pR, cH = H - pT - pB;
+            const pL = 38, pR = 10, pT = 22, pB = 36, cW = W - pL - pR, cH = H - pT - pB;
             ctx.strokeStyle = 'rgba(255,255,255,0.06)'; ctx.lineWidth = 1;
             for (let i = 0; i <= 4; i++) {
                 const y = pT + cH * i / 4;
@@ -1790,10 +1800,24 @@
                     });
                 }
             });
-            const fmt = d => new Date(d.timestamp).toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
-            ctx.fillStyle = 'rgba(255,255,255,0.4)'; ctx.font = '9px sans-serif';
-            ctx.textAlign = 'left'; ctx.fillText(fmt(data[0]), pL, H - 5);
-            ctx.textAlign = 'right'; ctx.fillText(fmt(data[data.length - 1]), pL + cW, H - 5);
+            const fmtDay = d => {
+                const dt = new Date(d.timestamp); const h = dt.getHours();
+                if (h < 6) return dt.toLocaleString([], { month: 'short', day: 'numeric' });
+                return ['6am', '12pm', '6pm'][Math.floor(h / 6) - 1] || '';
+            };
+            let lastLabelX = -Infinity;
+            data.forEach((d, i) => {
+                const x = pL + (i / (data.length - 1)) * cW;
+                const isLast = i === data.length - 1;
+                if (!isLast && x - lastLabelX < 22) return;
+                lastLabelX = x;
+                ctx.save();
+                ctx.translate(x, pT + cH + 5);
+                ctx.rotate(-Math.PI / 4);
+                ctx.fillStyle = 'rgba(255,255,255,0.4)'; ctx.font = '9px sans-serif'; ctx.textAlign = 'right';
+                ctx.fillText(fmtDay(d), 0, 0);
+                ctx.restore();
+            });
             let lx = pL;
             LINES.forEach(line => {
                 ctx.strokeStyle = line.color; ctx.lineWidth = 2;
@@ -1802,9 +1826,20 @@
                 ctx.fillText(line.label, lx + 16, pT - 3);
                 lx += 16 + ctx.measureText(line.label).width + 20;
             });
+            canvas._chartPoints = data.map((d, i) => {
+                const x = pL + (i / (data.length - 1)) * cW;
+                const yMap = {};
+                LINES.forEach(l => { yMap[l.key] = pT + cH - ((d[l.key] ?? 0) - minVal) / range * cH; });
+                return { x, d, pT, cH, y: yMap, lines: LINES.map(l => ({ key: l.key, label: l.label, color: l.color, val: d[l.key] ?? 0 })) };
+            });
         }
+        let _chartHideTimer = null;
+        function _cancelChartHide() { if (_chartHideTimer) { clearTimeout(_chartHideTimer); _chartHideTimer = null; } }
+        function _scheduleChartHide() { _chartHideTimer = setTimeout(() => { document.getElementById('chart-tooltip').style.display = 'none'; }, 150); }
         async function _showChartTooltip(el, metric) {
+            _cancelChartHide();
             const tip = document.getElementById('chart-tooltip');
+            tip._metric = metric;
             document.getElementById('chart-tooltip-title').textContent =
                 metric === 'yes' ? 'Yes & Maybe matches over time'
                 : metric === 'applied' ? 'Applied jobs over time'
@@ -1822,18 +1857,98 @@
             _renderChart(document.getElementById('chart-tooltip-canvas'), data, metric);
         }
         function _hideChartTooltip() { document.getElementById('chart-tooltip').style.display = 'none'; }
+        async function _openChartModal(metric) {
+            _hideChartTooltip();
+            const modal = document.getElementById('chart-modal');
+            document.getElementById('chart-modal-title').textContent =
+                metric === 'yes' ? 'Yes & Maybe matches over time'
+                : metric === 'applied' ? 'Applied jobs over time'
+                : 'Total listings & Yes matches over time';
+            modal.style.display = 'flex';
+            const data = await _loadChartHistory();
+            const canvas = document.getElementById('chart-modal-canvas');
+            _renderChart(canvas, data, metric);
+            canvas.removeEventListener('mousemove', _onModalMouseMove);
+            canvas.addEventListener('mousemove', _onModalMouseMove);
+            canvas.removeEventListener('mouseleave', _onModalMouseLeave);
+            canvas.addEventListener('mouseleave', _onModalMouseLeave);
+        }
+        function _onModalMouseMove(e) {
+            const canvas = e.currentTarget;
+            const pts = canvas._chartPoints;
+            if (!pts || pts.length < 2) return;
+            const rect = canvas.getBoundingClientRect();
+            const mx = (e.clientX - rect.left) * (canvas.width / rect.width);
+            let nearest = null, minDist = Infinity;
+            pts.forEach(pt => { const d = Math.abs(pt.x - mx); if (d < minDist) { minDist = d; nearest = pt; } });
+            const ptTip = document.getElementById('chart-point-tip');
+            const ov = document.getElementById('chart-modal-overlay');
+            const ovCtx = ov.getContext('2d');
+            ovCtx.clearRect(0, 0, ov.width, ov.height);
+            if (nearest && minDist < 30) {
+                const dt = new Date(nearest.d.timestamp);
+                const ts = dt.toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+                const vals = nearest.lines.map(l => `<span style="color:${l.color}">${l.label}: ${l.val}</span>`).join('&nbsp;&nbsp;');
+                ptTip.innerHTML = `<div style="font-size:0.65rem;color:rgba(255,255,255,0.45);margin-bottom:2px">${ts}</div><div style="font-size:0.7rem">${vals}</div>`;
+                ptTip.style.display = 'block';
+                ptTip.style.left = (e.clientX + 14) + 'px';
+                ptTip.style.top = (e.clientY - 50) + 'px';
+                ovCtx.strokeStyle = 'rgba(255,255,255,0.18)'; ovCtx.lineWidth = 1; ovCtx.setLineDash([3, 3]);
+                ovCtx.beginPath(); ovCtx.moveTo(nearest.x, nearest.pT); ovCtx.lineTo(nearest.x, nearest.pT + nearest.cH); ovCtx.stroke();
+                ovCtx.setLineDash([]);
+                nearest.lines.forEach(l => {
+                    ovCtx.fillStyle = l.color;
+                    ovCtx.beginPath(); ovCtx.arc(nearest.x, nearest.y[l.key], 4, 0, Math.PI * 2); ovCtx.fill();
+                });
+            } else {
+                ptTip.style.display = 'none';
+            }
+        }
+        function _onModalMouseLeave() {
+            document.getElementById('chart-point-tip').style.display = 'none';
+            const ov = document.getElementById('chart-modal-overlay');
+            ov.getContext('2d').clearRect(0, 0, ov.width, ov.height);
+        }
         function _attachChartHover(el, metric) {
             if (!el) return;
             el.addEventListener('mouseenter', () => _showChartTooltip(el, metric));
-            el.addEventListener('mouseleave', _hideChartTooltip);
+            el.addEventListener('mouseleave', _scheduleChartHide);
+            el.addEventListener('click', () => _openChartModal(metric));
         }
+        document.addEventListener('DOMContentLoaded', () => {
+            const tip = document.getElementById('chart-tooltip');
+            tip.addEventListener('mouseenter', _cancelChartHide);
+            tip.addEventListener('mouseleave', _scheduleChartHide);
+            document.getElementById('chart-tooltip-canvas').addEventListener('click', () => _openChartModal(tip._metric || 'total'));
+            const modal = document.getElementById('chart-modal');
+            document.getElementById('chart-modal-close').addEventListener('click', () => { modal.style.display = 'none'; document.getElementById('chart-point-tip').style.display = 'none'; });
+            modal.addEventListener('click', e => { if (e.target === modal) { modal.style.display = 'none'; document.getElementById('chart-point-tip').style.display = 'none'; } });
+            document.addEventListener('keydown', e => { if (e.key === 'Escape' && modal.style.display === 'flex') { modal.style.display = 'none'; document.getElementById('chart-point-tip').style.display = 'none'; } });
+        });
         // ── End history trend chart ────────────────────────────────────────────
     </script>
 
     <!-- History trend chart tooltip -->
-    <div id="chart-tooltip" style="display:none;position:absolute;z-index:9999;background:#161b2e;border:1px solid rgba(255,255,255,0.12);border-radius:0.75rem;padding:0.75rem 1rem 0.6rem;box-shadow:0 20px 50px rgba(0,0,0,0.75);pointer-events:none;width:350px;">
+    <div id="chart-tooltip" style="display:none;position:absolute;z-index:9999;background:#161b2e;border:1px solid rgba(255,255,255,0.12);border-radius:0.75rem;padding:0.75rem 1rem 0.6rem;box-shadow:0 20px 50px rgba(0,0,0,0.75);width:350px;">
         <div id="chart-tooltip-title" style="font-size:0.72rem;font-weight:600;color:rgba(255,255,255,0.55);margin-bottom:0.5rem;font-family:'Space Grotesk',sans-serif;letter-spacing:0.04em;text-transform:uppercase;"></div>
-        <canvas id="chart-tooltip-canvas" width="318" height="130"></canvas>
+        <canvas id="chart-tooltip-canvas" width="318" height="130" style="cursor:pointer;" title="Click to expand"></canvas>
+    </div>
+
+    <!-- Chart point hover tip -->
+    <div id="chart-point-tip" style="display:none;position:fixed;z-index:10001;background:#0d1117;border:1px solid rgba(255,255,255,0.15);border-radius:0.5rem;padding:0.35rem 0.6rem;font-family:'Space Grotesk',sans-serif;pointer-events:none;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,0.6);"></div>
+
+    <!-- Expanded chart modal -->
+    <div id="chart-modal" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,0.72);align-items:center;justify-content:center;">
+        <div style="background:#161b2e;border:1px solid rgba(255,255,255,0.12);border-radius:1rem;padding:1.25rem 1.5rem;position:relative;width:680px;max-width:95vw;box-shadow:0 30px 80px rgba(0,0,0,0.8);">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem;">
+                <div id="chart-modal-title" style="font-size:0.72rem;font-weight:600;color:rgba(255,255,255,0.55);font-family:'Space Grotesk',sans-serif;letter-spacing:0.04em;text-transform:uppercase;"></div>
+                <button id="chart-modal-close" style="background:none;border:none;color:rgba(255,255,255,0.5);font-size:1.4rem;cursor:pointer;padding:0;line-height:1;font-family:sans-serif;">×</button>
+            </div>
+            <div style="position:relative;">
+                <canvas id="chart-modal-canvas" width="628" height="240" style="display:block;width:100%;"></canvas>
+                <canvas id="chart-modal-overlay" width="628" height="240" style="position:absolute;top:0;left:0;width:100%;pointer-events:none;"></canvas>
+            </div>
+        </div>
     </div>
 </body>
 </html>
