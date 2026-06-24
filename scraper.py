@@ -1467,7 +1467,7 @@ def update_git():
         subprocess.run(["git", "add", "jobs.json", "seen_urls.json", "checkpoint.json", "dashboard.html",
                         "job_descriptions", "job_requirements.md", "deleted.json",
                         "firebase_app/index.html", "scraper.py", "jobs_history.json"], 
-                       cwd=repo_dir, check=True, env=env, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                       cwd=repo_dir, check=True, env=env, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, stdin=subprocess.DEVNULL)
         
         # Only commit if something was actually staged
         print("Checking for changes to commit...")
@@ -2008,11 +2008,12 @@ def main():
             
         # 1. Gather all pending jobs
         pending_jobs = []
+        BATCH_LIMIT = 1
         if os.path.exists(JOBS_FILE):
             try:
                 with open(JOBS_FILE, 'r', encoding='utf-8') as f:
                     jobs_data = json.load(f)
-                    pending_jobs = [j for j in jobs_data if j.get('matches_requirements') == 'pending' or j.get('needs_re_review') == True]
+                    pending_jobs = [j for j in jobs_data if (j.get('matches_requirements') in ['pending', 'error'] and j.get('applied') != 'yes') or j.get('needs_re_review') == True]
             except Exception as e:
                 print(f"Error reading jobs file: {e}")
         
