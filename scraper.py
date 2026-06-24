@@ -49,6 +49,7 @@ class TeeLogger:
         self._log_file.write(msg)
         if self._capturing:
             self._capture_buf.append(msg)
+        self.flush()
 
     def flush(self):
         self._stdout.flush()
