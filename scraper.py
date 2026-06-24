@@ -1285,7 +1285,7 @@ Location: {job['location']}
 URL: {job['url']}
 
 ### Job Description:
-{cleaned_text[:30000]}
+{cleaned_text[:18000]}
 
 ### Instructions:
 Return a JSON object with exactly six keys:
@@ -1467,7 +1467,7 @@ def update_git():
         subprocess.run(["git", "add", "jobs.json", "seen_urls.json", "checkpoint.json", "dashboard.html",
                         "job_descriptions", "job_requirements.md", "deleted.json",
                         "firebase_app/index.html", "scraper.py", "jobs_history.json"], 
-                       cwd=repo_dir, check=True, env=env, capture_output=True, text=True)
+                       cwd=repo_dir, check=True, env=env, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         
         # Only commit if something was actually staged
         print("Checking for changes to commit...")
