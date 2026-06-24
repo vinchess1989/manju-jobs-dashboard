@@ -856,16 +856,26 @@ def check_requirements_update():
         json.dump(checkpoint_data, f, indent=2)
 
 def extract_json_from_text(text):
-    """Finds and parses the first JSON object in a text block, handling markdown code fences."""
-    text = text.strip()
+    """Extracts a JSON object from text, even if it's wrapped in markdown or other text."""
+    import re
+    # Remove markdown formatting if present
+    text = text.replace('```json', '').replace('```', '').strip()
+    
     start_idx = text.find('{')
     end_idx = text.rfind('}')
     if start_idx != -1 and end_idx != -1 and end_idx > start_idx:
         candidate = text[start_idx:end_idx + 1]
+        # Try to fix trailing commas that often break strict JSON parsing
+        candidate = re.sub(r',\s*}', '}', candidate)
+        candidate = re.sub(r',\s*\]', ']', candidate)
         try:
             return json.loads(candidate)
         except json.JSONDecodeError:
             pass
+            
+    # Try one more time with the full text, fixing trailing commas
+    text = re.sub(r',\s*}', '}', text)
+    text = re.sub(r',\s*\]', ']', text)
     return json.loads(text)
 
 def clean_page_text(text):
@@ -1264,6 +1274,8 @@ def review_pending_jobs(specific_urls=None):
                     # Clean page text to remove cookie banners, nav, footers
                     cleaned_text = clean_page_text(text)
                     is_finnish = detect_finnish_text(cleaned_text)
+                    
+                    print(f"  [SUCCESS] Extracted job description ({len(cleaned_text)} characters). Sending to LLM...")
                     
                     today_str = datetime.now().strftime("%Y-%m-%d")
                     prompt = f"""Please act as an expert job reviewer. Read the following job description and evaluate it against the requirements.
@@ -2018,9 +2030,9 @@ def main():
                 print(f"Error reading jobs file: {e}")
         
         if pending_jobs:
-            # We have pending jobs, flush a batch of them first
-            print(f"\nINFO: Flushing pending jobs first. {len(pending_jobs)} pending jobs remaining.")
-            batch_urls = [j['url'] for j in pending_jobs[:1]]
+            # We have pending jobs, flush all of them
+            print(f"\nINFO: Flushing pending jobs. {len(pending_jobs)} pending jobs remaining.")
+            batch_urls = [j['url'] for j in pending_jobs]
             try:
                 review_pending_jobs(specific_urls=set(batch_urls))
             except Exception as e:
