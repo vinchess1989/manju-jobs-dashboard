@@ -14,11 +14,13 @@ Lines starting with # are treated as comments and ignored.
 
 import csv
 import json
+import os
 import sys
 import argparse
 import requests
 
 PROJECT_ID = "manju-jobs-dashboard"
+RESUMES_DIR = r"C:\Users\vinee\Manju_jobs_private\Resumes"
 FIRESTORE_BASE = (
     f"https://firestore.googleapis.com/v1/projects/{PROJECT_ID}"
     f"/databases/(default)/documents"
@@ -138,11 +140,22 @@ def main():
             print(f"WARN: job_id '{job_id}' not found in jobs.json — skipping.")
             continue
 
+        tailor_model = ""
+        data_path = os.path.join(RESUMES_DIR, job_id, f"{job_id}_data.json")
+        if os.path.exists(data_path):
+            try:
+                with open(data_path, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+                tailor_model = data.get("tailor_model", "")
+            except Exception:
+                pass
+
         updates.append({
             "job_id": job_id,
             "job_url": id_to_url[job_id],
             "resume_url": resume_url,
             "cover_letter_url": cover_letter_url,
+            "tailor_model": tailor_model,
         })
 
     if not updates:
@@ -162,6 +175,8 @@ def main():
             entry["resume_url"] = u["resume_url"]
         if u["cover_letter_url"]:
             entry["cover_letter_url"] = u["cover_letter_url"]
+        if u["tailor_model"]:
+            entry["tailor_model"] = u["tailor_model"]
         current[u["job_url"]] = entry
 
     print(f"Writing {len(updates)} update(s) to Firestore...")

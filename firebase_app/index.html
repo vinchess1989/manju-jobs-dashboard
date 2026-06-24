@@ -577,6 +577,42 @@
             overflow: visible;
         }
         
+        .llm-filter-bar {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 6px;
+            padding: 8px 12px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .llm-pill {
+            padding: 3px 10px;
+            border-radius: 999px;
+            border: 1px solid rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.05);
+            color: var(--text-secondary);
+            font-size: 0.72rem;
+            cursor: pointer;
+            transition: all 0.15s;
+            white-space: nowrap;
+        }
+
+        .llm-pill:hover {
+            border-color: rgba(167,139,250,0.5);
+            color: var(--text-primary);
+        }
+
+        .llm-pill.active {
+            background: rgba(167,139,250,0.2);
+            border-color: #a78bfa;
+            color: #a78bfa;
+            font-weight: 600;
+        }
+
         .ms-btn {
             width: 100%;
             padding: 0.5rem;
@@ -712,6 +748,7 @@
         let currentUser = null;
         let sharedJobsState = {};
         let firestoreUnsubscribe = null;
+        let selectedLlmModels = new Set();
 
         let allJobs = [];
         let sortAsc = true;
@@ -955,6 +992,13 @@
             `;
             jobsContainer.appendChild(infoBar);
 
+            // LLM filter bar (populated after table rows are built)
+            const llmBar = document.createElement('div');
+            llmBar.id = 'llm-filter-bar';
+            llmBar.className = 'llm-filter-bar';
+            llmBar.style.display = 'none';
+            jobsContainer.appendChild(llmBar);
+
             // 2. Table structure
             const scrollArea = document.createElement('div');
             scrollArea.className = 'table-scroll-area';
@@ -1056,6 +1100,10 @@
 
                 const tr = document.createElement('tr');
                 tr.setAttribute('data-url', job.url);
+                const evalModel = job.eval_model || '';
+                const tailorModel = (sharedJobsState[job.url] && sharedJobsState[job.url].tailor_model) || '';
+                tr.setAttribute('data-eval-model', evalModel);
+                tr.setAttribute('data-tailor-model', tailorModel);
 
                 const postedVal = formatDate(job.posted_date);
                 const deadlineVal = formatDate(job.deadline);
@@ -1090,6 +1138,7 @@
                         ` : `
                         <span class="status-pill ${matchVal}" style="display:inline-block; text-align:center;">${matchVal}</span>
                         `}
+                        ${evalModel ? `<div style="font-size:0.62em; color:var(--text-secondary); margin-top:3px; opacity:0.7;" title="Eval model: ${evalModel}">${evalModel}</div>` : ''}
                     </td>
                     <td class="col-reason"><div class="reason-cell" title="${aiReason.replace(/"/g, '&quot;')}">${aiReason}</div></td>
                     <td class="col-user-reason"><div class="user-reason-cell" title="${userReason.replace(/"/g, '&quot;')}">${userReason}</div></td>
@@ -1114,12 +1163,14 @@
                     <td class="col-docs" style="text-align:center; white-space:nowrap;" data-value="${(sharedJobsState[job.url] && sharedJobsState[job.url].resume_url && sharedJobsState[job.url].cover_letter_url) ? 'CV+Letter' : (sharedJobsState[job.url] && sharedJobsState[job.url].resume_url) ? 'CV' : (sharedJobsState[job.url] && sharedJobsState[job.url].cover_letter_url) ? 'Letter' : 'None'}">
                         ${(sharedJobsState[job.url] && sharedJobsState[job.url].resume_url) ? `<a href="${sharedJobsState[job.url].resume_url}" target="_blank" style="font-size:0.75em; color:var(--color-yes); text-decoration:none; border:1px solid rgba(16,185,129,0.3); padding:2px 6px; border-radius:4px; display:inline-block; margin-bottom:3px;">CV</a>` : ''}
                         ${(sharedJobsState[job.url] && sharedJobsState[job.url].cover_letter_url) ? `<a href="${sharedJobsState[job.url].cover_letter_url}" target="_blank" style="font-size:0.75em; color:var(--color-maybe); text-decoration:none; border:1px solid rgba(96,165,250,0.3); padding:2px 6px; border-radius:4px; display:inline-block;">Letter</a>` : ''}
+                        ${tailorModel ? `<div style="font-size:0.62em; color:var(--text-secondary); margin-top:3px; opacity:0.7;" title="Doc model: ${tailorModel}">${tailorModel}</div>` : ''}
                     </td>
                 `;
                 tbody.appendChild(tr);
             });
             
             buildMultiSelectFilters();
+            buildLlmFilter();
             filterTable();
         }
 
@@ -1138,6 +1189,39 @@
             const deadlineInput = document.getElementById('deadline-days-filter');
             if(postedInput) postedInput.value = '';
             if(deadlineInput) deadlineInput.value = '';
+            selectedLlmModels.clear();
+            buildLlmFilter();
+            filterTable();
+        };
+
+        function buildLlmFilter() {
+            if (!_rowCache) return;
+            const models = new Set();
+            _rowCache.forEach(({ evalModel, tailorModel }) => {
+                if (evalModel) models.add(evalModel);
+                if (tailorModel) models.add(tailorModel);
+            });
+            const container = document.getElementById('llm-filter-bar');
+            if (!container) return;
+            if (models.size === 0) { container.style.display = 'none'; return; }
+            container.style.display = 'flex';
+            const sorted = Array.from(models).sort();
+            container.innerHTML = `
+                <span style="font-size:0.78rem; color:var(--text-secondary); white-space:nowrap; align-self:center; margin-right:4px;">LLM:</span>
+                <button class="llm-pill ${selectedLlmModels.size === 0 ? 'active' : ''}" onclick="window.toggleLlmFilter(null)">All</button>
+                ${sorted.map(m => `<button class="llm-pill ${selectedLlmModels.has(m) ? 'active' : ''}" onclick="window.toggleLlmFilter('${m.replace(/'/g, "\\'")}')" title="${m}">${m}</button>`).join('')}
+            `;
+        }
+
+        window.toggleLlmFilter = function(model) {
+            if (model === null) {
+                selectedLlmModels.clear();
+            } else if (selectedLlmModels.has(model)) {
+                selectedLlmModels.delete(model);
+            } else {
+                selectedLlmModels.add(model);
+            }
+            buildLlmFilter();
             filterTable();
         };
 
@@ -1155,7 +1239,7 @@
                     const d = new Date(v);
                     return isNaN(d.getTime()) ? null : d.getTime();
                 };
-                return { el: row, vals, postedMs: parseMs(vals[6]), deadlineMs: parseMs(vals[7]) };
+                return { el: row, vals, postedMs: parseMs(vals[6]), deadlineMs: parseMs(vals[7]), evalModel: row.getAttribute('data-eval-model') || '', tailorModel: row.getAttribute('data-tailor-model') || '' };
             });
         }
 
@@ -1244,6 +1328,10 @@
                                 });
                             }
                         }
+                    }
+                    if (saved.llmModels && Array.isArray(saved.llmModels)) {
+                        saved.llmModels.forEach(m => selectedLlmModels.add(m));
+                        buildLlmFilter();
                     }
                 }
             } catch (e) {
@@ -1350,7 +1438,8 @@
                 const filtersToSave = {
                     postedLimit: (!isNaN(postedLimit) ? postedLimit : null),
                     deadlineLimit: (!isNaN(deadlineLimit) ? deadlineLimit : null),
-                    colFilters: filters
+                    colFilters: filters,
+                    llmModels: Array.from(selectedLlmModels)
                 };
                 localStorage.setItem('jobBoardFilters_' + projectId, JSON.stringify(filtersToSave));
             } catch (e) {
@@ -1390,6 +1479,12 @@
                     }
 
                     if (!passesCheckbox) { show = false; break; }
+                }
+
+                if (show && selectedLlmModels.size > 0) {
+                    if (!selectedLlmModels.has(entry.evalModel) && !selectedLlmModels.has(entry.tailorModel)) {
+                        show = false;
+                    }
                 }
 
                 if (show) {
