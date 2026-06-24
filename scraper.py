@@ -1471,18 +1471,18 @@ def update_git():
         
         # Only commit if something was actually staged
         print("Checking for changes to commit...")
-        staged = subprocess.run(["git", "diff", "--cached", "--name-only"], cwd=repo_dir, capture_output=True, text=True, env=env)
+        staged = subprocess.run(["git", "diff", "--cached", "--name-only"], cwd=repo_dir, capture_output=True, text=True, env=env, stdin=subprocess.DEVNULL)
         if staged.stdout.strip():
             timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             commit_message = f"Auto-update scraped jobs: {timestamp}"
             print(f"Committing changes: {commit_message}")
-            subprocess.run(["git", "commit", "-m", commit_message], cwd=repo_dir, check=True, env=env, capture_output=True, text=True)
+            subprocess.run(["git", "commit", "-m", commit_message], cwd=repo_dir, check=True, env=env, capture_output=True, text=True, stdin=subprocess.DEVNULL)
             
             # Check for GitHub token in environment variables
             push_cmd = ["git", "push"]
             github_token = os.environ.get("GITHUB_TOKEN")
             if github_token:
-                remote_result = subprocess.run(["git", "config", "--get", "remote.origin.url"], cwd=repo_dir, capture_output=True, text=True)
+                remote_result = subprocess.run(["git", "config", "--get", "remote.origin.url"], cwd=repo_dir, capture_output=True, text=True, stdin=subprocess.DEVNULL)
                 remote_url = remote_result.stdout.strip()
                 if remote_url.startswith("https://"):
                     auth_url = remote_url.replace("https://", f"https://{github_token}@")
@@ -1490,7 +1490,7 @@ def update_git():
 
             try:
                 print("Pushing to GitHub...")
-                subprocess.run(push_cmd, cwd=repo_dir, check=True, env=env, capture_output=True, text=True)
+                subprocess.run(push_cmd, cwd=repo_dir, check=True, env=env, capture_output=True, text=True, stdin=subprocess.DEVNULL)
                 print("Successfully pushed updates to GitHub!")
                 # Deploy dashboard to Firebase Hosting if the CLI is available
                 firebase_app_dir = os.path.join(repo_dir, "firebase_app")
