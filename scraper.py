@@ -1463,14 +1463,15 @@ def update_git():
         # Add updated files (including dashboard HTML and scraper changes)
         subprocess.run(["git", "add", "jobs.json", "seen_urls.json", "checkpoint.json", "dashboard.html",
                         "job_descriptions", "job_requirements.md", "deleted.json",
-                        "firebase_app/index.html", "scraper.py", "jobs_history.json"], cwd=repo_dir, check=True, env=env)
-        # Only commit if something was actually staged (git diff --cached avoids false positives
-        # from unstaged working-tree changes like .firebase cache or other untracked files)
+                        "firebase_app/index.html", "scraper.py", "jobs_history.json"], 
+                       cwd=repo_dir, check=True, env=env, capture_output=True, text=True)
+        
+        # Only commit if something was actually staged
         staged = subprocess.run(["git", "diff", "--cached", "--name-only"], cwd=repo_dir, capture_output=True, text=True, env=env)
         if staged.stdout.strip():
             timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             commit_message = f"Auto-update scraped jobs: {timestamp}"
-            subprocess.run(["git", "commit", "-m", commit_message], cwd=repo_dir, check=True, env=env)
+            subprocess.run(["git", "commit", "-m", commit_message], cwd=repo_dir, check=True, env=env, capture_output=True, text=True)
             
             # Check for GitHub token in environment variables
             push_cmd = ["git", "push"]
@@ -1483,7 +1484,7 @@ def update_git():
                     push_cmd = ["git", "push", auth_url]
 
             try:
-                subprocess.run(push_cmd, cwd=repo_dir, check=True, env=env)
+                subprocess.run(push_cmd, cwd=repo_dir, check=True, env=env, capture_output=True, text=True)
                 print("Successfully pushed updates to GitHub!")
                 # Deploy dashboard to Firebase Hosting if the CLI is available
                 firebase_app_dir = os.path.join(repo_dir, "firebase_app")
