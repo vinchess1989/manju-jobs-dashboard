@@ -1285,7 +1285,7 @@ Location: {job['location']}
 URL: {job['url']}
 
 ### Job Description:
-{cleaned_text[:15000]}
+{cleaned_text[:6000]}
 
 ### Instructions:
 Return a JSON object with exactly six keys:
@@ -1314,7 +1314,9 @@ Do not include any conversational intro/outro or explanations outside the JSON o
 
                     payload = {
                         "model": llm_model,
-                        "messages": [{"role": "user", "content": prompt}]
+                        "messages": [{"role": "user", "content": prompt}],
+                        "temperature": 0.1,
+                        "max_tokens": 500
                     }
 
                     try:
