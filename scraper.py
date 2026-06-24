@@ -1400,7 +1400,7 @@ Do not include any conversational intro/outro or explanations outside the JSON o
                 job.pop('needs_re_review', None)
                 
                 # If a posting matches requirements, save job description text to a file inside job_descriptions/
-                if match == 'yes':
+                if match in ['yes', 'maybe']:
                     import re
                     clean_title = re.sub(r'[^a-zA-Z0-9]', '_', job['title'].lower())[:30]
                     clean_company = re.sub(r'[^a-zA-Z0-9]', '_', job['company'].lower())[:20]
