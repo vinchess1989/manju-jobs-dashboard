@@ -666,6 +666,7 @@
                         <th class="col-matches" onclick="sortTable(9)">Matches ↕</th>
                         <th class="col-reason" onclick="sortTable(10)">Reason ↕</th>
                         <th class="col-applied" onclick="sortTable(11)">Applied ↕</th>
+                        <th class="col-tailor" onclick="sortTable(12)">Tailor ↕</th>
                         <th class="col-link">Link</th>
                         <th class="col-docs">Docs</th>
                     </tr>
@@ -682,8 +683,9 @@
                         <th><div id="filter-col-9"></div></th>
                         <th><div id="filter-col-10"></div></th>
                         <th><div id="filter-col-11"></div></th>
+                        <th><div id="filter-col-12"></div></th>
                         <th></th>
-                        <th><div id="filter-col-13"></div></th>
+                        <th><div id="filter-col-14"></div></th>
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -742,6 +744,7 @@
                 const deadlineVal = formatDate(job.deadline);
                 const sourceVal = job.source || getSourceFromUrl(job.url) || 'Unknown';
                 const jobIdVal = job.id || 'N/A';
+                const tailorModelVal = job.tailor_model || 'Unknown';
                 const docsVal = (job.resume_link && job.cover_letter_link) ? 'CV+Letter' : job.resume_link ? 'CV' : job.cover_letter_link ? 'Letter' : 'None';
                 
                 tr.innerHTML = `
@@ -759,6 +762,7 @@
                     <td class="col-applied" data-value="${appliedStatus}">
                         <button class="status-btn ${appliedStatus === 'yes' ? 'status-yes' : (appliedStatus === 'Reject' ? 'status-reject' : 'status-no')}" onclick="toggleApplied(this, '${job.url}')">${appliedStatus}</button>
                     </td>
+                    <td class="col-tailor" data-value="${tailorModelVal}"><span class="source-tag">${tailorModelVal}</span></td>
                     <td class="col-link">
                         <a href="${job.url || '#'}" target="_blank" class="apply-btn" style="margin-bottom: 0.25rem; display: block;">View</a>
                         ${job.description_file ? `<a href="${job.description_file}" target="_blank" class="desc-btn" style="display: block;">Text</a>` : ''}
@@ -789,7 +793,7 @@
 
         function buildMultiSelectFilters() {
             _buildRowCache();
-            const filterCols = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13];
+            const filterCols = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14];
 
             for (const i of filterCols) {
                 const uniqueValues = new Set();
