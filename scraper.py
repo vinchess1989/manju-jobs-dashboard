@@ -1477,19 +1477,19 @@ def update_git():
 
         # Add updated files (including dashboard HTML and scraper changes)
         print("Staging files with git add...")
-        subprocess.run(["git", "add", "jobs.json", "seen_urls.json", "checkpoint.json", "dashboard.html",
+        subprocess.run(["git", "add", "jobs.json", "seen_urls.json", "checkpoint.json", 
                         "job_descriptions", "job_requirements.md", "deleted.json",
                         "firebase_app/index.html", "scraper.py", "jobs_history.json"], 
-                       cwd=repo_dir, check=True, env=env, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, stdin=subprocess.DEVNULL)
+                       cwd=repo_dir, check=True, env=env, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, stdin=subprocess.DEVNULL, timeout=30.0)
         
         # Only commit if something was actually staged
         print("Checking for changes to commit...")
-        staged = subprocess.run(["git", "diff", "--cached", "--name-only"], cwd=repo_dir, capture_output=True, text=True, env=env, stdin=subprocess.DEVNULL)
+        staged = subprocess.run(["git", "diff", "--cached", "--name-only"], cwd=repo_dir, capture_output=True, text=True, env=env, stdin=subprocess.DEVNULL, timeout=30.0)
         if staged.stdout.strip():
             timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             commit_message = f"Auto-update scraped jobs: {timestamp}"
             print(f"Committing changes: {commit_message}")
-            subprocess.run(["git", "commit", "-m", commit_message], cwd=repo_dir, check=True, env=env, capture_output=True, text=True, stdin=subprocess.DEVNULL)
+            subprocess.run(["git", "commit", "-m", commit_message], cwd=repo_dir, check=True, env=env, capture_output=True, text=True, stdin=subprocess.DEVNULL, timeout=30.0)
             
             # Check for GitHub token in environment variables
             push_cmd = ["git", "push"]
@@ -1503,7 +1503,7 @@ def update_git():
 
             try:
                 print("Pushing to GitHub...")
-                subprocess.run(push_cmd, cwd=repo_dir, check=True, env=env, capture_output=True, text=True, stdin=subprocess.DEVNULL)
+                subprocess.run(push_cmd, cwd=repo_dir, check=True, env=env, capture_output=True, text=True, stdin=subprocess.DEVNULL, timeout=30.0)
                 print("Successfully pushed updates to GitHub!")
                 # Deploy dashboard to Firebase Hosting if the CLI is available
                 firebase_app_dir = os.path.join(repo_dir, "firebase_app")
@@ -2041,6 +2041,10 @@ def main():
                 
             try:
                 clean_blocked_jobs()
+                # Reload jobs to save the latest snapshot before git commit
+                with open(JOBS_FILE, 'r', encoding='utf-8') as f:
+                    latest_jobs = json.load(f)
+                save_history_snapshot(latest_jobs)
                 update_git()
             except Exception as e:
                 print(f"An error occurred during Git update: {e}")
@@ -2089,6 +2093,9 @@ def main():
             
         try:
             clean_blocked_jobs()
+            with open(JOBS_FILE, 'r', encoding='utf-8') as f:
+                latest_jobs = json.load(f)
+            save_history_snapshot(latest_jobs)
             update_git()
         except Exception as e:
             print(f"An error occurred during Git update: {e}")

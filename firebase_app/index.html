@@ -1021,6 +1021,7 @@
                         <th class="col-applied resizable-th"><div class="resizable-header" onclick="sortTable(12)">Applied ↕<div class="active-filters-summary" id="active-filters-12"></div></div></th>
                         <th class="col-user-review resizable-th"><div class="resizable-header" onclick="sortTable(13)">User Review ↕<div class="active-filters-summary" id="active-filters-13"></div></div></th>
                         <th class="col-docs resizable-th"><div class="resizable-header" onclick="sortTable(14)">Docs ↕<div class="active-filters-summary" id="active-filters-14"></div></div></th>
+                        <th class="col-tailor resizable-th"><div class="resizable-header" onclick="sortTable(15)">Tailor Model ↕<div class="active-filters-summary" id="active-filters-15"></div></div></th>
                     </tr>
                     <tr class="filter-row">
                         <th></th>
@@ -1038,6 +1039,7 @@
                         <th><div id="filter-col-12"></div></th>
                         <th><div id="filter-col-13"></div></th>
                         <th><div id="filter-col-14"></div></th>
+                        <th><div id="filter-col-15"></div></th>
                     </tr>
                 </thead>
                 <tbody id="jobs-body"></tbody>
@@ -1162,8 +1164,8 @@
                     <td class="col-docs" style="text-align:center; white-space:nowrap;" data-value="${(sharedJobsState[job.url] && sharedJobsState[job.url].resume_url && sharedJobsState[job.url].cover_letter_url) ? 'CV+Letter' : (sharedJobsState[job.url] && sharedJobsState[job.url].resume_url) ? 'CV' : (sharedJobsState[job.url] && sharedJobsState[job.url].cover_letter_url) ? 'Letter' : 'None'}">
                         ${(sharedJobsState[job.url] && sharedJobsState[job.url].resume_url) ? `<a href="${sharedJobsState[job.url].resume_url}" target="_blank" style="font-size:0.75em; color:var(--color-yes); text-decoration:none; border:1px solid rgba(16,185,129,0.3); padding:2px 6px; border-radius:4px; display:inline-block; margin-bottom:3px;">CV</a>` : ''}
                         ${(sharedJobsState[job.url] && sharedJobsState[job.url].cover_letter_url) ? `<a href="${sharedJobsState[job.url].cover_letter_url}" target="_blank" style="font-size:0.75em; color:var(--color-maybe); text-decoration:none; border:1px solid rgba(96,165,250,0.3); padding:2px 6px; border-radius:4px; display:inline-block;">Letter</a>` : ''}
-                        ${tailorModel ? `<div style="font-size:0.62em; color:var(--text-secondary); margin-top:3px; opacity:0.7;" title="Doc model: ${tailorModel}">${tailorModel}</div>` : ''}
                     </td>
+                    <td class="col-tailor" data-value="${tailorModel || 'Unknown'}">${tailorModel ? `<span class="source-tag">${tailorModel}</span>` : '<span style="color:var(--text-secondary);font-style:italic;">Unknown</span>'}</td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -1246,8 +1248,8 @@
         function buildMultiSelectFilters() {
             if (!_rowCache) _buildRowCache();
 
-            // Build the multi-select dropdowns for columns 1 to 14
-            for (let i = 1; i <= 14; i++) {
+            // Build the multi-select dropdowns for columns 1 to 15
+            for (let i = 1; i <= 15; i++) {
                 const uniqueValues = new Set();
                 _rowCache.forEach(({ vals }) => {
                     const val = vals[i];
@@ -1316,7 +1318,7 @@
                     if (deadlineInput && saved.deadlineLimit !== null && saved.deadlineLimit !== undefined) deadlineInput.value = saved.deadlineLimit;
                     
                     if (saved.colFilters) {
-                        for (let i = 1; i <= 14; i++) {
+                        for (let i = 1; i <= 15; i++) {
                             const container = document.getElementById(`filter-col-${i}`);
                             if (!container) continue;
                             if (saved.colFilters[i]) {
@@ -1406,7 +1408,7 @@
             today.setHours(0,0,0,0);
 
             const filters = {};
-            for (let i = 1; i <= 14; i++) {
+            for (let i = 1; i <= 15; i++) {
                 const container = document.getElementById(`filter-col-${i}`);
                 if (!container) continue;
                 const checked = Array.from(container.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value);
@@ -1459,7 +1461,7 @@
                 const { vals, postedMs, deadlineMs } = entry;
                 let show = true;
 
-                for (let i = 1; i <= 14; i++) {
+                for (let i = 1; i <= 15; i++) {
                     if (!filters[i]) continue;
                     const val = vals[i] || '';
                     let passesCheckbox = filters[i].length === 0 || filters[i].includes(val);
