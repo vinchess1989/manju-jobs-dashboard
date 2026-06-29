@@ -151,12 +151,12 @@ li {{ font-size: 8.5pt; line-height: 1.38; margin-bottom: 1px; }}
 </table>
 <h2>Languages &amp; Skills</h2>
 <div class="skill-block">{languages_html}</div>
+<h2>References</h2>
+{references_html}
 </div>
 <div class="col-right">
 <h2>Core Legal Competencies</h2>
 <div class="skill-block">{competencies_html}</div>
-<h2>References</h2>
-{references_html}
 </div>
 </div>
 
