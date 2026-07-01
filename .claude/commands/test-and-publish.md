@@ -6,6 +6,7 @@ Read `c:\Users\vinee\manju_jobs\publish_dashboards.ps1` and check that it reflec
 - The `git add` lines for manju_jobs and vineeth_jobs include all tracked files (compare against what each scraper's `update_git()` stages)
 - Both test steps point to the correct venv paths
 - Both Firebase deploy steps target the correct `firebase_app/` directories
+- Step 7 (Manju_jobs_private) path resolves correctly — either via `MANJU_PRIVATE_DIR` env var or the hardcoded fallback
 
 If anything is outdated or missing, edit the script to fix it before proceeding.
 

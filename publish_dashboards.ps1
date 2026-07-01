@@ -50,4 +50,21 @@ Write-Host "`n=== Step 6: Deploying vineeth_jobs Firebase ===" -ForegroundColor 
 Set-Location "c:\Users\vinee\vineeth_jobs\firebase_app"
 firebase deploy --only hosting --non-interactive
 
-Write-Host "`n=== SUCCESS: Both dashboards are live! ===" -ForegroundColor Green
+Write-Host "`n=== Step 7: Committing & Pushing Manju_jobs_private ===" -ForegroundColor Cyan
+$PRIVATE = if ($env:MANJU_PRIVATE_DIR) { $env:MANJU_PRIVATE_DIR } else { "C:\Users\vinee\Manju_jobs_private" }
+if (Test-Path $PRIVATE) {
+    Set-Location $PRIVATE
+    git add Resumes\
+    $privateStaged = git diff --cached --name-only
+    if ($privateStaged) {
+        git commit -m "chore: update private resumes [auto-publish]"
+        Write-Host "Committed staged changes for Manju_jobs_private." -ForegroundColor Green
+    } else {
+        Write-Host "No staged changes to commit for Manju_jobs_private." -ForegroundColor Yellow
+    }
+    git push
+} else {
+    Write-Host "WARNING: Private repo not found at $PRIVATE — set MANJU_PRIVATE_DIR env var to fix." -ForegroundColor Yellow
+}
+
+Write-Host "`n=== SUCCESS: Both dashboards are live and private repo is synced! ===" -ForegroundColor Green
