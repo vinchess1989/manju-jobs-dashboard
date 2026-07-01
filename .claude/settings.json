@@ -12,7 +12,6 @@
       "PowerShell(cd *)",
       "WebFetch",
       "WebSearch",
-<<<<<<< Updated upstream
       "Write(C:\\Users\\vinee\\Documents\\manju jobs dashboard\\Manju-jobs\\Resumes\\*)",
       "PowerShell(Set-Location *)",
       "PowerShell(Remove-Item *)",
@@ -20,27 +19,9 @@
       "PowerShell(Test-Path *)",
       "PowerShell(Set-Location \"C:\\\\Users\\\\vinee\\\\Documents\\\\manju jobs dashboard\\\\manju-jobs-dashboard\"; python sync_resume_links.py --upload --force 2>&1 | Select-String -Pattern \"3aae2603|Done|Error\" | ForEach-Object { $_.Line })",
       "PowerShell(git -C \"C:\\\\Users\\\\vinee\\\\Documents\\\\manju jobs dashboard\\\\manju-jobs-dashboard\" add input.csv .claude/settings.json)",
-      "PowerShell(git -C \"C:\\\\Users\\\\vinee\\\\Documents\\\\manju jobs dashboard\\\\manju-jobs-dashboard\" status --porcelain)"
-=======
-      "PowerShell($ids = @\\(\"7d4de342\",\"6fd87d94\",\"f96f492b\",\"de8e59b8\",\"3ddfdab8\",\"afc65aee\",\"6ce224a8\",\"9dc1c49f\",\"17bf53f5\",\"f22d3963\",\"ec597d40\",\"ca9a9f2c\",\"fb3f149c\",\"7afb7970\",\"564475ec\",\"6a767e38\",\"7ed50393\",\"87639250\"\\); $data = Get-Content \"C:\\\\Users\\\\vinee\\\\manju_jobs\\\\jobs_20260623_160456.json\" | ConvertFrom-Json; $filtered = $data | Where-Object { $ids -contains $_.job_id }; Write-Host \"Found: $\\($filtered.Count\\)\"; $filtered | Select-Object job_id, job_title, company, description_link | Format-Table -AutoSize)",
-      "PowerShell($ids = @\\(\"7d4de342\",\"6fd87d94\",\"f96f492b\",\"afc65aee\",\"6ce224a8\",\"9dc1c49f\",\"17bf53f5\",\"f22d3963\",\"ec597d40\",\"ca9a9f2c\",\"fb3f149c\",\"7afb7970\",\"564475ec\",\"6a767e38\",\"7ed50393\",\"87639250\"\\); $data = Get-Content \"C:\\\\Users\\\\vinee\\\\manju_jobs\\\\jobs_20260623_160456.json\" | ConvertFrom-Json; $filtered = $data | Where-Object { $ids -contains $_.job_id }; $filtered | Select-Object job_id, job_title, company, description_link, job_link | ConvertTo-Json -Depth 2)",
-      "Read(//c/Users/vinee/.lmstudio/**)",
-      "PowerShell(\\(Get-Content \"c:\\\\Users\\\\vinee\\\\manju_jobs\\\\orchestrator.log\" | Measure-Object -Line\\).Lines)",
-      "PowerShell(\\(Get-Item \"c:\\\\Users\\\\vinee\\\\manju_jobs\\\\orchestrator.log\"\\).LastWriteTime)",
-      "PowerShell(Get-WmiObject Win32_Process -Filter \"name='python.exe'\")",
-      "PowerShell(Get-ChildItem -Path \"$env:USERPROFILE\\\\.antigravity-ide\\\\extensions\\\\sst-dev.opencode-0.0.13-universal\" -Recurse | Select-Object FullName | Head-Limit 50)",
-      "PowerShell(Get-ChildItem -Path \"$env:USERPROFILE\\\\.antigravity-ide\\\\extensions\\\\sst-dev.opencode-0.0.13-universal\" -Recurse | Select-Object -First 50 FullName)",
-      "PowerShell(Get-ChildItem -Path \"$env:USERPROFILE\\\\.config\" -ErrorAction SilentlyContinue | Select-Object FullName; if \\(Test-Path \"$env:USERPROFILE\\\\.opencode\"\\) { Get-ChildItem \"$env:USERPROFILE\\\\.opencode\" -Recurse | Select-Object FullName })",
-      "Read(//c/Users/vinee/.antigravity-ide/extensions/sst-dev.opencode-0.0.13-universal/**)",
-      "PowerShell($env:PATH -split \";\" | Where-Object { $_ -match \"opencode\" })",
-      "PowerShell(Get-ChildItem \"$env:USERPROFILE\\\\.lmstudio\" -Recurse -ErrorAction SilentlyContinue | Select-Object -First 30 FullName)",
-      "PowerShell(Get-ChildItem \"$env:USERPROFILE\\\\.lmstudio\\\\models\" -ErrorAction SilentlyContinue | Select-Object Name)",
-      "PowerShell(Read \"$env:USERPROFILE\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-vinee-manju-jobs\\\\178a5eb4-a30d-41ad-8bd4-c98d1d351481\\\\tasks\\\\bgnckaa9k.output\" -ErrorAction SilentlyContinue | Select-Object -First 20)",
-      "PowerShell(Get-ChildItem \"$env:LOCALAPPDATA\\\\Programs\\\\Antigravity IDE\\\\resources\\\\app\" -ErrorAction SilentlyContinue | Select-Object -First 30 Name)",
-      "PowerShell(Get-ChildItem \"$env:LOCALAPPDATA\\\\Programs\\\\Antigravity IDE\\\\resources\\\\app\\\\resources\" -ErrorAction SilentlyContinue | Select-Object -First 30 Name)",
-      "PowerShell(& \"$env:USERPROFILE\\\\.lmstudio\\\\bin\\\\lms.exe\" ps)",
-      "PowerShell(& \"$env:USERPROFILE\\\\.lmstudio\\\\bin\\\\lms.exe\" unload \"hermes-3-llama-3.1-8b\")"
->>>>>>> Stashed changes
+      "PowerShell(git -C \"C:\\\\Users\\\\vinee\\\\Documents\\\\manju jobs dashboard\\\\manju-jobs-dashboard\" status --porcelain)",
+      "PowerShell(git -C \"C:\\\\Users\\\\vinee\\\\Documents\\\\manju jobs dashboard\\\\manju-jobs-dashboard\" commit -m \"Update resume links for 3aae2603 and expand permission allowlist \\(claude-sonnet-4-6\\)\")",
+      "PowerShell(git -C \"C:\\\\Users\\\\vinee\\\\Documents\\\\manju jobs dashboard\\\\manju-jobs-dashboard\" push origin main)"
     ]
   }
 }

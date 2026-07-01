@@ -1,20 +1,32 @@
-Tailor a fresh resume and cover letter for a single job ID using Claude, replacing any existing docs and updating the live dashboard.
+Tailor fresh resumes and cover letters for one or more job IDs using Claude, replacing any existing docs and updating the live dashboard.
 
-The job ID to process is: **$ARGUMENTS**
+The job IDs to process are: **$ARGUMENTS**
+
+Parse `$ARGUMENTS` as a space-separated list of job IDs (e.g. `abc123 def456 ghi789`). If only one ID is given, process just that one. Run Steps 0–5 for **each job ID in sequence**, then run Steps 6–8 once at the end to batch-commit and sync everything.
 
 ---
 
-## Step 0 — Resolve paths and find the job
+## Constants (set once, reuse for every job)
 
-Set these constants for all subsequent steps:
-- `PUBLIC`  = `C:\Users\vinee\manju_jobs`
-- `PRIVATE` = `C:\Users\vinee\Manju_jobs_private`
-- `JOB_ID`  = `$ARGUMENTS`
+- `PUBLIC`  = `C:\Users\vinee\Documents\manju jobs dashboard\manju-jobs-dashboard`
+- `PRIVATE` = `C:\Users\vinee\Documents\manju jobs dashboard\Manju-jobs`
+- `JOBS_JSON` = `PUBLIC\jobs.json`
 
-Read `C:\Users\vinee\manju_jobs\jobs.json` and locate the entry where `"id"` equals `$ARGUMENTS`.
-If not found, stop immediately and report the error.
+Read the structural template **once** before the loop:
+Read `PRIVATE\Resumes\f6aaa66f\f6aaa66f_data.json`. Every output JSON must match this structure exactly (same keys, same nesting).
 
-Record from that entry:
+---
+
+## Loop — repeat Steps 0–5 for each JOB_ID
+
+---
+
+### Step 0 — Find the job
+
+Read `JOBS_JSON` and locate the entry where `"id"` equals `JOB_ID`.
+If not found, skip this ID, print an error, and continue to the next.
+
+Record:
 - `JOB_TITLE`  — the `title` field
 - `COMPANY`    — the `company` field
 - `JOB_URL`    — the `url` field
@@ -22,7 +34,7 @@ Record from that entry:
 
 ---
 
-## Step 1 — Obtain the job description
+### Step 1 — Obtain the job description
 
 Try in order, stopping at the first success:
 
@@ -30,22 +42,16 @@ Try in order, stopping at the first success:
 2. Use **WebFetch** on `JOB_URL`.
 3. Try a web search for `"JOB_TITLE" "COMPANY" Finland job`.
 
-If all three fail, stop and report which sources were tried.
+If all three fail, skip this ID, report which sources were tried, and continue to the next.
 
 ---
 
-## Step 2 — Read the template
-
-Read `PRIVATE\Resumes\f6aaa66f\f6aaa66f_data.json` as the structural template. Every field in the output must match this structure exactly (same keys, same nesting).
-
----
-
-## Step 3 — Write the tailored data.json
+### Step 2 — Write the tailored data.json
 
 Create folder `PRIVATE\Resumes\JOB_ID\` if it does not exist.
 Write the tailored JSON to `PRIVATE\Resumes\JOB_ID\JOB_ID_data.json` — overwrite if it exists.
 
-### Tailoring rules
+#### Tailoring rules
 
 **Top-level fields:**
 - `job_id`: set to `JOB_ID`
@@ -65,7 +71,7 @@ Write the tailored JSON to `PRIVATE\Resumes\JOB_ID\JOB_ID_data.json` — overwri
 
 **`resume.competencies_html`:** Completely rewrite 4–5 skill categories that map directly onto the key requirements in this job description. Use `<span class="skill-cat">Category:</span> description...` format.
 
-**`cover_letter.date`:** Use today's date formatted as `"24 June 2026"`.
+**`cover_letter.date`:** Use today's date formatted as `"30 June 2026"`.
 
 **`cover_letter.recipient`:** Fill `company` with `COMPANY` and `city` with the job location. Use `"Hiring Manager"` for title if no name is known.
 
@@ -78,7 +84,7 @@ Write the tailored JSON to `PRIVATE\Resumes\JOB_ID\JOB_ID_data.json` — overwri
 
 **`cover_letter.sign_off`:** `"Ystävällisin terveisin"` for Finnish, `"Yours sincerely"` for English.
 
-### Manju's profile (use exactly these facts)
+#### Manju's profile (use exactly these facts)
 - LL.M. Business & Corporate Law, First Rank — Symbiosis International University (2020–21)
 - LL.B. First Class Honours, Top 3 — University of Calicut (2009–14)
 - Finnish Supplementary Law Studies (OPH bar path) — University of Lapland (2025–present)
@@ -91,9 +97,7 @@ Write the tailored JSON to `PRIVATE\Resumes\JOB_ID\JOB_ID_data.json` — overwri
 
 ---
 
-## Step 4 — Clear old generated files
-
-Remove any stale HTML and PDF files from the job folder so old filenames don't persist:
+### Step 3 — Clear old generated files
 
 ```powershell
 Remove-Item "PRIVATE\Resumes\JOB_ID\*.html" -ErrorAction SilentlyContinue
@@ -102,69 +106,74 @@ Remove-Item "PRIVATE\Resumes\JOB_ID\*.pdf"  -ErrorAction SilentlyContinue
 
 ---
 
-## Step 5 — Generate HTML and convert to PDF
+### Step 4 — Generate HTML and convert to PDF
 
 ```powershell
-cd PUBLIC
-.\venv\Scripts\python make_resume.py "PRIVATE\Resumes\JOB_ID\JOB_ID_data.json" --photo "PRIVATE\manju_photo.JPG" --out-dir "PRIVATE\Resumes"
+python "PUBLIC\make_resume.py" "PRIVATE\Resumes\JOB_ID\JOB_ID_data.json" --photo "PRIVATE\manju_photo.JPG" --out-dir "PRIVATE\Resumes"
 ```
 
-This produces two `.html` files inside `PRIVATE\Resumes\JOB_ID\`. Find their paths:
+This produces two `.html` files inside `PRIVATE\Resumes\JOB_ID\`. Convert each to PDF:
 
 ```powershell
 $htmlFiles = Get-ChildItem "PRIVATE\Resumes\JOB_ID\*.html"
-```
-
-Convert each to PDF:
-
-```powershell
 foreach ($html in $htmlFiles) {
-    .\venv\Scripts\python html_to_pdf.py $html.FullName
+    python "PUBLIC\html_to_pdf.py" $html.FullName
 }
 ```
 
-Confirm both PDF files exist before continuing. If either is missing, stop and report.
+Confirm both PDF files exist. If either is missing, report the error but continue processing remaining job IDs.
+
+Print a one-line progress note after each job: `✓ JOB_ID (JOB_TITLE @ COMPANY) — PDFs generated`
 
 ---
 
-## Step 6 — Commit to private repo
+## End of loop
+
+---
+
+## Step 5 — Commit all jobs to private repo (one commit)
 
 ```powershell
-cd PRIVATE
-git add "Resumes\JOB_ID\"
-git commit -m "Retailor resume for JOB_ID: JOB_TITLE at COMPANY (claude-sonnet-4-6)"
-git push
+git -C "PRIVATE" add Resumes\
+git -C "PRIVATE" commit -m "Retailor resumes for N jobs: JOB_ID_1, JOB_ID_2, ... (claude-sonnet-4-6)"
+git -C "PRIVATE" push
 ```
+
+Use the actual count and list of successfully processed job IDs in the commit message.
 
 ---
 
-## Step 7 — Sync links to Firestore (force overwrite)
+## Step 6 — Sync links to Firestore (force overwrite)
 
 ```powershell
-cd PUBLIC
-.\venv\Scripts\python sync_resume_links.py --upload --force
+Set-Location "PUBLIC"
+python sync_resume_links.py --upload --force
 ```
 
-This rescans all Resumes/ folders, writes `input.csv`, and pushes the new PDF GitHub URLs to Firestore — overwriting any previously stored links for this job.
+This rescans all Resumes/ folders, writes `input.csv`, and pushes the new PDF GitHub URLs to Firestore — overwriting any previously stored links for these jobs.
 
 ---
 
-## Step 8 — Commit public repo
+## Step 7 — Commit public repo
 
 ```powershell
-cd PUBLIC
-git add input.csv
-git commit -m "Update resume links for JOB_ID (retailored with claude-sonnet-4-6)"
-git push origin main
+git -C "PUBLIC" add input.csv
+git -C "PUBLIC" commit -m "Update resume links for JOB_ID_1 JOB_ID_2 ... (retailored with claude-sonnet-4-6)"
+git -C "PUBLIC" push origin main
 ```
+
+If `input.csv` has no changes, skip the commit and note that it was already up to date.
 
 ---
 
-## Step 9 — Report
+## Step 8 — Report
 
-Print a summary:
-- Job: `JOB_TITLE` at `COMPANY` (`JOB_ID`)
-- Resume PDF: the filename generated
-- Cover letter PDF: the filename generated
-- Firestore: updated ✓ / failed ✗
-- Dashboard: links will appear live in the Docs column within ~30 seconds (Firebase realtime sync)
+Print a summary table for all processed jobs:
+
+| Job ID | Title | Company | Resume PDF | Cover Letter PDF | Firestore |
+|--------|-------|---------|------------|------------------|-----------|
+| abc123 | ... | ... | filename.pdf | filename.pdf | ✓ |
+
+Then note: "Dashboard links will appear live in the Docs column within ~30 seconds (Firebase realtime sync)."
+
+If any job was skipped, list them with the reason.
