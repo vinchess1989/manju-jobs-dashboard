@@ -15,12 +15,28 @@ Lines starting with # are treated as comments and ignored.
 import csv
 import json
 import os
+import subprocess
 import sys
 import argparse
 import requests
+from pathlib import Path
 
 PROJECT_ID = "manju-jobs-dashboard"
-RESUMES_DIR = r"C:\Users\vinee\Manju_jobs_private\Resumes"
+
+def _find_resumes_dir() -> str:
+    script = Path(__file__).parent / "find_repos.py"
+    result = subprocess.run(
+        [sys.executable, str(script), "--json"],
+        capture_output=True, text=True, timeout=60
+    )
+    if result.returncode == 0:
+        data = json.loads(result.stdout)
+        private = data.get("private")
+        if private:
+            return str(Path(private) / "Resumes")
+    return r"C:\Users\vinee\Manju_jobs_private\Resumes"  # fallback
+
+RESUMES_DIR = _find_resumes_dir()
 FIRESTORE_BASE = (
     f"https://firestore.googleapis.com/v1/projects/{PROJECT_ID}"
     f"/databases/(default)/documents"

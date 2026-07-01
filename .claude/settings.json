@@ -11,7 +11,15 @@
       "PowerShell(.\\publish_dashboards.ps1)",
       "PowerShell(cd *)",
       "WebFetch",
-      "WebSearch"
+      "WebSearch",
+      "Write(C:\\Users\\vinee\\Documents\\manju jobs dashboard\\Manju-jobs\\Resumes\\*)",
+      "PowerShell(Set-Location *)",
+      "PowerShell(Remove-Item *)",
+      "PowerShell(Select-String *)",
+      "PowerShell(Test-Path *)",
+      "PowerShell(Set-Location \"C:\\\\Users\\\\vinee\\\\Documents\\\\manju jobs dashboard\\\\manju-jobs-dashboard\"; python sync_resume_links.py --upload --force 2>&1 | Select-String -Pattern \"3aae2603|Done|Error\" | ForEach-Object { $_.Line })",
+      "PowerShell(git -C \"C:\\\\Users\\\\vinee\\\\Documents\\\\manju jobs dashboard\\\\manju-jobs-dashboard\" add input.csv .claude/settings.json)",
+      "PowerShell(git -C \"C:\\\\Users\\\\vinee\\\\Documents\\\\manju jobs dashboard\\\\manju-jobs-dashboard\" status --porcelain)"
     ]
   }
 }
