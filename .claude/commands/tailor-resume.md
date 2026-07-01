@@ -8,8 +8,8 @@ Parse `$ARGUMENTS` as a space-separated list of job IDs (e.g. `abc123 def456 ghi
 
 ## Constants (set once, reuse for every job)
 
-- `PUBLIC`  = `C:\Users\vinee\Documents\manju jobs dashboard\manju-jobs-dashboard`
-- `PRIVATE` = `C:\Users\vinee\Documents\manju jobs dashboard\Manju-jobs`
+- `PUBLIC`    = `C:\Users\vinee\manju_jobs`
+- `PRIVATE`   = `C:\Users\vinee\Manju_jobs_private`
 - `JOBS_JSON` = `PUBLIC\jobs.json`
 
 Read the structural template **once** before the loop:
@@ -43,6 +43,89 @@ Try in order, stopping at the first success:
 3. Try a web search for `"JOB_TITLE" "COMPANY" Finland job`.
 
 If all three fail, skip this ID, report which sources were tried, and continue to the next.
+
+---
+
+### Step 1.5 — Scrape application form questions (best-effort)
+
+Run the scraper. Non-blocking — if it finds nothing or errors, continue to Step 2 normally.
+
+```powershell
+python "PUBLIC\scrape_application.py" `
+    --job-url "JOB_URL" `
+    --job-id  "JOB_ID" `
+    --out-dir "PRIVATE\Resumes\JOB_ID" `
+    --private-dir "PRIVATE"
+```
+
+**First-time behaviour:** If credentials for the platform aren't saved yet, the script prompts interactively (password hidden). They are saved to `PRIVATE\.env` and session cookies to `PRIVATE\sessions\` — all future runs are silent.
+
+**Outcome:**
+- Success → `PRIVATE\Resumes\JOB_ID\JOB_ID_questions.json` written. Note `question_count`.
+- Failure / 0 questions → skip Step 1.6 for this job, continue from Step 2.
+
+---
+
+### Step 1.6 — Generate tailored application answers
+
+Only run if `JOB_ID_questions.json` exists and `question_count > 0`.
+
+Read `PRIVATE\Resumes\JOB_ID\JOB_ID_questions.json`. Using the job description from Step 1 and Manju's profile (see Step 2 tailoring rules below), write a tailored answer for every question.
+
+**Answer rules:**
+- **Text / textarea:** 1–4 sentences for short fields; a full paragraph for open-ended ones. Name the company and role directly where it fits.
+- **Select / dropdown:** Pick the most accurate option from the `options` list.
+- **Factual fields** — use these exact values:
+  - Phone: leave blank, set `is_placeholder: true`
+  - Address: `Oulu, Finland`
+  - Availability: `September 2026`
+  - Salary expectation: leave blank, set `is_placeholder: true`
+  - Right to work in Finland: `Yes — EU residence permit`
+- **Language:** Answer in the same language as the question (Finnish if Finnish, English if English).
+- Do **not** invent facts not in Manju's profile.
+
+**Write two output files:**
+
+1. `PRIVATE\Resumes\JOB_ID\JOB_ID_answers.json` — machine-readable, used by the auto-filler:
+```json
+{
+  "job_id": "JOB_ID",
+  "job_url": "JOB_URL",
+  "apply_url": "<apply_url from questions JSON, or JOB_URL>",
+  "platform": "<platform from questions JSON>",
+  "answers": [
+    {
+      "label": "<exact label from questions JSON>",
+      "type": "<type>",
+      "answer": "<generated answer, or empty string if placeholder>",
+      "step": <step number if present>,
+      "is_placeholder": <true if phone/salary/manual field>
+    }
+  ]
+}
+```
+
+2. `PRIVATE\Resumes\JOB_ID\JOB_ID_application_cheatsheet.html` — human-readable backup:
+```html
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<title>Application — JOB_TITLE at COMPANY</title>
+<style>
+  body{font-family:Calibri,Arial,sans-serif;max-width:800px;margin:40px auto;font-size:14px;color:#1e1e1e}
+  h1{font-size:18px;color:#1a4f82;border-bottom:2px solid #1a4f82;padding-bottom:6px}
+  .meta{color:#666;font-size:12px;margin-bottom:24px}
+  .qa{margin-bottom:20px}
+  .question{font-weight:bold;font-size:13px;color:#333;margin-bottom:4px}
+  .qmeta{font-size:11px;color:#999;margin-bottom:4px}
+  .answer{background:#f0f4fa;border-left:3px solid #1a4f82;padding:8px 12px;white-space:pre-wrap}
+  .placeholder{background:#fff8e1;border-left:3px solid #f59e0b;padding:8px 12px}
+</style></head><body>
+<h1>JOB_TITLE — COMPANY</h1>
+<div class="meta">Job ID: JOB_ID | Platform: PLATFORM | <a href="APPLY_URL">Application link</a></div>
+<!-- one .qa per question; use class="placeholder" for manual-fill fields -->
+</body></html>
+```
+
+Report: `Application prep done: N answers generated, M placeholders for manual fill.`
 
 ---
 
@@ -128,6 +211,29 @@ Print a one-line progress note after each job: `✓ JOB_ID (JOB_TITLE @ COMPANY)
 ---
 
 ## End of loop
+
+---
+
+## Application Fill Phase — sequential browser sessions
+
+Only run this phase if at least one job produced a `JOB_ID_answers.json` file.
+
+Collect the job IDs that have answers files into a space-separated list (`FILL_IDS`), then run:
+
+```powershell
+python "PUBLIC\fill_application.py" `
+    --job-id FILL_IDS `
+    --private-dir "PRIVATE"
+```
+
+The script opens a visible browser for each job in turn:
+1. Navigates to the application form and fills all matched fields automatically
+2. Stops at the review/submit screen — **does not submit**
+3. Manju reviews the answers in the browser and clicks Submit
+4. Manju presses Enter in the terminal → browser closes → next job opens immediately
+5. Typing `s` + Enter skips that job without submitting
+
+A summary table is printed when all jobs are done. After this phase, continue to Step 5.
 
 ---
 
