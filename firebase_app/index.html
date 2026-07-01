@@ -867,12 +867,19 @@
         });
 
         function fetchJobsData() {
-            fetch('https://vinchess1989.github.io/manju-jobs-dashboard/jobs.json?nocache=' + new Date().getTime())
-                .then(response => {
-                    const lastMod = response.headers.get('Last-Modified');
-                    return response.json().then(data => ({ data, lastMod }));
+            Promise.all([
+                fetch('https://vinchess1989.github.io/manju-jobs-dashboard/jobs.json?nocache=' + new Date().getTime()),
+                fetch('https://vinchess1989.github.io/manju-jobs-dashboard/deleted.json?nocache=' + new Date().getTime()).catch(() => null)
+            ])
+                .then(responses => {
+                    const lastMod = responses[0].headers.get('Last-Modified');
+                    return Promise.all([
+                        responses[0].json(),
+                        responses[1] && responses[1].ok ? responses[1].json() : Promise.resolve([])
+                    ]).then(([data, deletedData]) => ({ data, deletedData, lastMod }));
                 })
-                .then(({ data, lastMod }) => {
+                .then(({ data, deletedData, lastMod }) => {
+                    window.deletedJobsData = deletedData || [];
                     onDataLoaded(data, lastMod, 'Server Connection Active');
                 })
                 .catch(err => {
@@ -988,6 +995,12 @@
                 <div class="table-info-item">
                     <span class="table-info-label">Total Listings</span>
                     <span class="table-info-value" id="listings-counter">${allJobs.length - archivedCount}</span>
+                </div>
+                <div class="table-info-item" title="Jobs moved to deleted.json / Jobs in deleted.json that matched 'yes'">
+                    <span class="table-info-label">Deleted / Missed</span>
+                    <span class="table-info-value" style="color: #fca5a5;">
+                        ${window.deletedJobsData ? window.deletedJobsData.length : 0} / <span style="color: #10b981;">${window.deletedJobsData ? window.deletedJobsData.filter(j => j.matches_requirements === 'yes').length : 0}</span>
+                    </span>
                 </div>
             `;
             jobsContainer.appendChild(infoBar);
