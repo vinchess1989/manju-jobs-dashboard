@@ -6,11 +6,39 @@ Parse `$ARGUMENTS` as a space-separated list of job IDs (e.g. `abc123 def456 ghi
 
 ---
 
-## Constants (set once, reuse for every job)
+## Constants (resolved at runtime — device-agnostic)
 
-- `PUBLIC`    = `C:\Users\vinee\manju_jobs`
-- `PRIVATE`   = `C:\Users\vinee\Manju_jobs_private`
-- `JOBS_JSON` = `PUBLIC\jobs.json`
+Resolve these once before starting the loop.
+
+**`PUBLIC`** — the root of this repository. Derive from the skill file's own location (two levels up from `.claude/commands/`), or confirm with:
+```powershell
+$PUBLIC = (Get-Location).Path   # Claude is always invoked from the repo root
+```
+
+**`PRIVATE`** — the private companion repo. Resolve in this order and stop at the first hit:
+1. The environment variable `MANJU_PRIVATE_DIR` if set.
+2. A sibling of PUBLIC whose name contains "private" (case-insensitive):
+   ```powershell
+   $parent  = Split-Path $PUBLIC -Parent
+   $PRIVATE = Get-ChildItem $parent -Directory |
+              Where-Object { $_.Name -match 'private' } |
+              Select-Object -First 1 -ExpandProperty FullName
+   ```
+3. A sibling of PUBLIC that contains a `Resumes\` subfolder:
+   ```powershell
+   $PRIVATE = Get-ChildItem $parent -Directory |
+              Where-Object { Test-Path "$($_.FullName)\Resumes" } |
+              Select-Object -First 1 -ExpandProperty FullName
+   ```
+4. If still not found — stop and ask the user to set the `MANJU_PRIVATE_DIR` environment variable to the correct path, then re-run.
+
+**`JOBS_JSON`** = `PUBLIC\jobs.json`
+
+Print the resolved paths before starting the loop:
+```
+PUBLIC  : <resolved path>
+PRIVATE : <resolved path>
+```
 
 Read the structural template **once** before the loop:
 Read `PRIVATE\Resumes\f6aaa66f\f6aaa66f_data.json`. Every output JSON must match this structure exactly (same keys, same nesting).

@@ -18,14 +18,14 @@ import json
 import time
 import getpass
 import argparse
-import re
 from pathlib import Path
-from urllib.parse import urljoin, urlparse
-from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeout
+from urllib.parse import urljoin
+from playwright.sync_api import sync_playwright
 
 # ── Paths (defaults; overridden by --private-dir at runtime) ──────────────────
+# Prefer MANJU_PRIVATE_DIR env var so the script works on any machine.
 
-PRIVATE_DIR = Path(r"C:\Users\vinee\Manju_jobs_private")
+PRIVATE_DIR = Path(os.environ.get("MANJU_PRIVATE_DIR", r"C:\Users\vinee\Manju_jobs_private"))
 ENV_FILE    = PRIVATE_DIR / ".env"
 SESSION_DIR = PRIVATE_DIR / "sessions"
 
