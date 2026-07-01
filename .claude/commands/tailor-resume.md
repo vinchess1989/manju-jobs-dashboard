@@ -45,7 +45,54 @@ Read `PRIVATE\Resumes\f6aaa66f\f6aaa66f_data.json`. Every output JSON must match
 
 ---
 
-## Loop — repeat Steps 0–5 for each JOB_ID
+## Checkpoint Check — runs once before the loop
+
+Canonical step order: `0 → 1 → 1.5 → 1.6 → 2 → 3 → 4`
+
+For each JOB_ID in the list, check whether `PRIVATE\Resumes\JOB_ID\JOB_ID_checkpoint.json` exists.
+
+If **no** checkpoint exists for a job, set `START_STEP[JOB_ID] = "0"` (start fresh, no prompt).
+
+If a checkpoint **does** exist, read it and display a block like this for each such job:
+
+```
+Checkpoint found — abc123 (Legal Trainee @ Hiab)
+  Completed : 0, 1, 1.5, 1.6, 2, 3
+  Last run  : 2026-07-01 10:30
+  Next step : 4 (Generate PDFs)
+
+  [Enter] Continue from Step 4        ← default
+  [2]     Redo from Step 2 (Write tailored JSON)
+  [1.6]   Redo from Step 1.6 (Generate answers)
+  [1.5]   Redo from Step 1.5 (Scrape questions)
+  [1]     Redo from Step 1 (Fetch description)
+  [0]     Start completely fresh
+  [skip]  Skip this job this run
+```
+
+Ask the user for their choice for each job that has a checkpoint. Set `START_STEP[JOB_ID]` to the chosen step (or `"skip"` to exclude that job from the loop entirely).
+
+If the user chooses `[0]` (fresh), delete the existing checkpoint file before entering the loop.
+
+---
+
+## Loop — repeat Steps 0–4 for each JOB_ID
+
+**If `START_STEP[JOB_ID]` is `"skip"`, skip this job entirely.**
+
+**Skip rule:** At the start of each step, if the step ID comes *before* `START_STEP[JOB_ID]` in the canonical order `[0, 1, 1.5, 1.6, 2, 3, 4]`, print `↷ Skipping Step N (checkpoint)` and move to the next step.
+
+**Checkpoint write rule:** After each step completes successfully, write or update `PRIVATE\Resumes\JOB_ID\JOB_ID_checkpoint.json`:
+```json
+{
+  "job_id": "JOB_ID",
+  "job_title": "JOB_TITLE",
+  "company": "COMPANY",
+  "updated_at": "<ISO timestamp>",
+  "completed_steps": ["0", "1", ...]
+}
+```
+Add the current step's ID to `completed_steps` if not already present. Preserve all previously completed steps.
 
 ---
 
@@ -76,11 +123,22 @@ If all three fail, skip this ID, report which sources were tried, and continue t
 
 ### Step 1.5 — Scrape application form questions (best-effort)
 
+**Resolve the apply URL first.** Listing pages (Jobly, Duunitori, etc.) don't host the form — they link out to it. Before running the scraper, find the real apply URL:
+
+1. Check `jobs.json` for an `apply_url` field on this job entry (use it if present and non-null).
+2. Scan the job description text obtained in Step 1 for a URL following apply-related keywords. Match any of these patterns (case-insensitive):
+   - Finnish: `Jätä hakemus:`, `Hae paikkaa:`, `hakemuslinkki:`, `Hakemukset:`, `Hae tästä:`
+   - English: `Apply here:`, `Apply at:`, `Application link:`, `Submit.*application:`
+   - Generic: any bare URL that appears on its own line immediately after the word "hakemus" or "apply"
+3. If nothing found in the description, fall back to `JOB_URL`.
+
+Set `SCRAPE_URL` to whichever URL was found. Print: `Scraping apply URL: SCRAPE_URL`
+
 Run the scraper. Non-blocking — if it finds nothing or errors, continue to Step 2 normally.
 
 ```powershell
 python "PUBLIC\scrape_application.py" `
-    --job-url "JOB_URL" `
+    --job-url "SCRAPE_URL" `
     --job-id  "JOB_ID" `
     --out-dir "PRIVATE\Resumes\JOB_ID" `
     --private-dir "PRIVATE"
