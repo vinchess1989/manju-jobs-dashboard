@@ -1,27 +1,10 @@
 {
   "permissions": {
     "allow": [
-      "PowerShell(git *)",
-      "PowerShell(python *)",
-      "PowerShell(firebase *)",
-      "PowerShell(New-Item *)",
-      "PowerShell(Get-ChildItem *)",
-      "PowerShell(Get-Content *)",
-      "PowerShell(Copy-Item *)",
-      "PowerShell(.\\publish_dashboards.ps1)",
-      "PowerShell(cd *)",
-      "WebFetch",
-      "WebSearch",
-      "Write(C:\\Users\\vinee\\Documents\\manju jobs dashboard\\Manju-jobs\\Resumes\\*)",
-      "PowerShell(Set-Location *)",
-      "PowerShell(Remove-Item *)",
-      "PowerShell(Select-String *)",
-      "PowerShell(Test-Path *)",
-      "PowerShell(Set-Location \"C:\\\\Users\\\\vinee\\\\Documents\\\\manju jobs dashboard\\\\manju-jobs-dashboard\"; python sync_resume_links.py --upload --force 2>&1 | Select-String -Pattern \"3aae2603|Done|Error\" | ForEach-Object { $_.Line })",
-      "PowerShell(git -C \"C:\\\\Users\\\\vinee\\\\Documents\\\\manju jobs dashboard\\\\manju-jobs-dashboard\" add input.csv .claude/settings.json)",
-      "PowerShell(git -C \"C:\\\\Users\\\\vinee\\\\Documents\\\\manju jobs dashboard\\\\manju-jobs-dashboard\" status --porcelain)",
-      "PowerShell(git -C \"C:\\\\Users\\\\vinee\\\\Documents\\\\manju jobs dashboard\\\\manju-jobs-dashboard\" commit -m \"Update resume links for 3aae2603 and expand permission allowlist \\(claude-sonnet-4-6\\)\")",
-      "PowerShell(git -C \"C:\\\\Users\\\\vinee\\\\Documents\\\\manju jobs dashboard\\\\manju-jobs-dashboard\" push origin main)"
+      "Write(C:\\Users\\vinee\\Manju_jobs_private\\Resumes\\*)"
+    ],
+    "additionalDirectories": [
+      "C:\\Users\\vinee\\Manju_jobs_private\\Resumes"
     ]
   }
 }
