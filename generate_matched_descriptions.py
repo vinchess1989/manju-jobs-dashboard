@@ -3,7 +3,15 @@ import json
 import time
 import hashlib
 import re
+import sys
 from playwright.sync_api import sync_playwright
+
+# Ensure UTF-8 output
+if sys.stdout.encoding != 'utf-8':
+    try:
+        sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+    except Exception:
+        pass
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 JOBS_FILE = os.path.join(BASE_DIR, "jobs.json")
@@ -21,7 +29,7 @@ def main():
     # Find jobs that matched requirements but don't have description_file set or file doesn't exist
     matched_jobs = []
     for job in jobs:
-        if job.get('matches_requirements') == 'yes':
+        if job.get('matches_requirements') in ['yes', 'maybe']:
             desc_file = job.get('description_file')
             if not desc_file or not os.path.exists(os.path.join(BASE_DIR, desc_file)):
                 matched_jobs.append(job)

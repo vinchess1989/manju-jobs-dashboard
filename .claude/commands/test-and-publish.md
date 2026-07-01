@@ -1,50 +1,19 @@
-Run the full test suite for both manju_jobs and vineeth_jobs, then publish all changes if tests pass.
+Publish both dashboards using the publish script. Before running, review the script to make sure it is up to date.
 
-## Steps
+## Step 1 — Review and update the script if needed
 
-### 1. Run manju_jobs tests
+Read `c:\Users\vinee\manju_jobs\publish_dashboards.ps1` and check that it reflects the current state of both projects:
+- The `git add` lines for manju_jobs and vineeth_jobs include all tracked files (compare against what each scraper's `update_git()` stages)
+- Both test steps point to the correct venv paths
+- Both Firebase deploy steps target the correct `firebase_app/` directories
+
+If anything is outdated or missing, edit the script to fix it before proceeding.
+
+## Step 2 — Run the script
+
 ```powershell
 cd c:\Users\vinee\manju_jobs
-.\venv\Scripts\python -m pytest tests/ -v
-```
-Report each test result. If ANY test fails, stop here — do NOT proceed to publish.
-
-### 2. Run vineeth_jobs tests
-```powershell
-cd c:\Users\vinee\vineeth_jobs
-.\venv\Scripts\python -m pytest tests/ -v
-```
-Report each test result. If ANY test fails, stop here — do NOT proceed to publish.
-
-### 3. Commit and push manju_jobs — only if all tests passed
-```powershell
-cd c:\Users\vinee\manju_jobs
-git add jobs.json seen_urls.json checkpoint.json dashboard.html job_descriptions job_requirements.md firebase_app/index.html scraper.py tests/ jobs_history.json
-git status --porcelain
-git commit -m "chore: update manju dashboard [all tests passing]"
-git push
+.\publish_dashboards.ps1
 ```
 
-### 4. Deploy manju Firebase Hosting
-```powershell
-cd c:\Users\vinee\manju_jobs\firebase_app
-firebase deploy --only hosting --non-interactive
-```
-
-### 5. Commit and push vineeth_jobs — only if all tests passed
-```powershell
-cd c:\Users\vinee\vineeth_jobs
-git add jobs.json seen_urls.json checkpoint.json firebase_app/index.html scraper.py tests/ jobs_history.json job_descriptions
-git status --porcelain
-git commit -m "chore: update vineeth dashboard [all tests passing]"
-git push
-```
-
-### 6. Deploy vineeth Firebase Hosting
-```powershell
-cd c:\Users\vinee\vineeth_jobs\firebase_app
-firebase deploy --only hosting --non-interactive
-```
-
-### 7. Report
-Summarise: manju tests (passed/failed), vineeth tests (passed/failed), whether each git push succeeded, whether each Firebase deploy succeeded or needs manual action.
+Report the full output and whether each step (tests, git push, Firebase deploy) succeeded or failed.

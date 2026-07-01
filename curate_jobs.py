@@ -10,19 +10,13 @@ if sys.stdout.encoding != 'utf-8':
     except Exception:
         pass
 
-PUBLIC_DIR = r"C:\Users\vinee\Documents\manju jobs dashboard\manju-jobs-dashboard"
-PRIVATE_DIR = r"C:\Users\vinee\Documents\manju jobs dashboard\Manju-jobs"
+PUBLIC_DIR = r"C:\Users\vinee\manju_jobs"
+PRIVATE_DIR = r"C:\Users\vinee\Manju_jobs_private"
 RESUMES_DIR = os.path.join(PRIVATE_DIR, "Resumes")
 
-# Find the latest jobs_<timestamp>.json in the public directory (ignoring jobs_history.json)
-json_files = [f for f in os.listdir(PUBLIC_DIR) if f.startswith("jobs_") and f.endswith(".json") and f != "jobs_history.json" and f != "unprocessed_jobs.json" and f != "curated_jobs.json"]
-if not json_files:
-    print("No jobs_*.json files found!")
-    exit(1)
-
-latest_json = sorted(json_files)[-1]
-json_path = os.path.join(PUBLIC_DIR, latest_json)
-print(f"Reading from latest file: {latest_json}")
+JOBS_FILE = os.path.join(PUBLIC_DIR, "jobs.json")
+json_path = JOBS_FILE
+print(f"Reading from jobs file: {json_path}")
 
 with open(json_path, "r", encoding="utf-8") as f:
     jobs = json.load(f)
@@ -32,7 +26,7 @@ existing_ids = set()
 if os.path.exists(RESUMES_DIR):
     existing_ids = {name for name in os.listdir(RESUMES_DIR) if os.path.isdir(os.path.join(RESUMES_DIR, name))}
 
-print(f"Total jobs in {latest_json}: {len(jobs)}")
+print(f"Total jobs in {json_path}: {len(jobs)}")
 print(f"Already completed folders found: {len(existing_ids)}")
 
 # Finnish city/region list to verify location is in Finland
@@ -62,8 +56,8 @@ skipped_location = 0
 skipped_type = 0
 
 for job in jobs:
-    job_id = job.get("job_id")
-    title = (job.get("job_title") or "").lower()
+    job_id = job.get("id", job.get("job_id"))
+    title = (job.get("title", job.get("job_title")) or "").lower()
     location = (job.get("location") or "").lower()
 
     # 1. Filter out already processed
@@ -111,4 +105,6 @@ print(f"Saved curated list to {curated_path}")
 
 # Print curated jobs list
 for idx, job in enumerate(curated, 1):
-    print(f"{idx:3d}. ID: {job['job_id']} | Co: {job['company']} | Title: {job['job_title']} | Loc: {job['location']}")
+    j_id = job.get('id', job.get('job_id', 'N/A'))
+    j_title = job.get('title', job.get('job_title', 'N/A'))
+    print(f"{idx:3d}. ID: {j_id} | Co: {job.get('company', 'N/A')} | Title: {j_title} | Loc: {job.get('location', 'N/A')}")

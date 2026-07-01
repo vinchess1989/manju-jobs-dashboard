@@ -242,14 +242,14 @@ def photo_to_b64(photo_path):
 def render_experience(jobs):
     parts = []
     for j in jobs:
-        bullets = "\n".join(f"      <li>{b}</li>" for b in j["bullets"])
+        bullets = "\n".join(f"      <li>{b}</li>" for b in j.get("bullets", []))
         parts.append(
             f'  <div class="job">\n'
             f'    <div class="job-header">\n'
-            f'      <span class="job-title">{j["title"]}</span>\n'
-            f'      <span class="job-date">{j["dates"]}</span>\n'
+            f'      <span class="job-title">{j.get("title", "")}</span>\n'
+            f'      <span class="job-date">{j.get("dates", "")}</span>\n'
             f'    </div>\n'
-            f'    <div class="job-co">{j["company"]}</div>\n'
+            f'    <div class="job-co">{j.get("company", "")}</div>\n'
             f'    <ul>\n{bullets}\n    </ul>\n'
             f'  </div>'
         )
@@ -259,18 +259,18 @@ def render_experience(jobs):
 def render_education(rows):
     parts = []
     for r in rows:
-        q = f"<strong>{r['qual']}</strong>" if r.get("bold") else r["qual"]
+        q = f"<strong>{r.get('qual', '')}</strong>" if r.get("bold") else r.get("qual", "")
         parts.append(
             f'  <tr><td class="qual">{q}</td>'
-            f'<td class="inst">{r["inst"]}</td></tr>'
+            f'<td class="inst">{r.get("inst", "")}</td></tr>'
         )
     return "\n".join(parts)
 
 
 def render_references(refs):
     return "\n".join(
-        f'  <div class="ref"><div class="ref-name">{r["name"]}</div>'
-        f'{r["title"]}<br>{r["contact"]}</div>'
+        f'  <div class="ref"><div class="ref-name">{r.get("name", "")}</div>'
+        f'{r.get("title", "")}<br>{r.get("contact", "")}</div>'
         for r in refs
     )
 
@@ -283,11 +283,11 @@ def generate(data_path, photo_path, out_dir):
     with open(data_path, encoding="utf-8") as f:
         d = json.load(f)
 
-    job_id = d["job_id"]
-    job_title = d["job_title"]
-    company = d["company"]
-    r = d["resume"]
-    cl = d["cover_letter"]
+    job_id = d.get("job_id", "unknown_job")
+    job_title = d.get("job_title", "Unknown Role")
+    company = d.get("company", "Unknown Company")
+    r = d.get("resume", {})
+    cl = d.get("cover_letter", {})
 
     b64 = photo_to_b64(photo_path)
 
@@ -297,21 +297,22 @@ def generate(data_path, photo_path, out_dir):
     os.makedirs(folder, exist_ok=True)
 
     # ── Resume HTML ───────────────────────────────────────────────────────────
+    rc = r.get("contact", {})
     resume_html = RESUME_HTML.format(
-        name=r["name"],
-        name_upper=r["name"].upper(),
-        role=r["role"],
-        address=r["contact"]["address"],
-        phone=r["contact"]["phone"],
-        email=r["contact"]["email"],
-        linkedin_url=r["contact"]["linkedin_url"],
-        linkedin_display=r["contact"]["linkedin_display"],
-        profile=r["profile"],
-        experience_html=render_experience(r["experience"]),
-        education_html=render_education(r["education"]),
-        languages_html=r["languages_html"],
-        competencies_html=r["competencies_html"],
-        references_html=render_references(r["references"]),
+        name=r.get("name", "Manju Krishna Haridas"),
+        name_upper=r.get("name", "Manju Krishna Haridas").upper(),
+        role=r.get("role", ""),
+        address=rc.get("address", ""),
+        phone=rc.get("phone", ""),
+        email=rc.get("email", ""),
+        linkedin_url=rc.get("linkedin_url", ""),
+        linkedin_display=rc.get("linkedin_display", ""),
+        profile=r.get("profile", ""),
+        experience_html=render_experience(r.get("experience", [])),
+        education_html=render_education(r.get("education", [])),
+        languages_html=r.get("languages_html", ""),
+        competencies_html=r.get("competencies_html", ""),
+        references_html=render_references(r.get("references", [])),
         photo_b64=b64,
     )
     resume_out = os.path.join(folder, f"{slug}_resume.html")
@@ -320,21 +321,20 @@ def generate(data_path, photo_path, out_dir):
     print(f"  Resume HTML : {resume_out}")
 
     # ── Cover letter HTML ─────────────────────────────────────────────────────
-    rc = r["contact"]
-    rec = cl["recipient"]
+    rec = cl.get("recipient", {})
     cl_html = COVER_LETTER_HTML.format(
-        name=r["name"],
-        address=rc["address"],
-        phone=rc["phone"],
-        email=rc["email"],
-        linkedin_url=rc["linkedin_url"],
-        linkedin_display=rc["linkedin_display"],
-        date=cl["date"],
-        recipient_title=rec["title"],
+        name=r.get("name", "Manju Krishna Haridas"),
+        address=rc.get("address", ""),
+        phone=rc.get("phone", ""),
+        email=rc.get("email", ""),
+        linkedin_url=rc.get("linkedin_url", ""),
+        linkedin_display=rc.get("linkedin_display", ""),
+        date=cl.get("date", ""),
+        recipient_title=rec.get("title", ""),
         recipient_team=rec.get("team", ""),
-        recipient_company=rec["company"],
+        recipient_company=rec.get("company", ""),
         recipient_city=rec.get("city", ""),
-        paragraphs_html=render_paragraphs(cl["paragraphs"]),
+        paragraphs_html=render_paragraphs(cl.get("paragraphs", [])),
         sign_off=cl.get("sign_off", "Yours sincerely"),
     )
     cl_out = os.path.join(folder, f"{slug}_cover_letter.html")

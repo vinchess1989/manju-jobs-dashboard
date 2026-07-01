@@ -2,8 +2,8 @@ import os
 import sys
 
 # Add current directory to path so we can import local modules
-PUBLIC_DIR = r"C:\Users\vinee\Documents\manju jobs dashboard\manju-jobs-dashboard"
-PRIVATE_DIR = r"C:\Users\vinee\Documents\manju jobs dashboard\Manju-jobs"
+PUBLIC_DIR = r"C:\Users\vinee\manju_jobs"
+PRIVATE_DIR = r"C:\Users\vinee\Manju_jobs_private"
 PHOTO_PATH = os.path.join(PRIVATE_DIR, "manju_photo.JPG")
 OUT_DIR = os.path.join(PRIVATE_DIR, "Resumes")
 
