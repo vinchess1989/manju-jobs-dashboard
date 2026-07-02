@@ -1341,7 +1341,7 @@ URL: {job['url']}
 Return a JSON object with exactly six keys:
 - "match": a string, either "yes", "maybe", or "no".
 - "reason": a short 1-sentence explanation of your decision.
-- "posted_date": a string, the date the job was posted formatted strictly as YYYY-MM-DD (e.g. '2026-06-12'). If a relative date like '3 days ago' is mentioned, calculate it relative to today's date ({today_str}). If not found, return 'N/A'.
+- "posted_date": a string, the exact date string as it appears in the text (e.g. '3 weeks ago', '12.6.2026', '2026-06-12'). Do NOT calculate relative dates yourself; simply return the raw string. If not found, return 'N/A'.
 - "deadline": a string, the deadline for applying formatted strictly as YYYY-MM-DD (e.g. '2026-06-30'). Ignore any times (e.g. if deadline is 15.6.2026 23:59, return '2026-06-15'). If it is open-ended or 'open until filled', return 'Open until filled'. If not found, return 'N/A'.
 - "company": a string, the name of the hiring company as stated in the job posting (e.g. 'Wolt' or 'N/A' if not found). Do NOT use the job board name (e.g. do NOT return 'Indeed' or 'LinkedIn').
 - "location": a string, the PRIMARY work location of the job. Map it to EXACTLY one of the strings below based on the city — do NOT mix up regions:
