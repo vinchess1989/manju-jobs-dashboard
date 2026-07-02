@@ -20,7 +20,7 @@ Write-Host "`n=== All tests passed! Proceeding to publish. ===" -ForegroundColor
 
 Write-Host "`n=== Step 3: Committing & Pushing manju_jobs ===" -ForegroundColor Cyan
 Set-Location "c:\Users\vinee\manju_jobs"
-git add jobs.json seen_urls.json checkpoint.json dashboard.html job_descriptions job_requirements.md firebase_app/index.html firebase_app/firestore.rules scraper.py tests/ jobs_history.json deleted.json publish_dashboards.ps1 next_session_prompt.md html_to_pdf.py find_matching_jobs.py make_resume.py upload_resume_links.py input.csv
+git add jobs.json seen_urls.json checkpoint.json job_descriptions job_requirements.md firebase_app/index.html firebase_app/firestore.rules scraper.py tests/ jobs_history.json deleted.json publish_dashboards.ps1 next_session_prompt.md html_to_pdf.py find_matching_jobs.py make_resume.py upload_resume_links.py input.csv curated_jobs.json scrape_application.py fill_application.py fill_agent.py sync_resume_links.py .claude/commands/tailor-resume.md .claude/commands/fill-form.md
 $manjuStaged = git diff --cached --name-only
 if ($manjuStaged) {
     git commit -m "chore: update manju dashboard [all tests passing]"
@@ -64,7 +64,7 @@ if (Test-Path $PRIVATE) {
     }
     git push
 } else {
-    Write-Host "WARNING: Private repo not found at $PRIVATE — set MANJU_PRIVATE_DIR env var to fix." -ForegroundColor Yellow
+    Write-Host "WARNING: Private repo not found at $PRIVATE - set MANJU_PRIVATE_DIR env var to fix." -ForegroundColor Yellow
 }
 
 Write-Host "`n=== SUCCESS: Both dashboards are live and private repo is synced! ===" -ForegroundColor Green

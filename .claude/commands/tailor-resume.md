@@ -149,6 +149,10 @@ python "PUBLIC\scrape_application.py" `
 **Outcome:**
 - Success → `PRIVATE\Resumes\JOB_ID\JOB_ID_questions.json` written. Note `question_count`.
 - Failure / 0 questions → skip Step 1.6 for this job, continue from Step 2.
+- **Expired listing** → if `JOB_ID_questions.json` exists and contains `"expired": true`:
+  - Check whether the job's `applied` status is `"yes"` (read `jobs.json` and check `job.applied`, or read the scraper output message — the scraper already called `move_job_to_deleted` if not applied).
+  - If applied == "yes": print `Expired but already applied — continuing tailoring.` and proceed to Step 2 normally.
+  - If not applied: print `EXPIRED: Job listing is no longer active. Job moved to deleted.json. Skipping tailoring.` and **abort this job** (do not run Steps 2–4 for it). Continue to the next job ID in the loop if processing multiple.
 
 ---
 
@@ -300,26 +304,38 @@ Print a one-line progress note after each job: `✓ JOB_ID (JOB_TITLE @ COMPANY)
 
 ---
 
-## Application Fill Phase — sequential browser sessions
+## Application Fill Phase — Claude vision agent
 
 Only run this phase if at least one job produced a `JOB_ID_answers.json` file.
 
 Collect the job IDs that have answers files into a space-separated list (`FILL_IDS`), then run:
 
 ```powershell
-python "PUBLIC\fill_application.py" `
+# Default: Claude API with vision
+python "PUBLIC\fill_agent.py" `
     --job-id FILL_IDS `
     --private-dir "PRIVATE"
+
+# Local LLM (vision model in LM Studio):
+# python "PUBLIC\fill_agent.py" --job-id FILL_IDS --private-dir "PRIVATE" --local
+
+# Local LLM, text-only model (e.g. Hermes 3, Llama 3.1):
+# python "PUBLIC\fill_agent.py" --job-id FILL_IDS --private-dir "PRIVATE" --local --no-vision
 ```
 
-The script opens a visible browser for each job in turn:
-1. Navigates to the application form and fills all matched fields automatically
-2. Stops at the review/submit screen — **does not submit**
-3. Manju reviews the answers in the browser and clicks Submit
-4. Manju presses Enter in the terminal → browser closes → next job opens immediately
-5. Typing `s` + Enter skips that job without submitting
+The agent opens a visible browser for each job in turn. After every action it checks the current page state and decides what to click, type, or scroll — handling cookie walls, GravityForms re-renders, Finnish dropdowns, and unusual layouts without hardcoded selectors.
 
-A summary table is printed when all jobs are done. After this phase, continue to Step 5.
+**Vision mode (default / `--local` without `--no-vision`):** The agent receives a screenshot after every action and uses it to verify values and find the next field.
+
+**No-vision mode (`--local --no-vision`):** The agent receives a structured DOM text dump listing every visible field with its CSS selector, label, and current value. It uses `fill_field`, `select_option`, `check`, and `click_selector` tools to target fields by selector — suitable for text-only models like Hermes 3 Llama 3.1.
+
+1. Agent sees the page, dismisses any cookie banner, then fills each field
+2. After every action the agent verifies the value appeared; re-fills if cleared
+3. When all fields are filled the agent calls `done()` — the form is **not** submitted
+4. Manju reviews the completed form in the browser and clicks Submit manually
+5. Manju presses Enter in the terminal → browser closes → next job opens
+
+A summary is printed when all jobs are done. After this phase, continue to Step 5.
 
 ---
 
