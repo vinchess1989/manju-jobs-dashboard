@@ -118,3 +118,8 @@ When evaluating a job posting, use your web fetch tool to visit the URL and read
 - NEGATIVE CONSTRAINT: The user explicitly rejected a previous job because: 'Expertise beyond general administrative work'. Do NOT match jobs that have this issue.
 - NEGATIVE CONSTRAINT: The user explicitly rejected a previous job because: 'Need education in the field or otherwise commendable knowledge of automotive technology'. Do NOT match jobs that have this issue.
 - NEGATIVE CONSTRAINT: The user explicitly rejected a previous job because: 'Appliaction accepted only from unemployed people in Helsinki between the ages 15- 25 and above 50 years'. Do NOT match jobs that have this issue.
+
+
+### Automatically Added Negative Constraints (from UI Rejections):
+- NEGATIVE CONSTRAINT: The user explicitly rejected a previous job because: 'Need practical nurse degree'. Do NOT match jobs that have this issue.
+- NEGATIVE CONSTRAINT: The user explicitly rejected a previous job because: 'Needs Hygiene pass'. Do NOT match jobs that have this issue.

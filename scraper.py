@@ -37,6 +37,10 @@ class TeeLogger:
     """
 
     def __init__(self, log_path: str):
+        try:
+            sys.stdout.reconfigure(encoding='utf-8')
+        except Exception:
+            pass
         self._stdout = sys.stdout
         os.makedirs(os.path.dirname(log_path), exist_ok=True)
         self._log_file = open(log_path, 'a', encoding='utf-8', buffering=1)
@@ -1269,6 +1273,39 @@ def review_pending_jobs(specific_urls=None):
                 # Sanity check: if text is empty or still a DDoS guard page, treat as error
                 text_lower_check = text.lower().strip()
                 is_ddos_page = any(kw in text_lower_check for kw in ddos_keywords) and len(text) < 1500
+
+                # Check for expired/removed listing
+                expired_signals = [
+                    "tämä työpaikkailmoitus indeedissä on vanhentunut",
+                    "tämä ilmoitus on vanhentunut",
+                    "ilmoitus on poistettu",
+                    "this job listing has expired",
+                    "this job is no longer available",
+                    "job posting is no longer available",
+                    "this job posting on indeed is outdated",
+                    "job posting is outdated",
+                    "is no longer accepting job applications",
+                ]
+                if any(s in text_lower_check for s in expired_signals) and job.get('applied') != 'yes':
+                    print(f" -> EXPIRED: Job listing is no longer active — moving to deleted.json")
+                    job['deletion_reason'] = "Expired job listing (page shows expired notice)"
+                    deleted_jobs_exp = []
+                    if os.path.exists(DELETED_FILE):
+                        try:
+                            with open(DELETED_FILE, 'r', encoding='utf-8') as _f:
+                                deleted_jobs_exp = json.load(_f)
+                        except Exception:
+                            pass
+                    seen_exp = {j.get('url') for j in deleted_jobs_exp}
+                    if job.get('url') not in seen_exp:
+                        deleted_jobs_exp.append(job)
+                        with open(DELETED_FILE, 'w', encoding='utf-8') as _f:
+                            json.dump(deleted_jobs_exp, _f, indent=2)
+                    jobs[:] = [j for j in jobs if j.get('url') != job.get('url')]
+                    with open(JOBS_FILE, 'w', encoding='utf-8') as _f:
+                        json.dump(jobs, _f, indent=2)
+                    continue
+
                 if not text.strip() or is_ddos_page:
                     match, reason = "error", "Could not extract text from page (anti-bot protection or empty page)."
                 else:
