@@ -44,7 +44,12 @@ if ($vineethStaged) {
 } else {
     Write-Host "No staged changes to commit for vineeth_jobs." -ForegroundColor Yellow
 }
-git push
+if ($env:GITHUB_TOKEN) {
+    $vineethRemote = git remote get-url origin
+    git push ($vineethRemote -replace "https://", "https://x-access-token:$($env:GITHUB_TOKEN)@")
+} else {
+    git push
+}
 
 Write-Host "`n=== Step 6: Deploying vineeth_jobs Firebase ===" -ForegroundColor Cyan
 Set-Location "c:\Users\vinee\vineeth_jobs\firebase_app"
