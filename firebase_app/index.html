@@ -1922,24 +1922,28 @@
                     });
                 }
             });
-            const fmtDay = d => {
+            const fmtTime = d => {
                 const dt = new Date(d.timestamp);
                 if (d._raw) return dt.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
                 const h = dt.getHours();
-                if (h < 6) return dt.toLocaleString([], { month: 'short', day: 'numeric' });
-                return ['6am', '12pm', '6pm'][Math.floor(h / 6) - 1] || '';
+                return ['12am', '6am', '12pm', '6pm'][Math.floor(h / 6)] || '';
             };
             let lastLabelX = -Infinity;
+            let lastDateStr = null;
             data.forEach((d, i) => {
                 const x = pL + (i / (data.length - 1)) * cW;
                 const isLast = i === data.length - 1;
-                if (!isLast && x - lastLabelX < 22) return;
+                const dt = new Date(d.timestamp);
+                const dateStr = dt.toDateString();
+                const isNewDay = dateStr !== lastDateStr;
+                lastDateStr = dateStr;
+                if (!isLast && !isNewDay && x - lastLabelX < 22) return;
                 lastLabelX = x;
                 ctx.save();
                 ctx.translate(x, pT + cH + 5);
                 ctx.rotate(-Math.PI / 4);
                 ctx.fillStyle = 'rgba(255,255,255,0.4)'; ctx.font = '9px sans-serif'; ctx.textAlign = 'right';
-                ctx.fillText(fmtDay(d), 0, 0);
+                ctx.fillText(isNewDay ? dt.toLocaleString([], { month: 'short', day: 'numeric' }) : fmtTime(d), 0, 0);
                 ctx.restore();
             });
             let lx = pL;
