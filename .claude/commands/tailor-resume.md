@@ -2,7 +2,18 @@ Tailor fresh resumes and cover letters for one or more job IDs using Claude, rep
 
 The job IDs to process are: **$ARGUMENTS**
 
-Parse `$ARGUMENTS` as a space-separated list of job IDs (e.g. `abc123 def456 ghi789`). If only one ID is given, process just that one. Run Steps 0–5 for **each job ID in sequence**, then run Steps 6–8 once at the end to batch-commit and sync everything.
+Parse `$ARGUMENTS` as a space-separated list of tokens. Build a job list and an explicit-URL map as follows:
+
+- Any token that starts with `http://` or `https://` is treated as an **explicit apply URL** for the immediately preceding job ID token.
+- All other tokens are job IDs.
+
+Examples:
+- `abc123` → one job, no explicit URL
+- `abc123 def456` → two jobs, no explicit URLs
+- `abc123 https://example.com/apply` → one job, explicit apply URL for `abc123`
+- `abc123 https://example.com/apply def456` → two jobs; `abc123` has an explicit URL, `def456` does not
+
+Store the result as a list of `(JOB_ID, EXPLICIT_APPLY_URL | null)` pairs. Run Steps 0–5 for **each pair in sequence**, then run Steps 6–8 once at the end to batch-commit and sync everything.
 
 ---
 
@@ -123,14 +134,15 @@ If all three fail, skip this ID, report which sources were tried, and continue t
 
 ### Step 1.5 — Scrape application form questions (best-effort)
 
-**Resolve the apply URL first.** Listing pages (Jobly, Duunitori, etc.) don't host the form — they link out to it. Before running the scraper, find the real apply URL:
+**Resolve the apply URL first.** Listing pages (Jobly, Duunitori, etc.) don't host the form — they link out to it. Before running the scraper, find the real apply URL in this priority order, stopping at the first hit:
 
-1. Check `jobs.json` for an `apply_url` field on this job entry (use it if present and non-null).
-2. Scan the job description text obtained in Step 1 for a URL following apply-related keywords. Match any of these patterns (case-insensitive):
+1. **Explicit URL from arguments** — if `EXPLICIT_APPLY_URL` is set for this job (passed on the command line), use it directly. Print: `Using explicit apply URL (from arguments): EXPLICIT_APPLY_URL`
+2. Check `jobs.json` for an `apply_url` field on this job entry (use it if present and non-null).
+3. Scan the job description text obtained in Step 1 for a URL following apply-related keywords. Match any of these patterns (case-insensitive):
    - Finnish: `Jätä hakemus:`, `Hae paikkaa:`, `hakemuslinkki:`, `Hakemukset:`, `Hae tästä:`
    - English: `Apply here:`, `Apply at:`, `Application link:`, `Submit.*application:`
    - Generic: any bare URL that appears on its own line immediately after the word "hakemus" or "apply"
-3. If nothing found in the description, fall back to `JOB_URL`.
+4. If nothing found in the description, fall back to `JOB_URL`.
 
 Set `SCRAPE_URL` to whichever URL was found. Print: `Scraping apply URL: SCRAPE_URL`
 

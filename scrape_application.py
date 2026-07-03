@@ -46,6 +46,7 @@ PLATFORM_PATTERNS = {
 CRED_MAP = {
     "linkedin": ("LINKEDIN_EMAIL", "LINKEDIN_PASSWORD", "LinkedIn"),
     "indeed":   ("INDEED_EMAIL",   "INDEED_PASSWORD",   "Indeed"),
+    "workday":  ("WORKDAY_EMAIL",  "WORKDAY_PASSWORD",  "Workday"),
 }
 
 # Platforms that support Google OAuth instead of email+password.
@@ -107,7 +108,9 @@ def ensure_credentials(platform):
     if not email or not password:
         print(f"\n[{label}] First-time setup — credentials saved to {ENV_FILE}")
         print("  They won't be asked again after this.")
-        print("  (Tip: set INDEED_AUTH_METHOD=google in .env to use Google login instead)\n")
+        if platform == "indeed":
+            print("  (Tip: set INDEED_AUTH_METHOD=google in .env to use Google login instead)")
+        print()
     if not email:
         email = input(f"  {label} email: ").strip()
         save_env_var(email_key, email)
@@ -1050,6 +1053,102 @@ def login_indeed_password(page, context, email, password):
     print(f"  Session saved → {spath}")
 
 
+def login_workday(page, email, password):
+    """Automate sign-in on a Workday 'Create Account / Sign In' step."""
+    print("  Logging in to Workday...")
+
+    # Activate "Sign In" tab/section if present (vs "Create Account")
+    for sel in [
+        '[data-automation-id="signIn"]',
+        'button:has-text("Sign In")',
+        'a:has-text("Sign In")',
+    ]:
+        try:
+            el = page.query_selector(sel)
+            if el and el.is_visible():
+                el.click()
+                time.sleep(1)
+                break
+        except Exception:
+            pass
+
+    # Fill email
+    for sel in [
+        '[data-automation-id="email"]',
+        'input[type="email"]',
+        'input[autocomplete="username"]',
+        'input[name="email"]',
+        'input[placeholder*="email" i]',
+    ]:
+        try:
+            fld = page.query_selector(sel)
+            if fld and fld.is_visible():
+                fld.fill(email)
+                break
+        except Exception:
+            pass
+
+    # Some Workday portals split email/password into two pages — click Next if needed
+    for sel in [
+        '[data-automation-id="click_filter"]',
+        'button:has-text("Next")',
+    ]:
+        try:
+            btn = page.query_selector(sel)
+            if btn and btn.is_visible():
+                label_text = (btn.inner_text() or "").strip().lower()
+                if label_text not in ("sign in", "kirjaudu"):
+                    btn.click()
+                    time.sleep(1.5)
+                    break
+        except Exception:
+            pass
+
+    # Fill password
+    for sel in [
+        '[data-automation-id="password"]',
+        'input[type="password"]',
+        'input[autocomplete="current-password"]',
+        'input[name="password"]',
+    ]:
+        try:
+            fld = page.query_selector(sel)
+            if fld and fld.is_visible():
+                fld.fill(password)
+                break
+        except Exception:
+            pass
+
+    # Submit
+    for sel in [
+        '[data-automation-id="click_filter"]',
+        'button:has-text("Sign In")',
+        'button[type="submit"]',
+    ]:
+        try:
+            btn = page.query_selector(sel)
+            if btn and btn.is_visible():
+                btn.click()
+                time.sleep(3)
+                break
+        except Exception:
+            pass
+
+    try:
+        page.wait_for_load_state("networkidle", timeout=15000)
+    except Exception:
+        pass
+
+    if detect_login_wall(page):
+        print()
+        print("  Workday login may need verification — please complete it in the browser.")
+        input("  Press Enter once you are past the login screen: ")
+        try:
+            page.wait_for_load_state("domcontentloaded", timeout=5000)
+        except Exception:
+            pass
+
+
 def wait_for_cloudflare(page, target_url, timeout=20):
     """
     Wait up to `timeout` seconds for Cloudflare's challenge to clear automatically.
@@ -1528,6 +1627,143 @@ def scrape_generic(page, job_url, context=None, job_id=""):
     return questions, apply_url
 
 
+# ── Workday scraper ───────────────────────────────────────────────────────────
+
+def scrape_workday(page, job_url, context, email, password):
+    """
+    Scrape a Workday multi-step application form.
+
+    Walks through form steps automatically when required fields are already
+    filled (pre-filled from the Workday account).  If a step has unfilled
+    required fields, pauses and asks the user to fill them manually and click
+    Next in the browser — avoids saving dummy data to the real application.
+    Stops before the Review/Submit step (never submits).
+    """
+    page.goto(job_url, wait_until="networkidle", timeout=45000)
+    time.sleep(2)
+    accept_cookies(page)
+
+    # Workday renders fields via heavy JS — wait up to 6 s for any input to appear
+    try:
+        page.wait_for_selector("input, select, textarea", timeout=6000)
+    except Exception:
+        pass
+    time.sleep(1)
+
+    # Also treat Workday "Create Account/Sign In" step text as a login wall signal
+    def _is_workday_login_page(pg):
+        if detect_login_wall(pg):
+            return True
+        try:
+            body = pg.evaluate("() => document.body.innerText").lower()
+            return "create account" in body and "sign in" in body
+        except Exception:
+            return False
+
+    if _is_workday_login_page(page):
+        print("  Login wall detected — attempting Workday sign-in...")
+        login_workday(page, email, password)
+        time.sleep(3)
+        if _is_workday_login_page(page):
+            print("  Workday login failed — no questions extracted.")
+            return [], job_url
+        # After login Workday sometimes redirects to the careers homepage
+        if "apply" not in page.url.lower():
+            page.goto(job_url, wait_until="networkidle", timeout=45000)
+            time.sleep(2)
+            accept_cookies(page)
+
+    all_questions = []
+    seen_labels: set = set()
+    step = 0
+    max_steps = 8
+
+    while step < max_steps:
+        step += 1
+        time.sleep(1.5)
+        accept_cookies(page)
+
+        # Stop at Review/Submit — never submit
+        try:
+            body = page.evaluate("() => document.body.innerText").lower()
+        except Exception:
+            body = ""
+        if any(s in body for s in [
+            "review and submit", "review your application", "tarkista ja lähetä",
+        ]):
+            print(f"  Step {step}: reached Review — stopping (NOT submitting).")
+            break
+
+        # Extract all visible fields on this step
+        step_fields = extract_form_fields(page)
+        new_fields = [q for q in step_fields if q["label"] not in seen_labels]
+        for q in new_fields:
+            seen_labels.add(q["label"])
+            q["step"] = step
+            all_questions.append(q)
+        print(f"  Step {step}: {len(new_fields)} new field(s) ({len(all_questions)} total)")
+
+        # Locate the Next button
+        next_btn = None
+        for sel in [
+            '[data-automation-id="bottom-navigation-next-button"]',
+            '[data-automation-id="nextButton"]',
+            'button:has-text("Next")',
+            'button:has-text("Save and Continue")',
+            'button:has-text("Seuraava")',
+        ]:
+            try:
+                btn = page.query_selector(sel)
+                if btn and btn.is_visible():
+                    next_btn = btn
+                    break
+            except Exception:
+                pass
+
+        if not next_btn:
+            print(f"  No Next button on step {step} — done.")
+            break
+
+        # Count unfilled required text/select fields (skip checkboxes, radios, files)
+        try:
+            unfilled = page.evaluate("""() => {
+                const skip = new Set([
+                    'hidden','submit','button','reset','image',
+                    'search','file','checkbox','radio'
+                ]);
+                return [...document.querySelectorAll('[required]')]
+                    .filter(el => {
+                        if (el.tagName === 'INPUT' &&
+                                skip.has((el.type || '').toLowerCase())) return false;
+                        const r = el.getBoundingClientRect();
+                        if (r.width === 0 || r.height === 0) return false;
+                        return !(el.value || '').trim();
+                    }).length;
+            }""")
+        except Exception:
+            unfilled = 0
+
+        if unfilled > 0:
+            # Don't fill dummy data into a real Workday application — pause instead
+            print(f"  Step {step} has {unfilled} unfilled required field(s).")
+            print("  Please fill them in the browser and click Next yourself,")
+            print("  then press Enter here to continue. Type 'stop' to stop scraping.")
+            choice = input("  [Enter / stop]: ").strip().lower()
+            if choice == "stop":
+                break
+            # User advanced the page manually — re-enter the loop to extract + advance
+            continue
+
+        next_btn.click()
+        time.sleep(2)
+        try:
+            page.wait_for_load_state("domcontentloaded", timeout=10000)
+        except Exception:
+            pass
+
+    return all_questions, page.url
+
+
 # ── Main ───────────────────────────────────────────────────────────────────────
 
 def main():
@@ -1606,6 +1842,46 @@ def main():
                 questions, apply_url = scrape_indeed(
                     page, args.job_url, context, email, password, is_new_profile,
                     job_id=args.job_id,
+                )
+            except Exception as e:
+                print(f"  ERROR: {e}", file=sys.stderr)
+            finally:
+                context.close()
+
+        elif platform == "workday":
+            profile_dir = PRIVATE_DIR / "chrome_profile_workday"
+            profile_dir.mkdir(parents=True, exist_ok=True)
+
+            ctx_args = [
+                "--disable-blink-features=AutomationControlled",
+                "--no-first-run",
+                "--no-default-browser-check",
+                "--disable-extensions-except=",
+            ]
+            ctx_kwargs = dict(
+                user_data_dir=str(profile_dir),
+                headless=False,
+                args=ctx_args,
+            )
+            for channel in ("chrome", "msedge"):
+                try:
+                    context = p.chromium.launch_persistent_context(channel=channel, **ctx_kwargs)
+                    print(f"  Using persistent {channel} profile: {profile_dir}")
+                    break
+                except Exception:
+                    pass
+            else:
+                print("  Warning: Chrome/Edge not found — falling back to Chromium")
+                context = p.chromium.launch_persistent_context(**ctx_kwargs)
+
+            page = context.new_page()
+            page.add_init_script(
+                "Object.defineProperty(navigator, 'webdriver', {get: () => undefined})"
+            )
+
+            try:
+                questions, apply_url = scrape_workday(
+                    page, args.job_url, context, email, password
                 )
             except Exception as e:
                 print(f"  ERROR: {e}", file=sys.stderr)
