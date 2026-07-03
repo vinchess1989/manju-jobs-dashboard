@@ -1019,22 +1019,22 @@
             table.innerHTML = `
                 <thead>
                     <tr>
-                        <th class="col-id resizable-th"><div class="resizable-header" onclick="sortTable(0)"># ↕<div class="active-filters-summary" id="active-filters-0"></div></div></th>
-                        <th class="col-job-id resizable-th"><div class="resizable-header" onclick="sortTable(1)">Job ID ↕<div class="active-filters-summary" id="active-filters-1"></div></div></th>
-                        <th class="col-title resizable-th"><div class="resizable-header" onclick="sortTable(2)">Job Title ↕<div class="active-filters-summary" id="active-filters-2"></div></div></th>
-                        <th class="col-company resizable-th"><div class="resizable-header" onclick="sortTable(3)">Company ↕<div class="active-filters-summary" id="active-filters-3"></div></div></th>
-                        <th class="col-location resizable-th"><div class="resizable-header" onclick="sortTable(4)">Location ↕<div class="active-filters-summary" id="active-filters-4"></div></div></th>
-                        <th class="col-source resizable-th"><div class="resizable-header" onclick="sortTable(5)">Source ↕<div class="active-filters-summary" id="active-filters-5"></div></div></th>
-                        <th class="col-posted resizable-th"><div class="resizable-header" onclick="sortTable(6)">Posted ↕<div class="active-filters-summary" id="active-filters-6"></div></div></th>
-                        <th class="col-deadline resizable-th"><div class="resizable-header" onclick="sortTable(7)">Deadline ↕<div class="active-filters-summary" id="active-filters-7"></div></div></th>
-                        <th class="col-sync resizable-th"><div class="resizable-header" onclick="sortTable(8)">Sync ↕<div class="active-filters-summary" id="active-filters-8"></div></div></th>
-                        <th class="col-matches resizable-th"><div class="resizable-header" onclick="sortTable(9)">Matches ↕<div class="active-filters-summary" id="active-filters-9"></div></div></th>
-                        <th class="col-reason resizable-th"><div class="resizable-header" onclick="sortTable(10)">AI Reason ↕<div class="active-filters-summary" id="active-filters-10"></div></div></th>
-                        <th class="col-user-reason resizable-th"><div class="resizable-header" onclick="sortTable(11)">User Reason ↕<div class="active-filters-summary" id="active-filters-11"></div></div></th>
-                        <th class="col-applied resizable-th"><div class="resizable-header" onclick="sortTable(12)">Applied ↕<div class="active-filters-summary" id="active-filters-12"></div></div></th>
-                        <th class="col-user-review resizable-th"><div class="resizable-header" onclick="sortTable(13)">User Review ↕<div class="active-filters-summary" id="active-filters-13"></div></div></th>
-                        <th class="col-docs resizable-th"><div class="resizable-header" onclick="sortTable(14)">Docs ↕<div class="active-filters-summary" id="active-filters-14"></div></div></th>
-                        <th class="col-tailor resizable-th"><div class="resizable-header" onclick="sortTable(15)">Tailor Model ↕<div class="active-filters-summary" id="active-filters-15"></div></div></th>
+                        <th class="col-id resizable-th"><div class="resizable-header" onclick="sortTable(0)" title="Row number"># ↕<div class="active-filters-summary" id="active-filters-0"></div></div></th>
+                        <th class="col-job-id resizable-th"><div class="resizable-header" onclick="sortTable(1)" title="Unique identifier for the job">Job ID ↕<div class="active-filters-summary" id="active-filters-1"></div></div></th>
+                        <th class="col-title resizable-th"><div class="resizable-header" onclick="sortTable(2)" title="Title of the job posting">Job Title ↕<div class="active-filters-summary" id="active-filters-2"></div></div></th>
+                        <th class="col-company resizable-th"><div class="resizable-header" onclick="sortTable(3)" title="Company offering the job">Company ↕<div class="active-filters-summary" id="active-filters-3"></div></div></th>
+                        <th class="col-location resizable-th"><div class="resizable-header" onclick="sortTable(4)" title="Location of the job">Location ↕<div class="active-filters-summary" id="active-filters-4"></div></div></th>
+                        <th class="col-source resizable-th"><div class="resizable-header" onclick="sortTable(5)" title="Source website or platform where the job was found">Source ↕<div class="active-filters-summary" id="active-filters-5"></div></div></th>
+                        <th class="col-posted resizable-th"><div class="resizable-header" onclick="sortTable(6)" title="Date the job was posted">Posted ↕<div class="active-filters-summary" id="active-filters-6"></div></div></th>
+                        <th class="col-deadline resizable-th"><div class="resizable-header" onclick="sortTable(7)" title="Last date to apply for the job">Deadline ↕<div class="active-filters-summary" id="active-filters-7"></div></div></th>
+                        <th class="col-sync resizable-th"><div class="resizable-header" onclick="sortTable(8)" title="Status of synchronization between your manual reviews on this cloud dashboard and the local scraper database">Sync ↕<div class="active-filters-summary" id="active-filters-8"></div></div></th>
+                        <th class="col-matches resizable-th"><div class="resizable-header" onclick="sortTable(9)" title="Whether the job matches your requirements based on AI evaluation">Matches ↕<div class="active-filters-summary" id="active-filters-9"></div></div></th>
+                        <th class="col-reason resizable-th"><div class="resizable-header" onclick="sortTable(10)" title="The reasoning provided by the AI for its match decision">AI Reason ↕<div class="active-filters-summary" id="active-filters-10"></div></div></th>
+                        <th class="col-user-reason resizable-th"><div class="resizable-header" onclick="sortTable(11)" title="Your manual reasoning if you override the AI's decision">User Reason ↕<div class="active-filters-summary" id="active-filters-11"></div></div></th>
+                        <th class="col-applied resizable-th"><div class="resizable-header" onclick="sortTable(12)" title="Whether you have applied for this job">Applied ↕<div class="active-filters-summary" id="active-filters-12"></div></div></th>
+                        <th class="col-user-review resizable-th"><div class="resizable-header" onclick="sortTable(13)" title="Your manual review status for this job (e.g., Pending, Yes, No)">User Review ↕<div class="active-filters-summary" id="active-filters-13"></div></div></th>
+                        <th class="col-docs resizable-th"><div class="resizable-header" onclick="sortTable(14)" title="Links to generated documents like tailored resumes and cover letters">Docs ↕<div class="active-filters-summary" id="active-filters-14"></div></div></th>
+                        <th class="col-tailor resizable-th"><div class="resizable-header" onclick="sortTable(15)" title="The AI model used to generate the tailored documents">Tailor Model ↕<div class="active-filters-summary" id="active-filters-15"></div></div></th>
                     </tr>
                     <tr class="filter-row">
                         <th></th>
