@@ -127,3 +127,8 @@ When evaluating a job posting, use your web fetch tool to visit the URL and read
 
 ### Automatically Added Negative Constraints (from UI Rejections):
 - NEGATIVE CONSTRAINT: The user explicitly rejected a previous job because: 'Needs degree in merkonomi or tradenomi'. Do NOT match jobs that have this issue.
+
+
+### Automatically Added Negative Constraints (from UI Rejections):
+- NEGATIVE CONSTRAINT: The user explicitly rejected a previous job because: 'Needs to be a licensed social welfare professional,'. Do NOT match jobs that have this issue.
+- NEGATIVE CONSTRAINT: The user explicitly rejected a previous job because: 'Requires knowledge in electrical work'. Do NOT match jobs that have this issue.
