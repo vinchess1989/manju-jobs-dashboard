@@ -1882,69 +1882,68 @@ def poll_re_review_request():
         fields = data.get("fields", {})
         status = fields.get("status", {}).get("stringValue", "")
         print(f"INFO: poll_re_review: status='{status}'")
-        if status != "requested":
+        if status == "requested":
+            print("INFO: " + "=" * 60)
+            print("INFO: RE-REVIEW TRIGGERED BY USER (dashboard button)")
+            requests.patch(
+                f"{doc_url}?updateMask.fieldPaths=status",
+                json={"fields": {"status": {"stringValue": "in_progress"}}},
+                timeout=10
+            )
+
+            by_status = {}
+            skip_done = 0
+            skip_applied = 0
+            eligible = {'yes', 'maybe', 'pending', 'error'}
+
+            if os.path.exists(JOBS_FILE):
+                with open(JOBS_FILE, 'r', encoding='utf-8') as f:
+                    jobs = json.load(f)
+                for job in jobs:
+                    if job.get('user_review') == 'done':
+                        skip_done += 1
+                        continue
+                    if job.get('applied') == 'yes':
+                        skip_applied += 1
+                        continue
+                    s = job.get('matches_requirements', '')
+                    if s in eligible:
+                        job['needs_re_review'] = True
+                        by_status[s] = by_status.get(s, 0) + 1
+                with open(JOBS_FILE, 'w', encoding='utf-8') as f:
+                    json.dump(jobs, f, indent=2)
+
+            total = sum(by_status.values())
+            scope_parts = [f"{s}={n}" for s, n in sorted(by_status.items())]
+            print(f"INFO: Scope     : {' | '.join(scope_parts) if scope_parts else 'nothing to review'} → {total} job(s) queued")
+            print(f"INFO: Skipping  : user_review=done ({skip_done})  applied=yes ({skip_applied})")
+            print("INFO: " + "=" * 60)
             return
 
-        print("INFO: " + "=" * 60)
-        print("INFO: RE-REVIEW TRIGGERED BY USER (dashboard button)")
-        requests.patch(
-            f"{doc_url}?updateMask.fieldPaths=status",
-            json={"fields": {"status": {"stringValue": "in_progress"}}},
-            timeout=10
-        )
-
-        by_status = {}
-        skip_done = 0
-        skip_applied = 0
-        eligible = {'yes', 'maybe', 'pending', 'error'}
-
-        if os.path.exists(JOBS_FILE):
-            with open(JOBS_FILE, 'r', encoding='utf-8') as f:
-                jobs = json.load(f)
-            for job in jobs:
-                if job.get('user_review') == 'done':
-                    skip_done += 1
-                    continue
-                if job.get('applied') == 'yes':
-                    skip_applied += 1
-                    continue
-                s = job.get('matches_requirements', '')
-                if s in eligible:
-                    job['needs_re_review'] = True
-                    by_status[s] = by_status.get(s, 0) + 1
-            with open(JOBS_FILE, 'w', encoding='utf-8') as f:
-                json.dump(jobs, f, indent=2)
-
-        total = sum(by_status.values())
-        scope_parts = [f"{s}={n}" for s, n in sorted(by_status.items())]
-        print(f"INFO: Scope     : {' | '.join(scope_parts) if scope_parts else 'nothing to review'} → {total} job(s) queued")
-        print(f"INFO: Skipping  : user_review=done ({skip_done})  applied=yes ({skip_applied})")
-        print("INFO: " + "=" * 60)
-
-        while not stop_event.is_set():
-            with open(JOBS_FILE, 'r', encoding='utf-8') as f:
-                jobs = json.load(f)
-            batch = [j for j in jobs if j.get('needs_re_review') == True]
-            if not batch:
-                break
-            review_pending_jobs(specific_urls={j['url'] for j in batch[:15]})
-
-        completed_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        requests.patch(
-            f"{doc_url}?updateMask.fieldPaths=status&updateMask.fieldPaths=completedAt",
-            json={"fields": {
-                "status": {"stringValue": "completed"},
-                "completedAt": {"stringValue": completed_at}
-            }},
-            timeout=10
-        )
-        print("INFO: " + "=" * 60)
-        print(f"INFO: RE-REVIEW COMPLETE at {completed_at}  ({total} job(s) reviewed)")
-        print("INFO: " + "=" * 60)
-        send_email_notification(
-            "Re-review complete — Manju Job Dashboard",
-            f"The re-review of matching jobs finished at {completed_at}.\nCheck the dashboard for updated results."
-        )
+        elif status == "in_progress":
+            needs_review_count = 0
+            if os.path.exists(JOBS_FILE):
+                with open(JOBS_FILE, 'r', encoding='utf-8') as f:
+                    jobs = json.load(f)
+                needs_review_count = sum(1 for j in jobs if j.get('needs_re_review') == True)
+            
+            if needs_review_count == 0:
+                completed_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                requests.patch(
+                    f"{doc_url}?updateMask.fieldPaths=status&updateMask.fieldPaths=completedAt",
+                    json={"fields": {
+                        "status": {"stringValue": "completed"},
+                        "completedAt": {"stringValue": completed_at}
+                    }},
+                    timeout=10
+                )
+                print("INFO: " + "=" * 60)
+                print(f"INFO: RE-REVIEW COMPLETE at {completed_at}")
+                print("INFO: " + "=" * 60)
+                send_email_notification(
+                    "Re-review complete — Manju Job Dashboard",
+                    f"The re-review of matching jobs finished at {completed_at}.\nCheck the dashboard for updated results."
+                )
     except Exception as e:
         print(f"Error handling re-review request: {e}")
 
@@ -1964,6 +1963,7 @@ def main():
     parser.add_argument("--review-only", action="store_true", help="Only run the local LLM review step on pending jobs, then exit.")
     parser.add_argument("--review-urls", nargs="+", metavar="URL", help="Review only these specific job URL(s) (must already exist as 'pending' in jobs.json), then exit.")
     parser.add_argument("--scrape-only", action="store_true", help="Only run the scraping step, then exit.")
+    parser.add_argument("--skip-re-review", action="store_true", help="Run normally but skip processing any jobs flagged for re-review.")
     parser.add_argument("--max-jobs", type=int, default=200, help="Maximum number of new jobs to fetch in this run (default 200). Use 0 for unlimited.")
     args = parser.parse_args()
 
@@ -2087,52 +2087,9 @@ def main():
         except Exception as e:
             print(f"An error occurred checking requirements: {e}")
             
-        # 1. Gather all pending jobs
-        pending_jobs = []
-        BATCH_LIMIT = 1
-        if os.path.exists(JOBS_FILE):
-            try:
-                with open(JOBS_FILE, 'r', encoding='utf-8') as f:
-                    jobs_data = json.load(f)
-                    pending_jobs = [j for j in jobs_data if (j.get('matches_requirements') in ['pending', 'error'] and j.get('applied') != 'yes') or j.get('needs_re_review') == True]
-            except Exception as e:
-                print(f"Error reading jobs file: {e}")
-        
-        if pending_jobs:
-            # We have pending jobs, flush all of them
-            print(f"\nINFO: Flushing pending jobs. {len(pending_jobs)} pending jobs remaining.")
-            batch_urls = [j['url'] for j in pending_jobs]
-            try:
-                review_pending_jobs(specific_urls=set(batch_urls))
-            except Exception as e:
-                print(f"An error occurred during reviewing: {e}")
-                
-            try:
-                moved_count = clean_blocked_jobs()
-                # Reload jobs to save the latest snapshot before git commit
-                with open(JOBS_FILE, 'r', encoding='utf-8') as f:
-                    latest_jobs = json.load(f)
-                save_history_snapshot(latest_jobs, deleted=moved_count)
-                update_git()
-            except Exception as e:
-                print(f"An error occurred during Git update: {e}")
-                
-            print_job_summary()
-            print("Waiting 5 seconds before moving to scrape new jobs. Press [Enter] or Ctrl+C to stop...")
-            
-            slept = 0
-            while slept < 5 and not stop_event.is_set():
-                time.sleep(0.5)
-                slept += 0.5
-                
-            if stop_event.is_set():
-                print("Stopping the scraper...")
-                break
-            break
-            
+        # 1. ALWAYS SCRAPE FIRST
         quota = 50
         new_jobs = []
-        
         try:
             print(f"\nINFO: Scanning for up to {quota} new unseen jobs...")
             if _tee_logger:
@@ -2146,31 +2103,57 @@ def main():
             if _tee_logger:
                 _tee_logger.stop_capture()
             print(f"An error occurred during scraping: {e}")
+
+        # 2. INTERNAL LOOP TO FLUSH PENDING/RE-REVIEW JOBS
+        while not stop_event.is_set():
+            pending_jobs = []
+            if os.path.exists(JOBS_FILE):
+                try:
+                    with open(JOBS_FILE, 'r', encoding='utf-8') as f:
+                        jobs_data = json.load(f)
+                    if args.skip_re_review:
+                        pending_jobs = [j for j in jobs_data if (j.get('matches_requirements') in ['pending', 'error'] and j.get('applied') != 'yes')]
+                    else:
+                        pending_jobs = [j for j in jobs_data if (j.get('matches_requirements') in ['pending', 'error'] and j.get('applied') != 'yes') or j.get('needs_re_review') == True]
+                except Exception as e:
+                    print(f"Error reading jobs file: {e}")
             
-        # Collect URLs to review
-        urls_to_review = [j['url'] for j in new_jobs]
-        
-        if urls_to_review:
-            print(f"INFO: Reviewing {len(urls_to_review)} jobs in this batch (New: {len(new_jobs)}, Existing Pending: {len(urls_to_review) - len(new_jobs)})")
+            if not pending_jobs:
+                print("INFO: No pending jobs to review in this iteration.")
+                # Update Firebase status if it was in progress
+                try:
+                    poll_re_review_request()
+                except Exception as e:
+                    pass
+                break
+                
+            batch_to_review = pending_jobs[:100]
+            print(f"\nINFO: Reviewing batch of {len(batch_to_review)} pending/re-review jobs ({len(pending_jobs)} total remaining)...")
+            batch_urls = [j['url'] for j in batch_to_review]
+            
             try:
-                review_pending_jobs(specific_urls=set(urls_to_review))
+                review_pending_jobs(specific_urls=set(batch_urls))
             except Exception as e:
                 print(f"An error occurred during reviewing: {e}")
-        else:
-            print("INFO: No jobs found to review in this iteration.")
+                
+            try:
+                moved_count = clean_blocked_jobs()
+                with open(JOBS_FILE, 'r', encoding='utf-8') as f:
+                    latest_jobs = json.load(f)
+                save_history_snapshot(latest_jobs, deleted=moved_count)
+                update_git()
+            except Exception as e:
+                print(f"An error occurred during Git update: {e}")
             
-        try:
-            moved_count = clean_blocked_jobs()
-            with open(JOBS_FILE, 'r', encoding='utf-8') as f:
-                latest_jobs = json.load(f)
-            save_history_snapshot(latest_jobs, deleted=moved_count)
-            update_git()
-        except Exception as e:
-            print(f"An error occurred during Git update: {e}")
-        
-        print_job_summary()
-
-        # Determine wait time
+            print_job_summary()
+            
+            # Optional: poll firebase again to update the "completed" status early if done
+            try:
+                poll_re_review_request()
+            except Exception as e:
+                pass
+                
+        # 3. Determine wait time
         wait_time = 5
         if not new_jobs:
             wait_time = 600
