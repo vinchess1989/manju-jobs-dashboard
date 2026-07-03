@@ -1866,14 +1866,21 @@
             const _older = data.filter(d => new Date(d.timestamp).getTime() < _24hAgoMs);
             const _recent = data.filter(d => new Date(d.timestamp).getTime() >= _24hAgoMs)
                 .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
-            const _bySlot = {}, _bySlotApplied = {};
+            const _bySlot = {}, _bySlotApplied = {}, _bySlotAdded = {}, _bySlotDeleted = {};
             _older.forEach(d => {
                 const _dt = new Date(d.timestamp);
                 const slot = d.timestamp.slice(0, 10) + 'T' + String(Math.floor(_dt.getHours() / 6) * 6).padStart(2, '0');
                 _bySlot[slot] = d;
                 if (d.applied != null && d.applied > (_bySlotApplied[slot] ?? 0)) _bySlotApplied[slot] = d.applied;
+                _bySlotAdded[slot] = (_bySlotAdded[slot] ?? 0) + (d.added ?? 0);
+                _bySlotDeleted[slot] = (_bySlotDeleted[slot] ?? 0) + (d.deleted ?? 0);
             });
-            const _olderPoints = Object.keys(_bySlot).sort().map(slot => ({ ..._bySlot[slot], applied: _bySlotApplied[slot] ?? 0 }));
+            const _olderPoints = Object.keys(_bySlot).sort().map(slot => ({
+                ..._bySlot[slot],
+                applied: _bySlotApplied[slot] ?? 0,
+                added: _bySlotAdded[slot] ?? 0,
+                deleted: _bySlotDeleted[slot] ?? 0,
+            }));
             const _changeFields = ['total', 'yes', 'maybe', 'applied'];
             let _lastVals = null;
             const _recentPoints = [];
@@ -1898,12 +1905,13 @@
                 : [{ key: 'total', color: '#a5b4fc', label: 'Total' }, { key: 'yes', color: '#10b981', label: 'Yes' }];
             const showAdded = metric === 'total';
             const ADDED_COLOR = '#94a3b8';
-            const deltas = showAdded ? data.map((d, i) => i === 0 ? null : (d.total ?? 0) - (data[i - 1].total ?? 0)) : null;
+            const DELETED_COLOR = '#f87171';
+            const addedVals = showAdded ? data.map(d => d.added ?? 0) : null;
+            const deletedVals = showAdded ? data.map(d => d.deleted ?? 0) : null;
             let rMin = -1, rMax = 1, rRange = 2;
             if (showAdded) {
-                const validDeltas = deltas.filter(v => v !== null);
-                rMin = Math.min(0, ...validDeltas); rMax = Math.max(0, ...validDeltas);
-                if (rMin === rMax) { rMin -= 1; rMax += 1; }
+                rMax = Math.max(1, ...addedVals);
+                rMin = -Math.max(1, ...deletedVals);
                 rRange = rMax - rMin;
             }
             const allVals = data.flatMap(d => LINES.map(l => d[l.key] ?? 0));
@@ -1927,18 +1935,27 @@
                 const barW = Math.max(3, Math.min(10, spacing * 0.45));
                 const zeroY = pT + cH - (0 - rMin) / rRange * cH;
                 data.forEach((d, i) => {
-                    const delta = deltas[i];
-                    if (delta === null) return;
                     const x = pL + (i / (data.length - 1)) * cW;
-                    const y = pT + cH - (delta - rMin) / rRange * cH;
-                    const top = Math.min(y, zeroY), h = Math.max(1, Math.abs(y - zeroY));
-                    ctx.fillStyle = 'rgba(148,163,184,0.4)';
-                    if (ctx.roundRect) {
-                        ctx.beginPath();
-                        ctx.roundRect(x - barW / 2, top, barW, h, delta >= 0 ? [3, 3, 0, 0] : [0, 0, 3, 3]);
-                        ctx.fill();
-                    } else {
-                        ctx.fillRect(x - barW / 2, top, barW, h);
+                    const addedVal = addedVals[i], deletedVal = deletedVals[i];
+                    if (addedVal > 0) {
+                        const y = pT + cH - (addedVal - rMin) / rRange * cH;
+                        const h = Math.max(1, zeroY - y);
+                        ctx.fillStyle = 'rgba(148,163,184,0.45)';
+                        if (ctx.roundRect) {
+                            ctx.beginPath(); ctx.roundRect(x - barW / 2, y, barW, h, [3, 3, 0, 0]); ctx.fill();
+                        } else {
+                            ctx.fillRect(x - barW / 2, y, barW, h);
+                        }
+                    }
+                    if (deletedVal > 0) {
+                        const y = pT + cH - (-deletedVal - rMin) / rRange * cH;
+                        const h = Math.max(1, y - zeroY);
+                        ctx.fillStyle = 'rgba(248,113,113,0.4)';
+                        if (ctx.roundRect) {
+                            ctx.beginPath(); ctx.roundRect(x - barW / 2, zeroY, barW, h, [0, 0, 3, 3]); ctx.fill();
+                        } else {
+                            ctx.fillRect(x - barW / 2, zeroY, barW, h);
+                        }
                     }
                 });
                 ctx.strokeStyle = 'rgba(148,163,184,0.3)'; ctx.lineWidth = 1;
@@ -1997,15 +2014,27 @@
                 ctx.fillRect(lx, pT - 11, 14, 8);
                 ctx.fillStyle = 'rgba(255,255,255,0.75)'; ctx.font = '9px sans-serif'; ctx.textAlign = 'left';
                 ctx.fillText('Added', lx + 16, pT - 3);
+                lx += 16 + ctx.measureText('Added').width + 20;
+                ctx.fillStyle = 'rgba(248,113,113,0.6)';
+                ctx.fillRect(lx, pT - 11, 14, 8);
+                ctx.fillStyle = 'rgba(255,255,255,0.75)'; ctx.font = '9px sans-serif'; ctx.textAlign = 'left';
+                ctx.fillText('Deleted', lx + 16, pT - 3);
             }
             canvas._chartPoints = data.map((d, i) => {
                 const x = pL + (i / (data.length - 1)) * cW;
                 const yMap = {};
                 LINES.forEach(l => { yMap[l.key] = pT + cH - ((d[l.key] ?? 0) - minVal) / range * cH; });
                 const lines = LINES.map(l => ({ key: l.key, label: l.label, color: l.color, val: d[l.key] ?? 0 }));
-                if (showAdded && deltas[i] !== null) {
-                    yMap['added'] = pT + cH - (deltas[i] - rMin) / rRange * cH;
-                    lines.push({ key: 'added', label: 'Added', color: ADDED_COLOR, val: deltas[i] });
+                if (showAdded) {
+                    const addedVal = addedVals[i], deletedVal = deletedVals[i];
+                    if (addedVal > 0) {
+                        yMap['added'] = pT + cH - (addedVal - rMin) / rRange * cH;
+                        lines.push({ key: 'added', label: 'Added', color: ADDED_COLOR, val: addedVal });
+                    }
+                    if (deletedVal > 0) {
+                        yMap['deleted'] = pT + cH - (-deletedVal - rMin) / rRange * cH;
+                        lines.push({ key: 'deleted', label: 'Deleted', color: DELETED_COLOR, val: -deletedVal });
+                    }
                 }
                 return { x, d, pT, cH, y: yMap, lines };
             });
