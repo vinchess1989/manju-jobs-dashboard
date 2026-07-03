@@ -1962,12 +1962,25 @@ def main():
     parser = argparse.ArgumentParser(description="Job Scraper and Reviewer")
     parser.add_argument("--git-only", action="store_true", help="Only run the Git commit and push step, then exit.")
     parser.add_argument("--review-only", action="store_true", help="Only run the local LLM review step on pending jobs, then exit.")
+    parser.add_argument("--review-urls", nargs="+", metavar="URL", help="Review only these specific job URL(s) (must already exist as 'pending' in jobs.json), then exit.")
     parser.add_argument("--scrape-only", action="store_true", help="Only run the scraping step, then exit.")
     parser.add_argument("--max-jobs", type=int, default=200, help="Maximum number of new jobs to fetch in this run (default 200). Use 0 for unlimited.")
     args = parser.parse_args()
 
     if args.git_only:
         update_git()
+        return
+
+    if args.review_urls:
+        target_urls = set(args.review_urls)
+        print(f"INFO: Reviewing {len(target_urls)} specific URL(s)...")
+        review_pending_jobs(specific_urls=target_urls)
+        moved_count = clean_blocked_jobs()
+        with open(JOBS_FILE, 'r', encoding='utf-8') as f:
+            latest_jobs = json.load(f)
+        save_history_snapshot(latest_jobs, deleted=moved_count)
+        update_git()
+        print_job_summary()
         return
 
     if args.review_only:
