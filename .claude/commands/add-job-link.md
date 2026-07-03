@@ -1,8 +1,8 @@
-Manually add one or more specific job posting URLs to the dashboard, classify them through the existing local-LLM review pipeline, and publish the result.
+Manually add one or more job posting URLs to the dashboard, classify them through the existing local-LLM review pipeline, and publish the result.
 
 The job URL(s) to add are: **$ARGUMENTS**
 
-Parse `$ARGUMENTS` as a whitespace-separated list of `http://`/`https://` tokens. If no URLs are given, ask the user for at least one before proceeding.
+Parse `$ARGUMENTS` as a list of `http://`/`https://` tokens. URLs may be separated by whitespace, newlines, or commas — strip any surrounding punctuation. If no URLs are given, ask the user to paste one or more URLs (one per line is fine) before proceeding. Process all URLs in a single pass.
 
 ---
 
