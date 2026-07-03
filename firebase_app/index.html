@@ -1866,7 +1866,7 @@
             const _older = data.filter(d => new Date(d.timestamp).getTime() < _24hAgoMs);
             const _recent = data.filter(d => new Date(d.timestamp).getTime() >= _24hAgoMs)
                 .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
-            const _bySlot = {}, _bySlotApplied = {}, _bySlotAdded = {}, _bySlotDeleted = {};
+            const _bySlot = {}, _bySlotApplied = {}, _bySlotAdded = {}, _bySlotDeleted = {}, _bySlotChurn = {};
             _older.forEach(d => {
                 const _dt = new Date(d.timestamp);
                 const slot = d.timestamp.slice(0, 10) + 'T' + String(Math.floor(_dt.getHours() / 6) * 6).padStart(2, '0');
@@ -1874,19 +1874,24 @@
                 if (d.applied != null && d.applied > (_bySlotApplied[slot] ?? 0)) _bySlotApplied[slot] = d.applied;
                 _bySlotAdded[slot] = (_bySlotAdded[slot] ?? 0) + (d.added ?? 0);
                 _bySlotDeleted[slot] = (_bySlotDeleted[slot] ?? 0) + (d.deleted ?? 0);
+                if (d.added !== undefined || d.deleted !== undefined) _bySlotChurn[slot] = true;
             });
             const _olderPoints = Object.keys(_bySlot).sort().map(slot => ({
                 ..._bySlot[slot],
                 applied: _bySlotApplied[slot] ?? 0,
                 added: _bySlotAdded[slot] ?? 0,
                 deleted: _bySlotDeleted[slot] ?? 0,
+                _hasChurn: _bySlotChurn[slot] ?? false,
             }));
             const _changeFields = ['total', 'yes', 'maybe', 'applied'];
             let _lastVals = null;
             const _recentPoints = [];
             _recent.forEach(d => {
                 const vals = _changeFields.map(f => d[f] ?? 0).join(',');
-                if (vals !== _lastVals) { _recentPoints.push({ ...d, _raw: true }); _lastVals = vals; }
+                if (vals !== _lastVals) {
+                    _recentPoints.push({ ...d, _raw: true, _hasChurn: d.added !== undefined || d.deleted !== undefined });
+                    _lastVals = vals;
+                }
             });
             data = _olderPoints.concat(_recentPoints);
             if (!data || data.length < 2) {
@@ -1903,11 +1908,25 @@
                 : metric === 'applied'
                 ? [{ key: 'applied', color: '#f472b6', label: 'Applied' }]
                 : [{ key: 'total', color: '#a5b4fc', label: 'Total' }, { key: 'yes', color: '#10b981', label: 'Yes' }];
-            const showAdded = metric === 'total';
+            const showAdded = true;
+            const CHURN_KEY = metric === 'yes' ? 'yes' : metric === 'applied' ? 'applied' : 'total';
             const ADDED_COLOR = '#94a3b8';
             const DELETED_COLOR = '#f87171';
-            const addedVals = showAdded ? data.map(d => d.added ?? 0) : null;
-            const deletedVals = showAdded ? data.map(d => d.deleted ?? 0) : null;
+            // Prefer the real added/deleted churn scraper.py records for 'total'; fall back to the
+            // net change in the metric's own key (covers historical points and the yes/applied views,
+            // which have no separate churn instrumentation).
+            const addedVals = data.map((d, i) => {
+                if (CHURN_KEY === 'total' && d._hasChurn) return d.added ?? 0;
+                if (i === 0) return 0;
+                const net = (d[CHURN_KEY] ?? 0) - (data[i - 1][CHURN_KEY] ?? 0);
+                return net > 0 ? net : 0;
+            });
+            const deletedVals = data.map((d, i) => {
+                if (CHURN_KEY === 'total' && d._hasChurn) return d.deleted ?? 0;
+                if (i === 0) return 0;
+                const net = (d[CHURN_KEY] ?? 0) - (data[i - 1][CHURN_KEY] ?? 0);
+                return net < 0 ? -net : 0;
+            });
             let rMin = -1, rMax = 1, rRange = 2;
             if (showAdded) {
                 rMax = Math.max(1, ...addedVals);
