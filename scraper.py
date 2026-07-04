@@ -1210,7 +1210,7 @@ def review_pending_jobs(specific_urls=None):
             return False
         if j.get('applied') == 'yes':
             return False
-        return j.get('matches_requirements') == 'pending' or j.get('needs_re_review') == True
+        return j.get('matches_requirements') in ['pending', 'error'] or j.get('needs_re_review') == True
 
     if specific_urls is not None:
         pending_jobs = [j for j in jobs if _is_reviewable(j) and j['url'] in specific_urls]
@@ -2112,9 +2112,9 @@ def main():
                     with open(JOBS_FILE, 'r', encoding='utf-8') as f:
                         jobs_data = json.load(f)
                     if args.skip_re_review:
-                        pending_jobs = [j for j in jobs_data if (j.get('matches_requirements') in ['pending', 'error'] and j.get('applied') != 'yes')]
+                        pending_jobs = [j for j in jobs_data if (j.get('matches_requirements') in ['pending', 'error'] and j.get('applied') != 'yes' and j.get('user_review') != 'done')]
                     else:
-                        pending_jobs = [j for j in jobs_data if (j.get('matches_requirements') in ['pending', 'error'] and j.get('applied') != 'yes') or j.get('needs_re_review') == True]
+                        pending_jobs = [j for j in jobs_data if (j.get('matches_requirements') in ['pending', 'error'] and j.get('applied') != 'yes' and j.get('user_review') != 'done') or (j.get('needs_re_review') == True and j.get('user_review') != 'done' and j.get('applied') != 'yes')]
                 except Exception as e:
                     print(f"Error reading jobs file: {e}")
             
