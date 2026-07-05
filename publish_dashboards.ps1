@@ -17,7 +17,7 @@ Write-Host "`n=== All tests passed! Proceeding to publish. ===" -ForegroundColor
 
 Write-Host "`n=== Step 2: Committing & Pushing manju_jobs ===" -ForegroundColor Cyan
 Set-Location $MANJU_PUBLIC
-git add jobs.json seen_urls.json checkpoint.json job_descriptions job_requirements.md firebase_app/index.html firebase_app/firestore.rules scraper.py tests/ jobs_history.json deleted.json publish_dashboards.ps1 html_to_pdf.py make_resume.py upload_resume_links.py input.csv sync_resume_links.py add_job.py scrape_application.py fill_agent.py .claude/commands/
+git add jobs.json seen_urls.json checkpoint.json job_descriptions job_requirements.md firebase_app/index.html firebase_app/firestore.rules scraper.py tests/*.py jobs_history.json deleted.json publish_dashboards.ps1 html_to_pdf.py make_resume.py upload_resume_links.py input.csv sync_resume_links.py add_job.py scrape_application.py fill_agent.py .claude/commands/ .gitignore .nojekyll
 $manjuStaged = git diff --cached --name-only
 if ($manjuStaged) {
     git commit -m "chore: update manju dashboard [all tests passing]"
