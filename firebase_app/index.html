@@ -1571,6 +1571,11 @@
             }
 
             updatePaginationUI();
+            
+            const newScrollArea = document.querySelector('.table-scroll-area');
+            if (newScrollArea && _savedScrollLeft > 0) {
+                newScrollArea.scrollLeft = _savedScrollLeft;
+            }
         }
 
         function updatePaginationUI() {
