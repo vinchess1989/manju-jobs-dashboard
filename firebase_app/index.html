@@ -757,7 +757,8 @@
         const itemsPerPage = 100;
         let filteredRows = [];
         let lastSortedCol = -1;
-        let _rowCache = null; // pre-cached rows for fast filtering
+        let _rowCache = null;
+        let _savedScrollLeft = 0; // pre-cached rows for fast filtering
         const sessionNoChanges = new Set(); // URLs set to "no" by user this session
         let showArchivedNo = false;
 
@@ -955,6 +956,8 @@
 
         function buildTable(lastMod) {
             _rowCache = null;
+            const oldScrollArea = document.querySelector('.table-scroll-area');
+            if (oldScrollArea) _savedScrollLeft = oldScrollArea.scrollLeft;
             jobsContainer.innerHTML = '';
 
             // Pre-compute archived count for info bar
