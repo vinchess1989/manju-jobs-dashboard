@@ -47,16 +47,22 @@ Write-Host "`n[4/5] Syncing resume links to Firestore..." -ForegroundColor Cyan
 Push-Location $PUBLIC_DIR
 try {
     python sync_resume_links.py --upload
+    python upload_resume_links.py --input input.csv
 } finally {
     Pop-Location
 }
 
-# Step 5: Push Public Repo updates (input.csv)
+# Step 5: Push Public Repo updates (input.csv + jobs.json tailor_model changes)
 Write-Host "`n[5/5] Committing and pushing resume links to Public Repo..." -ForegroundColor Cyan
+# Stage all relevant files (input.csv + jobs.json with tailor_model updates)
+git -C $PUBLIC_DIR add input.csv jobs.json
 $pub_status = git -C $PUBLIC_DIR status --porcelain
 if ($pub_status) {
-    git -C $PUBLIC_DIR add input.csv
     git -C $PUBLIC_DIR commit -m "Update resume links for batch"
+    # Stash any uncommitted changes before rebasing to avoid conflicts
+    git -C $PUBLIC_DIR stash
+    git -C $PUBLIC_DIR pull --rebase origin main
+    git -C $PUBLIC_DIR stash pop
     git -C $PUBLIC_DIR push origin main
     Write-Host "Changes pushed to public repository." -ForegroundColor Green
 } else {
