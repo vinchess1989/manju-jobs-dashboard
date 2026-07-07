@@ -11,6 +11,7 @@
     <!-- Add FontAwesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        .hidden-by-table { display: none !important; }
         :root {
             --bg-primary: #0a0d16;
             --bg-secondary: #111524;
@@ -1599,7 +1600,73 @@
             const reviewedCounter = document.getElementById('reviewed-counter');
             if (reviewedCounter) reviewedCounter.textContent = reviewedCount;
 
+            updateDropdownOptions(filters, jobIdList, postedLimit, deadlineLimit, todayMs, DAY_MS);
             renderPage(1);
+        }
+
+        function updateDropdownOptions(filters, jobIdList, postedLimit, deadlineLimit, todayMs, DAY_MS) {
+            const validValuesForCol = {};
+            for (let i = 1; i <= 15; i++) validValuesForCol[i] = new Set();
+            
+            for (let r = 0; r < _rowCache.length; r++) {
+                const entry = _rowCache[r];
+                const { vals, postedMs, deadlineMs } = entry;
+                
+                let failedCount = 0;
+                let failedCol = -1;
+                
+                for (let i = 1; i <= 15; i++) {
+                    if (!filters[i]) continue;
+                    let passes = filters[i].length === 0 || filters[i].includes(vals[i] || '');
+                    if (i === 1 && jobIdList.length > 0) {
+                        const valLower = (vals[1] || '').toLowerCase();
+                        const passesJobId = jobIdList.some(id => valLower.includes(id));
+                        passes = filters[i].length === 0 ? passesJobId : (passes || passesJobId);
+                    }
+                    if (i === 6 && postedLimit !== null && !isNaN(postedLimit)) {
+                        passes = postedMs !== null && Math.ceil((todayMs - postedMs) / DAY_MS) >= 0 && Math.ceil((todayMs - postedMs) / DAY_MS) <= postedLimit;
+                        if (filters[i].length > 0) passes = passes || filters[i].includes(vals[6] || '');
+                    }
+                    if (i === 7 && deadlineLimit !== null && !isNaN(deadlineLimit)) {
+                        passes = deadlineMs !== null && Math.ceil((deadlineMs - todayMs) / DAY_MS) >= 0 && Math.ceil((deadlineMs - todayMs) / DAY_MS) <= deadlineLimit;
+                        if (filters[i].length > 0) passes = passes || filters[i].includes(vals[7] || '');
+                    }
+                    if (!passes) {
+                        failedCount++;
+                        failedCol = i;
+                    }
+                    if (failedCount > 1) break;
+                }
+                
+                let llmPasses = true;
+                if (selectedLlmModels.size > 0 && !selectedLlmModels.has(entry.evalModel) && !selectedLlmModels.has(entry.tailorModel)) {
+                    llmPasses = false;
+                }
+
+                if (failedCount === 0 && llmPasses) {
+                    for (let i = 1; i <= 15; i++) {
+                        if (vals[i]) validValuesForCol[i].add(vals[i]);
+                    }
+                } else if (failedCount === 1 && llmPasses) {
+                    if (vals[failedCol]) validValuesForCol[failedCol].add(vals[failedCol]);
+                }
+            }
+            
+            for (let c = 1; c <= 15; c++) {
+                const container = document.getElementById(`filter-col-${c}`);
+                if (!container) continue;
+                const labels = container.querySelectorAll('.ms-option');
+                labels.forEach(label => {
+                    const cb = label.querySelector('input[type="checkbox"]');
+                    if (cb) {
+                        if (cb.checked || validValuesForCol[c].has(cb.value)) {
+                            label.classList.remove('hidden-by-table');
+                        } else {
+                            label.classList.add('hidden-by-table');
+                        }
+                    }
+                });
+            }
         }
 
         function renderPage(page) {
