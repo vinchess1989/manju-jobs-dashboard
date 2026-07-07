@@ -1278,7 +1278,13 @@
                 if (!container) continue;
                 
                 let customDateInput = '';
-                if (i === 6) {
+                if (i === 1) {
+                    customDateInput = `
+                        <div style="padding: 0 0 4px 0;">
+                            <input type="text" id="job-id-filter" placeholder="Comma separated IDs..." style="width: 100%; padding: 4px; font-size: 0.75rem; background: rgba(0,0,0,0.3); color: white; border: 1px solid var(--border-color); border-radius: 4px;" onkeyup="filterTable()" onchange="filterTable()">
+                        </div>
+                    `;
+                } else if (i === 6) {
                     customDateInput = `
                         <div style="padding: 0 0 4px 0;">
                             <input type="number" id="posted-days-filter" placeholder="Within X days..." style="width: 100%; padding: 4px; font-size: 0.75rem; background: rgba(0,0,0,0.3); color: white; border: 1px solid var(--border-color); border-radius: 4px;" onkeyup="filterTable()" onchange="filterTable()" min="0">
@@ -1418,8 +1424,10 @@
 
             const postedDaysInput = document.getElementById('posted-days-filter');
             const deadlineDaysInput = document.getElementById('deadline-days-filter');
+            const jobIdInput = document.getElementById('job-id-filter');
             const postedLimit = (postedDaysInput && postedDaysInput.value) ? parseInt(postedDaysInput.value) : null;
             const deadlineLimit = (deadlineDaysInput && deadlineDaysInput.value) ? parseInt(deadlineDaysInput.value) : null;
+            const jobIdList = (jobIdInput && jobIdInput.value) ? jobIdInput.value.split(',').map(s => s.trim().toLowerCase()).filter(s => s.length > 0) : [];
 
             const today = new Date();
             today.setHours(0,0,0,0);
@@ -1431,6 +1439,7 @@
                 const checked = Array.from(container.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value);
 
                 let summaryTexts = [...checked];
+                if (i === 1 && jobIdList.length > 0) summaryTexts = jobIdList;
                 if (i === 6 && postedLimit !== null && !isNaN(postedLimit)) summaryTexts.unshift(`< ${postedLimit}d`);
                 if (i === 7 && deadlineLimit !== null && !isNaN(deadlineLimit)) summaryTexts.unshift(`< ${deadlineLimit}d`);
 
@@ -1446,7 +1455,7 @@
                     }
                 }
 
-                if (checked.length > 0 || (i === 6 && postedLimit !== null && !isNaN(postedLimit)) || (i === 7 && deadlineLimit !== null && !isNaN(deadlineLimit))) {
+                if (checked.length > 0 || (i === 1 && jobIdList.length > 0) || (i === 6 && postedLimit !== null && !isNaN(postedLimit)) || (i === 7 && deadlineLimit !== null && !isNaN(deadlineLimit))) {
                     filters[i] = checked;
                 }
             }
@@ -1482,6 +1491,12 @@
                     if (!filters[i]) continue;
                     const val = vals[i] || '';
                     let passesCheckbox = filters[i].length === 0 || filters[i].includes(val);
+
+                    if (i === 1 && jobIdList.length > 0) {
+                        const valLower = val.toLowerCase();
+                        const passesJobId = jobIdList.some(id => valLower.includes(id));
+                        passesCheckbox = filters[i].length === 0 ? passesJobId : (passesCheckbox || passesJobId);
+                    }
 
                     if (i === 6 && postedLimit !== null && !isNaN(postedLimit)) {
                         const passesDate = postedMs !== null &&
