@@ -1398,7 +1398,7 @@
         }
         
         document.addEventListener('click', (e) => {
-            if (!e.target.closest('.ms-container')) {
+            if (!e.target.closest('.ms-container') && !e.target.closest('.ms-dropdown')) {
                 document.querySelectorAll('.ms-dropdown').forEach(d => {
                     d.classList.remove('open');
                     d.style.position = '';
