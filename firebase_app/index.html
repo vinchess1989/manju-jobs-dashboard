@@ -1116,11 +1116,7 @@
                 const tr = document.createElement('tr');
                 tr.setAttribute('data-url', job.url);
                 const evalModel = job.eval_model || '';
-                let tailorModel = (sharedJobsState[job.url] && sharedJobsState[job.url].tailor_model) || job.tailor_model || '';
-                const hasTailoredDocs = sharedJobsState[job.url] && (sharedJobsState[job.url].resume_url || sharedJobsState[job.url].cover_letter_url);
-                if (!tailorModel && hasTailoredDocs) {
-                    tailorModel = 'Gemini';
-                }
+                const tailorModel = (sharedJobsState[job.url] && sharedJobsState[job.url].tailor_model) || job.tailor_model || '';
                 tr.setAttribute('data-eval-model', evalModel);
                 tr.setAttribute('data-tailor-model', tailorModel);
 
