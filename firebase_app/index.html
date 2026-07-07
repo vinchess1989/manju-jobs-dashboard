@@ -957,7 +957,12 @@
         function buildTable(lastMod) {
             _rowCache = null;
             const oldScrollArea = document.querySelector('.table-scroll-area');
-            if (oldScrollArea) _savedScrollLeft = oldScrollArea.scrollLeft;
+            if (oldScrollArea && oldScrollArea.scrollWidth > 0 && oldScrollArea.children.length > 0) {
+                // Only capture if table is actually populated
+                if (oldScrollArea.querySelector('table tbody tr')) {
+                    _savedScrollLeft = oldScrollArea.scrollLeft;
+                }
+            }
             jobsContainer.innerHTML = '';
 
             // Pre-compute archived count for info bar
@@ -1265,6 +1270,8 @@
         function buildMultiSelectFilters() {
             if (!_rowCache) _buildRowCache();
 
+            document.querySelectorAll('body > .ms-dropdown').forEach(el => el.remove());
+
             // Build the multi-select dropdowns for columns 1 to 15
             for (let i = 1; i <= 15; i++) {
                 const uniqueValues = new Set();
@@ -1367,20 +1374,45 @@
         function toggleDropdown(colIndex, event) {
             event.stopPropagation();
             const dropdown = document.getElementById(`ms-dropdown-${colIndex}`);
-            const wasOpen = dropdown.classList.contains('open');
+            const wasOpen = dropdown && dropdown.classList.contains('open');
             
-            document.querySelectorAll('.ms-dropdown').forEach(d => d.classList.remove('open'));
+            document.querySelectorAll('.ms-dropdown').forEach(d => {
+                d.classList.remove('open');
+                d.style.position = '';
+            });
             
             if (!wasOpen && dropdown) {
+                if (dropdown.parentElement !== document.body) {
+                    document.body.appendChild(dropdown);
+                }
                 dropdown.classList.add('open');
+                const btn = event.currentTarget;
+                const rect = btn.getBoundingClientRect();
+                dropdown.style.position = 'fixed';
+                dropdown.style.top = (rect.bottom + 4) + 'px';
+                dropdown.style.left = rect.left + 'px';
+                dropdown.style.width = Math.max(rect.width, 180) + 'px';
+                dropdown.style.zIndex = '99999';
             }
         }
         
         document.addEventListener('click', (e) => {
             if (!e.target.closest('.ms-container')) {
-                document.querySelectorAll('.ms-dropdown').forEach(d => d.classList.remove('open'));
+                document.querySelectorAll('.ms-dropdown').forEach(d => {
+                    d.classList.remove('open');
+                    d.style.position = '';
+                });
             }
         });
+
+        document.addEventListener('scroll', (e) => {
+            if (e.target && e.target.classList && e.target.classList.contains('table-scroll-area')) {
+                document.querySelectorAll('.ms-dropdown').forEach(d => {
+                    d.classList.remove('open');
+                    d.style.position = '';
+                });
+            }
+        }, true);
         
         window.filterMsOptions = function(input) {
             const query = input.value.toLowerCase();
