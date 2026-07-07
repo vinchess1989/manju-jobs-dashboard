@@ -1200,9 +1200,9 @@
 
         window.toggleAllFilters = function(colIndex, checkState, event) {
             event.stopPropagation();
-            const container = document.getElementById(`filter-col-${colIndex}`);
-            if (!container) return;
-            const checkboxes = container.querySelectorAll('input[type="checkbox"]');
+            const dropdown = document.getElementById(`ms-dropdown-${colIndex}`);
+            if (!dropdown) return;
+            const checkboxes = dropdown.querySelectorAll('input[type="checkbox"]');
             checkboxes.forEach(cb => { cb.checked = checkState; });
             filterTable();
         };
@@ -1350,10 +1350,10 @@
                     
                     if (saved.colFilters) {
                         for (let i = 1; i <= 15; i++) {
-                            const container = document.getElementById(`filter-col-${i}`);
-                            if (!container) continue;
+                            const dropdown = document.getElementById(`ms-dropdown-${i}`);
+                            if (!dropdown) continue;
                             if (saved.colFilters[i]) {
-                                const checkboxes = container.querySelectorAll('input[type="checkbox"]');
+                                const checkboxes = dropdown.querySelectorAll('input[type="checkbox"]');
                                 checkboxes.forEach(cb => {
                                     if (saved.colFilters[i].includes(cb.value)) {
                                         cb.checked = true;
@@ -1467,9 +1467,9 @@
 
             const filters = {};
             for (let i = 1; i <= 15; i++) {
-                const container = document.getElementById(`filter-col-${i}`);
-                if (!container) continue;
-                const checked = Array.from(container.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value);
+                const dropdown = document.getElementById(`ms-dropdown-${i}`);
+                if (!dropdown) continue;
+                const checked = Array.from(dropdown.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value);
 
                 let summaryTexts = [...checked];
                 if (i === 1 && jobIdList.length > 0) summaryTexts = jobIdList;
@@ -1653,9 +1653,9 @@
             }
             
             for (let c = 1; c <= 15; c++) {
-                const container = document.getElementById(`filter-col-${c}`);
-                if (!container) continue;
-                const labels = container.querySelectorAll('.ms-option');
+                const dropdown = document.getElementById(`ms-dropdown-${c}`);
+                if (!dropdown) continue;
+                const labels = dropdown.querySelectorAll('.ms-option');
                 labels.forEach(label => {
                     const cb = label.querySelector('input[type="checkbox"]');
                     if (cb) {
