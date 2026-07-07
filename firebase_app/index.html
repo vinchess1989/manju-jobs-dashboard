@@ -204,6 +204,7 @@
 
         table {
             width: 100%;
+            min-width: 1400px;
             border-collapse: separate;
             border-spacing: 0;
             text-align: left;
@@ -1115,7 +1116,7 @@
                 const tr = document.createElement('tr');
                 tr.setAttribute('data-url', job.url);
                 const evalModel = job.eval_model || '';
-                const tailorModel = (sharedJobsState[job.url] && sharedJobsState[job.url].tailor_model) || '';
+                const tailorModel = (sharedJobsState[job.url] && sharedJobsState[job.url].tailor_model) || job.tailor_model || '';
                 tr.setAttribute('data-eval-model', evalModel);
                 tr.setAttribute('data-tailor-model', tailorModel);
 
@@ -1628,9 +1629,9 @@
                         timestamp: firebase.firestore.FieldValue.serverTimestamp()
                     });
                     
-                    await db.collection("shared_state").doc("job_status").set({
-                        [url]: { applied: newState }
-                    }, { merge: true });
+                    await db.collection("shared_state").doc("job_status").update(
+                        new firebase.firestore.FieldPath(url, 'applied'), newState
+                    );
                     
                     select.disabled = false;
                     select.className = 'status-pill ' + (newState === 'yes' ? 'yes' : 'no');
@@ -1695,9 +1696,10 @@
                         timestamp: firebase.firestore.FieldValue.serverTimestamp()
                     });
                     
-                    await db.collection("shared_state").doc("job_status").set({
-                        [url]: { matches_requirements: newState, user_reason: reason }
-                    }, { merge: true });
+                    await db.collection("shared_state").doc("job_status").update(
+                        new firebase.firestore.FieldPath(url, 'matches_requirements'), newState,
+                        new firebase.firestore.FieldPath(url, 'user_reason'), reason
+                    );
                     
                     if (!isBlank) {
                         alert("Feedback saved! The AI requirements have been updated.");
@@ -1759,9 +1761,9 @@
                         timestamp: firebase.firestore.FieldValue.serverTimestamp()
                     });
                     
-                    await db.collection("shared_state").doc("job_status").set({
-                        [url]: { user_review: newState }
-                    }, { merge: true });
+                    await db.collection("shared_state").doc("job_status").update(
+                        new firebase.firestore.FieldPath(url, 'user_review'), newState
+                    );
                     
                     select.disabled = false;
                     select.className = 'status-pill ' + (newState === 'done' ? 'yes' : 'pending');
