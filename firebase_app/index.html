@@ -1996,12 +1996,42 @@
         // ── History trend chart ────────────────────────────────────────────────
         let _chartHistory = null;
         async function _loadChartHistory() {
-            if (_chartHistory !== null) return _chartHistory;
-            try {
-                const r = await fetch('https://raw.githubusercontent.com/vinchess1989/manju-jobs-dashboard/main/jobs_history.json?nocache=' + Date.now());
-                _chartHistory = r.ok ? await r.json() : [];
-            } catch (e) { _chartHistory = []; }
-            return _chartHistory;
+            if (_chartHistory === null) {
+                try {
+                    const r = await fetch('https://raw.githubusercontent.com/vinchess1989/manju-jobs-dashboard/main/jobs_history.json?nocache=' + Date.now());
+                    _chartHistory = r.ok ? await r.json() : [];
+                } catch (e) { _chartHistory = []; }
+            }
+            
+            let currentTotal = 0, currentYes = 0, currentMaybe = 0, currentNo = 0, currentPending = 0, currentApplied = 0;
+            if (window.allJobs) {
+                window.allJobs.forEach(job => {
+                    const mv = (window.sharedJobsState[job.url] && window.sharedJobsState[job.url].matches_requirements) || job.matches_requirements || 'pending';
+                    const appVal = (window.sharedJobsState[job.url] && window.sharedJobsState[job.url].applied) || job.applied || 'no';
+                    
+                    currentTotal++;
+                    if (mv === 'yes') currentYes++;
+                    else if (mv === 'maybe') currentMaybe++;
+                    else if (mv === 'no') currentNo++;
+                    else if (mv === 'pending') currentPending++;
+                    
+                    if (appVal === 'yes') currentApplied++;
+                });
+            }
+
+            const livePoint = {
+                timestamp: new Date().toISOString(),
+                total: currentTotal,
+                yes: currentYes,
+                no: currentNo,
+                maybe: currentMaybe,
+                pending: currentPending,
+                applied: currentApplied,
+                added: 0,
+                deleted: 0
+            };
+
+            return [..._chartHistory, livePoint];
         }
         function _renderChart(canvas, data, metric) {
             const ctx = canvas.getContext('2d');
