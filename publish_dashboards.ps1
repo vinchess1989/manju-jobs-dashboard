@@ -1,19 +1,24 @@
 $ErrorActionPreference = "Continue"
 
-$MANJU_PUBLIC  = "C:\Users\vinee\Documents\manju jobs dashboard\manju-jobs-dashboard"
+$MANJU_PUBLIC  = "c:\Users\vinee\manju_jobs"
 $MANJU_FIREBASE = "$MANJU_PUBLIC\firebase_app"
-$PYTHON = "C:\Users\vinee\AppData\Local\Python\bin\python.exe"
-$PRIVATE = if ($env:MANJU_PRIVATE_DIR) { $env:MANJU_PRIVATE_DIR } else { "C:\Users\vinee\Documents\manju jobs dashboard\Manju-jobs" }
+$MANJU_PYTHON = "$MANJU_PUBLIC\venv\Scripts\python.exe"
+
+$VINEETH_PUBLIC = "c:\Users\vinee\vineeth_jobs"
+$VINEETH_FIREBASE = "$VINEETH_PUBLIC\firebase_app"
+$VINEETH_PYTHON = "$VINEETH_PUBLIC\venv\Scripts\python.exe"
+
+$PRIVATE = if ($env:MANJU_PRIVATE_DIR) { $env:MANJU_PRIVATE_DIR } else { "c:\Users\vinee\Manju_jobs_private" }
 
 Write-Host "=== Step 1: Testing manju_jobs ===" -ForegroundColor Cyan
 Set-Location $MANJU_PUBLIC
-& $PYTHON -m pytest tests/ -v
+& $MANJU_PYTHON -m pytest tests/ -v
 if ($LASTEXITCODE -ne 0) {
     Write-Host "ERROR: manju_jobs tests failed! Aborting publish." -ForegroundColor Red
     exit 1
 }
 
-Write-Host "`n=== All tests passed! Proceeding to publish. ===" -ForegroundColor Green
+Write-Host "`n=== All manju_jobs tests passed! Proceeding to publish. ===" -ForegroundColor Green
 
 Write-Host "`n=== Step 2: Committing & Pushing manju_jobs ===" -ForegroundColor Cyan
 Set-Location $MANJU_PUBLIC
@@ -31,7 +36,33 @@ Write-Host "`n=== Step 3: Deploying manju_jobs Firebase ===" -ForegroundColor Cy
 Set-Location $MANJU_FIREBASE
 firebase deploy --only hosting --non-interactive --project manju-jobs-dashboard
 
-Write-Host "`n=== Step 4: Committing & Pushing Manju_jobs_private ===" -ForegroundColor Cyan
+Write-Host "`n=== Step 4: Testing vineeth_jobs ===" -ForegroundColor Cyan
+Set-Location $VINEETH_PUBLIC
+& $VINEETH_PYTHON -m pytest tests/ -v
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "ERROR: vineeth_jobs tests failed! Aborting publish." -ForegroundColor Red
+    exit 1
+}
+
+Write-Host "`n=== All vineeth_jobs tests passed! Proceeding to publish. ===" -ForegroundColor Green
+
+Write-Host "`n=== Step 5: Committing & Pushing vineeth_jobs ===" -ForegroundColor Cyan
+Set-Location $VINEETH_PUBLIC
+git add jobs.json seen_urls.json checkpoint.json job_descriptions job_requirements.md firebase_app/index.html firebase_app/firestore.rules scraper.py tests/*.py jobs_history.json deleted.json add_job.py .claude/commands/ .gitignore
+$vineethStaged = git diff --cached --name-only
+if ($vineethStaged) {
+    git commit -m "chore: update vineeth dashboard [all tests passing]"
+    Write-Host "Committed staged changes for vineeth_jobs." -ForegroundColor Green
+} else {
+    Write-Host "No staged changes to commit for vineeth_jobs." -ForegroundColor Yellow
+}
+git push
+
+Write-Host "`n=== Step 6: Deploying vineeth_jobs Firebase ===" -ForegroundColor Cyan
+Set-Location $VINEETH_FIREBASE
+firebase deploy --only hosting --non-interactive --project vineeth-jobs-dashboard
+
+Write-Host "`n=== Step 7: Committing & Pushing Manju_jobs_private ===" -ForegroundColor Cyan
 if (Test-Path $PRIVATE) {
     Set-Location $PRIVATE
     git add Resumes\
@@ -47,4 +78,4 @@ if (Test-Path $PRIVATE) {
     Write-Host "WARNING: Private repo not found at $PRIVATE - set MANJU_PRIVATE_DIR env var to fix." -ForegroundColor Yellow
 }
 
-Write-Host "`n=== SUCCESS: Dashboard is live and private repo is synced! ===" -ForegroundColor Green
+Write-Host "`n=== SUCCESS: Both dashboards are live and private repo is synced! ===" -ForegroundColor Green

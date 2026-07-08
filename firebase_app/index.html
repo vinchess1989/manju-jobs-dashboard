@@ -1201,19 +1201,21 @@
         window.toggleAllFilters = function(colIndex, checkState, event) {
             event.stopPropagation();
             if (!checkState) {
-                if (colIndex === 1) {
-                    const jobIdInput = document.getElementById('job-id-filter');
-                    if (jobIdInput) jobIdInput.value = '';
-                } else if (colIndex === 6) {
-                    const postedInput = document.getElementById('posted-days-filter');
-                    if (postedInput) postedInput.value = '';
-                } else if (colIndex === 7) {
-                    const deadlineInput = document.getElementById('deadline-days-filter');
-                    if (deadlineInput) deadlineInput.value = '';
+                if (colIndex == 1) {
+                    document.querySelectorAll('#job-id-filter').forEach(el => el.value = '');
+                } else if (colIndex == 6) {
+                    document.querySelectorAll('#posted-days-filter').forEach(el => el.value = '');
+                } else if (colIndex == 7) {
+                    document.querySelectorAll('#deadline-days-filter').forEach(el => el.value = '');
                 }
             }
             const dropdown = document.getElementById(`ms-dropdown-${colIndex}`);
             if (dropdown) {
+                const searchInput = dropdown.querySelector('input[placeholder="Search..."]');
+                if (!checkState && searchInput) {
+                    searchInput.value = '';
+                    window.filterMsOptions(searchInput);
+                }
                 const checkboxes = dropdown.querySelectorAll('input[type="checkbox"]');
                 checkboxes.forEach(cb => { cb.checked = checkState; });
             }
@@ -1222,12 +1224,13 @@
 
         window.resetAllFilters = function() {
             document.querySelectorAll('.ms-dropdown input[type="checkbox"]').forEach(cb => cb.checked = false);
-            const postedInput = document.getElementById('posted-days-filter');
-            const deadlineInput = document.getElementById('deadline-days-filter');
-            const jobIdInput = document.getElementById('job-id-filter');
-            if(postedInput) postedInput.value = '';
-            if(deadlineInput) deadlineInput.value = '';
-            if(jobIdInput) jobIdInput.value = '';
+            document.querySelectorAll('.ms-dropdown input[placeholder="Search..."]').forEach(input => {
+                input.value = '';
+                window.filterMsOptions(input);
+            });
+            document.querySelectorAll('#posted-days-filter').forEach(el => el.value = '');
+            document.querySelectorAll('#deadline-days-filter').forEach(el => el.value = '');
+            document.querySelectorAll('#job-id-filter').forEach(el => el.value = '');
             selectedLlmModels.clear();
             buildLlmFilter();
             filterTable();
