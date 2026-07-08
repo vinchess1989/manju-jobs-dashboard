@@ -20,7 +20,8 @@
 ## Hard Rejections
 Immediately discard a job if ANY of the following are true:
 * The job title contains "Senior", "Manager", "Head of", "Director", or "Lead". The candidate does not have enough experience for these levels.
-* The job requires domain-specific technical expertise in: carpentry, electrical work, construction, cooking/chef, security guard, special education, nursing, or teaching.
+* The job requires domain-specific technical expertise in: carpentry, electrical work, construction, cooking/chef, security guard, special education, early childhood education / daycare (varhaiskasvatus), nursing, or teaching.
+* Early childhood education, daycare, or kindergarten roles (e.g., Varhaiskasvatuksen sosionomi, varhaiskasvatuksen opettaja, lastenhoitaja), as these require specific Finnish pedagogical degrees and qualifications.
 * The job is a trade or manual-labour role requiring specific vocational training: welding, metalwork/fabrication, scaffold assembly, asbestos/demolition, crane/heavy equipment operation, refrigeration installation, or any similar skilled-trade position.
 * The job is in the medical or healthcare field requiring clinical training: physician (lääkäri), pharmacist (farmaseutti), nurse practitioner, lab technician (laboratoriohoitaja), physiotherapist, or any role requiring a medical/healthcare degree.
 * The job requires a specific technical degree (engineering, IT/software development, science, architecture) as a hard requirement — unless the posting explicitly says the degree requirement can be waived with experience.
