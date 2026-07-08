@@ -971,7 +971,8 @@
             if (!showArchivedNo) {
                 allJobs.forEach(job => {
                     const mv = (sharedJobsState[job.url] && sharedJobsState[job.url].matches_requirements) || job.matches_requirements || 'pending';
-                    if (mv === 'no' && !sessionNoChanges.has(job.url)) archivedCount++;
+                    const appliedVal = (sharedJobsState[job.url] && sharedJobsState[job.url].applied) || job.applied || 'no';
+                    if (mv === 'no' && appliedVal !== 'yes' && !sessionNoChanges.has(job.url)) archivedCount++;
                 });
             }
 
@@ -1116,10 +1117,10 @@
             // 3. Rows
             allJobs.forEach((job, index) => {
                 const matchVal = (sharedJobsState[job.url] && sharedJobsState[job.url].matches_requirements) || job.matches_requirements || 'pending';
-                if (matchVal === 'no' && !sessionNoChanges.has(job.url) && !showArchivedNo) return;
+                let appliedStatus = (sharedJobsState[job.url] && sharedJobsState[job.url].applied) || job.applied || 'no';
+                if (matchVal === 'no' && appliedStatus !== 'yes' && !sessionNoChanges.has(job.url) && !showArchivedNo) return;
 
                 const jobIdSafe = job.id || job.url.replace(/[\.\#\$\/\[\]]/g, '_');
-                let appliedStatus = (sharedJobsState[job.url] && sharedJobsState[job.url].applied) || job.applied || 'no';
                 let userReview = (sharedJobsState[job.url] && sharedJobsState[job.url].user_review) || job.user_review || 'pending';
 
                 const tr = document.createElement('tr');
