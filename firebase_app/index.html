@@ -2004,10 +2004,10 @@
             }
             
             let currentTotal = 0, currentYes = 0, currentMaybe = 0, currentNo = 0, currentPending = 0, currentApplied = 0;
-            if (window.allJobs) {
-                window.allJobs.forEach(job => {
-                    const mv = (window.sharedJobsState[job.url] && window.sharedJobsState[job.url].matches_requirements) || job.matches_requirements || 'pending';
-                    const appVal = (window.sharedJobsState[job.url] && window.sharedJobsState[job.url].applied) || job.applied || 'no';
+            if (typeof allJobs !== 'undefined' && allJobs) {
+                allJobs.forEach(job => {
+                    const mv = (sharedJobsState[job.url] && sharedJobsState[job.url].matches_requirements) || job.matches_requirements || 'pending';
+                    const appVal = (sharedJobsState[job.url] && sharedJobsState[job.url].applied) || job.applied || 'no';
                     
                     currentTotal++;
                     if (mv === 'yes') currentYes++;
