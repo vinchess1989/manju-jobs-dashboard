@@ -95,13 +95,8 @@ def already_uploaded(entries: list[dict]) -> set[str]:
         resp.raise_for_status()
         doc = resp.json()
 
-        # Fetch jobs.json to build url→id mapping
-        jobs_resp = requests.get(
-            "https://raw.githubusercontent.com/vinchess1989/manju-jobs-dashboard/main/jobs.json",
-            timeout=30
-        )
-        jobs_resp.raise_for_status()
-        jobs = jobs_resp.json()
+        with open('jobs.json', 'r', encoding='utf-8') as f:
+            jobs = json.load(f)
         id_to_url = {j["id"]: j["url"] for j in jobs if "id" in j and "url" in j}
 
         fields = doc.get("fields", {})
