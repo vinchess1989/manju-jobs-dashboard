@@ -1,4 +1,5 @@
 import json
+import db_utils
 import time
 import os
 import sys
@@ -103,8 +104,7 @@ def clean_blocked_jobs():
         return 0
 
     try:
-        with open(JOBS_FILE, 'r', encoding='utf-8') as f:
-            jobs = json.load(f)
+        jobs = db_utils.load_jobs()
     except Exception as e:
         print(f"Error reading {JOBS_FILE} during cleanup: {e}")
         return 0
@@ -228,8 +228,7 @@ def clean_blocked_jobs():
     if moved_count > 0:
         print(f"INFO: Moved {moved_count} hard-rejected jobs to deleted.json.")
         try:
-            with open(JOBS_FILE, 'w', encoding='utf-8') as f:
-                json.dump(cleaned_jobs, f, indent=2)
+            db_utils.save_jobs(cleaned_jobs)
             with open(DELETED_FILE, 'w', encoding='utf-8') as f:
                 json.dump(deleted_jobs, f, indent=2)
         except Exception as e:
@@ -569,8 +568,7 @@ def scrape_all_jobs(max_jobs=200):
     existing_jobs = []
     if os.path.exists(JOBS_FILE):
         try:
-            with open(JOBS_FILE, 'r', encoding='utf-8') as f:
-                existing_jobs = json.load(f)
+            existing_jobs = db_utils.load_jobs()
             seen_urls.update(j['url'] for j in existing_jobs)
         except Exception:
             pass
@@ -677,8 +675,7 @@ def scrape_all_jobs(max_jobs=200):
     combined_jobs = existing_jobs + deduped_new
 
     # Save combined jobs to jobs.json
-    with open(JOBS_FILE, 'w', encoding='utf-8') as f:
-        json.dump(combined_jobs, f, indent=2)
+    db_utils.save_jobs(combined_jobs)
 
     # Create a timestamped backup
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -849,8 +846,7 @@ def check_requirements_update():
             status_filter = None
 
         if os.path.exists(JOBS_FILE):
-            with open(JOBS_FILE, 'r', encoding='utf-8') as f:
-                jobs = json.load(f)
+            jobs = db_utils.load_jobs()
             count = 0
             for job in jobs:
                 if job.get('user_review') == 'done':
@@ -861,8 +857,7 @@ def check_requirements_update():
                     job['needs_re_review'] = True
                     count += 1
             print(f"INFO: Flagged {count} jobs for re-review.")
-            with open(JOBS_FILE, 'w', encoding='utf-8') as f:
-                json.dump(jobs, f, indent=2)
+            db_utils.save_jobs(jobs)
 
     checkpoint_data["requirements_hash"] = req_hash
     checkpoint_data["requirements_content"] = new_content
@@ -1202,8 +1197,7 @@ def review_pending_jobs(specific_urls=None):
     if not os.path.exists(JOBS_FILE):
         return
         
-    with open(JOBS_FILE, 'r', encoding='utf-8') as f:
-        jobs = json.load(f)
+    jobs = db_utils.load_jobs()
         
     def _is_reviewable(j):
         if j.get('user_review') == 'done':
@@ -1311,8 +1305,7 @@ def review_pending_jobs(specific_urls=None):
                         with open(DELETED_FILE, 'w', encoding='utf-8') as _f:
                             json.dump(deleted_jobs_exp, _f, indent=2)
                     jobs[:] = [j for j in jobs if j.get('url') != job.get('url')]
-                    with open(JOBS_FILE, 'w', encoding='utf-8') as _f:
-                        json.dump(jobs, _f, indent=2)
+                    db_utils.save_jobs(jobs)
                     continue
 
                 if not text.strip() or is_ddos_page:
@@ -1489,8 +1482,7 @@ Do not include any conversational intro/outro or explanations outside the JSON o
                 job['description_file'] = None
                 
             # Save aggressively after each evaluation
-            with open(JOBS_FILE, 'w', encoding='utf-8') as f:
-                json.dump(jobs, f, indent=2)
+            db_utils.save_jobs(jobs)
                 
         browser.close()
 
@@ -1599,8 +1591,7 @@ def print_job_summary():
         return
         
     try:
-        with open(JOBS_FILE, 'r', encoding='utf-8') as f:
-            jobs_data = json.load(f)
+        jobs_data = db_utils.load_jobs()
             total_jobs = len(jobs_data)
             matching_jobs = sum(1 for j in jobs_data if j.get('matches_requirements') == 'yes')
             maybe_jobs = sum(1 for j in jobs_data if j.get('matches_requirements') == 'maybe')
@@ -1618,8 +1609,7 @@ def self_heal_locations():
     if not os.path.exists(JOBS_FILE):
         return
     try:
-        with open(JOBS_FILE, 'r', encoding='utf-8') as f:
-            jobs = json.load(f)
+        jobs = db_utils.load_jobs()
         changed = False
         for job in jobs:
             loc = job.get('location', '')
@@ -1628,8 +1618,7 @@ def self_heal_locations():
                 job['location'] = fixed
                 changed = True
         if changed:
-            with open(JOBS_FILE, 'w', encoding='utf-8') as f:
-                json.dump(jobs, f, indent=2)
+            db_utils.save_jobs(jobs)
             print("INFO: self_heal_locations: corrected location misclassifications in jobs.json.")
     except Exception as e:
         print(f"Error during self_heal_locations: {e}")
@@ -1640,8 +1629,7 @@ def self_heal_dates():
     if not os.path.exists(JOBS_FILE):
         return
     try:
-        with open(JOBS_FILE, 'r', encoding='utf-8') as f:
-            jobs = json.load(f)
+        jobs = db_utils.load_jobs()
             
         changed = False
         for job in jobs:
@@ -1660,8 +1648,7 @@ def self_heal_dates():
                 
         if changed:
             print("INFO: Natively standardized messy dates in jobs.json!")
-            with open(JOBS_FILE, 'w', encoding='utf-8') as f:
-                json.dump(jobs, f, indent=2)
+            db_utils.save_jobs(jobs)
     except Exception as e:
         print(f"Error self-healing dates: {e}")
 
@@ -1802,16 +1789,14 @@ def poll_firebase_feedback():
         if locals().get('applied_updates'):
             try:
                 if os.path.exists(JOBS_FILE):
-                    with open(JOBS_FILE, 'r', encoding='utf-8') as f:
-                        jobs = json.load(f)
+                    jobs = db_utils.load_jobs()
                     changed = False
                     for j in jobs:
                         if j.get('url') in applied_updates:
                             j['applied'] = applied_updates[j['url']]
                             changed = True
                     if changed:
-                        with open(JOBS_FILE, 'w', encoding='utf-8') as f:
-                            json.dump(jobs, f, indent=2)
+                        db_utils.save_jobs(jobs)
                     print(f"INFO: Successfully synced applied status for {len(applied_updates)} jobs from the cloud.")
             except Exception as e:
                 print(f"Error syncing applied status: {e}")
@@ -1819,16 +1804,14 @@ def poll_firebase_feedback():
         if user_review_updates:
             try:
                 if os.path.exists(JOBS_FILE):
-                    with open(JOBS_FILE, 'r', encoding='utf-8') as f:
-                        jobs = json.load(f)
+                    jobs = db_utils.load_jobs()
                     changed = False
                     for j in jobs:
                         if j.get('url') in user_review_updates:
                             j['user_review'] = user_review_updates[j['url']]
                             changed = True
                     if changed:
-                        with open(JOBS_FILE, 'w', encoding='utf-8') as f:
-                            json.dump(jobs, f, indent=2)
+                        db_utils.save_jobs(jobs)
                     print(f"INFO: Successfully synced user_review status for {len(user_review_updates)} jobs from the cloud.")
             except Exception as e:
                 print(f"Error syncing user review status: {e}")
@@ -1837,8 +1820,7 @@ def poll_firebase_feedback():
         if match_updates:
             try:
                 if os.path.exists(JOBS_FILE):
-                    with open(JOBS_FILE, 'r', encoding='utf-8') as f:
-                        jobs = json.load(f)
+                    jobs = db_utils.load_jobs()
                     changed = False
                     for j in jobs:
                         if j.get('url') in match_updates:
@@ -1848,8 +1830,7 @@ def poll_firebase_feedback():
                             j['user_reason'] = user_reason
                             changed = True
                     if changed:
-                        with open(JOBS_FILE, 'w', encoding='utf-8') as f:
-                            json.dump(jobs, f, indent=2)
+                        db_utils.save_jobs(jobs)
                     print(f"INFO: Successfully synced matches_requirements for {len(match_updates)} jobs from the cloud.")
             except Exception as e:
                 print(f"Error syncing match updates: {e}")
@@ -1897,8 +1878,7 @@ def poll_re_review_request():
             eligible = {'yes', 'maybe', 'pending', 'error'}
 
             if os.path.exists(JOBS_FILE):
-                with open(JOBS_FILE, 'r', encoding='utf-8') as f:
-                    jobs = json.load(f)
+                jobs = db_utils.load_jobs()
                 for job in jobs:
                     if job.get('user_review') == 'done':
                         skip_done += 1
@@ -1910,8 +1890,7 @@ def poll_re_review_request():
                     if s in eligible:
                         job['needs_re_review'] = True
                         by_status[s] = by_status.get(s, 0) + 1
-                with open(JOBS_FILE, 'w', encoding='utf-8') as f:
-                    json.dump(jobs, f, indent=2)
+                db_utils.save_jobs(jobs)
 
             total = sum(by_status.values())
             scope_parts = [f"{s}={n}" for s, n in sorted(by_status.items())]
@@ -1923,8 +1902,7 @@ def poll_re_review_request():
         elif status == "in_progress":
             needs_review_count = 0
             if os.path.exists(JOBS_FILE):
-                with open(JOBS_FILE, 'r', encoding='utf-8') as f:
-                    jobs = json.load(f)
+                jobs = db_utils.load_jobs()
                 needs_review_count = sum(1 for j in jobs if j.get('needs_re_review') == True)
             
             if needs_review_count == 0:
@@ -1976,8 +1954,7 @@ def main():
         print(f"INFO: Reviewing {len(target_urls)} specific URL(s)...")
         review_pending_jobs(specific_urls=target_urls)
         moved_count = clean_blocked_jobs()
-        with open(JOBS_FILE, 'r', encoding='utf-8') as f:
-            latest_jobs = json.load(f)
+        latest_jobs = db_utils.load_jobs()
         save_history_snapshot(latest_jobs, deleted=moved_count)
         update_git()
         print_job_summary()
@@ -1988,8 +1965,7 @@ def main():
         while True:
             if not os.path.exists(JOBS_FILE):
                 break
-            with open(JOBS_FILE, 'r', encoding='utf-8') as f:
-                jobs = json.load(f)
+            jobs = db_utils.load_jobs()
             
             pending_urls = [j['url'] for j in jobs if j.get('matches_requirements') == 'pending' or j.get('needs_re_review') == True]
             if not pending_urls:
@@ -2109,8 +2085,7 @@ def main():
             pending_jobs = []
             if os.path.exists(JOBS_FILE):
                 try:
-                    with open(JOBS_FILE, 'r', encoding='utf-8') as f:
-                        jobs_data = json.load(f)
+                    jobs_data = db_utils.load_jobs()
                     if args.skip_re_review:
                         pending_jobs = [j for j in jobs_data if (j.get('matches_requirements') in ['pending', 'error'] and j.get('applied') != 'yes' and j.get('user_review') != 'done')]
                     else:
@@ -2138,8 +2113,7 @@ def main():
                 
             try:
                 moved_count = clean_blocked_jobs()
-                with open(JOBS_FILE, 'r', encoding='utf-8') as f:
-                    latest_jobs = json.load(f)
+                latest_jobs = db_utils.load_jobs()
                 save_history_snapshot(latest_jobs, deleted=moved_count)
                 update_git()
             except Exception as e:
