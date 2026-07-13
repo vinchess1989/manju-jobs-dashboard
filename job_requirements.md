@@ -19,14 +19,17 @@
 
 ## Hard Rejections
 Immediately discard a job if ANY of the following are true:
-* The job title contains "Senior", "Manager", "Head of", "Director", or "Lead". The candidate does not have enough experience for these levels.
-* The job requires domain-specific technical expertise in: carpentry, electrical work, construction, cooking/chef, security guard, special education, early childhood education / daycare (varhaiskasvatus), nursing, or teaching.
-* Early childhood education, daycare, or kindergarten roles (e.g., Varhaiskasvatuksen sosionomi, varhaiskasvatuksen opettaja, lastenhoitaja), as these require specific Finnish pedagogical degrees and qualifications.
-* The job is a trade or manual-labour role requiring specific vocational training: welding, metalwork/fabrication, scaffold assembly, asbestos/demolition, crane/heavy equipment operation, refrigeration installation, or any similar skilled-trade position.
-* The job is in the medical or healthcare field requiring clinical training: physician (lääkäri), pharmacist (farmaseutti), nurse practitioner, lab technician (laboratoriohoitaja), physiotherapist, or any role requiring a medical/healthcare degree.
-* The job requires a specific technical degree (engineering, IT/software development, science, architecture) as a hard requirement — unless the posting explicitly says the degree requirement can be waived with experience.
-* The job title is clearly unrelated to office or service work — e.g. husky guide, dog handler, pest control, diver, retinal photographer, etc.
-* Construction experts or construction-related roles.
+* **Seniority:** The job title contains "Senior", "Manager", "Head of", "Director", or "Lead". The candidate does not have enough experience for these levels.
+* **Specific Subsidized Employment:** The role is strictly for subsidized employment (e.g. requires the applicant to be long-term unemployed, under 25 or over 50, disabled, or specifically a resident of Helsinki/another specific municipality for a municipal job).
+* **Advanced Technical Degrees:** The job requires an MSc or PhD in technical areas (e.g. electrical, telecommunications, IT, engineering) or a specific technical degree (architecture, science) — unless the posting explicitly says the degree requirement can be waived with experience.
+* **Specialized / Vocational Degrees:** The job strictly requires a specific vocational or educational degree such as merkonomi, tradenomi, nursing (lähihoitaja), forestry, restaurant/catering studies, automotive technology, or requires a hygiene pass.
+* **Medical / Social Welfare:** The job requires Valvira accreditation, a valid medical license, or a licensed social welfare professional qualification. Roles requiring clinical training (physician, pharmacist, nurse practitioner, lab technician, physiotherapist) are hard rejections.
+* **Early Childhood Education:** Early childhood education, daycare, or kindergarten roles (e.g., Varhaiskasvatuksen sosionomi, varhaiskasvatuksen opettaja, lastenhoitaja), as these require specific Finnish pedagogical degrees and qualifications.
+* **Trade / Manual-labour:** The job is a trade or manual-labour role requiring specific vocational training: carpentry, welding, metalwork/fabrication, scaffold assembly, asbestos/demolition, crane/heavy equipment operation, refrigeration installation, electrical work, construction experts, cooking/chef, security guard, or any similar skilled-trade position.
+* **Accounting / Payroll Expertise:** The job strictly requires specialized accounting expertise or hands-on payroll processing experience (entry-level finance/billing support is okay, but not strict accounting).
+* **Location Restrictions:** The job explicitly requires US residency or requires the applicant to currently live in a specific city other than Oulu (unless the job itself is located in that city and matches the target criteria).
+* **Closed Applications:** The job posting explicitly states that it is no longer accepting applications.
+* **Unrelated Roles:** The job title is clearly unrelated to office or service work — e.g. husky guide, dog handler, pest control, diver, retinal photographer, etc.
 
 ## Target Job Criteria
 
@@ -73,87 +76,3 @@ When evaluating a job posting, use your web fetch tool to visit the URL and read
 5. **Check Deadline.**
 
 **Tracking Evaluations:** After evaluating a "pending" job in `jobs.json`, update that job's entry in-place: set `"visited": "yes"`, set `"matches_requirements"` to `"yes"`, `"maybe"`, or `"no"`, and set `"reason"` to a brief 1-sentence explanation. Do NOT delete records.
-
-### Negative Constraints (from user feedback):
-- Do NOT match jobs that require MSc or PhD in technical areas like electrical or telecommunications.
-- Do NOT match carpenter jobs or construction expert roles.
-
-
-### Automatically Added Negative Constraints (from UI Rejections):
-- NEGATIVE CONSTRAINT: The user explicitly rejected a previous job because: 'Not my field - its for lahihoitaja'. Do NOT match jobs that have this issue.
-- NEGATIVE CONSTRAINT: The user explicitly rejected a previous job because: 'Requires a nursing degree and a valid medical license'. Do NOT match jobs that have this issue.
-
-
-### Automatically Added Negative Constraints (from UI Rejections):
-- NEGATIVE CONSTRAINT: The user explicitly rejected a previous job because: 'Needs restaurant field studies'. Do NOT match jobs that have this issue.
-
-
-### Automatically Added Negative Constraints (from UI Rejections):
-- NEGATIVE CONSTRAINT: The user explicitly rejected a previous job because: 'Needs Hygeine pass'. Do NOT match jobs that have this issue.
-- NEGATIVE CONSTRAINT: The user explicitly rejected a previous job because: 'Needs University degree in Forestry'. Do NOT match jobs that have this issue.
-
-
-### Automatically Added Negative Constraints (from UI Rejections):
-- NEGATIVE CONSTRAINT: The user explicitly rejected a previous job because: 'its for Accountants'. Do NOT match jobs that have this issue.
-
-
-### Automatically Added Negative Constraints (from UI Rejections):
-- NEGATIVE CONSTRAINT: The user explicitly rejected a previous job because: 'Needs lahihoitaja degree'. Do NOT match jobs that have this issue.
-
-
-### Automatically Added Negative Constraints (from UI Rejections):
-- NEGATIVE CONSTRAINT: The user explicitly rejected a previous job because: 'Needs hands on payroll processing expereince'. Do NOT match jobs that have this issue.
-
-
-### Automatically Added Negative Constraints (from UI Rejections):
-- NEGATIVE CONSTRAINT: The user explicitly rejected a previous job because: 'Should meet these conditions:
-- you are 15-24 years old
-- you have reached the age of 50
-- you have not completed a matriculation examination, a degree referred to in the Act on Vocational Education and Training, or a comparable foreign upper secondary education
-- you are entitled to an integration plan referred to in the Act on the Promotion of Integration
-- you have not been in gainful employment during the previous six months
-- as an unemployed job seeker, your chances of finding a suitable job have been significantly reduced due to a disability or illness.'. Do NOT match jobs that have this issue.
-
-
-### Automatically Added Negative Constraints (from UI Rejections):
-- NEGATIVE CONSTRAINT: The user explicitly rejected a previous job because: 'Expertise beyond general administrative work'. Do NOT match jobs that have this issue.
-- NEGATIVE CONSTRAINT: The user explicitly rejected a previous job because: 'Need education in the field or otherwise commendable knowledge of automotive technology'. Do NOT match jobs that have this issue.
-- NEGATIVE CONSTRAINT: The user explicitly rejected a previous job because: 'Appliaction accepted only from unemployed people in Helsinki between the ages 15- 25 and above 50 years'. Do NOT match jobs that have this issue.
-
-
-### Automatically Added Negative Constraints (from UI Rejections):
-- NEGATIVE CONSTRAINT: The user explicitly rejected a previous job because: 'Need practical nurse degree'. Do NOT match jobs that have this issue.
-- NEGATIVE CONSTRAINT: The user explicitly rejected a previous job because: 'Needs Hygiene pass'. Do NOT match jobs that have this issue.
-
-
-### Automatically Added Negative Constraints (from UI Rejections):
-- NEGATIVE CONSTRAINT: The user explicitly rejected a previous job because: 'Needs degree in merkonomi or tradenomi'. Do NOT match jobs that have this issue.
-
-
-### Automatically Added Negative Constraints (from UI Rejections):
-- NEGATIVE CONSTRAINT: The user explicitly rejected a previous job because: 'Needs to be a licensed social welfare professional,'. Do NOT match jobs that have this issue.
-- NEGATIVE CONSTRAINT: The user explicitly rejected a previous job because: 'Requires knowledge in electrical work'. Do NOT match jobs that have this issue.
-
-
-### Automatically Added Negative Constraints (from UI Rejections):
-- NEGATIVE CONSTRAINT: The user explicitly rejected a previous job because: 'requires suitable university of applied sciences degree in social and health care and Valvira accreditation'. Do NOT match jobs that have this issue.
-
-
-### Automatically Added Negative Constraints (from UI Rejections):
-- NEGATIVE CONSTRAINT: The user explicitly rejected a previous job because: 'Needs to be in US'. Do NOT match jobs that have this issue.
-
-
-### Automatically Added Negative Constraints (from UI Rejections):
-- NEGATIVE CONSTRAINT: The user explicitly rejected a previous job because: 'Applicants should be from Helsinki'. Do NOT match jobs that have this issue.
-
-
-### Automatically Added Negative Constraints (from UI Rejections):
-- NEGATIVE CONSTRAINT: The user explicitly rejected a previous job because: 'No longer accepting applicaitons'. Do NOT match jobs that have this issue.
-
-
-### Automatically Added Negative Constraints (from UI Rejections):
-- NEGATIVE CONSTRAINT: The user explicitly rejected a previous job because: 'No longer accepting applications'. Do NOT match jobs that have this issue.
-
-
-### Automatically Added Negative Constraints (from UI Rejections):
-- NEGATIVE CONSTRAINT: The user explicitly rejected a previous job because: 'No longer accepting applications'. Do NOT match jobs that have this issue.

@@ -24,6 +24,7 @@ JOBS_FILE = os.path.join(BASE_DIR, "jobs.json")
 SEEN_URLS_FILE = os.path.join(BASE_DIR, "seen_urls.json")
 CHECKPOINT_FILE = os.path.join(BASE_DIR, "checkpoint.json")
 REQ_FILE = os.path.join(BASE_DIR, "job_requirements.md")
+USER_FEEDBACK_FILE = os.path.join(BASE_DIR, "user_feedback.md")
 DELETED_FILE = os.path.join(BASE_DIR, "deleted.json")
 HISTORY_FILE = os.path.join(BASE_DIR, "jobs_history.json")
 LOGS_DIR = os.path.join(BASE_DIR, "logs")
@@ -1549,6 +1550,17 @@ def update_git():
                     push_cmd = ["git", "push", auth_url]
 
             try:
+                print("Pulling remote changes before pushing...")
+                pull_cmd = ["git", "pull", "--rebase"]
+                if github_token and 'auth_url' in locals():
+                    pull_cmd = ["git", "pull", "--rebase", auth_url]
+                try:
+                    subprocess.run(pull_cmd, cwd=repo_dir, check=True, env=env, capture_output=True, text=True, stdin=subprocess.DEVNULL, timeout=120.0)
+                except subprocess.CalledProcessError as e:
+                    print(f"Warning: Pull failed. Error: {e}")
+                    if hasattr(e, 'stderr') and e.stderr:
+                        print(f"Git Pull Stderr: {e.stderr}")
+
                 print("Pushing to GitHub...")
                 subprocess.run(push_cmd, cwd=repo_dir, check=True, env=env, capture_output=True, text=True, stdin=subprocess.DEVNULL, timeout=120.0)
                 print("Successfully pushed updates to GitHub!")
@@ -1774,17 +1786,20 @@ def poll_firebase_feedback():
                 requests.patch(update_url, json=payload, timeout=10)
                 
         if new_positive_rules or new_negative_rules:
-            with open(REQ_FILE, 'a', encoding='utf-8') as f:
+            with open(USER_FEEDBACK_FILE, 'a', encoding='utf-8') as f:
                 if new_negative_rules:
-                    f.write("\n\n### Automatically Added Negative Constraints (from UI Rejections):\n")
+                    f.write("\n### Negative Feedback\n")
                     for rule in new_negative_rules:
-                        f.write(f"- NEGATIVE CONSTRAINT: The user explicitly rejected a previous job because: '{rule}'. Do NOT match jobs that have this issue.\n")
+                        f.write(f"- {rule}\n")
                 if new_positive_rules:
-                    f.write("\n\n### Automatically Added Positive Constraints (from UI Approvals):\n")
+                    f.write("\n### Positive Feedback\n")
                     for rule in new_positive_rules:
-                        f.write(f"- POSITIVE CONSTRAINT: The user explicitly approved a previous job because: '{rule}'. Make sure to MATCH jobs that have this characteristic.\n")
-            print(f"INFO: Successfully updated job_requirements.md with {len(new_positive_rules)} positive and {len(new_negative_rules)} negative rules!")
+                        f.write(f"- {rule}\n")
             
+            print(f"INFO: Fetched {len(new_positive_rules)} positive and {len(new_negative_rules)} negative rules from UI.")
+            print(f"INFO: Appended raw feedback to user_feedback.md to be processed by update_requirements skill later.")
+            
+
 
         if locals().get('applied_updates'):
             try:
