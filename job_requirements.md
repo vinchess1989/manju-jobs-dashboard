@@ -80,3 +80,7 @@ When evaluating a job posting, use your web fetch tool to visit the URL and read
 
 ### Automatically Added Negative Constraints (from UI Rejections):
 - NEGATIVE CONSTRAINT: The user explicitly rejected a previous job because: 'Its for Parish Priest'. Do NOT match jobs that have this issue.
+
+
+### Automatically Added Negative Constraints (from UI Rejections):
+- NEGATIVE CONSTRAINT: The user explicitly rejected a previous job because: 'requires specific training for cleaning/support role in hospital setting'. Do NOT match jobs that have this issue.
