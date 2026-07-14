@@ -76,3 +76,7 @@ When evaluating a job posting, use your web fetch tool to visit the URL and read
 5. **Check Deadline.**
 
 **Tracking Evaluations:** After evaluating a "pending" job in `jobs.json`, update that job's entry in-place: set `"visited": "yes"`, set `"matches_requirements"` to `"yes"`, `"maybe"`, or `"no"`, and set `"reason"` to a brief 1-sentence explanation. Do NOT delete records.
+
+
+### Automatically Added Negative Constraints (from UI Rejections):
+- NEGATIVE CONSTRAINT: The user explicitly rejected a previous job because: 'Its for Parish Priest'. Do NOT match jobs that have this issue.
