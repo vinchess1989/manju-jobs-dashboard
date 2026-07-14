@@ -1,14 +1,19 @@
-Tailor fresh resumes and cover letters for one or more job IDs using Claude, replacing any existing docs and updating the live dashboard. Does not touch application forms, scrape questions, or generate answers — use tailor-resume-n-fill-form for that.
+Tailor fresh resumes and cover letters for one or more job IDs using Claude, scrape the application form and generate tailored answers, replacing any existing docs and updating the live dashboard.
 
 The job IDs to process are: **$ARGUMENTS**
 
-Parse `$ARGUMENTS` as a space-separated list of job ID tokens (no URL parsing — this skill never visits an application form, so explicit apply URLs are not needed).
+Parse `$ARGUMENTS` as a space-separated list of tokens. Build a job list and an explicit-URL map as follows:
+
+- Any token that starts with `http://` or `https://` is treated as an **explicit apply URL** for the immediately preceding job ID token.
+- All other tokens are job IDs.
 
 Examples:
-- `abc123` → one job
-- `abc123 def456` → two jobs
+- `abc123` → one job, no explicit URL
+- `abc123 def456` → two jobs, no explicit URLs
+- `abc123 https://example.com/apply` → one job, explicit apply URL for `abc123`
+- `abc123 https://example.com/apply def456` → two jobs; `abc123` has an explicit URL, `def456` does not
 
-Run Steps 0–4 for **each job ID in sequence**, then run Steps 5–7 once at the end to batch-commit and sync everything.
+Store the result as a list of `(JOB_ID, EXPLICIT_APPLY_URL | null)` pairs. Run Steps 0–5 for **each pair in sequence**, then run Steps 6–8 once at the end to batch-commit and sync everything.
 
 ---
 
@@ -53,7 +58,7 @@ Read `PRIVATE\Resumes\f6aaa66f\f6aaa66f_data.json`. Every output JSON must match
 
 ## Checkpoint Check — runs once before the loop
 
-Canonical step order: `0 → 1 → 2 → 3 → 4`
+Canonical step order: `0 → 1 → 1.5 → 1.6 → 2 → 3 → 4`
 
 For each JOB_ID in the list, check whether `PRIVATE\Resumes\JOB_ID\JOB_ID_checkpoint.json` exists.
 
@@ -63,12 +68,14 @@ If a checkpoint **does** exist, read it and display a block like this for each s
 
 ```
 Checkpoint found — abc123 (Legal Trainee @ Hiab)
-  Completed : 0, 1, 2, 3
+  Completed : 0, 1, 1.5, 1.6, 2, 3
   Last run  : 2026-07-01 10:30
   Next step : 4 (Generate PDFs)
 
   [Enter] Continue from Step 4        ← default
   [2]     Redo from Step 2 (Write tailored JSON)
+  [1.6]   Redo from Step 1.6 (Generate answers)
+  [1.5]   Redo from Step 1.5 (Scrape questions)
   [1]     Redo from Step 1 (Fetch description)
   [0]     Start completely fresh
   [skip]  Skip this job this run
@@ -84,7 +91,7 @@ If the user chooses `[0]` (fresh), delete the existing checkpoint file before en
 
 **If `START_STEP[JOB_ID]` is `"skip"`, skip this job entirely.**
 
-**Skip rule:** At the start of each step, if the step ID comes *before* `START_STEP[JOB_ID]` in the canonical order `[0, 1, 2, 3, 4]`, print `↷ Skipping Step N (checkpoint)` and move to the next step.
+**Skip rule:** At the start of each step, if the step ID comes *before* `START_STEP[JOB_ID]` in the canonical order `[0, 1, 1.5, 1.6, 2, 3, 4]`, print `↷ Skipping Step N (checkpoint)` and move to the next step.
 
 **Checkpoint write rule:** After each step completes successfully, write or update `PRIVATE\Resumes\JOB_ID\JOB_ID_checkpoint.json`:
 ```json
@@ -122,6 +129,105 @@ Try in order, stopping at the first success:
 3. Try a web search for `"JOB_TITLE" "COMPANY" Finland job`.
 
 If all three fail, skip this ID, report which sources were tried, and continue to the next.
+
+---
+
+### Step 1.5 — Scrape application form questions (best-effort)
+
+**Resolve the apply URL first.** Listing pages (Jobly, Duunitori, etc.) don't host the form — they link out to it. Before running the scraper, find the real apply URL in this priority order, stopping at the first hit:
+
+1. **Explicit URL from arguments** — if `EXPLICIT_APPLY_URL` is set for this job (passed on the command line), use it directly. Print: `Using explicit apply URL (from arguments): EXPLICIT_APPLY_URL`
+2. Check `jobs.json` for an `apply_url` field on this job entry (use it if present and non-null).
+3. Scan the job description text obtained in Step 1 for a URL following apply-related keywords. Match any of these patterns (case-insensitive):
+   - Finnish: `Jätä hakemus:`, `Hae paikkaa:`, `hakemuslinkki:`, `Hakemukset:`, `Hae tästä:`
+   - English: `Apply here:`, `Apply at:`, `Application link:`, `Submit.*application:`
+   - Generic: any bare URL that appears on its own line immediately after the word "hakemus" or "apply"
+4. If nothing found in the description, fall back to `JOB_URL`.
+
+Set `SCRAPE_URL` to whichever URL was found. Print: `Scraping apply URL: SCRAPE_URL`
+
+Run the scraper. Non-blocking — if it finds nothing or errors, continue to Step 2 normally.
+
+```powershell
+python "PUBLIC\scrape_application.py" `
+    --job-url "SCRAPE_URL" `
+    --job-id  "JOB_ID" `
+    --out-dir "PRIVATE\Resumes\JOB_ID" `
+    --private-dir "PRIVATE"
+```
+
+**First-time behaviour:** If credentials for the platform aren't saved yet, the script prompts interactively (password hidden). They are saved to `PRIVATE\.env` and session cookies to `PRIVATE\sessions\` — all future runs are silent.
+
+**Outcome:**
+- Success → `PRIVATE\Resumes\JOB_ID\JOB_ID_questions.json` written. Note `question_count`.
+- Failure / 0 questions → skip Step 1.6 for this job, continue from Step 2.
+- **Expired listing** → if `JOB_ID_questions.json` exists and contains `"expired": true`:
+  - Check whether the job's `applied` status is `"yes"` (read `jobs.json` and check `job.applied`, or read the scraper output message — the scraper already called `move_job_to_deleted` if not applied).
+  - If applied == "yes": print `Expired but already applied — continuing tailoring.` and proceed to Step 2 normally.
+  - If not applied: print `EXPIRED: Job listing is no longer active. Job moved to deleted.json. Skipping tailoring.` and **abort this job** (do not run Steps 2–4 for it). Continue to the next job ID in the loop if processing multiple.
+
+---
+
+### Step 1.6 — Generate tailored application answers
+
+Only run if `JOB_ID_questions.json` exists and `question_count > 0`.
+
+Read `PRIVATE\Resumes\JOB_ID\JOB_ID_questions.json`. Using the job description from Step 1 and Manju's profile (see Step 2 tailoring rules below), write a tailored answer for every question.
+
+**Answer rules:**
+- **Text / textarea:** 1–4 sentences for short fields; a full paragraph for open-ended ones. Name the company and role directly where it fits.
+- **Select / dropdown:** Pick the most accurate option from the `options` list.
+- **Factual fields** — use these exact values:
+  - Phone: leave blank, set `is_placeholder: true`
+  - Address: `Oulu, Finland`
+  - Availability: `September 2026`
+  - Salary expectation: leave blank, set `is_placeholder: true`
+  - Right to work in Finland: `Yes — EU residence permit`
+- **Language:** Answer in the same language as the question (Finnish if Finnish, English if English).
+- Do **not** invent facts not in Manju's profile.
+
+**Write two output files:**
+
+1. `PRIVATE\Resumes\JOB_ID\JOB_ID_answers.json` — machine-readable, used by the auto-filler:
+```json
+{
+  "job_id": "JOB_ID",
+  "job_url": "JOB_URL",
+  "apply_url": "<apply_url from questions JSON, or JOB_URL>",
+  "platform": "<platform from questions JSON>",
+  "answers": [
+    {
+      "label": "<exact label from questions JSON>",
+      "type": "<type>",
+      "answer": "<generated answer, or empty string if placeholder>",
+      "step": <step number if present>,
+      "is_placeholder": <true if phone/salary/manual field>
+    }
+  ]
+}
+```
+
+2. `PRIVATE\Resumes\JOB_ID\JOB_ID_application_cheatsheet.html` — human-readable backup:
+```html
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<title>Application — JOB_TITLE at COMPANY</title>
+<style>
+  body{font-family:Calibri,Arial,sans-serif;max-width:800px;margin:40px auto;font-size:14px;color:#1e1e1e}
+  h1{font-size:18px;color:#1a4f82;border-bottom:2px solid #1a4f82;padding-bottom:6px}
+  .meta{color:#666;font-size:12px;margin-bottom:24px}
+  .qa{margin-bottom:20px}
+  .question{font-weight:bold;font-size:13px;color:#333;margin-bottom:4px}
+  .qmeta{font-size:11px;color:#999;margin-bottom:4px}
+  .answer{background:#f0f4fa;border-left:3px solid #1a4f82;padding:8px 12px;white-space:pre-wrap}
+  .placeholder{background:#fff8e1;border-left:3px solid #f59e0b;padding:8px 12px}
+</style></head><body>
+<h1>JOB_TITLE — COMPANY</h1>
+<div class="meta">Job ID: JOB_ID | Platform: PLATFORM | <a href="APPLY_URL">Application link</a></div>
+<!-- one .qa per question; use class="placeholder" for manual-fill fields -->
+</body></html>
+```
+
+Report: `Application prep done: N answers generated, M placeholders for manual fill.`
 
 ---
 
@@ -210,11 +316,46 @@ Print a one-line progress note after each job: `✓ JOB_ID (JOB_TITLE @ COMPANY)
 
 ---
 
+## Application Fill Phase — Claude vision agent
+
+Only run this phase if at least one job produced a `JOB_ID_answers.json` file.
+
+Collect the job IDs that have answers files into a space-separated list (`FILL_IDS`), then run:
+
+```powershell
+# Default: Claude API with vision
+python "PUBLIC\fill_agent.py" `
+    --job-id FILL_IDS `
+    --private-dir "PRIVATE"
+
+# Local LLM (vision model in LM Studio):
+# python "PUBLIC\fill_agent.py" --job-id FILL_IDS --private-dir "PRIVATE" --local
+
+# Local LLM, text-only model (e.g. Hermes 3, Llama 3.1):
+# python "PUBLIC\fill_agent.py" --job-id FILL_IDS --private-dir "PRIVATE" --local --no-vision
+```
+
+The agent opens a visible browser for each job in turn. After every action it checks the current page state and decides what to click, type, or scroll — handling cookie walls, GravityForms re-renders, Finnish dropdowns, and unusual layouts without hardcoded selectors.
+
+**Vision mode (default / `--local` without `--no-vision`):** The agent receives a screenshot after every action and uses it to verify values and find the next field.
+
+**No-vision mode (`--local --no-vision`):** The agent receives a structured DOM text dump listing every visible field with its CSS selector, label, and current value. It uses `fill_field`, `select_option`, `check`, and `click_selector` tools to target fields by selector — suitable for text-only models like Hermes 3 Llama 3.1.
+
+1. Agent sees the page, dismisses any cookie banner, then fills each field
+2. After every action the agent verifies the value appeared; re-fills if cleared
+3. When all fields are filled the agent calls `done()` — the form is **not** submitted
+4. Manju reviews the completed form in the browser and clicks Submit manually
+5. Manju presses Enter in the terminal → browser closes → next job opens
+
+A summary is printed when all jobs are done. After this phase, continue to Step 5.
+
+---
+
 ## Step 5 — Commit all jobs to private repo (one commit)
 
 ```powershell
 git -C "PRIVATE" add Resumes\
-git -C "PRIVATE" commit -m "Tailor resumes for N jobs: JOB_ID_1, JOB_ID_2, ... (claude-sonnet-4-6)"
+git -C "PRIVATE" commit -m "Retailor resumes for N jobs: JOB_ID_1, JOB_ID_2, ... (claude-sonnet-4-6)"
 git -C "PRIVATE" push
 ```
 
