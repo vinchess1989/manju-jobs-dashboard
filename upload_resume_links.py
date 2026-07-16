@@ -157,12 +157,14 @@ def main():
             continue
 
         tailor_model = ""
+        tailored_at = ""
         data_path = os.path.join(RESUMES_DIR, job_id, f"{job_id}_data.json")
         if os.path.exists(data_path):
             try:
                 with open(data_path, "r", encoding="utf-8") as f:
                     data = json.load(f)
                 tailor_model = data.get("tailor_model", "")
+                tailored_at = data.get("tailored_at", "")
             except Exception:
                 pass
 
@@ -172,6 +174,7 @@ def main():
             "resume_url": resume_url,
             "cover_letter_url": cover_letter_url,
             "tailor_model": tailor_model,
+            "tailored_at": tailored_at,
         })
 
     if not updates:
@@ -193,6 +196,8 @@ def main():
             entry["cover_letter_url"] = u["cover_letter_url"]
         if u["tailor_model"]:
             entry["tailor_model"] = u["tailor_model"]
+        if u["tailored_at"]:
+            entry["tailored_at"] = u["tailored_at"]
         current[u["job_url"]] = entry
 
     print(f"Writing {len(updates)} update(s) to Firestore...")

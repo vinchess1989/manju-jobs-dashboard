@@ -1045,7 +1045,8 @@
                         <th class="col-applied resizable-th"><div class="resizable-header" onclick="sortTable(12)" title="Whether you have applied for this job">Applied ↕<div class="active-filters-summary" id="active-filters-12"></div></div></th>
                         <th class="col-user-review resizable-th"><div class="resizable-header" onclick="sortTable(13)" title="Your manual review status for this job (e.g., Pending, Yes, No)">User Review ↕<div class="active-filters-summary" id="active-filters-13"></div></div></th>
                         <th class="col-docs resizable-th"><div class="resizable-header" onclick="sortTable(14)" title="Links to generated documents like tailored resumes and cover letters">Docs ↕<div class="active-filters-summary" id="active-filters-14"></div></div></th>
-                        <th class="col-tailor resizable-th"><div class="resizable-header" onclick="sortTable(15)" title="The AI model used to generate the tailored documents">Tailor Model ↕<div class="active-filters-summary" id="active-filters-15"></div></div></th>
+                        <th class="col-tailored-date resizable-th"><div class="resizable-header" onclick="sortTable(15)" title="Date and time when the resume was tailored">Tailored ↕<div class="active-filters-summary" id="active-filters-15"></div></div></th>
+                        <th class="col-tailor resizable-th"><div class="resizable-header" onclick="sortTable(16)" title="The AI model used to generate the tailored documents">Tailor Model ↕<div class="active-filters-summary" id="active-filters-16"></div></div></th>
                     </tr>
                     <tr class="filter-row">
                         <th></th>
@@ -1064,6 +1065,7 @@
                         <th><div id="filter-col-13"></div></th>
                         <th><div id="filter-col-14"></div></th>
                         <th><div id="filter-col-15"></div></th>
+                        <th><div id="filter-col-16"></div></th>
                     </tr>
                 </thead>
                 <tbody id="jobs-body"></tbody>
@@ -1089,6 +1091,18 @@
                         return dateStr; // fallback to original
                     }
                     return d.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+                } catch(e) {
+                    return dateStr;
+                }
+            }
+
+            
+            function formatDateTime(dateStr) {
+                if (!dateStr || dateStr.toLowerCase() === 'n/a' || dateStr.toLowerCase() === 'unknown' || dateStr.toLowerCase() === 'not specified') return '';
+                try {
+                    const d = new Date(dateStr);
+                    if (isNaN(d.getTime())) return dateStr;
+                    return d.toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
                 } catch(e) {
                     return dateStr;
                 }
@@ -1126,7 +1140,9 @@
                 const tr = document.createElement('tr');
                 tr.setAttribute('data-url', job.url);
                 const evalModel = job.eval_model || '';
-                const tailorModel = (sharedJobsState[job.url] && sharedJobsState[job.url].tailor_model) || job.tailor_model || '';
+                                const tailorModel = (sharedJobsState[job.url] && sharedJobsState[job.url].tailor_model) || job.tailor_model || '';
+                const tailoredAtStr = (sharedJobsState[job.url] && sharedJobsState[job.url].tailored_at) || job.tailored_at || '';
+                const tailoredAtVal = formatDateTime(tailoredAtStr);
                 tr.setAttribute('data-eval-model', evalModel);
                 tr.setAttribute('data-tailor-model', tailorModel);
 
@@ -1189,6 +1205,7 @@
                         ${(sharedJobsState[job.url] && sharedJobsState[job.url].resume_url) ? `<a href="${sharedJobsState[job.url].resume_url}" target="_blank" style="font-size:0.75em; color:var(--color-yes); text-decoration:none; border:1px solid rgba(16,185,129,0.3); padding:2px 6px; border-radius:4px; display:inline-block; margin-bottom:3px;">CV</a>` : ''}
                         ${(sharedJobsState[job.url] && sharedJobsState[job.url].cover_letter_url) ? `<a href="${sharedJobsState[job.url].cover_letter_url}" target="_blank" style="font-size:0.75em; color:var(--color-maybe); text-decoration:none; border:1px solid rgba(96,165,250,0.3); padding:2px 6px; border-radius:4px; display:inline-block;">Letter</a>` : ''}
                     </td>
+                    <td class="col-tailored-date" data-value="${tailoredAtStr}">${tailoredAtVal}</td>
                     <td class="col-tailor" data-value="${tailorModel || 'Unknown'}">${tailorModel ? `<span class="source-tag">${tailorModel}</span>` : '<span style="color:var(--text-secondary);font-style:italic;">Unknown</span>'}</td>
                 `;
                 tbody.appendChild(tr);
@@ -1207,7 +1224,8 @@
                 } else if (colIndex == 6) {
                     document.querySelectorAll('#posted-days-filter').forEach(el => el.value = '');
                 } else if (colIndex == 7) {
-                    document.querySelectorAll('#deadline-days-filter').forEach(el => el.value = '');
+                                document.querySelectorAll('#deadline-days-filter').forEach(el => el.value = '');
+            document.querySelectorAll('#tailored-days-filter').forEach(el => el.value = '');
                 }
             }
             const dropdown = document.getElementById(`ms-dropdown-${colIndex}`);
@@ -1230,7 +1248,8 @@
                 window.filterMsOptions(input);
             });
             document.querySelectorAll('#posted-days-filter').forEach(el => el.value = '');
-            document.querySelectorAll('#deadline-days-filter').forEach(el => el.value = '');
+                        document.querySelectorAll('#deadline-days-filter').forEach(el => el.value = '');
+            document.querySelectorAll('#tailored-days-filter').forEach(el => el.value = '');
             document.querySelectorAll('#job-id-filter').forEach(el => el.value = '');
             selectedLlmModels.clear();
             buildLlmFilter();
@@ -1293,7 +1312,7 @@
             document.querySelectorAll('body > .ms-dropdown').forEach(el => el.remove());
 
             // Build the multi-select dropdowns for columns 1 to 15
-            for (let i = 1; i <= 15; i++) {
+            for (let i = 1; i <= 16; i++) {
                 const uniqueValues = new Set();
                 _rowCache.forEach(({ vals }) => {
                     const val = vals[i];
@@ -1315,6 +1334,12 @@
                     customDateInput = `
                         <div style="padding: 0 0 4px 0;">
                             <input type="number" id="posted-days-filter" placeholder="Within X days..." style="width: 100%; padding: 4px; font-size: 0.75rem; background: rgba(0,0,0,0.3); color: white; border: 1px solid var(--border-color); border-radius: 4px;" onkeyup="filterTable()" onchange="filterTable()" min="0">
+                        </div>
+                    `;
+                                } else if (i === 15) {
+                    customDateInput = `
+                        <div style="padding: 0 0 4px 0;">
+                            <input type="number" id="tailored-days-filter" placeholder="Within X days..." style="width: 100%; padding: 4px; font-size: 0.75rem; background: rgba(0,0,0,0.3); color: white; border: 1px solid var(--border-color); border-radius: 4px;" onkeyup="filterTable()" onchange="filterTable()" min="0">
                         </div>
                     `;
                 } else if (i === 7) {
@@ -1366,9 +1391,11 @@
                     const deadlineInput = document.getElementById('deadline-days-filter');
                     if (postedInput && saved.postedLimit !== null && saved.postedLimit !== undefined) postedInput.value = saved.postedLimit;
                     if (deadlineInput && saved.deadlineLimit !== null && saved.deadlineLimit !== undefined) deadlineInput.value = saved.deadlineLimit;
+                    const tailoredInput = document.getElementById('tailored-days-filter');
+                    if (tailoredInput && saved.tailoredLimit !== null && saved.tailoredLimit !== undefined) tailoredInput.value = saved.tailoredLimit;
                     
                     if (saved.colFilters) {
-                        for (let i = 1; i <= 15; i++) {
+                        for (let i = 1; i <= 16; i++) {
                             const dropdown = document.getElementById(`ms-dropdown-${i}`);
                             if (!dropdown) continue;
                             if (saved.colFilters[i]) {
@@ -1476,16 +1503,18 @@
 
             const postedDaysInput = document.getElementById('posted-days-filter');
             const deadlineDaysInput = document.getElementById('deadline-days-filter');
-            const jobIdInput = document.getElementById('job-id-filter');
+            const tailoredDaysInput = document.getElementById('tailored-days-filter');
             const postedLimit = (postedDaysInput && postedDaysInput.value) ? parseInt(postedDaysInput.value) : null;
             const deadlineLimit = (deadlineDaysInput && deadlineDaysInput.value) ? parseInt(deadlineDaysInput.value) : null;
+            const tailoredLimit = (tailoredDaysInput && tailoredDaysInput.value) ? parseInt(tailoredDaysInput.value) : null;
+            const jobIdInput = document.getElementById('job-id-filter');
             const jobIdList = (jobIdInput && jobIdInput.value) ? jobIdInput.value.split(',').map(s => s.trim().toLowerCase()).filter(s => s.length > 0) : [];
 
             const today = new Date();
             today.setHours(0,0,0,0);
 
             const filters = {};
-            for (let i = 1; i <= 15; i++) {
+            for (let i = 1; i <= 16; i++) {
                 const dropdown = document.getElementById(`ms-dropdown-${i}`);
                 if (!dropdown) continue;
                 const checked = Array.from(dropdown.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value);
@@ -1494,6 +1523,7 @@
                 if (i === 1 && jobIdList.length > 0) summaryTexts = jobIdList;
                 if (i === 6 && postedLimit !== null && !isNaN(postedLimit)) summaryTexts.unshift(`< ${postedLimit}d`);
                 if (i === 7 && deadlineLimit !== null && !isNaN(deadlineLimit)) summaryTexts.unshift(`< ${deadlineLimit}d`);
+                if (i === 15 && tailoredLimit !== null && !isNaN(tailoredLimit)) summaryTexts.unshift(`< ${tailoredLimit}d`);
 
                 const summaryDiv = document.getElementById(`active-filters-${i}`);
                 if (summaryDiv) {
@@ -1507,7 +1537,7 @@
                     }
                 }
 
-                if (checked.length > 0 || (i === 1 && jobIdList.length > 0) || (i === 6 && postedLimit !== null && !isNaN(postedLimit)) || (i === 7 && deadlineLimit !== null && !isNaN(deadlineLimit))) {
+                if (checked.length > 0 || (i === 1 && jobIdList.length > 0) || (i === 6 && postedLimit !== null && !isNaN(postedLimit)) || (i === 7 && deadlineLimit !== null && !isNaN(deadlineLimit)) || (i === 15 && tailoredLimit !== null && !isNaN(tailoredLimit))) {
                     filters[i] = checked;
                 }
             }
@@ -1518,6 +1548,7 @@
                 const filtersToSave = {
                     postedLimit: (!isNaN(postedLimit) ? postedLimit : null),
                     deadlineLimit: (!isNaN(deadlineLimit) ? deadlineLimit : null),
+                    tailoredLimit: (!isNaN(tailoredLimit) ? tailoredLimit : null),
                     colFilters: filters,
                     llmModels: Array.from(selectedLlmModels)
                 };
@@ -1539,7 +1570,7 @@
                 const { vals, postedMs, deadlineMs } = entry;
                 let show = true;
 
-                for (let i = 1; i <= 15; i++) {
+                for (let i = 1; i <= 16; i++) {
                     if (!filters[i]) continue;
                     const val = vals[i] || '';
                     let passesCheckbox = filters[i].length === 0 || filters[i].includes(val);
@@ -1561,6 +1592,13 @@
                         const passesDate = deadlineMs !== null &&
                             Math.ceil((deadlineMs - todayMs) / DAY_MS) >= 0 &&
                             Math.ceil((deadlineMs - todayMs) / DAY_MS) <= deadlineLimit;
+                        passesCheckbox = filters[i].length === 0 ? passesDate : (passesCheckbox || passesDate);
+                    }
+
+                    if (i === 15 && tailoredLimit !== null && !isNaN(tailoredLimit)) {
+                        const passesDate = entry.tailoredMs !== null &&
+                            Math.ceil((todayMs - entry.tailoredMs) / DAY_MS) >= 0 &&
+                            Math.ceil((todayMs - entry.tailoredMs) / DAY_MS) <= tailoredLimit;
                         passesCheckbox = filters[i].length === 0 ? passesDate : (passesCheckbox || passesDate);
                     }
 
@@ -1588,6 +1626,7 @@
             }
 
             const activeTotal = _rowCache ? _rowCache.length : allJobs.length;
+
             const counter = document.getElementById('listings-counter');
             if (counter) {
                 let text = `<strong id="stat-total" style="cursor:help;border-bottom:1px dashed rgba(255,255,255,0.4);">${visibleCount}</strong>`;
@@ -1625,7 +1664,7 @@
 
         function updateDropdownOptions(filters, jobIdList, postedLimit, deadlineLimit, todayMs, DAY_MS) {
             const validValuesForCol = {};
-            for (let i = 1; i <= 15; i++) validValuesForCol[i] = new Set();
+            for (let i = 1; i <= 16; i++) validValuesForCol[i] = new Set();
             
             for (let r = 0; r < _rowCache.length; r++) {
                 const entry = _rowCache[r];
@@ -1634,7 +1673,7 @@
                 let failedCount = 0;
                 let failedCol = -1;
                 
-                for (let i = 1; i <= 15; i++) {
+                for (let i = 1; i <= 16; i++) {
                     if (!filters[i]) continue;
                     let passes = filters[i].length === 0 || filters[i].includes(vals[i] || '');
                     if (i === 1 && jobIdList.length > 0) {
@@ -1663,7 +1702,7 @@
                 }
 
                 if (failedCount === 0 && llmPasses) {
-                    for (let i = 1; i <= 15; i++) {
+                    for (let i = 1; i <= 16; i++) {
                         if (vals[i]) validValuesForCol[i].add(vals[i]);
                     }
                 } else if (failedCount === 1 && llmPasses) {

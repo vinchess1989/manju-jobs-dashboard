@@ -32,6 +32,7 @@ When invoked, follow these exact steps to tailor a resume using your AI reasonin
    - `cover_letter.paragraphs`: 4-5 persuasive paragraphs tailored to the company and role. Write in Finnish if the job description is in Finnish, otherwise English.
    - Ensure you replace all instances of the template company ("Hiab") with the new company's name.
    - Update `job_id`, `job_title`, and `company` keys.
+   - Set `"tailored_at": "<current_iso_time>"` (e.g. `"2026-07-16T12:00:00+03:00"`) representing the exact time you are running this skill.
    - Set `"tailor_model": "Antigravity IDE"` in the new JSON.
 
 4. **Save the Tailored JSON**
@@ -55,6 +56,6 @@ When invoked, follow these exact steps to tailor a resume using your AI reasonin
      Run this script with `job_id` as the argument.
 
 6. **Run the Pipeline**
-   - Run the command: `powershell -ExecutionPolicy Bypass -Command "& 'venv\Scripts\Activate.ps1'; .\run_make_resume_pipeline.ps1"` (cwd: `c:\Users\vinee\manju_jobs`).
+   - Run the command: `powershell -ExecutionPolicy Bypass -Command "& 'venv\Scripts\Activate.ps1'; .\run_make_resume_pipeline.ps1 [job_id]"` (cwd: `c:\Users\vinee\manju_jobs`), replacing `[job_id]` with the actual job_id.
    - This executes the pipeline to build the PDFs, commit to GitHub, and sync the links to Firestore, automatically updating the HTML dashboard.
    - Inform the user that the pipeline completed successfully.
