@@ -1302,7 +1302,7 @@
                     const d = new Date(v);
                     return isNaN(d.getTime()) ? null : d.getTime();
                 };
-                return { el: row, vals, postedMs: parseMs(vals[6]), deadlineMs: parseMs(vals[7]), evalModel: row.getAttribute('data-eval-model') || '', tailorModel: row.getAttribute('data-tailor-model') || '' };
+                return { el: row, vals, postedMs: parseMs(vals[6]), deadlineMs: parseMs(vals[7]), tailoredMs: parseMs(vals[15]), evalModel: row.getAttribute('data-eval-model') || '', tailorModel: row.getAttribute('data-tailor-model') || '' };
             });
         }
 
@@ -1363,7 +1363,9 @@
                     </div>
                 `;
                 sortedVals.forEach(val => {
-                    optionsHtml += `<label class="ms-option"><input type="checkbox" value="${val.replace(/"/g, '&quot;')}"> ${val}</label>`;
+                    let displayVal = val;
+                    if (i === 15) displayVal = formatDateTime(val) || val;
+                    optionsHtml += `<label class="ms-option"><input type="checkbox" value="${val.replace(/"/g, '&quot;')}"> ${displayVal}</label>`;
                 });
                 
                 container.innerHTML = `
