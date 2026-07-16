@@ -1364,7 +1364,12 @@
                 `;
                 sortedVals.forEach(val => {
                     let displayVal = val;
-                    if (i === 15) displayVal = formatDateTime(val) || val;
+                    if (i === 15) {
+                        try {
+                            const d = new Date(val);
+                            if (!isNaN(d.getTime())) displayVal = d.toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+                        } catch(e) {}
+                    }
                     optionsHtml += `<label class="ms-option"><input type="checkbox" value="${val.replace(/"/g, '&quot;')}"> ${displayVal}</label>`;
                 });
                 
