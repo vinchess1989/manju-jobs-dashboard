@@ -136,6 +136,7 @@ Write the tailored JSON to `PRIVATE\Resumes\JOB_ID\JOB_ID_data.json` — overwri
 - `job_id`: set to `JOB_ID`
 - `job_title`: set to `JOB_TITLE` (exact string from jobs.json)
 - `company`: set to `COMPANY`
+- `tailored_at`: set to the current ISO timestamp (e.g., `"2026-07-16T12:00:00+03:00"`) representing the exact time you are running this skill.
 - `tailor_model`: set to `"claude-sonnet-4-6"`
 
 **`resume.role`:** `"JOB_TITLE Candidate"`
