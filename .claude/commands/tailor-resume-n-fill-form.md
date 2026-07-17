@@ -375,6 +375,22 @@ This rescans all Resumes/ folders, writes `input.csv`, and pushes the new PDF Gi
 
 ---
 
+## Step 6.5 — Upload application answers to Firestore
+
+Only run if at least one job produced a `JOB_ID_answers.json` file in this run.
+
+```powershell
+python upload_answers.py --job-id JOB_ID_1 JOB_ID_2 ...
+```
+
+This pushes each job's answers to the Firestore collection `application_answers` (one document per job_id), fetchable at:
+```
+https://firestore.googleapis.com/v1/projects/manju-jobs-dashboard/databases/(default)/documents/application_answers/<job_id>
+```
+No authentication is required to read this (same open-access pattern as the existing `shared_state/job_status` document) — treat these documents as world-readable if the document ID (job_id) is known.
+
+---
+
 ## Step 7 — Commit public repo
 
 ```powershell
@@ -391,9 +407,14 @@ If `input.csv` has no changes, skip the commit and note that it was already up t
 
 Print a summary table for all processed jobs:
 
-| Job ID | Title | Company | Resume PDF | Cover Letter PDF | Firestore |
-|--------|-------|---------|------------|------------------|-----------|
-| abc123 | ... | ... | filename.pdf | filename.pdf | ✓ |
+| Job ID | Title | Company | Resume PDF | Cover Letter PDF | Firestore | Answers |
+|--------|-------|---------|------------|------------------|-----------|---------|
+| abc123 | ... | ... | filename.pdf | filename.pdf | ✓ | ✓ (N questions) |
+
+For jobs with an answers upload, print the fetch URL:
+```
+https://firestore.googleapis.com/v1/projects/manju-jobs-dashboard/databases/(default)/documents/application_answers/<job_id>
+```
 
 Then note: "Dashboard links will appear live in the Docs column within ~30 seconds (Firebase realtime sync)."
 
