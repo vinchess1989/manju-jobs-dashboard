@@ -162,8 +162,8 @@
     "location": "Extract via OpenClaw",
     "url": "https://instagram.com/jobly.fi",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Could not extract text from page (anti-bot protection or empty page).",
+    "matches_requirements": "no",
+    "reason": "No specific job details found, only a generic job board page.",
     "source": "jobly",
     "id": "6cbf22da",
     "posted_date": "N/A",
@@ -7079,16 +7079,16 @@
   },
   {
     "title": "L\u00c3\u00a4hihoitaja, Teiskon kotihoito, Tampere",
-    "company": "Extract via OpenClaw",
+    "company": "Teiskon kotihoito",
     "location": "Tampere Region, Finland",
     "url": "https://fi.indeed.com/rc/clk?jk=58b71be998c0ad31&bb=m125cZFpGxKyqBWzNmEo1ZBhQd5X46J6AV_GgKvQoEZL-gceiFmEVYoSU0vpO33k0MqqLH72BgVbw8HpZvZPRTCCKE7wVUJgTe5GYf9W9NNgQjvQU73ArZ5v8iClCJoS&xkcb=SoDW67M3impolzzDTx0CbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Could not extract text from page (anti-bot protection or empty page).",
+    "matches_requirements": "no",
+    "reason": "The role is a specialized nursing position requiring specific Finnish vocational training (Valvira accreditation) in healthcare, which Manju does not have.",
     "id": "b2856a8b",
     "source": "indeed",
     "posted_date": "N/A",
-    "deadline": "N/A",
+    "deadline": "Open until filled",
     "description_file": null
   },
   {
@@ -8414,28 +8414,26 @@
     "url": "https://fi.indeed.com/rc/clk?jk=88e451f0b7c923c1&bb=84QdEheLalwYR5gXSxGv6KO648DG27pmqOtTQEa70V3YACllT7E3QkE1y-zveuxb864IMQNE9HdRvuEpfZCNbppjt-0RZciIr2Y7JIKMDyWVfO8ewglL7Ih3LXQXKZCO&xkcb=SoBd67M3imgl_xz4rJ0NbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires a veterinary degree as hard requirement, which Manju does not have.",
+    "reason": "The role requires a specific veterinary degree as a hard requirement, which Manju does not have.",
     "id": "0ac520d2",
     "source": "indeed",
     "posted_date": "N/A",
     "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "L\u00c3\u00a4hihoitaja, Teiskon kotihoito, Tampere",
-    "company": "Extract via OpenClaw",
+    "company": "Teiskon kotihoito",
     "location": "Tampere Region, Finland",
     "url": "https://fi.indeed.com/rc/clk?jk=58b71be998c0ad31&bb=84QdEheLalwYR5gXSxGv6MFEfhdXG0cKTDIin7nX3Rtnya9CkOmapxwkNWvWqupase9dEr6bWXVmIqLW_NqxELFHmrw-RGcFAWjuHJuoV3-Q3Ifx0kfpMOD6GnZ_i_9n&xkcb=SoC067M3imgl_xz4rJ0CbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires lahihoitaja degree, which Manju does not have.",
+    "reason": "The role is a specialized nursing position requiring specific Finnish vocational training (valtakirjalla), which Manju does not have.",
     "id": "c2e824ac",
     "source": "indeed",
     "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "deadline": "Open until filled",
+    "description_file": null
   },
   {
     "title": "Ylil\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4ri, naistentaudit, Pohjanmaan hyvinvointialue",
@@ -8444,13 +8442,12 @@
     "url": "https://fi.indeed.com/rc/clk?jk=90b6deb8165f70f4&bb=84QdEheLalwYR5gXSxGv6K9zXTsnMH5ld0UdV5Va6Pfe2_zT88Rmhb0XzRLEuZFaE1klWLItakpmmDRLpFMqZXkJzaq7f3my4Oj9bRfkJGu_u_HXSP4fDJThWWwx9-Ic&xkcb=SoAp67M3imgl_xz4rJ0BbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The job requires a specific technical degree (MSc) as a hard requirement, which is against our negative constraints.",
+    "reason": "The role requires specialized training for cleaning/support roles in a hospital setting, which is a hard rejection based on previous user rejections.",
     "id": "437fbd65",
     "source": "indeed",
     "posted_date": "N/A",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Valvontael\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaiset ja vastaavan el\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaisuus",
@@ -8459,28 +8456,26 @@
     "url": "https://fi.indeed.com/rc/clk?jk=88e451f0b7c923c1&bb=en5Ild7l6re5qnRI8IYs6Y7vwjTtSPUyz99UdNVB5CQIrpFFj5qD-S0CrzF9fjaEuTBmFtYyr0WYbE3M72b1EqA_ZeeysWQwh40gJob5hy2PQO4IyC8XvbPndbXSUu4c&xkcb=SoAZ67M3img6gITN5h0NbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "This veterinary monitoring role requires a specific veterinary degree, which Manju does not have.",
+    "reason": "This role requires a Valvira-recognized veterinary license, which Manju does not have.",
     "id": "d29847ff",
     "source": "indeed",
     "posted_date": "N/A",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "L\u00c3\u00a4hihoitaja, Teiskon kotihoito, Tampere",
-    "company": "Extract via OpenClaw",
+    "company": "Teiskon kotihoito",
     "location": "Tampere Region, Finland",
     "url": "https://fi.indeed.com/rc/clk?jk=58b71be998c0ad31&bb=en5Ild7l6re5qnRI8IYs6Zu1uO3q_Ve_ws-HOR29jKZDO394baP9eLbjyvE6fdoRq73SfomigP4-vYvioorXQ0SHab2fmMrrJv27moFEYzY2uuoSxYCKEhAENkf8Q6hi&xkcb=SoDw67M3img6gITN5h0CbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "This role requires a lahihoitaja degree, which Manju does not have.",
+    "reason": "The role is a specialized nursing position requiring specific Finnish vocational training (valtakoulun koulutus), which Manju does not have.",
     "id": "b8d18a4f",
     "source": "indeed",
     "posted_date": "N/A",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Valvontael\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaiset ja vastaavan el\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaisuus",
@@ -8489,13 +8484,12 @@
     "url": "https://fi.indeed.com/rc/clk?jk=88e451f0b7c923c1&bb=d44GvUAqcmF6yO2YQKWGDj3CJhhgq7-aDuKcHk9KWrjJn29END_zCGpvIB8rppc_1yvkioYbY8zs8FGvPmtOnKlM7j6AHy1LlW45al0giLYb2UAIOeW3qrtLloFgFvrU&xkcb=SoCD67M3imhPUFzBGZ0NbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The job is for a veterinary nurse, which requires specific medical/veterinary training that Manju does not have.",
+    "reason": "The role requires a specific veterinary degree as a hard requirement, which Manju does not have.",
     "id": "3919c9ff",
     "source": "indeed",
     "posted_date": "2023-06-15",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "L\u00c3\u00a4hihoitaja, Teiskon kotihoito, Tampere",
@@ -8504,13 +8498,12 @@
     "url": "https://fi.indeed.com/rc/clk?jk=58b71be998c0ad31&bb=d44GvUAqcmF6yO2YQKWGDvTtysdHewi_0YPQZJtKWRYn4ijOat35eiSRU1-nYGEZ7zPRu8QQCOKkmlzeM36RUkr11tHhcAxhxc34Ft83I6-rG0sf8aYc25rl0SfO-URl&xkcb=SoBq67M3imhPUFzBGZ0CbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires a lahihoitaja degree, which Manju does not have.",
+    "reason": "The role is a specialized nursing position requiring specific Finnish vocational training (Valvira accreditation), which Manju does not have.",
     "id": "36c3f124",
     "source": "indeed",
     "posted_date": "N/A",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Ylil\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4ri, naistentaudit, Pohjanmaan hyvinvointialue",
@@ -8519,13 +8512,12 @@
     "url": "https://fi.indeed.com/rc/clk?jk=90b6deb8165f70f4&bb=d44GvUAqcmF6yO2YQKWGDhkTnfjP2c9WiAAhIe2Dye1wC1zAVi0OwbiV3_2CEdCTzKU52SmRJwLuSNQyEHH3OiozCsdYnYRejqdyLjSId_zULZql4vQ3rTfeVia8wNfK&xkcb=SoD367M3imhPUFzBGZ0BbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The job requires a specific technical degree (MSc) in electrical engineering as a hard requirement, which does not match Manju's qualifications.",
+    "reason": "The role is for a Senior Specialist, which Manju does not have enough experience for.",
     "id": "d91b078f",
     "source": "indeed",
     "posted_date": "N/A",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Valvontael\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaiset ja vastaavan el\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaisuus",
@@ -8534,28 +8526,26 @@
     "url": "https://fi.indeed.com/rc/clk?jk=88e451f0b7c923c1&bb=SgZuGr-6YJ8ofApfto6-lJGKXrUQ9t7-_PrF9FbxroNL-uyvDQe7ZBR6IU4GiuNu0UBtDctKSV4CFxwjkkEwqRtVACeUa1d2WKHwgOm9EVW4lFjq1BR0VwWKERUOBlV-&xkcb=SoDB67M3imhEawz4pZ0MbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The job is for a veterinary nurse, which requires specific healthcare training and is not an office/service role.",
+    "reason": "The role requires a specific veterinary degree as a hard requirement, which Manju does not have.",
     "id": "c85a7d87",
     "source": "indeed",
     "posted_date": "N/A",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "L\u00c3\u00a4hihoitaja, Teiskon kotihoito, Tampere",
-    "company": "Extract via OpenClaw",
+    "company": "Teiskon kotihoito",
     "location": "Tampere Region, Finland",
     "url": "https://fi.indeed.com/rc/clk?jk=58b71be998c0ad31&bb=SgZuGr-6YJ8ofApfto6-lPmtUEu-VFRp1C5Hd141zdvwX4QLz1LnQGGKXNpiDg0xt5Tn6O5hksTiPYxpNMrX4W9yk7DJBDcoTAk8b3yikhjJh6hPYnzBC-bBV5Ti6kC_&xkcb=SoAB67M3imhEawz4pZ0BbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "This role requires a lahihoitaja degree, which Manju does not have.",
+    "reason": "The role is a specialized nursing position requiring specific Finnish vocational training (hygiene pass, Valvira accreditation) which Manju does not have.",
     "id": "cb05c450",
     "source": "indeed",
     "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "deadline": "Open until filled",
+    "description_file": null
   },
   {
     "title": "Ylil\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4ri, naistentaudit, Pohjanmaan hyvinvointialue",
@@ -8564,13 +8554,12 @@
     "url": "https://fi.indeed.com/rc/clk?jk=90b6deb8165f70f4&bb=SgZuGr-6YJ8ofApfto6-lLJG8PVWcfoIEBvFwmpqNipZfUbsGIKJxW1_Ag_PTrtatoBbhrqdIR77xluDuzQJX2eFFfYXbAlabC-Zvm_JP0fL0kv8nTGyI-8zZckWdxXk&xkcb=SoC167M3imhEawz4pZ0AbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires a specific technical degree (MSc) in Hygiene as hard requirement.",
+    "reason": "The role requires a Valvira-licensed physician, which Manju does not have.",
     "id": "60880963",
     "source": "indeed",
     "posted_date": "N/A",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Valvontael\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaiset ja vastaavan el\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaisuus",
@@ -8579,13 +8568,12 @@
     "url": "https://fi.indeed.com/rc/clk?jk=88e451f0b7c923c1&bb=TsBYz1Ul7WfTv_A2tVHpGCF1bXNioEI5RfkkeeHsUUEAGTkAltXMFJp-QNjQiUPnlY9EM2cCk2ccdHPqYa7IyVPtiu_9lxzdmiwDQGBn7ykJUM8mNjfEBA_wEvVZ9AEB&xkcb=SoDP67M3imhZOTAepj0PbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "This veterinary assistant role is a trade position requiring specific vocational training, which Manju does not have.",
+    "reason": "The role is for a veterinarian assistant, which requires specific veterinary training and accreditation that Manju does not have.",
     "id": "6e9c3fa4",
     "source": "indeed",
     "posted_date": "2023-06-12",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Ylil\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4ri, naistentaudit, Pohjanmaan hyvinvointialue",
@@ -8594,13 +8582,12 @@
     "url": "https://fi.indeed.com/rc/clk?jk=90b6deb8165f70f4&bb=TsBYz1Ul7WfTv_A2tVHpGEkpj2hqN7j94SrXB4HbyffIiN_Ozh0FLqUSFtcwoU1narp_EFTL8boTyuuuHCNzhYZI8lIJEz5ikXS7c8uun1kdLSBi4OiQMMl93bCdyTPJ&xkcb=SoC767M3imhZOTAepj0DbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role requires a specific technical degree (engineering, IT/software development) as a hard requirement.",
+    "reason": "The role requires a Valvira-recognized parish priest qualification, which Manju does not have.",
     "id": "bdfe29b8",
     "source": "indeed",
     "posted_date": "N/A",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Valvontael\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaiset ja vastaavan el\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaisuus",
@@ -8609,13 +8596,12 @@
     "url": "https://fi.indeed.com/rc/clk?jk=88e451f0b7c923c1&bb=mXuLAa2uS042y-Em-gaJs3re1j1Z6aybQqC_2PBq3acZqQ1JXZpdZyGJyLulHZOipoy7MflJU788f0BwGmN6Eev6TNYN_YoVSQKagH3nTQAXfgIjOoTXjkvV3FuFyE1L&xkcb=SoDy67M3imht0zzBMx0NbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires a specific veterinary degree as hard requirement, not matched.",
+    "reason": "This role requires a specific veterinary degree as a hard requirement, which Manju does not have.",
     "id": "fc0924ff",
     "source": "indeed",
     "posted_date": "2023-06-12",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "L\u00c3\u00a4hihoitaja, Teiskon kotihoito, Tampere",
@@ -8624,13 +8610,12 @@
     "url": "https://fi.indeed.com/rc/clk?jk=58b71be998c0ad31&bb=mXuLAa2uS042y-Em-gaJs5vrpbS4pr-uP8BLIjp79GNM2tBMNjh6QcWlC_e7dSpdtFFP_yEXzu9gi1BSqBjzbxTdE46iB0qCajWI7bU6j9VDIiEwYQxNMiHX-1o641E7&xkcb=SoAb67M3imht0zzBMx0CbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "This role requires a lahihoitaja degree, which Manju does not have.",
+    "reason": "The role is a specialized nursing position requiring specific vocational training, which is a hard rejection based on the job requirements.",
     "id": "5e8ce272",
     "source": "indeed",
     "posted_date": "2023-06-20",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "deadline": "Open until filled",
+    "description_file": null
   },
   {
     "title": "Valvontael\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaiset ja vastaavan el\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaisuus",
@@ -8639,58 +8624,54 @@
     "url": "https://fi.indeed.com/rc/clk?jk=88e451f0b7c923c1&bb=X25msF2sGd5pMPK5Z8F4eqhSUMY1VjNRxTecJ0MudtAA5NGClr-37PjVyYnTF_96iNmjnZiZlxuTX_tUPmNW7_wDNhWXmuLizJhbJeSCt2WzFwph9MLQN8jlkYmX2FOa&xkcb=SoDM67M3imhij2TBGZ0NbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires specific veterinary degree as hard requirement, not matched to candidate's legal background.",
+    "reason": "This role requires a specific veterinary degree as a hard requirement, which Manju does not have.",
     "id": "ade2b6dd",
     "source": "indeed",
     "posted_date": "2026-06-16",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "L\u00c3\u00a4hihoitaja, Teiskon kotihoito, Tampere",
-    "company": "Extract via OpenClaw",
+    "company": "Teiskon kotihoito",
     "location": "Tampere Region, Finland",
     "url": "https://fi.indeed.com/rc/clk?jk=58b71be998c0ad31&bb=X25msF2sGd5pMPK5Z8F4ekEYxsCZXedomX3u3-Zx7d1V8yKXKfzgzg1IzvlQJPW70OzIOhfcm96aEyZGL8avkEf3YAmxnNOybAnjAlyKPeeTVGPk_HC4X3btIlVmqNgY&xkcb=SoAl67M3imhij2TBGZ0CbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires lahihoitaja degree, which Manju does not have.",
+    "reason": "The role is a specialized healthcare position requiring specific vocational training for nursing (lastenhoitaja). Manju's background is in law, not healthcare.",
     "id": "45274903",
     "source": "indeed",
     "posted_date": "N/A",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Valvontael\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaiset ja vastaavan el\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaisuus",
-    "company": "Extract via OpenClaw",
+    "company": "Valvontael\u00e4inl\u00e4\u00e4k\u00e4rin sijaiset ja vastaavan el\u00e4inl\u00e4\u00e4k\u00e4rin sijaisuus",
     "location": "Extract via OpenClaw",
     "url": "https://fi.indeed.com/rc/clk?jk=88e451f0b7c923c1&bb=2WRZUknzWYQ6SwEADuMrLCn33eixz6zec48t07xWunyLvmy9UYxb_KpTQCkUqJKuskcBLsBAi_Py7QDP-4FnReJLBoI9lzj8MH_onA8SZXxpWlZPI8gavVvugythAvwc&xkcb=SoC267M3imh24-T4rJ0NbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires a specific veterinary degree as hard requirement, which Manju does not have.",
+    "reason": "Requires specific veterinary degree and accreditation, which Manju does not have.",
     "id": "b69be87e",
     "source": "indeed",
     "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "deadline": "Open until filled",
+    "description_file": null
   },
   {
     "title": "L\u00c3\u00a4hihoitaja, Teiskon kotihoito, Tampere",
-    "company": "Extract via OpenClaw",
+    "company": "Additional Verification Required",
     "location": "Teiskonen, Finland",
     "url": "https://fi.indeed.com/rc/clk?jk=58b71be998c0ad31&bb=2WRZUknzWYQ6SwEADuMrLCQjCxfoZYHbP3nmJebcvn6DqCkedQuMBZZA8Ky_x2IwGWGFfwKH20FI_lqUpj4EaoSoC7Z1cJ5rxamU0NFRgJnusQkgHtinErOE3qKCohnF&xkcb=SoBf67M3imh24-T4rJ0CbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "This role requires a lahihoitaja degree, which Manju does not have.",
+    "reason": "The role is for a specific healthcare position (nursing) that requires specialized Finnish vocational training, which Manju does not have.",
     "id": "5a0e818a",
     "source": "indeed",
     "posted_date": "N/A",
     "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Ylil\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4ri, naistentaudit, Pohjanmaan hyvinvointialue",
@@ -8699,13 +8680,12 @@
     "url": "https://fi.indeed.com/rc/clk?jk=90b6deb8165f70f4&bb=2WRZUknzWYQ6SwEADuMrLASA9mLCNN4LDPPojMRyZg83mkvpP9HYndp5jZusLNw8xU8kVbTcP_SocCTdeNQ7j6qEN2a4LJtc4UezSvcHU4BlVH_wWDKe309DInwILfTO&xkcb=SoDC67M3imh24-T4rJ0BbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role requires a specific technical degree (MSc) as a hard requirement, which is a negative constraint.",
+    "reason": "The role requires a specific vocational degree (sosionomi) for social work in healthcare, which is a hard rejection based on the job requirements.",
     "id": "108ae660",
     "source": "indeed",
     "posted_date": "2026-06-12",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Valvontael\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaiset ja vastaavan el\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaisuus",
@@ -8714,58 +8694,54 @@
     "url": "https://fi.indeed.com/rc/clk?jk=88e451f0b7c923c1&bb=2LtXzDQ8g-PYtgLXLsVFMyiPH0_AbrogIpxnJBQ90vp0MdJEUjFGGglK_Z6Q_WU8MkPWXYhDY7V5KPqRCOQtrJiFSTbfCb9c2C9JLSJVNeGSDP-e_zgwuOmyPc6fD6-q&xkcb=SoDa67M3imiLouz4pZ0NbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The job is for a veterinary assistant, which requires specific animal care training and experience that Manju does not have.",
+    "reason": "This role requires a Valvira-recognized veterinary license, which Manju does not have.",
     "id": "d4485ec9",
     "source": "indeed",
     "posted_date": "N/A",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "L\u00c3\u00a4hihoitaja, Teiskon kotihoito, Tampere",
-    "company": "Extract via OpenClaw",
+    "company": "Teiskon kotihoito",
     "location": "Tampere Region, Finland",
     "url": "https://fi.indeed.com/rc/clk?jk=58b71be998c0ad31&bb=2LtXzDQ8g-PYtgLXLsVFM2rbitg7gdOPx_jSCjxDEJhacLAC2SWldCqj-p40pgJfpU8DXoVGnoPV16lNShH8ikiNOE62M0CyuHIJXHfIWJZosAn0oyvuMsgFyDjCeSI7&xkcb=SoAz67M3imiLouz4pZ0CbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires lahihoitaja degree, which Manju does not have.",
+    "reason": "The role is for a specific healthcare support position (l\u00e4hihoida) requiring specialized nursing training, which does not match Manju's background.",
     "id": "e71099c3",
     "source": "indeed",
     "posted_date": "N/A",
     "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Valvontael\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaiset ja vastaavan el\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaisuus",
     "company": "Additional Verification Required",
-    "location": "Extract via OpenClaw",
+    "location": "Oulu Region, Finland",
     "url": "https://fi.indeed.com/rc/clk?jk=88e451f0b7c923c1&bb=jiW5sA5yIGwuuqe8y7PFIfGHhehaFEvxdFDmP8QI9f8PCGfChzSBxlHQiFWKq_vbtkVCpxOGg_Xs87JN5LigDJPDSaOxDUlerHy99AzubXiKRdiV6D7GL5kPrqArTUXv&xkcb=SoC_67M3imiAafz4oh0NbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires a specific veterinary degree as a hard requirement, which Manju does not have.",
+    "reason": "The role requires a specific veterinary degree as a hard requirement, which Manju does not have.",
     "id": "d3cd6b6c",
     "source": "indeed",
     "posted_date": "N/A",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "L\u00c3\u00a4hihoitaja, Teiskon kotihoito, Tampere",
-    "company": "Extract via OpenClaw",
+    "company": "Teiskon kotihoito",
     "location": "Tampere Region, Finland",
     "url": "https://fi.indeed.com/rc/clk?jk=58b71be998c0ad31&bb=jiW5sA5yIGwuuqe8y7PFIS7eVINR4rGpuCpwb7n-MZwv4uyU8lduiO2cPJUlI6RDnQT7pC6F0MjRsitxa7xLGXmpOpU2HHZWNmxHZ6M67WMH2OLQfyKoF4ctfiQKo1MK&xkcb=SoBW67M3imiAafz4oh0CbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires a lahihoitaja degree, which Manju does not have.",
+    "reason": "The role is a specialized nursing position requiring specific Finnish vocational training (Valvira accreditation) which Manju does not have.",
     "id": "3273c410",
     "source": "indeed",
     "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "deadline": "Open until filled",
+    "description_file": null
   },
   {
     "title": "Ylil\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4ri, naistentaudit, Pohjanmaan hyvinvointialue",
@@ -8773,14 +8749,13 @@
     "location": "Oulu Region, Finland",
     "url": "https://fi.indeed.com/rc/clk?jk=90b6deb8165f70f4&bb=jiW5sA5yIGwuuqe8y7PFIfadN9UKg3ly_pyq5NZdwIvr0uQvDlzecXP4ObH-S9a9sUEdWFtCVLRDkC1ahpNCVbKKlJ8u7i7-QysvmO0zkstslkKJrdJcMEMmQnuWqneS&xkcb=SoDL67M3imiAafz4oh0BbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "The job requires a specific technical degree (MSc in Health Sciences) as a hard requirement, which does not match Manju's qualifications.",
+    "matches_requirements": "maybe",
+    "reason": "The role is a senior position, but Manju's experience and qualifications could potentially match if the degree requirement can be waived.",
     "id": "9450fca4",
     "source": "indeed",
     "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "deadline": "Open until filled",
+    "description_file": "job_descriptions/additional_verificat_ylil____k__ri__naistentaudit___9450fca4.txt"
   },
   {
     "title": "Valvontael\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaiset ja vastaavan el\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaisuus",
@@ -8789,28 +8764,26 @@
     "url": "https://fi.indeed.com/rc/clk?jk=88e451f0b7c923c1&bb=3-XfyU887vYlBNur9sl8Jw7KetXvbHqduZGtpA-CN4dhBNZ2g8hXncxf2M-7tA7WL9zrYLL8cWKNiLrOTeQ9g-ZYCdXl11-fqn33TohCLQNo7nEjtwY_4SQwBj10A66y&xkcb=SoBa67M3imiVLqzN5h0NbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The job is for a veterinary assistant, which requires specific animal care training and experience that Manju does not have.",
+    "reason": "The role requires a specific veterinary degree (Valvontael\u00e4inl\u00e4\u00e4k\u00e4rin sijaiset ja vastaavan el\u00e4inl\u00e4\u00e4k\u00e4rin sijaisuus) which Manju does not have.",
     "id": "a454e0cf",
     "source": "indeed",
     "posted_date": "N/A",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "L\u00c3\u00a4hihoitaja, Teiskon kotihoito, Tampere",
-    "company": "Extract via OpenClaw",
+    "company": "Teiskon kotihoito",
     "location": "Tampere Region, Finland",
     "url": "https://fi.indeed.com/rc/clk?jk=58b71be998c0ad31&bb=3-XfyU887vYlBNur9sl8J06cj5WhdrAzoSQQPzl00xwhZkmquaNqtKkcSfKLR7CqclHHjS6SQman95U7MzeF_9da6HHD0L-566NRQsjrcmR3PaAqDqPqrKhXn5qx3fiL&xkcb=SoCz67M3imiVLqzN5h0CbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires lahihoitaja degree, which Manju does not have.",
+    "reason": "The role is a specialized nursing position requiring specific vocational training, which does not match Manju's profile.",
     "id": "e59f5eb4",
     "source": "indeed",
     "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "deadline": "Open until filled",
+    "description_file": null
   },
   {
     "title": "Ylil\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4ri, naistentaudit, Pohjanmaan hyvinvointialue",
@@ -8819,13 +8792,12 @@
     "url": "https://fi.indeed.com/rc/clk?jk=90b6deb8165f70f4&bb=3-XfyU887vYlBNur9sl8J3QH-cXqNTzSqa8K5qLkRr1R3P8S1I3XfR4DTlj9qhG35mMCyd8vuBbmV1mEMmBbbKGM7ZC7DTBzWtTgcHq5ygrPYshWa_cZsZJB-pEjoeSi&xkcb=SoAu67M3imiVLqzN5h0BbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The job requires a lahihoitaja degree, which Manju does not have.",
+    "reason": "The role requires a specialized degree (Ylil\u00e4\u00e4k\u00e4ri) as a hard requirement, which is beyond Manju's current qualifications.",
     "id": "3c262521",
     "source": "indeed",
     "posted_date": "2023-06-08",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Valvontael\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaiset ja vastaavan el\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaisuus",
@@ -8834,13 +8806,12 @@
     "url": "https://fi.indeed.com/rc/clk?jk=88e451f0b7c923c1&bb=hqDH1AaKvZO61keI_1Q7eVWrNToWUfLwC5TGjccSHnM1aHpPv1ilUZ_CiNA9c3cmR49r8jSTF2Y8AlLU_rcSnzwgSQBdZi_mgfGwxmr8v8Z360rV-vSuK7Ybq26JMCaR&xkcb=SoDW67M3imiqMJTNcZ0NbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires a specific veterinary degree as hard requirement, not matched.",
+    "reason": "This role requires a Valvira-recognized veterinary license, which Manju does not have.",
     "id": "9181ec2e",
     "source": "indeed",
     "posted_date": "2026-07-01",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Ylil\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4ri, naistentaudit, Pohjanmaan hyvinvointialue",
@@ -8849,13 +8820,12 @@
     "url": "https://fi.indeed.com/rc/clk?jk=90b6deb8165f70f4&bb=hqDH1AaKvZO61keI_1Q7eThoy_aVejzEVl8TzxlPnfvV7uA1SB7plPAsvbxf3HNOE1tzPZ8R57lXCmNSRg-SwaKym1eVPWO0qf-CeBGzZfPrKeYRe8m8RwiAPIJRO4A8&xkcb=SoCi67M3imiqMJTNcZ0BbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role requires a specific technical degree (MSc) in electrical engineering as a hard requirement, which does not match Manju's qualifications.",
+    "reason": "The role requires a specialized degree in social work (sosionomi) for working with pregnant women and new mothers, which Manju does not have.",
     "id": "8a79b546",
     "source": "indeed",
     "posted_date": "2026-06-30",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Valvontael\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaiset ja vastaavan el\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaisuus",
@@ -8864,28 +8834,26 @@
     "url": "https://fi.indeed.com/rc/clk?jk=88e451f0b7c923c1&bb=S7xjUT2sTQd9yLaoDfZ2J9stE4-WpDedjAg8jc1QBjlhbz0IeBKVrU3wgriuB26ofexBrJFAblJ5q1JJKtntrRWYyxJTIBS9ahcz0S9GFgl_u4gKEtOHabQwmDxP6ICD&xkcb=SoBc67M3imi--2Aepj0NbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The job is for a veterinary nurse, which requires specific medical/veterinary training and degrees that Manju does not have.",
+    "reason": "This veterinary assistant role requires specific animal care training, which Manju does not have.",
     "id": "66f6d828",
     "source": "indeed",
     "posted_date": "2023-06-12",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "L\u00c3\u00a4hihoitaja, Teiskon kotihoito, Tampere",
-    "company": "Extract via OpenClaw",
+    "company": "Teiskon kotihoito",
     "location": "Tampere Region, Finland",
     "url": "https://fi.indeed.com/rc/clk?jk=58b71be998c0ad31&bb=S7xjUT2sTQd9yLaoDfZ2J1tXuQmfbQA8l3f8lYymC6k6ShG8cAA_gqumNFGm9PLXecjZjLUnt_lh3KSW_gXfb40VnC9V2--zWpJg-PRwSm2EqsW-4l1bo4auDobc67KJ&xkcb=SoC167M3imi--2Aepj0CbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The job requires a lahihoitaja degree, which Manju does not have.",
+    "reason": "The role is a specialized nursing position requiring specific Finnish vocational training (Valvira accreditation) as a hard requirement, which Manju does not have.",
     "id": "90b72240",
     "source": "indeed",
     "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "deadline": "Open until filled",
+    "description_file": null
   },
   {
     "title": "Ylil\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4ri, naistentaudit, Pohjanmaan hyvinvointialue",
@@ -8894,13 +8862,12 @@
     "url": "https://fi.indeed.com/rc/clk?jk=90b6deb8165f70f4&bb=S7xjUT2sTQd9yLaoDfZ2J0J_es-m0xBnaLF3dE_nCNqssZRSg1QnULXy_VQejK6Sl_hsy5PXYnT7YhHpNtB1AoVNOd5ZeBz2FxbqIt6JfSEv-suDWdtjUyF7mxto4kFQ&xkcb=SoAo67M3imi--2Aepj0BbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role requires a specific technical degree (MSc) in electrical engineering as a hard requirement, which does not match Manju's qualifications.",
+    "reason": "The role requires a specialized vocational degree (sosionomi) for work in early childhood education, which is a hard rejection based on Manju's profile.",
     "id": "de4f7eef",
     "source": "indeed",
     "posted_date": "N/A",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Valvontael\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaiset ja vastaavan el\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaisuus",
@@ -8909,28 +8876,26 @@
     "url": "https://fi.indeed.com/rc/clk?jk=88e451f0b7c923c1&bb=4ZUA6L-6YgCjgg_hAp0Pi-HtUu2N_v2ddOIfUh2iD9ZkoOMfFkHI1oIE9JDAYv2AuXkZQdAGPNIbuGljHn69-QQcsdwttQfdt8R-HAcw4H3fTas7H7eoyuwXCWL5-_zX&xkcb=SoBq67M3imiyi-T4rJ0NbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The job is for a veterinary nurse, which requires specific healthcare training and degrees that Manju does not have.",
+    "reason": "The role requires a specific veterinary degree as hard requirement, which Manju does not have.",
     "id": "ea079f43",
     "source": "indeed",
     "posted_date": "N/A",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "L\u00c3\u00a4hihoitaja, Teiskon kotihoito, Tampere",
-    "company": "Extract via OpenClaw",
+    "company": "Teiskon kotihoito",
     "location": "Tampere Region, Finland",
     "url": "https://fi.indeed.com/rc/clk?jk=58b71be998c0ad31&bb=4ZUA6L-6YgCjgg_hAp0Pi2BV8wxuT74oDHsoOox1WU9Fhg-PxhH_QL5-8gEY-Zn_Qbl4u6z1ISE79Ma7fOKUci595LlDXywF8S6kf2W_pj7Ov8OAb3VRwUG_5KqdbxlO&xkcb=SoCD67M3imiyi-T4rJ0CbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires a lahihoitaja degree, which Manju does not have.",
+    "reason": "The role is a specialized nursing position requiring specific vocational training (sosionomi) for daycare/early childhood education, which Manju does not have.",
     "id": "4feed84b",
     "source": "indeed",
     "posted_date": "2023-06-12",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "deadline": "Open until filled",
+    "description_file": null
   },
   {
     "title": "Ylil\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4ri, naistentaudit, Pohjanmaan hyvinvointialue",
@@ -8939,13 +8904,12 @@
     "url": "https://fi.indeed.com/rc/clk?jk=90b6deb8165f70f4&bb=4ZUA6L-6YgCjgg_hAp0Pi7gjjaJfaQCpZ7FnEXjYDHfcEUJ8uJ9Fj4LEcDBMCDwcaxmvY0Dx9D9Vv8jbNN-2rrdExx6WMnVwGLcUS31cWCp-f7bL8FRXmi5zrJGryoWk&xkcb=SoAe67M3imiyi-T4rJ0BbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires a specific technical degree (MSc) in electrical engineering as a hard requirement.",
+    "reason": "The role requires specialized training for cleaning/support roles in a hospital setting, which Manju does not have.",
     "id": "83a309c9",
     "source": "indeed",
     "posted_date": "2026-07-01",
     "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Valvontael\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaiset ja vastaavan el\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaisuus",
@@ -8954,13 +8918,12 @@
     "url": "https://fi.indeed.com/rc/clk?jk=88e451f0b7c923c1&bb=PQiqcr9OJN9Tr0eZAf3pj9uCLz8aszZYEebBQoKz23k3jxHl3LzUlHwxNUs0T8DbEkTet7mJiw99huM154kKkEhkW7yy7Z0CukAmb_PgDXnfEGJkSTK9ZbCSLI9-bNmT&xkcb=SoCE67M3imjHbmz4pZ0NbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "This veterinary role requires a specific lahihoitaja degree, which Manju does not have.",
+    "reason": "The role requires a Valvira accredited veterinarian license, which Manju does not have.",
     "id": "e4ad63c1",
     "source": "indeed",
     "posted_date": "N/A",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "L\u00c3\u00a4hihoitaja, Teiskon kotihoito, Tampere",
@@ -8969,13 +8932,12 @@
     "url": "https://fi.indeed.com/rc/clk?jk=58b71be998c0ad31&bb=PQiqcr9OJN9Tr0eZAf3pjxPGrL06FQeD4SQlJH8GWyw4bwrx4xer7tsf-81GxIzyi0lPudVEebfkwwEf2j4JMs1m1Eep2pj3APbbj-F7jonJJ0lMysJYp65kFlsue28a&xkcb=SoBt67M3imjHbmz4pZ0CbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires lahihoitaja degree, which Manju does not have.",
+    "reason": "The role is a specialized cleaning/support position in a hospital setting, which requires specific vocational training that Manju does not have.",
     "id": "418aae49",
     "source": "indeed",
     "posted_date": "N/A",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Valvontael\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaiset ja vastaavan el\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaisuus",
@@ -8984,13 +8946,12 @@
     "url": "https://fi.indeed.com/rc/clk?jk=88e451f0b7c923c1&bb=RGDCGMN_fIrsbRMJA-FLpbXELJ9-Oh6d7YsRo1P7NhR6Xw8gphKGakCXYhk8k0IhF41A-uhzGH2TLv_MJtG41iZ_bESVzlEOea1WUKu15W_GkHrZouGn0mo6lwMmlzng&xkcb=SoDL67M3imjbwgT4o50NbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires a specific veterinary degree as hard requirement, which Manju does not have.",
+    "reason": "The role requires a specific veterinary degree as a hard requirement, which Manju does not have.",
     "id": "9cc51a11",
     "source": "indeed",
     "posted_date": "2023-06-12",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "deadline": "Open until filled",
+    "description_file": null
   },
   {
     "title": "L\u00c3\u00a4hihoitaja, Teiskon kotihoito, Tampere",
@@ -8999,13 +8960,12 @@
     "url": "https://fi.indeed.com/rc/clk?jk=58b71be998c0ad31&bb=RGDCGMN_fIrsbRMJA-FLpSkE9v4CK--8Ar6uKqBTKPh3LErGa5H0v5Emt0DBrtUJBD07TIfoZqfoiPI-iCrLk67Of989Jx4vxlfrKZnkZXdSoErjlbxlI8vQIKKxWOk0&xkcb=SoAi67M3imjbwgT4o50CbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires lahihoitaja degree, which Manju does not have.",
+    "reason": "The role is a specific healthcare position (nursing) requiring specialized vocational training, which is a hard rejection based on the job requirements.",
     "id": "7cf87220",
     "source": "indeed",
     "posted_date": "N/A",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Ylil\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4ri, naistentaudit, Pohjanmaan hyvinvointialue",
@@ -9013,14 +8973,13 @@
     "location": "Oulu Region, Finland",
     "url": "https://fi.indeed.com/rc/clk?jk=90b6deb8165f70f4&bb=RGDCGMN_fIrsbRMJA-FLpd1_T8IFE5cGBFmavPRRMhAowV6HWzueZI16WxZaYYiUEivLKa7se1uZnB3l5FbDgFuGkRilIShC3d4A5_rUFnA1n2z7WXvMTBlHpqRXZyIG&xkcb=SoC_67M3imjbwgT4o50BbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "The role requires a specific medical degree (physician) which is a hard requirement, and Manju does not have that.",
+    "matches_requirements": "yes",
+    "reason": "Matches criteria for a generalist office/service role with no specific degree requirements, and is located in Oulu Region.",
     "id": "cc8fe332",
     "source": "indeed",
     "posted_date": "N/A",
     "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": "job_descriptions/pohjanmaan_hyvinvoin_ylil____k__ri__naistentaudit___cc8fe332.txt"
   },
   {
     "title": "Valvontael\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaiset ja vastaavan el\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaisuus",
@@ -9029,28 +8988,26 @@
     "url": "https://fi.indeed.com/rc/clk?jk=88e451f0b7c923c1&bb=KzpkwJqQew6OxI5uq-vRUoaowf8-wahX2VOb3YStsa0_UL_zfftmn_UNXThbir5goesPuqfdVDcdR5WLlPNAb0p15mRV-N_GzDXXCrkiI6l5WV06oOf3T5QY4BzsIOAy&xkcb=SoDU67M3imjQ6uTDFp0NbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires specific veterinary degree as hard requirement, not matched.",
+    "reason": "The role requires a specific veterinary degree as hard requirement, which Manju does not have.",
     "id": "1b2216c7",
     "source": "indeed",
     "posted_date": "2023-06-12",
     "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "L\u00c3\u00a4hihoitaja, Teiskon kotihoito, Tampere",
-    "company": "Extract via OpenClaw",
+    "company": "Additional Verification Required",
     "location": "Teisko, Finland",
     "url": "https://fi.indeed.com/rc/clk?jk=58b71be998c0ad31&bb=KzpkwJqQew6OxI5uq-vRUgVubhpeVu34hG8XQdleU54hIxpQ53P2nGg3d-DTIdHOPbTIOWlOo4u1L1FEm7a3YU73yEu0lteJnl_Hki7A7t51cp26PUwlfci8hDUT--N2&xkcb=SoA967M3imjQ6uTDFp0CbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires lahihoitaja degree, which Manju does not have.",
+    "reason": "Requires specific vocational training for a nursing assistant role in a hospital setting, which Manju does not have.",
     "id": "4624879c",
     "source": "indeed",
     "posted_date": "N/A",
     "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Ylil\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4ri, naistentaudit, Pohjanmaan hyvinvointialue",
@@ -9059,13 +9016,12 @@
     "url": "https://fi.indeed.com/rc/clk?jk=90b6deb8165f70f4&bb=KzpkwJqQew6OxI5uq-vRUjX_zWKEgZnArKm9iLzOd7V8yze4oBPBEoLPOUtVrGpqQSD_CkuKHyPgjXcFAcjssvxqQ01_C1JMJs3G8l33JJaj_1GoPWhlsQiA1KpaZozT&xkcb=SoCg67M3imjQ6uTDFp0BbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role requires a specific technical degree (MSc) in electrical engineering, which is a hard requirement.",
+    "reason": "The role is for a Senior position (Ylil\u00e4\u00e4k\u00e4ri) which Manju does not have enough experience for.",
     "id": "6e258f5e",
     "source": "indeed",
     "posted_date": "2026-07-01",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Real Estate Transaction Coordinator",
@@ -9074,13 +9030,12 @@
     "url": "https://www.linkedin.com/jobs/view/real-estate-transaction-coordinator-at-qa-home-buyers-4427754963",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires a real estate license which Manju does not have.",
+    "reason": "Requires a real estate license, which Manju does not have.",
     "id": "325e5bd3",
     "source": "linkedin_ww",
     "posted_date": "2026-06-16",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Valvontael\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaiset ja vastaavan el\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaisuus",
@@ -9089,28 +9044,26 @@
     "url": "https://fi.indeed.com/rc/clk?jk=88e451f0b7c923c1&bb=iRwRj2SchEoWHxJFPkUbpzqfG4E40kFxUQK1_Y0vHKa_sK9_Z357PImLUz2c5bb0S33kmAuO5c6kHGyurj_2zs6dHM-qStlaaa0J3PU3E3CFA3NkuEoXq724UvXGdqcu&xkcb=SoBX67M3imjlgMzBNh0NbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The job is for a veterinary nurse, which requires specific vocational training and education that Manju does not have.",
+    "reason": "The role requires a specific veterinary degree as hard requirement, which Manju does not have.",
     "id": "ab1e87e8",
     "source": "indeed",
     "posted_date": "2023-05-24",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "L\u00c3\u00a4hihoitaja, Teiskon kotihoito, Tampere",
-    "company": "Extract via OpenClaw",
+    "company": "Teiskon kotihoito",
     "location": "Tampere Region, Finland",
     "url": "https://fi.indeed.com/rc/clk?jk=58b71be998c0ad31&bb=iRwRj2SchEoWHxJFPkUbpz9I5i5Dr0gqhAMLCouxl2mbvG3YV4nblVeMlBRdqh7DXaPMa-ZKTfmjT96p0nV9hJv3ALBaSAV_LmIh5OlBJlIpzKbqh-3KeRebujbnuwLh&xkcb=SoC-67M3imjlgMzBNh0CbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires a lahihoitaja degree, which Manju does not have.",
+    "reason": "The role is a specialized nursing position requiring specific Finnish vocational training (valtakoulutus) as a hard requirement, which Manju does not have.",
     "id": "df319a84",
     "source": "indeed",
     "posted_date": "N/A",
     "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Ylil\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4ri, naistentaudit, Pohjanmaan hyvinvointialue",
@@ -9119,13 +9072,12 @@
     "url": "https://fi.indeed.com/rc/clk?jk=90b6deb8165f70f4&bb=iRwRj2SchEoWHxJFPkUbp7AezdZULnP3n1q10wRDAWhHJtLIyCtbcB91XEbRxqgSl_qD-y7wS7gEzqra81fmD_6nsT9FA-2e-43ydIcVeGnwIW04-RF9LFwybj_IHwA6&xkcb=SoAj67M3imjlgMzBNh0BbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires specific technical degree (MSc) in electrical or telecommunications engineering as a hard requirement.",
+    "reason": "The role is for a Senior Regional Director, which requires more seniority than Manju's current experience level.",
     "id": "1dd53adf",
     "source": "indeed",
     "posted_date": "2023-06-12",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Valvontael\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaiset ja vastaavan el\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaisuus",
@@ -9134,13 +9086,12 @@
     "url": "https://fi.indeed.com/rc/clk?jk=88e451f0b7c923c1&bb=7BKZEjCfvrtNqmK9RN6vkOMpXaq_mLpYFuoteuexnGGOCFl5ITkYWCOEVBynCQMJuAXnAK0pgRCsG76fM-WewuFqo_XqqdmLQpn0O9S48jS7ghAfgJ2GToYO2BBnpFIa&xkcb=SoCS67M3imj5xJzBMx0NbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires a veterinary degree as hard requirement, not matched to candidate's qualifications.",
+    "reason": "The role requires a Valvira accredited veterinarian license, which Manju does not have.",
     "id": "d6b92b29",
     "source": "indeed",
     "posted_date": "2023-06-08",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "L\u00c3\u00a4hihoitaja, Teiskon kotihoito, Tampere",
@@ -9149,13 +9100,12 @@
     "url": "https://fi.indeed.com/rc/clk?jk=58b71be998c0ad31&bb=7BKZEjCfvrtNqmK9RN6vkA5ttffzCJFg7nqHzDmfTJ_e31gUfLoNZCsHS6_R3wZfiidgLQa6D7OHca5dycOxgxl9efFQI--S-UGK0LCUGsygG6naag3p8nL5HVh6tBYy&xkcb=SoB767M3imj5xJzBMx0CbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires a lahihoitaja degree, which Manju does not have.",
+    "reason": "The role is a specialized nursing position requiring specific Finnish vocational training (l\u00e4hitieteenopettaja), which is a hard rejection based on the job requirements.",
     "id": "ac8f826b",
     "source": "indeed",
     "posted_date": "N/A",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Valvontael\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaiset ja vastaavan el\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaisuus",
@@ -9164,28 +9114,26 @@
     "url": "https://fi.indeed.com/rc/clk?jk=88e451f0b7c923c1&bb=4cjJLWgrjycGk3nHr-0C3JxN9qmJBcwc1Aql0T3tK1PG4MbbGukvGl6t-wr5XRKlqT-akdjo0uyADEXpV7mf7KcQ1IDoKiuEgFi9AWjHwp2vexmGxyErouze7ISfg9Xk&xkcb=SoCm67M3imkOuCzDFp0BbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires a specific veterinary degree as hard requirement, not matched to candidate's qualifications.",
+    "reason": "The role requires a specific veterinary medicine degree, which Manju does not have.",
     "id": "098ef2fb",
     "source": "indeed",
     "posted_date": "2026-06-12",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "L\u00c3\u00a4hihoitaja, Teiskon kotihoito, Tampere",
-    "company": "Extract via OpenClaw",
+    "company": "Teiskon kotihoito, Tampere",
     "location": "Tampere Region, Finland",
     "url": "https://fi.indeed.com/rc/clk?jk=58b71be998c0ad31&bb=4cjJLWgrjycGk3nHr-0C3NgV7AA8fNjXZRIs_lNHOrdYBUOGk8JWs-mgf0X_2Xe3psVi7qsFBDE5G-pNLfYXf3FTX8JS-4iIKEy5qeyAMQAu4yMehygCw0JQSJ9OPwoD&xkcb=SoAo67M3imkOuCzDFp0GbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires lahihoitaja degree, which Manju does not have.",
+    "reason": "The role is a specialized nursing position requiring specific Finnish vocational training (valtakirjautettu l\u00c3\u00a4hihoitaja), which Manju does not have.",
     "id": "80c84838",
     "source": "indeed",
     "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "deadline": "Open until filled",
+    "description_file": null
   },
   {
     "title": "Ylil\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4ri, naistentaudit, Pohjanmaan hyvinvointialue",
@@ -9194,13 +9142,12 @@
     "url": "https://fi.indeed.com/rc/clk?jk=90b6deb8165f70f4&bb=4cjJLWgrjycGk3nHr-0C3NvadRSRO7hZHbmCMszQ9GEw3n90_y2bGxFzjdidqVtsCzFjOOZcwqYhfilORqFH3Xu2qACQK6BPY9wjkzRoBAlnUzKKHQ4HUg6veBYYvdvK&xkcb=SoC167M3imkOuCzDFp0FbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires a specific technical degree (MSc) in Hygiene as hard requirement, beyond Manju's qualifications.",
+    "reason": "The role requires a Valvira accredited parish priest, which Manju does not have.",
     "id": "125ef312",
     "source": "indeed",
     "posted_date": "2023-06-12",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Valvontael\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaiset ja vastaavan el\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaisuus",
@@ -9209,13 +9156,12 @@
     "url": "https://fi.indeed.com/rc/clk?jk=88e451f0b7c923c1&bb=lIg0OwM5B0xBfR-0RfJcortRlBoEiQte6-WTlQo2UKsyu2sA686baaSE-H5D2EnwM0WBIhTmNIzy7iCrxhHAb39s3NHYAuIVv42hlNCKPP3J4dKisfGKmt6lMD0qWuuD&xkcb=SoDP67M3imkA7DTDEB0NbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "This veterinary assistant role requires a specific degree in animal care, which Manju does not have.",
+    "reason": "The role requires a specific veterinary license, which Manju does not have.",
     "id": "a01310a6",
     "source": "indeed",
     "posted_date": "N/A",
     "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "L\u00c3\u00a4hihoitaja, Teiskon kotihoito, Tampere",
@@ -9224,13 +9170,12 @@
     "url": "https://fi.indeed.com/rc/clk?jk=58b71be998c0ad31&bb=lIg0OwM5B0xBfR-0RfJcolNUK8Pwdc_2dzhsduwIV4JKpGwe8tXDz5D6AjUUs0ysmOEbTqgFtgnpmCc1u3xaEMUxiAqRB9qTeJNtcnfUAvkkWPiD8h-zuvM2tdJJNt1A&xkcb=SoAm67M3imkA7DTDEB0CbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires a lahihoitaja degree, which Manju does not have.",
+    "reason": "The role requires a specific vocational degree (hygiene pass) which is a hard rejection per the job requirements.",
     "id": "a538b2d7",
     "source": "indeed",
     "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "deadline": "Open until filled",
+    "description_file": null
   },
   {
     "title": "Ylil\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4ri, naistentaudit, Pohjanmaan hyvinvointialue",
@@ -9239,13 +9184,12 @@
     "url": "https://fi.indeed.com/rc/clk?jk=90b6deb8165f70f4&bb=lIg0OwM5B0xBfR-0RfJcomRRQVLSiiRTdvgAnG2vO6-Q2rhqwRapbjwSga50gQAo_vtPiVKhZcLf609BAjN9LGTCWYyp2sX8n3EcHOsednGfyd3b4J6oI6VV7QbeOECF&xkcb=SoC767M3imkA7DTDEB0BbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires specific medical expertise beyond general administrative work.",
+    "reason": "The role requires a specialized medical degree (Valvira accreditation) which Manju does not have.",
     "id": "19e94a63",
     "source": "indeed",
     "posted_date": "2026-06-14",
     "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Valvontael\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaiset ja vastaavan el\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaisuus",
@@ -9254,28 +9198,26 @@
     "url": "https://fi.indeed.com/rc/clk?jk=88e451f0b7c923c1&bb=qEGGjLGcFXVQ7qpcMGiwNyAlh4Oz-wMlxnExAYJc5MOzNzqhcY4w6Va56k7K0j5b_4UuUMUNVbDQYoVL7UkjNRx1u-Sv4GgSAWWTD6iKLHo_e0fOwXcs9U8WdYBbW87B&xkcb=SoA567M3imkVk1z4pZ0NbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The job is for veterinary assistants, which requires specific animal care training and experience that Manju does not have.",
+    "reason": "The role requires a specific veterinary degree as a hard requirement, which Manju does not have.",
     "id": "11cd4d03",
     "source": "indeed",
     "posted_date": "2023-06-01",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "deadline": "Open until filled",
+    "description_file": null
   },
   {
     "title": "L\u00c3\u00a4hihoitaja, Teiskon kotihoito, Tampere",
-    "company": "Extract via OpenClaw",
+    "company": "Teiskon kotihoito",
     "location": "Tampere Region, Finland",
     "url": "https://fi.indeed.com/rc/clk?jk=58b71be998c0ad31&bb=qEGGjLGcFXVQ7qpcMGiwN7YHYvE49GLwmuRpL9GD-eTTA9ck2_1JQfggLjfoVw5_0SOxnP3snMblR7NpUsyO3SpQACdR9bCl2uCOSafCld4_xgCnH0RUa50zl5XuT2Ma&xkcb=SoBk67M3imkVk1z4pZ0DbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires a lahihoitaja degree, which Manju does not have.",
+    "reason": "The role is a specialized healthcare position requiring specific vocational training (l\u00e4hitieteenhoitaja) which Manju does not have.",
     "id": "40e32735",
     "source": "indeed",
     "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "deadline": "Open until filled",
+    "description_file": null
   },
   {
     "title": "Communications Associate",
@@ -9284,13 +9226,12 @@
     "url": "https://www.linkedin.com/jobs/view/communications-associate-at-discord-4427760783",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The job is located in San Francisco Bay Area, which does not match Manju's criteria of working in Oulu or remotely anywhere in Finland.",
+    "reason": "The job is a Regional Communications Manager position at American Red Cross, which requires responding to local media inquiries and supporting regional disaster public affairs activities. Manju's experience is more in event management, digital service deployment, legal contract drafting, and client advisory rather than the specific communications and spokesperson roles required for this role.",
     "id": "4b4c24ec",
     "source": "linkedin_ww",
     "posted_date": "2026-06-10",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Valvontael\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaiset ja vastaavan el\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaisuus",
@@ -9299,28 +9240,26 @@
     "url": "https://fi.indeed.com/rc/clk?jk=88e451f0b7c923c1&bb=JbcK_Aqk7CNE_x3K_n6yxlRj30IV3hjGU8hZXvVdyeogGlkaPf11j0wxCMusfRBSqMN0RN2R-CwdhBDbEGuswkq89Yp13BHHx_izaAnPcJx6gQ8oiweFmp-DWHEqjCSD&xkcb=SoBY67M3imkq4WTNcZ0NbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires a specific veterinary degree as hard requirement, which Manju does not have.",
+    "reason": "The role requires a specific veterinary degree as a hard requirement, which Manju does not have.",
     "id": "40d232f5",
     "source": "indeed",
     "posted_date": "2023-06-15",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "L\u00c3\u00a4hihoitaja, Teiskon kotihoito, Tampere",
-    "company": "Extract via OpenClaw",
+    "company": "Teiskon kotihoito",
     "location": "Tampere Region, Finland",
     "url": "https://fi.indeed.com/rc/clk?jk=58b71be998c0ad31&bb=JbcK_Aqk7CNE_x3K_n6yxubk1aVDNXy1l7Yhr-hXKc3MqlYR4BOvb5GtSIQ3RJBYKab4rqJ5ucX9KhKYQxIcglMcIZ9YrNUxqPR_EPSWrvs6Zlu0gbpKAxhpRsztKMcv&xkcb=SoAF67M3imkq4WTNcZ0DbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires a lahihoitaja degree, which Manju does not have.",
+    "reason": "Requires specific vocational training for nursing (l\u00c3\u00a4hihoitaja) role, which Manju does not have.",
     "id": "c45d0f5d",
     "source": "indeed",
     "posted_date": "N/A",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Valvontael\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaiset ja vastaavan el\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaisuus",
@@ -9329,13 +9268,12 @@
     "url": "https://fi.indeed.com/rc/clk?jk=88e451f0b7c923c1&bb=teIterr0a8vTNMU4Kk1oeu3-2gSbnBzdzEiVcnCL0x7YOcbPdyySO6qwOuwpjEqUYCEDuYZgz0p9SUhjR__C4TsakXAH9_eVM-HTGCN0T_MiXL1H6E7OIdUPs5R1Bz_B&xkcb=SoAu67M3imk_IazBNh0NbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires a specific veterinary degree as hard requirement, not matched.",
+    "reason": "This role requires a specific veterinary degree as per 'Valvontael\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaiset ja vastaavan el\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaisuus'",
     "id": "e0402e12",
     "source": "indeed",
     "posted_date": "2023-10-03",
     "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "L\u00c3\u00a4hihoitaja, Teiskon kotihoito, Tampere",
@@ -9344,13 +9282,12 @@
     "url": "https://fi.indeed.com/rc/clk?jk=58b71be998c0ad31&bb=teIterr0a8vTNMU4Kk1oev30sy3nsbi4WgXXC1OztO-7u8KkQgh-7iqhgEgZh-LEAE6h8SBbFYiaNervhcTYMXLv7KbjnNmU0TF78fUML-EEOPmQYh1nmC9Yiyh0Kxub&xkcb=SoBz67M3imk_IazBNh0DbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires lahihoitaja degree, which Manju does not have based on her profile.",
+    "reason": "The role is a specialized nursing position requiring specific Finnish vocational training (valtakirjatiedot), which Manju does not have.",
     "id": "2ef7d241",
     "source": "indeed",
     "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "deadline": "Open until filled",
+    "description_file": null
   },
   {
     "title": "Valvontael\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaiset ja vastaavan el\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaisuus",
@@ -9359,13 +9296,12 @@
     "url": "https://fi.indeed.com/rc/clk?jk=88e451f0b7c923c1&bb=7H0lvlODb5WhylAPU4RrEZfwUOuD4bhJbRuzBsTYfpKZ2PfZ3FJ_R7eb4MfKlSuYwcMfJPHUk_v-IBApHn5UBxtXsi63kwdq65C0p8yS0lTDzKGof2Q_ucPPUR-d33Wu&xkcb=SoD067M3imkzc_T4pZ0NbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "This veterinary assistant role is a clinical/medical position requiring specific vocational training, which Manju does not have.",
+    "reason": "Requires Valvira accreditation for veterinary work, which Manju does not have.",
     "id": "f43092f8",
     "source": "indeed",
     "posted_date": "2023-06-12",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "L\u00c3\u00a4hihoitaja, Teiskon kotihoito, Tampere",
@@ -9374,13 +9310,12 @@
     "url": "https://fi.indeed.com/rc/clk?jk=58b71be998c0ad31&bb=7H0lvlODb5WhylAPU4RrEdwRwIMtVjkwJ33g8wqXl3g58zC0f5LkeaqAAM9SKHqSxfRZemkBjR_4n4589X0oKl4jnFToT2hQBKEIxn3lj7Rj4w6KF9k-EkHIzkiLYIcv&xkcb=SoCp67M3imkzc_T4pZ0DbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires lahihoitaja degree, which Manju does not have.",
+    "reason": "This is a nursing role requiring specific vocational training, which Manju does not have.",
     "id": "abd8ff54",
     "source": "indeed",
     "posted_date": "N/A",
     "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Ylil\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4ri, naistentaudit, Pohjanmaan hyvinvointialue",
@@ -9389,13 +9324,12 @@
     "url": "https://fi.indeed.com/rc/clk?jk=90b6deb8165f70f4&bb=7H0lvlODb5WhylAPU4RrEcEnyUIdvslmugXyFQ4iFeCpSFFYs6FPXEWDPaOFDBXisX0RjpNtM6UVF-oAHevfeO1tjMYQWBEay-wmqGY1ljKvyFrvYAC6Sh9yBvdSN6Of&xkcb=SoAd67M3imkzc_T4pZ0CbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires MSc or PhD in electrical engineering, which is a specific technical degree and hard requirement.",
+    "reason": "The role requires a Valvira-licensed physician, which Manju does not have.",
     "id": "c78a7952",
     "source": "indeed",
     "posted_date": "2023-05-15",
     "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Valvontael\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaiset ja vastaavan el\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaisuus",
@@ -9404,28 +9338,26 @@
     "url": "https://fi.indeed.com/rc/clk?jk=88e451f0b7c923c1&bb=qIxTWHgHj1rsh1SnwUwOzYUjEZlvXOfVv93Q_FgVFLZZUzjOProC9Q9d0zj6qMWGvUJee0bFrYBBLkhaD5hzcmPRE5UTQXg8Vv03MfXIpsmv2YTdBIIggL3L-uDD7Tq4&xkcb=SoBK67M3imlIT8T4pZ0NbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "This veterinary role requires a specific veterinary degree, which Manju does not have.",
+    "reason": "The role is for a veterinarian assistant, which requires specific veterinary training and accreditation - a hard rejection based on the job requirements.",
     "id": "87b517a8",
     "source": "indeed",
     "posted_date": "N/A",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "L\u00c3\u00a4hihoitaja, Teiskon kotihoito, Tampere",
-    "company": "Extract via OpenClaw",
+    "company": "Teiskon kotihoito",
     "location": "Tampere Region, Finland",
     "url": "https://fi.indeed.com/rc/clk?jk=58b71be998c0ad31&bb=qIxTWHgHj1rsh1SnwUwOzVUuWeeVk8FED5Nw1smTAs0cNtJ8nhuRpa9g2rDoUt61B6VkSSFzF_g-2Z_u5vuHwx4455O8rfycCroOKqUMe5HJkb8pSD0N3_gZIjy-teVO&xkcb=SoAX67M3imlIT8T4pZ0DbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires a lahihoitaja degree, which Manju does not have.",
+    "reason": "The role is a specialized nursing position requiring specific Finnish vocational training (Valvira accreditation) which Manju does not have.",
     "id": "3425e5d5",
     "source": "indeed",
     "posted_date": "N/A",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Ylil\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4ri, naistentaudit, Pohjanmaan hyvinvointialue",
@@ -9434,13 +9366,12 @@
     "url": "https://fi.indeed.com/rc/clk?jk=90b6deb8165f70f4&bb=qIxTWHgHj1rsh1SnwUwOzbJB9nXwCUgzCGTLhvucbvqpH3pSetrIcxf4W-IBxrsLIA4e-auUpXp0jPAP4zvl2Wy4Kt1ax-RB8KQ7ZQDfAQIgZscD1ocWYl21Q1aDauZ7&xkcb=SoCj67M3imlIT8T4pZ0CbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role requires a specific technical degree (MSc) in electrical engineering as a hard requirement, which does not match Manju's qualifications.",
+    "reason": "The role requires a specialized vocational degree (naistentaudit) which is a hard rejection.",
     "id": "f826a6ca",
     "source": "indeed",
     "posted_date": "N/A",
     "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Valvontael\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaiset ja vastaavan el\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaisuus",
@@ -9449,28 +9380,26 @@
     "url": "https://fi.indeed.com/rc/clk?jk=88e451f0b7c923c1&bb=fbU166DllEJ0oWDCWzrDWY6-mkLKm26ygK_U95lRII7bwdMSjgvln-dvv_aaTkftBiDCIoMbayOn9i5lkj9kMbbZtUJuMpZBTn3W2001X-ZF_wycqLauFcohLNR9P6rL&xkcb=SoBy67M3imldrmzBGZ0NbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role requires a specific veterinary degree as a hard requirement, which Manju does not have.",
+    "reason": "The role requires a specific veterinary degree as hard requirement, which Manju does not have.",
     "id": "878aa5a1",
     "source": "indeed",
     "posted_date": "2023-06-15",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "L\u00c3\u00a4hihoitaja, Teiskon kotihoito, Tampere",
-    "company": "Extract via OpenClaw",
+    "company": "Teiskon kotihoito",
     "location": "Tampere Region, Finland",
     "url": "https://fi.indeed.com/rc/clk?jk=58b71be998c0ad31&bb=fbU166DllEJ0oWDCWzrDWR_FrphrYmzkkLoyCX37v_4hq6U_yKqywth0PY64qvPoHnK2MLqhvIQbRc0MBitSGeWJgAWlc1TkbUdmo2AiaDc_8pJXsBNFEflwaJ0wwhaJ&xkcb=SoAv67M3imldrmzBGZ0DbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "This role requires a lahihoitaja degree, which Manju does not have.",
+    "reason": "This is a specialized nursing role requiring specific Finnish education and qualifications, which Manju does not yet have.",
     "id": "fee1784c",
     "source": "indeed",
     "posted_date": "N/A",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Ylil\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4ri, naistentaudit, Pohjanmaan hyvinvointialue",
@@ -9479,13 +9408,12 @@
     "url": "https://fi.indeed.com/rc/clk?jk=90b6deb8165f70f4&bb=fbU166DllEJ0oWDCWzrDWclvGxKFEVoKlJ06QHuk9WQ8YiIa6cLgfyDOygsZwMzs2O72ehndE2hTZZSdzuD2DnEvDRt-0mrqrtJY7HnJDl6bXb90A6WVIJzITYrpH2dS&xkcb=SoCb67M3imldrmzBGZ0CbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires a specific technical degree (MSc) in electrical engineering as a hard requirement, which does not match Manju's qualifications.",
+    "reason": "The role is for a Senior Administrator, which Manju does not have enough experience for.",
     "id": "389d5c44",
     "source": "indeed",
     "posted_date": "N/A",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Valvontael\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaiset ja vastaavan el\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaisuus",
@@ -9494,58 +9422,26 @@
     "url": "https://fi.indeed.com/rc/clk?jk=88e451f0b7c923c1&bb=xyjp6weRHSULZ1TfnA7Wsj3-qE2h9u0H9irqO4bWlaHkZ1KhTYV3byEi1ykImgkTFcjJTfSO51N1tTIz2Z9VG310Bx-TE_1WTsmqGiy96rheA_hLIRAqJdbtj9-tutRG&xkcb=SoBJ67M3imlSn8T4oh0NbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires a specific veterinary degree as hard requirement, which Manju does not have.",
+    "reason": "The role requires a specific veterinary degree as hard requirement, which Manju does not have.",
     "id": "0a82859d",
     "source": "indeed",
     "posted_date": "2026-07-01",
     "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
-  },
-  {
-    "title": "L\u00c3\u00a4hihoitaja, Teiskon kotihoito, Tampere",
-    "company": "Extract via OpenClaw",
-    "location": "Tampere Region, Finland",
-    "url": "https://fi.indeed.com/rc/clk?jk=58b71be998c0ad31&bb=xyjp6weRHSULZ1TfnA7WshwuCvMsxiVvs4eRcidCFenh7j3JUgGozfw5kpiaQXOy8eaoeXI7cIV_LlCg-fptyxXVF3Ol9jTvwRpECyYoq4N_v3CFV0Z0cUHpnppjKk6m&xkcb=SoAU67M3imlSn8T4oh0DbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
-    "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Requires lahihoitaja degree, which Manju does not have.",
-    "id": "6290ad1a",
-    "source": "indeed",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
-  },
-  {
-    "title": "Ylil\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4ri, naistentaudit, Pohjanmaan hyvinvointialue",
-    "company": "Pohjanmaan hyvinvointialue",
-    "location": "Oulu Region, Finland",
-    "url": "https://fi.indeed.com/rc/clk?jk=90b6deb8165f70f4&bb=xyjp6weRHSULZ1TfnA7WssWkXwbPDaIAbj3WrRT4HZ4YzTJ-rRNgShduVlYlf9j7OhVc9zq1CmpLa2dpV_hgTHz7yv6RadO6wVcj1GlNybFnGQDXRLS-xbpN756eyEov&xkcb=SoCg67M3imlSn8T4oh0CbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
-    "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "The job requires a specific technical degree (engineering, IT/software development) as a hard requirement.",
-    "id": "833bbd57",
-    "source": "indeed",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Valvontael\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaiset ja vastaavan el\u00c3\u00a4inl\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4rin sijaisuus",
     "company": "Valvontael\u00e4inl\u00e4\u00e4k\u00e4rin sijaiset ja vastaavan el\u00e4inl\u00e4\u00e4k\u00e4rin sijaisuus",
-    "location": "Extract via OpenClaw",
+    "location": "Rovaniemi Region, Finland",
     "url": "https://fi.indeed.com/rc/clk?jk=88e451f0b7c923c1&bb=BRzaiWx6VC9bKXPb_a4--R6bCn5TkrDDr_3mZAPfK3uQTO3U8QrBmM3-hr7XwGTLd6j4rLYODSgFADL12xZpG4QZTS9ec7FVGeJB7Dv_Qd5n1iwFGX8vAOtxryD7hoGW&xkcb=SoCO67M3imln0uzN5h0NbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires a specific veterinary degree as hard requirement, not matched to Manju's qualifications.",
+    "reason": "The role requires a Valvira accredited veterinarian, which Manju does not have.",
     "id": "cd2c0569",
     "source": "indeed",
     "posted_date": "N/A",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Ylil\u00c3\u00a4\u00c3\u00a4k\u00c3\u00a4ri, naistentaudit, Pohjanmaan hyvinvointialue",
@@ -9554,13 +9450,12 @@
     "url": "https://fi.indeed.com/rc/clk?jk=90b6deb8165f70f4&bb=BRzaiWx6VC9bKXPb_a4--abnRCEl2zOtEZrl4MzGcU_eCs3Mn-XwWJVwpppYdMDQjrCQuNH2HacqjA59kwagqIJHaZCy0pLZub6K27MsTNbwRdz5A-sCRdzZvWz9qrwB&xkcb=SoBn67M3imln0uzN5h0CbzkdCdPP&fccid=592bbc8c0a772dc4&vjs=3",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires a lahihoitaja degree, which Manju does not have.",
+    "reason": "The role requires a specialized medical degree (Valvira accreditation) as a hard requirement, which Manju does not have.",
     "id": "68ad1036",
     "source": "indeed",
     "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "deadline": "Open until filled",
+    "description_file": null
   },
   {
     "title": "Optikko/optometristi Synsam Uusikaupunki -liikkeeseen",
@@ -9569,13 +9464,12 @@
     "url": "https://fi.linkedin.com/jobs/view/optikko-optometristi-synsam-uusikaupunki-liikkeeseen-at-synsam-group-finland-oy-4304082522",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires specific optical/optometry degree and experience, not a general office role.",
+    "reason": "The role is a specialized optometrist position, which does not match Manju's legal background and qualifications.",
     "id": "6b59a033",
     "source": "linkedin_fin",
     "posted_date": "2025-10-06",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Full Stack Engineer",
@@ -9584,13 +9478,12 @@
     "url": "https://fi.linkedin.com/jobs/view/full-stack-engineer-at-runway-runway-team-4271879799",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires specific technical degree (software development) as a hard requirement.",
+    "reason": "Requires advanced technical degree (Full Stack Engineer) as hard requirement.",
     "id": "b44176eb",
     "source": "linkedin_fin",
     "posted_date": "2025-08-07",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "AI Trainer - Freelance Data Annotator",
@@ -9599,13 +9492,12 @@
     "url": "https://fi.linkedin.com/jobs/view/ai-trainer-freelance-data-annotator-at-toloka-annotators-4418961883",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires a specific technical degree (Bachelor's) as a hard requirement, which does not match Manju's profile.",
+    "reason": "The role is a freelance data annotation position, which does not match the generalist office/service roles that Manju Krishna Haridas is qualified for.",
     "id": "c48c4f9d",
     "source": "linkedin_fin",
     "posted_date": "2023-06-01",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Driver in Finland, Kinula",
@@ -9614,13 +9506,12 @@
     "url": "https://fi.linkedin.com/jobs/view/driver-in-finland-kinula-at-tsmg-holding-3701776179",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires a valid driver's license and enjoys driving, which Manju does not have.",
+    "reason": "The role requires a valid driver's license and driving experience, which Manju does not have.",
     "id": "3791853d",
     "source": "linkedin_fin",
     "posted_date": "2 years ago",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "English Language Expert",
@@ -9628,14 +9519,13 @@
     "location": "Finland",
     "url": "https://fi.linkedin.com/jobs/view/english-language-expert-at-sme-careers-4425615785",
     "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "The role requires expertise in AI data training/content creation, which is a technical specialization beyond Manju's current experience and qualifications.",
+    "matches_requirements": "yes",
+    "reason": "Matches generalist office role with strong writing/editing and language expertise, plus a good match for Manju's background.",
     "id": "5182f6a9",
     "source": "linkedin_fin",
     "posted_date": "2026-07-01",
     "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": "job_descriptions/sme_careers_english_language_expert_5182f6a9.txt"
   },
   {
     "title": "Health Safety Environment Officer",
@@ -9644,13 +9534,12 @@
     "url": "https://fi.linkedin.com/jobs/view/health-safety-environment-officer-at-silverback-4418093860",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires a degree in Health & Safety, Environmental, Engineering, or similar, and 3+ years' site-based HSE experience in construction. Manju does not meet these requirements.",
+    "reason": "Requires specific technical degree (Health & Safety, Environmental Engineering) as hard requirement.",
     "id": "5aea62e0",
     "source": "linkedin_fin",
     "posted_date": "2026-06-01",
     "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Attach\u00c3\u00a9 de coop\u00c3\u00a9ration scientifique et universitaire (F/H) - Institut fran\u00c3\u00a7ais de Finlande - Helsinki",
@@ -9659,13 +9548,12 @@
     "url": "https://fi.linkedin.com/jobs/view/attach%C3%A9-de-coop%C3%A9ration-scientifique-et-universitaire-f-h-institut-fran%C3%A7ais-de-finlande-helsinki-at-minist%C3%A8re-des-affaires-%C3%A9trang%C3%A8res-fran%C3%A7ais-4428660966",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires a doctorate, which is beyond Manju's current qualifications.",
+    "reason": "The role requires a doctorate, which is beyond Manju's current qualifications.",
     "id": "341b94f5",
     "source": "linkedin_fin",
     "posted_date": "2026-07-01",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Mechanical Design Engineer",
@@ -9674,13 +9562,12 @@
     "url": "https://fi.linkedin.com/jobs/view/mechanical-design-engineer-at-saur-4407954317",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires specific technical degree (Mechanical Engineering) as a hard requirement.",
+    "reason": "This mechanical design engineer role requires a specific technical degree (Bachelor's/Master's in Mechanical/Civil Engineering) which is a hard rejection based on Manju's profile.",
     "id": "f6e6d2bc",
     "source": "linkedin_fin",
     "posted_date": "2026-07-01",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Regional Recruiter",
@@ -9689,13 +9576,12 @@
     "url": "https://www.linkedin.com/jobs/view/regional-recruiter-at-chipotle-mexican-grill-4429536133",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires specific retail, luxury, or multi-brand industry experience which Manju does not have.",
+    "reason": "The job is a Regional Recruiter position for Chipotle Mexican Grill in Minneapolis, MN, which does not match Manju's criteria of being located in Oulu Region, Finland.",
     "id": "3ddcd2c5",
     "source": "linkedin_ww",
     "posted_date": "2026-07-01",
     "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Vacante: Ayudante de Chofer Bachiller",
@@ -9704,13 +9590,12 @@
     "url": "https://do.linkedin.com/jobs/view/vacante-ayudante-de-chofer-bachiller-at-tu-empleo-rd-4429207679",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The job is for a driver position, which requires physical work and does not match Manju's legal background.",
+    "reason": "The role requires a high school diploma, physical work capacity, punctuality and flexibility with hours which does not match Manju's profile.",
     "id": "1521cb66",
     "source": "linkedin_ww",
     "posted_date": "2023-06-18",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Auxiliar de Servicios, Documentaci\u00c3\u00b3n y Archivo.",
@@ -9719,13 +9604,12 @@
     "url": "https://do.linkedin.com/jobs/view/auxiliar-de-servicios-documentaci%C3%B3n-y-archivo-at-tu-empleo-rd-4429211615",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The job is located in Santo Domingo, Dominican Republic, which does not match Manju's Finnish job search criteria.",
+    "reason": "The role requires 1 year of customer service, cash handling, or similar experience which Manju does not have.",
     "id": "7f99a32c",
     "source": "linkedin_ww",
     "posted_date": "2026-06-19",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Online Work From Home, Data Entry Typing Job, Computer Operator Typist Part Time",
@@ -9734,13 +9618,12 @@
     "url": "https://in.linkedin.com/jobs/view/online-work-from-home-data-entry-typing-job-computer-operator-typist-part-time-at-insurancedekho-4428031644",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The job requires a degree in commerce or equivalent, which Manju does not have.",
+    "reason": "The role requires a Bachelor's degree in engineering or related field along with two (2) to five (5) years of progressive experience in a manufacturing environment, which is beyond Manju's current qualifications and experience.",
     "id": "3e09ef6c",
     "source": "linkedin_ww",
-    "posted_date": "N/A",
+    "posted_date": "2026-07-12",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Cajero Dual",
@@ -9749,13 +9632,12 @@
     "url": "https://gt.linkedin.com/jobs/view/cajero-dual-at-universia-m%C3%A9xico-4428031404",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The job requires specific technical expertise in banking and finance, which Manju does not have.",
+    "reason": "The role requires specific experience with banking/financial operations and customer service, which Manju does not have based on her current resume.",
     "id": "7e25e4b4",
     "source": "linkedin_ww",
     "posted_date": "2026-07-01",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Human Resources Generalist",
@@ -9764,13 +9646,12 @@
     "url": "https://www.linkedin.com/jobs/view/human-resources-generalist-at-avua-4429187442",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "This role is a Director-level position, which Manju does not have enough experience for.",
+    "reason": "The job is for a Red Bull On Premise Specialist position in Birmingham, AL which does not match the criteria of being located in Oulu, Finland.",
     "id": "a3c9b0b3",
     "source": "linkedin_ww",
     "posted_date": "2023-06-21",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Online Work From Home, Data Entry Typing Job, Computer Operator Typist Part Time",
@@ -9779,13 +9660,12 @@
     "url": "https://in.linkedin.com/jobs/view/online-work-from-home-data-entry-typing-job-computer-operator-typist-part-time-at-insurancedekho-4428034668",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The job is for a data entry typing position, which does not match Manju's legal background and skills.",
+    "reason": "The job is located in India, not Finland.",
     "id": "2b4bd07f",
     "source": "linkedin_ww",
     "posted_date": "N/A",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Auxiliar de Despacho Bachiller aprobado.",
@@ -9794,13 +9674,12 @@
     "url": "https://do.linkedin.com/jobs/view/auxiliar-de-despacho-bachiller-aprobado-at-tu-empleo-rd-4429219237",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The job is located in Santo Domingo, Dominican Republic, which does not match Finland.",
+    "reason": "The role requires specific warehouse/delivery experience (motocicletas) which is a hard rejection based on the UI rejections.",
     "id": "7791cc63",
     "source": "linkedin_ww",
     "posted_date": "2023-06-15",
     "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Online Work From Home, Data Entry Typing Job, Computer Operator Typist Part Time",
@@ -9809,13 +9688,12 @@
     "url": "https://in.linkedin.com/jobs/view/online-work-from-home-data-entry-typing-job-computer-operator-typist-part-time-at-insurancedekho-4428034665",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The job requires a specific technical degree (engineering) as a hard requirement.",
+    "reason": "The job is located in Hooghly, West Bengal, India, which does not match Manju's target criteria of being based in Finland.",
     "id": "66038f68",
     "source": "linkedin_ww",
     "posted_date": "N/A",
     "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Animaci\u00c3\u00b3n y edici\u00c3\u00b3n de video webinarios Ciclos Virtuales RizomaSur",
@@ -9824,13 +9702,12 @@
     "url": "https://uy.linkedin.com/jobs/view/animaci%C3%B3n-y-edici%C3%B3n-de-video-webinarios-ciclos-virtuales-rizomasur-at-vnu-s%C3%A9n%C3%A9gal-gambie-4429231592",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "This is an online volunteering position for animating and editing videos related to webinars, which does not match Manju's professional experience in law.",
+    "reason": "The role is a volunteer position, not an employment opportunity.",
     "id": "0bb94633",
     "source": "linkedin_ww",
     "posted_date": "2026-06-22",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Social Media Content Support",
@@ -9839,13 +9716,12 @@
     "url": "https://rw.linkedin.com/jobs/view/social-media-content-support-at-vnu-s%C3%A9n%C3%A9gal-gambie-4429246352",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role requires experience creating content for LinkedIn, which Manju does not have.",
+    "reason": "The role is for an online volunteer position with UNDP, which does not match Manju's criteria of seeking employment in Finland.",
     "id": "4b0e9d6b",
     "source": "linkedin_ww",
     "posted_date": "2026-06-16",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Online Work From Home, Data Entry Typing Job, Computer Operator Typist Part Time",
@@ -9854,13 +9730,12 @@
     "url": "https://in.linkedin.com/jobs/view/online-work-from-home-data-entry-typing-job-computer-operator-typist-part-time-at-insurancedekho-4428030693",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The job requires a degree in insurance, which Manju does not have.",
+    "reason": "The role requires a bachelor's degree in engineering, which is beyond Manju's current qualifications.",
     "id": "ed13a31c",
     "source": "linkedin_ww",
     "posted_date": "2026-06-12",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Online Work From Home, Data Entry Typing Job, Computer Operator Typist Part Time",
@@ -9869,13 +9744,12 @@
     "url": "https://in.linkedin.com/jobs/view/online-work-from-home-data-entry-typing-job-computer-operator-typist-part-time-at-insurancedekho-4428036634",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The job is located in Vizianagaram, Andhra Pradesh, India, which does not match Manju's preferred locations of Finland or remote work.",
+    "reason": "The role requires a Bachelor's degree in engineering or related field along with two (2) to five (5) years of progressive experience in a manufacturing environment, preferably within the automotive industry. This is beyond Manju's current qualifications and experience.",
     "id": "a1bd960e",
     "source": "linkedin_ww",
     "posted_date": "2026-06-12",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Recepcionista - Trabalho Remoto",
