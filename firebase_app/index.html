@@ -944,8 +944,24 @@
             allJobs = jobs;
             
             // Set Connection indicators
-            fileStatusDot.classList.add('connected');
-            fileStatusText.textContent = statusMsg;
+            if (lastMod) {
+                const lastModDate = new Date(lastMod);
+                const hoursSinceUpdate = (new Date() - lastModDate) / (1000 * 60 * 60);
+                if (hoursSinceUpdate > 24) {
+                    fileStatusDot.classList.remove('connected');
+                    fileStatusDot.style.background = '#f59e0b';
+                    fileStatusDot.style.boxShadow = '0 0 8px #f59e0b';
+                    fileStatusText.innerHTML = `${statusMsg} <span style="color: #fca5a5; font-size: 0.8rem; margin-left: 5px;" title="Data is older than 24h. Scraper might be down.">⚠️ Stale Data</span>`;
+                } else {
+                    fileStatusDot.classList.add('connected');
+                    fileStatusDot.style.background = '';
+                    fileStatusDot.style.boxShadow = '';
+                    fileStatusText.textContent = statusMsg;
+                }
+            } else {
+                fileStatusDot.classList.add('connected');
+                fileStatusText.textContent = statusMsg;
+            }
 
             if (allJobs.length === 0) {
                 jobsContainer.innerHTML = '<div class="empty-state">No jobs found in jobs.json. Please run the scraper first!</div>';

@@ -122,6 +122,7 @@ class TestCheckRequirementsUpdate:
         self._write_checkpoint(tmp_path, old_content, old_hash)
 
         with patch.object(scraper, "JOBS_FILE", jobs_file), \
+             patch("db_utils.JOBS_FILE", jobs_file), \
              patch.object(scraper, "REQ_FILE", req_file), \
              patch.object(scraper, "CHECKPOINT_FILE", str(tmp_path / "checkpoint.json")), \
              patch("scraper.classify_requirements_change", return_value=True):
@@ -144,6 +145,7 @@ class TestCheckRequirementsUpdate:
         self._write_checkpoint(tmp_path, old_content, old_hash)
 
         with patch.object(scraper, "JOBS_FILE", jobs_file), \
+             patch("db_utils.JOBS_FILE", jobs_file), \
              patch.object(scraper, "REQ_FILE", req_file), \
              patch.object(scraper, "CHECKPOINT_FILE", str(tmp_path / "checkpoint.json")), \
              patch("scraper.classify_requirements_change", return_value=False):
@@ -187,6 +189,7 @@ class TestPollFirebaseFeedback:
         mock_patch.return_value = MagicMock(status_code=200)
 
         with patch.object(scraper, "JOBS_FILE", jobs_file), \
+             patch("db_utils.JOBS_FILE", jobs_file), \
              patch.object(scraper, "REQ_FILE", "nonexistent_req.md"):
             scraper.poll_firebase_feedback()
 
@@ -203,10 +206,11 @@ class TestPollFirebaseFeedback:
         mock_patch.return_value = MagicMock(status_code=200)
 
         with patch.object(scraper, "JOBS_FILE", jobs_file), \
-             patch.object(scraper, "REQ_FILE", req_file):
+             patch("db_utils.JOBS_FILE", jobs_file), \
+             patch.object(scraper, "USER_FEEDBACK_FILE", req_file):
             scraper.poll_firebase_feedback()
 
-        content = open(req_file).read()
+        content = open(req_file).read() if os.path.exists(req_file) else ""
         assert "testing again" not in content
 
     @patch("scraper.requests.patch")
@@ -217,8 +221,9 @@ class TestPollFirebaseFeedback:
         mock_patch.return_value = MagicMock(status_code=200)
 
         with patch.object(scraper, "JOBS_FILE", jobs_file), \
-             patch.object(scraper, "REQ_FILE", req_file):
+             patch("db_utils.JOBS_FILE", jobs_file), \
+             patch.object(scraper, "USER_FEEDBACK_FILE", req_file):
             scraper.poll_firebase_feedback()
 
-        content = open(req_file).read()
+        content = open(req_file).read() if os.path.exists(req_file) else ""
         assert reason in content
