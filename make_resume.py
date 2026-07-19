@@ -40,13 +40,18 @@ Data JSON structure:
       { "title": "...", "org": "...", "dates": "...", "desc": "..." }
     ],
     "achievements": ["...", "..."] (each rendered with a medal icon),
-    "publications_html": "..."
+    "publications_html": "...",
+    "labels": { "profile": "...", ... } (optional — overrides section heading
+                text per key for localized versions; see DEFAULT_LABELS for keys
+                and English defaults; icons stay the same regardless of language)
   },
   "cover_letter": {
     "date": "23 June 2026",
     "recipient": { "title": "Hiring Manager", "team": "...", "company": "...", "city": "..." },
     "paragraphs": ["...", "..."],
-    "sign_off": "Yours sincerely"
+    "sign_off": "Yours sincerely",
+    "salutation": "..." (optional — full salutation line, e.g. "Hyvä vastaanottaja,";
+                          defaults to "Dear {recipient.title},")
   }
 }
 """
@@ -86,6 +91,20 @@ MEDAL_ICON = (
     '</svg>'
 )
 
+# ── SECTION LABELS (overridable per-language via resume.labels) ─────────────
+
+DEFAULT_LABELS = {
+    "profile": "Professional Profile",
+    "experience": "Professional Experience",
+    "education": "Education",
+    "languages": "Languages &amp; Skills",
+    "volunteering": "Volunteering",
+    "competencies": "Core Legal Competencies",
+    "achievements": "Achievements",
+    "publications": "Publications",
+    "references": "References",
+}
+
 # ── RESUME TEMPLATE ──────────────────────────────────────────────────────────
 
 RESUME_HTML = """<!DOCTYPE html>
@@ -94,16 +113,18 @@ RESUME_HTML = """<!DOCTYPE html>
 <meta charset="UTF-8">
 <title>{name} — CV</title>
 <style>
-@page {{ size: A4; margin: 8mm 12mm 7mm 12mm; }}
+@page {{ size: A4; margin: 0; }}
 @media print {{
-  body {{ margin: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }}
+  body {{ -webkit-print-color-adjust: exact; print-color-adjust: exact; }}
 }}
 * {{ box-sizing: border-box; margin: 0; padding: 0; }}
+html {{ background: linear-gradient(160deg, #ffffff 0%, #f6f9fc 45%, #eaf1f8 100%); }}
 body {{
   font-family: 'Calibri', 'Segoe UI', Arial, sans-serif;
   font-size: 9.2pt; line-height: 1.26; color: #1e1e1e;
   background: linear-gradient(160deg, #ffffff 0%, #f6f9fc 45%, #eaf1f8 100%);
-  width: 184mm; margin: 0 auto;
+  width: 210mm; min-height: 297mm; margin: 0 auto;
+  padding: 8mm 12mm 7mm 12mm;
 }}
 .header {{
   display: flex; align-items: flex-start; gap: 14px;
@@ -183,34 +204,34 @@ li {{ font-size: 8.2pt; line-height: 1.28; margin-bottom: 0.5px; }}
 </div>
 
 {wage_highlight_html}
-<h2>{icon_profile}Professional Profile</h2>
+<h2>{icon_profile}{label_profile}</h2>
 <div class="profile-text">{profile}</div>
 
-<h2>{icon_experience}Professional Experience</h2>
+<h2>{icon_experience}{label_experience}</h2>
 {experience_html}
 
 <div class="two-col">
 <div class="col-left">
-<h2>{icon_education}Education</h2>
+<h2>{icon_education}{label_education}</h2>
 <table class="edu-table">
 {education_html}
 </table>
-<h2>{icon_languages}Languages &amp; Skills</h2>
+<h2>{icon_languages}{label_languages}</h2>
 <div class="skill-block">{languages_html}</div>
-<h2>{icon_volunteering}Volunteering</h2>
+<h2>{icon_volunteering}{label_volunteering}</h2>
 {volunteering_html}
 </div>
 <div class="col-right">
-<h2>{icon_competencies}Core Legal Competencies</h2>
+<h2>{icon_competencies}{label_competencies}</h2>
 <div class="skill-block">{competencies_html}</div>
-<h2>{icon_achievements}Achievements</h2>
+<h2>{icon_achievements}{label_achievements}</h2>
 <div class="skill-block">{achievements_html}</div>
-<h2>{icon_publications}Publications</h2>
+<h2>{icon_publications}{label_publications}</h2>
 <div class="skill-block">{publications_html}</div>
 </div>
 </div>
 
-<h2>{icon_references}References</h2>
+<h2>{icon_references}{label_references}</h2>
 <div class="ref-row">
 {references_html}
 </div>
@@ -270,7 +291,7 @@ body {{
   {recipient_company}, {recipient_city}
 </div>
 
-<div class="salutation">Dear {recipient_title},</div>
+<div class="salutation">{salutation}</div>
 
 <div class="body">
 {paragraphs_html}
@@ -377,6 +398,7 @@ def generate(data_path, photo_path, out_dir):
     rc = r.get("contact", {})
     wage_note = r.get("wage_subsidy_note", "")
     wage_highlight_html = f'<div class="highlight-banner">{wage_note}</div>' if wage_note else ""
+    labels = {**DEFAULT_LABELS, **r.get("labels", {})}
     resume_html = RESUME_HTML.format(
         name=r.get("name", "Manju Krishna Haridas"),
         name_upper=r.get("name", "Manju Krishna Haridas").upper(),
@@ -405,6 +427,15 @@ def generate(data_path, photo_path, out_dir):
         icon_achievements=ICON_ACHIEVEMENTS,
         icon_publications=ICON_PUBLICATIONS,
         icon_references=ICON_REFERENCES,
+        label_profile=labels["profile"],
+        label_experience=labels["experience"],
+        label_education=labels["education"],
+        label_languages=labels["languages"],
+        label_volunteering=labels["volunteering"],
+        label_competencies=labels["competencies"],
+        label_achievements=labels["achievements"],
+        label_publications=labels["publications"],
+        label_references=labels["references"],
         photo_b64=b64,
     )
     resume_out = os.path.join(folder, f"{slug}_resume.html")
@@ -414,6 +445,7 @@ def generate(data_path, photo_path, out_dir):
 
     # ── Cover letter HTML ─────────────────────────────────────────────────────
     rec = cl.get("recipient", {})
+    salutation = cl.get("salutation") or f"Dear {rec.get('title', '')},"
     cl_html = COVER_LETTER_HTML.format(
         name=r.get("name", "Manju Krishna Haridas"),
         address=rc.get("address", ""),
@@ -428,6 +460,7 @@ def generate(data_path, photo_path, out_dir):
         recipient_city=rec.get("city", ""),
         paragraphs_html=render_paragraphs(cl.get("paragraphs", [])),
         sign_off=cl.get("sign_off", "Yours sincerely"),
+        salutation=salutation,
     )
     cl_out = os.path.join(folder, f"{slug}_cover_letter.html")
     with open(cl_out, "w", encoding="utf-8") as f:
