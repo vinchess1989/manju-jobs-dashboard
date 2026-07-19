@@ -249,6 +249,8 @@ Write the tailored JSON to `PRIVATE\Resumes\JOB_ID\JOB_ID_data.json` — overwri
 
 #### Tailoring rules
 
+**Resume language:** Determine the job posting's language from the description obtained in Step 1. If the posting is primarily in Finnish, the **entire resume** must be written in Finnish — not just the cover letter. Read `PRIVATE\Resumes\Master\master_data_fi.json` now as the Finnish reference: it has the Finnish section labels, wage subsidy note, education, volunteering, achievements, publications, and reference titles already translated, plus the phrasing register to match for the job-specific fields you write yourself. If the posting is in English, use `master_data.json` only, as documented below.
+
 **Top-level fields:**
 - `job_id`: set to `JOB_ID`
 - `job_title`: set to `JOB_TITLE` (exact string from jobs.json)
@@ -260,27 +262,31 @@ Write the tailored JSON to `PRIVATE\Resumes\JOB_ID\JOB_ID_data.json` — overwri
 
 **`resume.contact`:** Always copy the entire object verbatim from the template (`address`, `phone`, `email`, `linkedin_url`, `linkedin_display`) — these are static and never job-specific. Never omit this object; a missing `contact` silently renders a blank line under the name with no error.
 
-**`resume.role`:** `"JOB_TITLE Candidate"`
+**`resume.role`:** `"JOB_TITLE Candidate"` for English postings. For Finnish postings, phrase it naturally in Finnish instead (e.g. `"JOB_TITLE-hakija"`) — match the register of `master_data_fi.json`'s `role` field.
 
-**`resume.profile`:** 2–3 sentences, highly specific to this role and company. Directly connect Manju's most relevant background to the stated requirements. Do not just summarise her CV — name the company and what they need.
+**`resume.profile`:** 2–3 sentences, highly specific to this role and company. Directly connect Manju's most relevant background to the stated requirements. Do not just summarise her CV — name the company and what they need. Write in the **same language as the job posting** — Finnish for Finnish postings, matching the phrasing style of `master_data_fi.json`'s profile.
 
-**`resume.experience`:** Keep all four entries exactly as in the template (same dates, companies, titles). Reorder the four entries so the most relevant experience appears first. Within each entry, reorder and reword the bullets to front-load skills mentioned in the job description.
+**`resume.experience`:** Keep all four entries exactly as in the template (same dates, companies, titles — company names stay as-is regardless of language). Reorder the four entries so the most relevant experience appears first. Within each entry, reorder and reword the bullets to front-load skills mentioned in the job description, in the same language as the posting (Finnish bullets for Finnish postings — see `master_data_fi.json`'s experience entries for phrasing).
 
-**`resume.education`:** Keep all entries as in the template, **using the exact same keys** (`qual`, `inst`, and `bold` where set). Do not rename these keys (e.g. to `degree`/`school`) — `make_resume.py` reads `qual`/`inst` specifically and silently renders blank rows for any other key names.
+**`resume.education`:** Keep all entries as in the template, **using the exact same keys** (`qual`, `inst`, and `bold` where set). Do not rename these keys (e.g. to `degree`/`school`) — `make_resume.py` reads `qual`/`inst` specifically and silently renders blank rows for any other key names. For Finnish postings, use the Finnish `qual` text from `master_data_fi.json` (institution names in `inst` stay as-is).
 
 **`resume.languages_html`:** For Finnish-language postings, put Finnish first. For English-language postings, keep English first.
 
-**`resume.wage_subsidy_note`:** Always copy verbatim from the template. `make_resume.py` renders this as a highlighted banner directly under the header, above Professional Profile — this is deliberate, since palkkatuki eligibility is critical information for the employer's hiring decision and should be visible immediately, not buried in a skills list.
+**`resume.wage_subsidy_note`:** Always copy verbatim from the template — the Finnish version from `master_data_fi.json` for Finnish postings, the English version from `master_data.json` for English postings. `make_resume.py` renders this as a highlighted banner directly under the header, above Professional Profile — this is deliberate, since palkkatuki eligibility is critical information for the employer's hiring decision and should be visible immediately, not buried in a skills list.
 
-**`resume.competencies_html`:** Completely rewrite 4–5 skill categories that map directly onto the key requirements in this job description. Use `<span class="skill-cat">Category:</span> description...` format.
+**`resume.competencies_html`:** Completely rewrite 4–5 skill categories that map directly onto the key requirements in this job description. Use `<span class="skill-cat">Category:</span> description...` format. Write in the same language as the job posting.
 
-**`resume.references`:** Always copy the entire array verbatim from the template (same names, titles, contacts). Never omit this array; a missing `references` silently renders an empty "REFERENCES" section heading with no content and no error.
+**`resume.references`:** Always copy the entire array verbatim from the template (same names, titles, contacts). Never omit this array; a missing `references` silently renders an empty "REFERENCES" section heading with no content and no error. For Finnish postings, use the Finnish reference `title` text from `master_data_fi.json` (names and contacts are unchanged).
 
-**`resume.volunteering`, `resume.achievements`, `resume.publications_html`:** Always copy verbatim from the template — static personal history, never job-specific. `achievements` is an array of strings, each rendered with a medal icon. Omitting these leaves the Volunteering/Achievements/Publications section headings present but empty.
+**`resume.volunteering`, `resume.achievements`, `resume.publications_html`:** Always copy verbatim from the template — static personal history, never job-specific. `achievements` is an array of strings, each rendered with a medal icon. Omitting these leaves the Volunteering/Achievements/Publications section headings present but empty. For Finnish postings, use the Finnish versions from `master_data_fi.json` (the publication's own title stays in English — that's its actual published name).
+
+**`resume.labels`:** **Required for Finnish postings** — copy the `labels` object verbatim from `master_data_fi.json` so section headings (Professional Profile, Education, Languages & Skills, etc.) render in Finnish too. Skipping this leaves Finnish body text sitting under English headings. Not needed for English postings (English is the built-in default).
 
 **`cover_letter.date`:** Use today's date formatted as `"30 June 2026"`.
 
 **`cover_letter.recipient`:** Fill `company` with `COMPANY` and `city` with the job location. Use `"Hiring Manager"` for title if no name is known.
+
+**`cover_letter.salutation`:** For Finnish postings, set this explicitly (e.g. `"Hyvä <Name>,"` if a contact name is known, otherwise `"Hyvä vastaanottaja,"`) — the built-in default (`"Dear {recipient.title},"`) is English and must not be left in a Finnish letter. Not needed for English postings.
 
 **`cover_letter.paragraphs`:** 5–6 paragraphs written in the **same language as the job posting** (Finnish for Finnish postings, English for English postings):
   1. Hook — what drew Manju to this company and role specifically.
