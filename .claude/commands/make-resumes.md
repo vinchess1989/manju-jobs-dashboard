@@ -56,7 +56,8 @@ Tailoring rules:
 - `profile` paragraph: 2–3 sentences. Reference the company and role specifically. Highlight the most relevant subset of Manju's background.
 - `experience[].bullets`: reorder or reword to front-load skills most relevant to this role. Keep all 4 experience entries.
 - `competencies_html`: reorder skill categories to lead with what matters for this role.
-- `languages_html`: put Finnish first for Finnish-language roles. Always keep the palkkatuki (wage subsidy) eligibility line from the template as the last line — copy it verbatim.
+- `languages_html`: put Finnish first for Finnish-language roles.
+- `wage_subsidy_note`: always copy verbatim from the template. Renders as a highlighted banner directly under the header, above Professional Profile — deliberate, since palkkatuki eligibility is critical information for the employer's hiring decision.
 - `cover_letter`: write in **Finnish** for Finnish-language roles, **English** for English-language roles. Address the hiring manager by name if known from the description. 5–6 paragraphs: hook → relevant experience → Finland integration → why this company → wage subsidy (palkkatuki) offer to handle her part of the joint BusinessOulu application → close with availability as next possible working day.
 - For legal/juristi roles: emphasise contract law, legal research, court experience, Finnish bar path.
 - For generalist/admin/coordinator roles: emphasise event coordination (IHO), organisational skills, multilingual communication, MS Office, Finnish B2.
@@ -109,6 +110,11 @@ git push origin main
 - Junior Lawyer: Juris Nexus India (Sep 2015–Jan 2016) — family & civil law
 - Finnish B2, English C1, Malayalam native. Based in Oulu. Available: next possible working day.
 - Eligible for palkkatuki (wage subsidy) via BusinessOulu employment services — approx. 50% wage cost support for employer.
+- Open to relocation within Finland, including Helsinki.
+- Enthusiastic about AI and digital tools in legal work; experienced applying digital solutions to streamline legal processes.
+- Co-organised 'Namaste Oulu', a cross-cultural event during the IHO internship — coordination with city authorities, community groups, and sponsors.
+- At Poise Legal: also developed and maintained contract templates and risk registers; coordinated with external counsel and client representatives as an in-house advisory interface.
+- Third reference available: Jaana Liukkonen, Teacher at OSAO — jaana.liukkonen@osao.fi, +358 40 570 7593.
 - Photo: `<PRIVATE>\manju_photo.JPG`
 
 ## Output naming convention

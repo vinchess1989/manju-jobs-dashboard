@@ -151,7 +151,9 @@ Write the tailored JSON to `PRIVATE\Resumes\JOB_ID\JOB_ID_data.json` — overwri
 
 **`resume.education`:** Keep all entries as in the template, **using the exact same keys** (`qual`, `inst`, and `bold` where set). Do not rename these keys (e.g. to `degree`/`school`) — `make_resume.py` reads `qual`/`inst` specifically and silently renders blank rows for any other key names.
 
-**`resume.languages_html`:** For Finnish-language postings, put Finnish first. For English-language postings, keep English first. Always keep the palkkatuki (wage subsidy) eligibility line from the template as the last line — copy it verbatim.
+**`resume.languages_html`:** For Finnish-language postings, put Finnish first. For English-language postings, keep English first.
+
+**`resume.wage_subsidy_note`:** Always copy verbatim from the template. `make_resume.py` renders this as a highlighted banner directly under the header, above Professional Profile — this is deliberate, since palkkatuki eligibility is critical information for the employer's hiring decision and should be visible immediately, not buried in a skills list.
 
 **`resume.competencies_html`:** Completely rewrite 4–5 skill categories that map directly onto the key requirements in this job description. Use `<span class="skill-cat">Category:</span> description...` format.
 
@@ -182,6 +184,11 @@ Write the tailored JSON to `PRIVATE\Resumes\JOB_ID\JOB_ID_data.json` — overwri
 - Junior Lawyer: Juris Nexus India (Sep 2015–Jan 2016) — family & civil law
 - Finnish B2, English C1, Malayalam native. Based in Oulu. Available: next possible working day.
 - Eligible for palkkatuki (wage subsidy) via BusinessOulu employment services — approx. 50% wage cost support for employer.
+- Open to relocation within Finland, including Helsinki.
+- Enthusiastic about AI and digital tools in legal work; experienced applying digital solutions to streamline legal processes.
+- Co-organised 'Namaste Oulu', a cross-cultural event during the IHO internship — coordination with city authorities, community groups, and sponsors.
+- At Poise Legal: also developed and maintained contract templates and risk registers; coordinated with external counsel and client representatives as an in-house advisory interface.
+- Third reference available: Jaana Liukkonen, Teacher at OSAO — jaana.liukkonen@osao.fi, +358 40 570 7593.
 
 ---
 

@@ -22,6 +22,8 @@ Data JSON structure:
     "role": "Legal Trainee Candidate",
     "contact": { "address": "...", "phone": "...", "email": "...",
                  "linkedin_url": "...", "linkedin_display": "..." },
+    "wage_subsidy_note": "..." (optional — rendered as a highlighted banner
+                                 under the header, above Professional Profile),
     "profile": "...",
     "experience": [
       { "title": "...", "company": "...", "dates": "...", "bullets": ["..."] }
@@ -120,6 +122,10 @@ li {{ font-size: 8.5pt; line-height: 1.38; margin-bottom: 1px; }}
 .skill-cat {{ font-weight: 700; color: #1a4f82; }}
 .ref {{ font-size: 8.3pt; line-height: 1.4; margin-bottom: 4px; }}
 .ref-name {{ font-weight: 700; }}
+.highlight-banner {{
+  background: #fff8e1; border-left: 3px solid #f59e0b; border-radius: 2px;
+  padding: 4px 8px; margin-bottom: 7px; font-size: 8.5pt; font-weight: 700; color: #7a4a00;
+}}
 </style>
 </head>
 <body>
@@ -137,6 +143,7 @@ li {{ font-size: 8.5pt; line-height: 1.38; margin-bottom: 1px; }}
   </div>
 </div>
 
+{wage_highlight_html}
 <h2>Professional Profile</h2>
 <div class="profile-text">{profile}</div>
 
@@ -298,6 +305,8 @@ def generate(data_path, photo_path, out_dir):
 
     # ── Resume HTML ───────────────────────────────────────────────────────────
     rc = r.get("contact", {})
+    wage_note = r.get("wage_subsidy_note", "")
+    wage_highlight_html = f'<div class="highlight-banner">{wage_note}</div>' if wage_note else ""
     resume_html = RESUME_HTML.format(
         name=r.get("name", "Manju Krishna Haridas"),
         name_upper=r.get("name", "Manju Krishna Haridas").upper(),
@@ -307,6 +316,7 @@ def generate(data_path, photo_path, out_dir):
         email=rc.get("email", ""),
         linkedin_url=rc.get("linkedin_url", ""),
         linkedin_display=rc.get("linkedin_display", ""),
+        wage_highlight_html=wage_highlight_html,
         profile=r.get("profile", ""),
         experience_html=render_experience(r.get("experience", [])),
         education_html=render_education(r.get("education", [])),

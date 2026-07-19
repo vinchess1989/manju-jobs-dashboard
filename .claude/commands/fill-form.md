@@ -457,6 +457,7 @@ STANDARD FIELDS — always use these exact values:
 - Country: Finland
 - LinkedIn: linkedin.com/in/manjukrishnaharidas
 - Availability / Start date: Next possible working day
+- Willing to relocate: Yes — open to relocation within Finland, including Helsinki
 - Salary / Pay expectation: leave blank
 - Right to work in Finland: Yes — EU residence permit
 
