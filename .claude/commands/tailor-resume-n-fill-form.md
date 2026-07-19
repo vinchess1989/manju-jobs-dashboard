@@ -276,7 +276,7 @@ Write the tailored JSON to `PRIVATE\Resumes\JOB_ID\JOB_ID_data.json` — overwri
 
 **`resume.references`:** Always copy the entire array verbatim from the template (same names, titles, contacts). Never omit this array; a missing `references` silently renders an empty "REFERENCES" section heading with no content and no error.
 
-**`resume.volunteering`, `resume.achievements_html`, `resume.publications_html`:** Always copy verbatim from the template — static personal history, never job-specific. Omitting them leaves the Volunteering/Achievements/Publications section headings present but empty.
+**`resume.volunteering`, `resume.achievements`, `resume.publications_html`:** Always copy verbatim from the template — static personal history, never job-specific. `achievements` is an array of strings, each rendered with a medal icon. Omitting these leaves the Volunteering/Achievements/Publications section headings present but empty.
 
 **`cover_letter.date`:** Use today's date formatted as `"30 June 2026"`.
 

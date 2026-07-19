@@ -39,7 +39,7 @@ Data JSON structure:
     "volunteering": [
       { "title": "...", "org": "...", "dates": "...", "desc": "..." }
     ],
-    "achievements_html": "...",
+    "achievements": ["...", "..."] (each rendered with a medal icon),
     "publications_html": "..."
   },
   "cover_letter": {
@@ -64,6 +64,28 @@ DEFAULT_PHOTO = os.path.join(
     "..", "Manju-jobs", "manju_photo.JPG"
 )
 
+# ── SECTION ICONS (inline SVG, theme blue #1a4f82) ───────────────────────────
+
+_ICON_ATTRS = 'width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#1a4f82" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"'
+
+ICON_PROFILE = f'<svg {_ICON_ATTRS}><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.8-7.5 8-7.5s8 3.1 8 7.5"/></svg>'
+ICON_EXPERIENCE = f'<svg {_ICON_ATTRS}><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5.5A1.5 1.5 0 0 1 9.5 4h5A1.5 1.5 0 0 1 16 5.5V7"/><path d="M3 12h18"/></svg>'
+ICON_EDUCATION = f'<svg {_ICON_ATTRS}><path d="M2 9l10-5 10 5-10 5-10-5z"/><path d="M6 11.5V17c0 1.4 2.7 3 6 3s6-1.6 6-3v-5.5"/></svg>'
+ICON_LANGUAGES = f'<svg {_ICON_ATTRS}><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.8 2.4 4.3 5.6 4.3 9s-1.5 6.6-4.3 9c-2.8-2.4-4.3-5.6-4.3-9S9.2 5.4 12 3z"/></svg>'
+ICON_VOLUNTEERING = f'<svg {_ICON_ATTRS}><path d="M12 20.5s-7.5-4.9-7.5-10A4.5 4.5 0 0 1 12 7.5a4.5 4.5 0 0 1 7.5 3c0 5.1-7.5 10-7.5 10z"/></svg>'
+ICON_COMPETENCIES = f'<svg {_ICON_ATTRS}><path d="M12 3v17M7 21h10"/><path d="M4 7h6M14 7h6"/><path d="M4 7l-2.5 5.5a2.7 2.7 0 0 0 5 0z"/><path d="M20 7l-2.5 5.5a2.7 2.7 0 0 0 5 0z"/></svg>'
+ICON_ACHIEVEMENTS = f'<svg {_ICON_ATTRS}><path d="M7 4h10v4a5 5 0 0 1-10 0V4z"/><path d="M7 5H4.5A1.5 1.5 0 0 0 3 6.5 5 5 0 0 0 7 11M17 5h2.5A1.5 1.5 0 0 1 21 6.5 5 5 0 0 1 17 11"/><path d="M12 13v4M8.5 21h7"/></svg>'
+ICON_PUBLICATIONS = f'<svg {_ICON_ATTRS}><path d="M4 4.5A1.5 1.5 0 0 1 5.5 3H18a2 2 0 0 1 2 2v14a2 2 0 0 0-2-2H5.5A1.5 1.5 0 0 0 4 18.5z"/><path d="M8 7.5h8M8 11h8"/></svg>'
+ICON_REFERENCES = f'<svg {_ICON_ATTRS}><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5"/><circle cx="17.5" cy="7" r="2.2"/><path d="M15.3 12c2.6.3 4.7 2 4.7 4.3"/></svg>'
+
+MEDAL_ICON = (
+    '<svg width="11" height="11" viewBox="0 0 24 24">'
+    '<path d="M9 2L7 9M15 2l2 7" stroke="#c9971e" stroke-width="2" stroke-linecap="round" fill="none"/>'
+    '<circle cx="12" cy="15" r="7" fill="#f6cf5c" stroke="#c9971e" stroke-width="1.6"/>'
+    '<path d="M12 11.2l1.1 2.3 2.5.4-1.8 1.8.4 2.5-2.2-1.2-2.2 1.2.4-2.5-1.8-1.8 2.5-.4z" fill="#c9971e"/>'
+    '</svg>'
+)
+
 # ── RESUME TEMPLATE ──────────────────────────────────────────────────────────
 
 RESUME_HTML = """<!DOCTYPE html>
@@ -80,7 +102,8 @@ RESUME_HTML = """<!DOCTYPE html>
 body {{
   font-family: 'Calibri', 'Segoe UI', Arial, sans-serif;
   font-size: 9.2pt; line-height: 1.26; color: #1e1e1e;
-  background: #fff; width: 184mm; margin: 0 auto;
+  background: linear-gradient(160deg, #ffffff 0%, #f6f9fc 45%, #eaf1f8 100%);
+  width: 184mm; margin: 0 auto;
 }}
 .header {{
   display: flex; align-items: flex-start; gap: 14px;
@@ -102,10 +125,12 @@ body {{
 .header-text .contact {{ font-size: 8.3pt; color: #444; line-height: 1.65; }}
 .header-text .contact a {{ color: #1a4f82; text-decoration: none; }}
 h2 {{
+  display: flex; align-items: center; gap: 4px;
   font-size: 8.6pt; font-weight: 800; color: #1a4f82;
   text-transform: uppercase; letter-spacing: 0.9px;
   border-bottom: 1px solid #1a4f82; padding-bottom: 1px; margin: 4px 0 2px;
 }}
+h2 svg {{ flex-shrink: 0; }}
 .profile-text {{ font-size: 8.6pt; line-height: 1.32; color: #2a2a2a; }}
 .job {{ margin-bottom: 3px; }}
 .job-header {{ display: flex; justify-content: space-between; align-items: baseline; }}
@@ -125,8 +150,12 @@ li {{ font-size: 8.2pt; line-height: 1.28; margin-bottom: 0.5px; }}
 .highlight {{ color: #0e2d50; }}
 .skill-block {{ font-size: 8.2pt; line-height: 1.35; }}
 .skill-cat {{ font-weight: 700; color: #1a4f82; }}
-.ref {{ font-size: 8pt; line-height: 1.25; margin-bottom: 2.5px; }}
+.ref {{ font-size: 8pt; line-height: 1.25; }}
 .ref-name {{ font-weight: 700; }}
+.ref-row {{ display: flex; gap: 16px; margin-top: 2px; }}
+.ref-row .ref {{ flex: 1; }}
+.ach-item {{ display: flex; align-items: flex-start; gap: 4px; margin-bottom: 2px; }}
+.ach-item svg {{ flex-shrink: 0; margin-top: 1.5px; }}
 .vol {{ margin-bottom: 2.5px; }}
 .vol-header {{ display: flex; justify-content: space-between; align-items: baseline; }}
 .vol-title {{ font-weight: 700; font-size: 8pt; }}
@@ -154,33 +183,36 @@ li {{ font-size: 8.2pt; line-height: 1.28; margin-bottom: 0.5px; }}
 </div>
 
 {wage_highlight_html}
-<h2>Professional Profile</h2>
+<h2>{icon_profile}Professional Profile</h2>
 <div class="profile-text">{profile}</div>
 
-<h2>Professional Experience</h2>
+<h2>{icon_experience}Professional Experience</h2>
 {experience_html}
 
 <div class="two-col">
 <div class="col-left">
-<h2>Education</h2>
+<h2>{icon_education}Education</h2>
 <table class="edu-table">
 {education_html}
 </table>
-<h2>Languages &amp; Skills</h2>
+<h2>{icon_languages}Languages &amp; Skills</h2>
 <div class="skill-block">{languages_html}</div>
-<h2>References</h2>
-{references_html}
-<h2>Volunteering</h2>
+<h2>{icon_volunteering}Volunteering</h2>
 {volunteering_html}
 </div>
 <div class="col-right">
-<h2>Core Legal Competencies</h2>
+<h2>{icon_competencies}Core Legal Competencies</h2>
 <div class="skill-block">{competencies_html}</div>
-<h2>Achievements</h2>
+<h2>{icon_achievements}Achievements</h2>
 <div class="skill-block">{achievements_html}</div>
-<h2>Publications</h2>
+<h2>{icon_publications}Publications</h2>
 <div class="skill-block">{publications_html}</div>
 </div>
+</div>
+
+<h2>{icon_references}References</h2>
+<div class="ref-row">
+{references_html}
 </div>
 
 </body>
@@ -313,6 +345,13 @@ def render_volunteering(rows):
     return "\n".join(parts)
 
 
+def render_achievements(items):
+    return "\n".join(
+        f'  <div class="ach-item">{MEDAL_ICON}<span>{item}</span></div>'
+        for item in items
+    )
+
+
 def render_paragraphs(paras):
     return "\n".join(f"  <p>{p}</p>" for p in paras)
 
@@ -355,8 +394,17 @@ def generate(data_path, photo_path, out_dir):
         competencies_html=r.get("competencies_html", ""),
         references_html=render_references(r.get("references", [])),
         volunteering_html=render_volunteering(r.get("volunteering", [])),
-        achievements_html=r.get("achievements_html", ""),
+        achievements_html=render_achievements(r.get("achievements", [])),
         publications_html=r.get("publications_html", ""),
+        icon_profile=ICON_PROFILE,
+        icon_experience=ICON_EXPERIENCE,
+        icon_education=ICON_EDUCATION,
+        icon_languages=ICON_LANGUAGES,
+        icon_volunteering=ICON_VOLUNTEERING,
+        icon_competencies=ICON_COMPETENCIES,
+        icon_achievements=ICON_ACHIEVEMENTS,
+        icon_publications=ICON_PUBLICATIONS,
+        icon_references=ICON_REFERENCES,
         photo_b64=b64,
     )
     resume_out = os.path.join(folder, f"{slug}_resume.html")
