@@ -1753,7 +1753,22 @@ def poll_firebase_feedback():
                     if 'applied_updates' not in locals():
                         applied_updates = {}
                     applied_updates[url_field] = new_status
-                
+
+                # Update status to "read"
+                if doc_name:
+                    update_url = f"https://firestore.googleapis.com/v1/{doc_name}?updateMask.fieldPaths=status"
+                    payload = {"fields": {"status": {"stringValue": "read"}}}
+                    requests.patch(update_url, json=payload, timeout=10)
+                continue
+
+            if feedback_type == "delete_update":
+                reason = fields.get("reason", {}).get("stringValue", "Manually marked as missed")
+                url_field = fields.get("url", {}).get("stringValue", "")
+                if url_field:
+                    if 'delete_updates' not in locals():
+                        delete_updates = {}
+                    delete_updates[url_field] = reason
+
                 # Update status to "read"
                 if doc_name:
                     update_url = f"https://firestore.googleapis.com/v1/{doc_name}?updateMask.fieldPaths=status"
@@ -1830,6 +1845,37 @@ def poll_firebase_feedback():
                     print(f"INFO: Successfully synced user_review status for {len(user_review_updates)} jobs from the cloud.")
             except Exception as e:
                 print(f"Error syncing user review status: {e}")
+
+        if locals().get('delete_updates'):
+            try:
+                if os.path.exists(JOBS_FILE):
+                    jobs = db_utils.load_jobs()
+                    deleted_jobs = []
+                    if os.path.exists(DELETED_FILE):
+                        try:
+                            with open(DELETED_FILE, 'r', encoding='utf-8') as f:
+                                deleted_jobs = json.load(f)
+                        except Exception:
+                            pass
+                    seen_deleted = {j.get('url') for j in deleted_jobs if j.get('url')}
+                    remaining_jobs = []
+                    moved = 0
+                    for j in jobs:
+                        if j.get('url') in delete_updates:
+                            j['deletion_reason'] = delete_updates[j['url']]
+                            if j.get('url') not in seen_deleted:
+                                deleted_jobs.append(j)
+                                seen_deleted.add(j.get('url'))
+                            moved += 1
+                        else:
+                            remaining_jobs.append(j)
+                    if moved:
+                        db_utils.save_jobs(remaining_jobs)
+                        with open(DELETED_FILE, 'w', encoding='utf-8') as f:
+                            json.dump(deleted_jobs, f, indent=2)
+                        print(f"INFO: Moved {moved} job(s) to deleted.json via manual delete_update feedback.")
+            except Exception as e:
+                print(f"Error processing delete_update feedback: {e}")
             
     
         if match_updates:
@@ -1851,7 +1897,7 @@ def poll_firebase_feedback():
                 print(f"Error syncing match updates: {e}")
         
         # Wipe shared_state since all updates are now safely in jobs.json
-        if locals().get('applied_updates') or user_review_updates or match_updates:
+        if locals().get('applied_updates') or user_review_updates or match_updates or locals().get('delete_updates'):
             try:
                 wipe_url = url.replace('user_feedback', 'shared_state/job_status')
                 requests.delete(wipe_url, timeout=10)
