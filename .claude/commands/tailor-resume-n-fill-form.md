@@ -303,7 +303,7 @@ Write the tailored JSON to `PRIVATE\Resumes\JOB_ID\JOB_ID_data.json` — overwri
 - Eligible for palkkatuki (wage subsidy) via BusinessOulu employment services — approx. 50% wage cost support for employer.
 - Open to relocation within Finland, including Helsinki.
 - Enthusiastic about AI and digital tools in legal work; experienced applying digital solutions to streamline legal processes.
-- Co-organised 'Namaste Oulu', a cross-cultural event during the IHO internship — coordination with city authorities, community groups, and sponsors.
+- Co-organised 'Namaste Oulu', a voluntary cross-cultural community event (separate from the IHO internship) — coordination with city authorities, community groups, and sponsors.
 - At Poise Legal: also developed and maintained contract templates and risk registers; coordinated with external counsel and client representatives as an in-house advisory interface.
 - Third reference available: Jaana Liukkonen, Teacher at OSAO — jaana.liukkonen@osao.fi, +358 40 570 7593.
 
