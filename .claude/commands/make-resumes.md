@@ -58,6 +58,7 @@ Tailoring rules:
 - `competencies_html`: reorder skill categories to lead with what matters for this role.
 - `languages_html`: put Finnish first for Finnish-language roles.
 - `wage_subsidy_note`: always copy verbatim from the template. Renders as a highlighted banner directly under the header, above Professional Profile — deliberate, since palkkatuki eligibility is critical information for the employer's hiring decision.
+- `references`, `volunteering`, `achievements_html`, `publications_html`: always copy verbatim from the template — static personal history, never job-specific.
 - `cover_letter`: write in **Finnish** for Finnish-language roles, **English** for English-language roles. Address the hiring manager by name if known from the description. 5–6 paragraphs: hook → relevant experience → Finland integration → why this company → wage subsidy (palkkatuki) offer to handle her part of the joint BusinessOulu application → close with availability as next possible working day.
 - For legal/juristi roles: emphasise contract law, legal research, court experience, Finnish bar path.
 - For generalist/admin/coordinator roles: emphasise event coordination (IHO), organisational skills, multilingual communication, MS Office, Finnish B2.

@@ -35,7 +35,12 @@ Data JSON structure:
     "competencies_html": "...",
     "references": [
       { "name": "...", "title": "...", "contact": "..." }
-    ]
+    ],
+    "volunteering": [
+      { "title": "...", "org": "...", "dates": "...", "desc": "..." }
+    ],
+    "achievements_html": "...",
+    "publications_html": "..."
   },
   "cover_letter": {
     "date": "23 June 2026",
@@ -67,19 +72,19 @@ RESUME_HTML = """<!DOCTYPE html>
 <meta charset="UTF-8">
 <title>{name} — CV</title>
 <style>
-@page {{ size: A4; margin: 11mm 13mm 10mm 13mm; }}
+@page {{ size: A4; margin: 8mm 12mm 7mm 12mm; }}
 @media print {{
   body {{ margin: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }}
 }}
 * {{ box-sizing: border-box; margin: 0; padding: 0; }}
 body {{
   font-family: 'Calibri', 'Segoe UI', Arial, sans-serif;
-  font-size: 9.2pt; line-height: 1.35; color: #1e1e1e;
+  font-size: 9.2pt; line-height: 1.26; color: #1e1e1e;
   background: #fff; width: 184mm; margin: 0 auto;
 }}
 .header {{
   display: flex; align-items: flex-start; gap: 14px;
-  padding-bottom: 7px; border-bottom: 2.5px solid #1a4f82; margin-bottom: 7px;
+  padding-bottom: 5px; border-bottom: 2.5px solid #1a4f82; margin-bottom: 5px;
 }}
 .photo {{
   width: 74px; height: 93px; object-fit: cover;
@@ -97,34 +102,39 @@ body {{
 .header-text .contact {{ font-size: 8.3pt; color: #444; line-height: 1.65; }}
 .header-text .contact a {{ color: #1a4f82; text-decoration: none; }}
 h2 {{
-  font-size: 8.8pt; font-weight: 800; color: #1a4f82;
+  font-size: 8.6pt; font-weight: 800; color: #1a4f82;
   text-transform: uppercase; letter-spacing: 0.9px;
-  border-bottom: 1px solid #1a4f82; padding-bottom: 1.5px; margin: 7px 0 4px;
+  border-bottom: 1px solid #1a4f82; padding-bottom: 1px; margin: 4px 0 2px;
 }}
-.profile-text {{ font-size: 8.8pt; line-height: 1.42; color: #2a2a2a; }}
-.job {{ margin-bottom: 5px; }}
+.profile-text {{ font-size: 8.6pt; line-height: 1.32; color: #2a2a2a; }}
+.job {{ margin-bottom: 3px; }}
 .job-header {{ display: flex; justify-content: space-between; align-items: baseline; }}
-.job-title {{ font-weight: 700; font-size: 9.2pt; }}
-.job-co {{ font-style: italic; color: #444; font-size: 8.8pt; }}
-.job-date {{ font-size: 8.2pt; color: #666; white-space: nowrap; padding-left: 6px; }}
-ul {{ padding-left: 13px; margin-top: 2px; }}
-li {{ font-size: 8.5pt; line-height: 1.38; margin-bottom: 1px; }}
+.job-title {{ font-weight: 700; font-size: 9pt; }}
+.job-co {{ font-style: italic; color: #444; font-size: 8.6pt; }}
+.job-date {{ font-size: 8pt; color: #666; white-space: nowrap; padding-left: 6px; }}
+ul {{ padding-left: 13px; margin-top: 1px; }}
+li {{ font-size: 8.2pt; line-height: 1.28; margin-bottom: 0.5px; }}
 .two-col {{ display: flex; gap: 14px; margin-top: 1px; }}
 .col-left {{ flex: 0 0 50%; }}
 .col-right {{ flex: 1; }}
 .edu-table {{ width: 100%; border-collapse: collapse; }}
 .edu-table tr {{ vertical-align: top; }}
-.edu-table td {{ font-size: 8.3pt; line-height: 1.35; padding: 1.5px 2px; }}
+.edu-table td {{ font-size: 8pt; line-height: 1.22; padding: 1px 2px; }}
 .edu-table .qual {{ font-weight: 600; }}
 .edu-table .inst {{ color: #555; text-align: right; white-space: nowrap; padding-left: 4px; }}
 .highlight {{ color: #0e2d50; }}
-.skill-block {{ font-size: 8.5pt; line-height: 1.55; }}
+.skill-block {{ font-size: 8.2pt; line-height: 1.35; }}
 .skill-cat {{ font-weight: 700; color: #1a4f82; }}
-.ref {{ font-size: 8.3pt; line-height: 1.4; margin-bottom: 4px; }}
+.ref {{ font-size: 8pt; line-height: 1.25; margin-bottom: 2.5px; }}
 .ref-name {{ font-weight: 700; }}
+.vol {{ margin-bottom: 2.5px; }}
+.vol-header {{ display: flex; justify-content: space-between; align-items: baseline; }}
+.vol-title {{ font-weight: 700; font-size: 8pt; }}
+.vol-date {{ font-size: 7.7pt; color: #666; white-space: nowrap; padding-left: 6px; }}
+.vol-desc {{ font-size: 7.8pt; line-height: 1.25; color: #444; margin-top: 0.5px; }}
 .highlight-banner {{
   background: #fff8e1; border-left: 3px solid #f59e0b; border-radius: 2px;
-  padding: 4px 8px; margin-bottom: 7px; font-size: 8.5pt; font-weight: 700; color: #7a4a00;
+  padding: 3px 8px; margin-bottom: 4px; font-size: 8.2pt; font-weight: 700; color: #7a4a00;
 }}
 </style>
 </head>
@@ -160,10 +170,16 @@ li {{ font-size: 8.5pt; line-height: 1.38; margin-bottom: 1px; }}
 <div class="skill-block">{languages_html}</div>
 <h2>References</h2>
 {references_html}
+<h2>Volunteering</h2>
+{volunteering_html}
 </div>
 <div class="col-right">
 <h2>Core Legal Competencies</h2>
 <div class="skill-block">{competencies_html}</div>
+<h2>Achievements</h2>
+<div class="skill-block">{achievements_html}</div>
+<h2>Publications</h2>
+<div class="skill-block">{publications_html}</div>
 </div>
 </div>
 
@@ -282,6 +298,21 @@ def render_references(refs):
     )
 
 
+def render_volunteering(rows):
+    parts = []
+    for v in rows:
+        parts.append(
+            f'  <div class="vol">\n'
+            f'    <div class="vol-header">\n'
+            f'      <span class="vol-title">{v.get("title", "")} — {v.get("org", "")}</span>\n'
+            f'      <span class="vol-date">{v.get("dates", "")}</span>\n'
+            f'    </div>\n'
+            f'    <div class="vol-desc">{v.get("desc", "")}</div>\n'
+            f'  </div>'
+        )
+    return "\n".join(parts)
+
+
 def render_paragraphs(paras):
     return "\n".join(f"  <p>{p}</p>" for p in paras)
 
@@ -323,6 +354,9 @@ def generate(data_path, photo_path, out_dir):
         languages_html=r.get("languages_html", ""),
         competencies_html=r.get("competencies_html", ""),
         references_html=render_references(r.get("references", [])),
+        volunteering_html=render_volunteering(r.get("volunteering", [])),
+        achievements_html=r.get("achievements_html", ""),
+        publications_html=r.get("publications_html", ""),
         photo_b64=b64,
     )
     resume_out = os.path.join(folder, f"{slug}_resume.html")
