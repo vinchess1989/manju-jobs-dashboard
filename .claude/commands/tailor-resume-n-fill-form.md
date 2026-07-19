@@ -56,34 +56,31 @@ Read `PRIVATE\Resumes\f6aaa66f\f6aaa66f_data.json`. Every output JSON must match
 
 ---
 
+## Git sync — runs once before the loop, before any other git operation
+
+Tailoring can happen on a different machine than the one running the scraper, and the scraper commits+pushes to `PUBLIC` roughly every 12 minutes. Skipping this step is how local work ends up silently stranded (unpushed) for days and collides with the scraper's commits — see `CLAUDE.md` for the full story. Do this before touching any file:
+
+1. **Pull PRIVATE:** `git -C "PRIVATE" pull --rebase`
+2. **Pull PUBLIC:** `git -C "PUBLIC" pull --rebase`. This should almost always be a clean fast-forward/rebase now that `jobs.json` is scraper-only (see the Git sync rule in `CLAUDE.md`). If it still conflicts (e.g. leftover legacy edits), resolve per-entry by keeping the union of fields from both sides rather than blindly picking one — never discard a field just to make the conflict go away.
+3. **Catch stranded work from a previous session:** `git -C "PUBLIC" rev-list --count origin/main..HEAD`. If this is non-zero, a prior session already committed locally but never pushed — push it now, before starting any new work, using the retry logic in Step 7. Do not let it accumulate further.
+
+Print: `Git sync done — PUBLIC and PRIVATE up to date.`
+
+---
+
 ## Checkpoint Check — runs once before the loop
 
-Canonical step order: `0 → 1 → 1.5 → 1.6 → 2 → 3 → 4`
+Canonical step order: `0 → 1 → 1.5 → 1.6 → 2 → 3 → 4 → 4.5`
 
 For each JOB_ID in the list, check whether `PRIVATE\Resumes\JOB_ID\JOB_ID_checkpoint.json` exists.
 
-If **no** checkpoint exists for a job, set `START_STEP[JOB_ID] = "0"` (start fresh, no prompt).
+If **no** checkpoint exists for a job, set `START_STEP[JOB_ID] = "0"` (start fresh).
 
-If a checkpoint **does** exist, read it and display a block like this for each such job:
+If a checkpoint **does** exist indicating that Step 4 was completed (or if you see that `PRIVATE\Resumes\JOB_ID\JOB_ID_data.json` and the corresponding PDFs already exist), you must first read `JOB_ID_data.json` and check the `"tailor_model"` field:
+- If `"tailor_model"` contains `"claude"` (case-insensitive), **automatically skip Steps 0-4 for this job** and jump straight to **Step 4.5 (Validate the generated resume)**, then on to the **Application Fill Phase**! Print a note: `Docs already tailored by Claude for JOB_ID. Auto-skipping tailoring and jumping straight to form fill.` A `tailor_model` of Claude does **not** guarantee the data schema was actually complete — always run Step 4.5 even on this fast path, never skip straight past it.
+- If `"tailor_model"` does **not** contain `"claude"` (e.g., it is a Local LLM or Gemini), you **MUST** redo the tailoring from Step 2 to override it with Claude's superior tailoring. Print a note: `Docs were tailored by a different model. Redoing tailoring with Claude.`
 
-```
-Checkpoint found — abc123 (Legal Trainee @ Hiab)
-  Completed : 0, 1, 1.5, 1.6, 2, 3
-  Last run  : 2026-07-01 10:30
-  Next step : 4 (Generate PDFs)
-
-  [Enter] Continue from Step 4        ← default
-  [2]     Redo from Step 2 (Write tailored JSON)
-  [1.6]   Redo from Step 1.6 (Generate answers)
-  [1.5]   Redo from Step 1.5 (Scrape questions)
-  [1]     Redo from Step 1 (Fetch description)
-  [0]     Start completely fresh
-  [skip]  Skip this job this run
-```
-
-Ask the user for their choice for each job that has a checkpoint. Set `START_STEP[JOB_ID]` to the chosen step (or `"skip"` to exclude that job from the loop entirely).
-
-If the user chooses `[0]` (fresh), delete the existing checkpoint file before entering the loop.
+Do not pause to ask the user for confirmation on any of this unless they explicitly included the word "redo" in their prompt.
 
 ---
 
@@ -91,7 +88,7 @@ If the user chooses `[0]` (fresh), delete the existing checkpoint file before en
 
 **If `START_STEP[JOB_ID]` is `"skip"`, skip this job entirely.**
 
-**Skip rule:** At the start of each step, if the step ID comes *before* `START_STEP[JOB_ID]` in the canonical order `[0, 1, 1.5, 1.6, 2, 3, 4]`, print `↷ Skipping Step N (checkpoint)` and move to the next step.
+**Skip rule:** At the start of each step, if the step ID comes *before* `START_STEP[JOB_ID]` in the canonical order `[0, 1, 1.5, 1.6, 2, 3, 4, 4.5]`, print `↷ Skipping Step N (checkpoint)` and move to the next step. Step 4.5 is the one exception: it **always** runs whenever Step 4 runs (fresh or resumed) and is never skipped by checkpoint state, since it is what catches a broken Step 4 output.
 
 **Checkpoint write rule:** After each step completes successfully, write or update `PRIVATE\Resumes\JOB_ID\JOB_ID_checkpoint.json`:
 ```json
@@ -134,17 +131,30 @@ If all three fail, skip this ID, report which sources were tried, and continue t
 
 ### Step 1.5 — Scrape application form questions (best-effort)
 
-**Resolve the apply URL first.** Listing pages (Jobly, Duunitori, etc.) don't host the form — they link out to it. Before running the scraper, find the real apply URL in this priority order, stopping at the first hit:
+**Resolve the apply URL first.** Listing pages (Jobly, Duunitori, etc.) don't host the form — they link out to it, sometimes through more than one hop, and some sites (e.g. tyomarkkinatori.fi) render the real apply link client-side via JavaScript so it never appears as text anywhere in the description. Before running the scraper, find the real apply URL in this priority order, stopping at the first hit:
 
 1. **Explicit URL from arguments** — if `EXPLICIT_APPLY_URL` is set for this job (passed on the command line), use it directly. Print: `Using explicit apply URL (from arguments): EXPLICIT_APPLY_URL`
-2. Check `jobs.json` for an `apply_url` field on this job entry (use it if present and non-null).
-3. Scan the job description text obtained in Step 1 for a URL following apply-related keywords. Match any of these patterns (case-insensitive):
+2. Check Firestore for a cached result on this job's URL — this is often already populated by a previous run of Step 3 below or by `/find-apply-link` run standalone. **Never read (or write) `apply_url`/`apply_email` from `jobs.json` itself** — that file is scraper-owned; this metadata lives in Firestore instead (see `CLAUDE.md`).
+   ```powershell
+   python job_status_store.py get --url "JOB_URL" --field apply_email
+   python job_status_store.py get --url "JOB_URL" --field apply_url
+   ```
+   - If `apply_email` is present (not `NONE`) → set `EMAIL_ONLY[JOB_ID] = <that email>`. Print: `JOB_ID applies via email only (cached) — skipping form scrape/fill; resume and cover letter will still be generated.` Skip the scraper invocation and Step 1.6 for this job (do **not** abort — proceed to Step 2 normally so the PDFs still get generated). Skip priorities 3–5 below.
+   - Else if `apply_url` is present (not `NONE`) → use it directly, continue below. Skip priorities 3–5 below.
+   - Else → fall through to priority 3.
+3. **Apply the find-apply-link skill technique** (see `.claude/commands/find-apply-link.md`) using `JOB_URL` as `BASE_URL` and `JOB_ID` as `JOB_ID`. It resolves multi-hop "Apply" chains and JS-rendered apply links using a cached per-domain strategy, and self-persists the result to Firestore (`apply_url` or `apply_email`, via `job_status_store.py`) for future runs.
+   - `RESULT_TYPE: form` → use `RESULT` as the apply URL, continue below.
+   - `RESULT_TYPE: email` → set `EMAIL_ONLY[JOB_ID] = RESULT` (the email address). Print: `JOB_ID applies via email only (RESULT) — skipping form scrape/fill; resume and cover letter will still be generated.` Skip the scraper invocation and Step 1.6 for this job (do **not** abort — proceed to Step 2 normally so the PDFs still get generated).
+   - `RESULT_TYPE: not_found` → fall through to priority 4 below.
+4. Scan the job description text obtained in Step 1 for a URL following apply-related keywords (cheap, no network cost — try this before giving up). Match any of these patterns (case-insensitive):
    - Finnish: `Jätä hakemus:`, `Hae paikkaa:`, `hakemuslinkki:`, `Hakemukset:`, `Hae tästä:`
    - English: `Apply here:`, `Apply at:`, `Application link:`, `Submit.*application:`
    - Generic: any bare URL that appears on its own line immediately after the word "hakemus" or "apply"
-4. If nothing found in the description, fall back to `JOB_URL`.
+5. If nothing found anywhere, fall back to `JOB_URL`.
 
-Set `SCRAPE_URL` to whichever URL was found. Print: `Scraping apply URL: SCRAPE_URL`
+If `EMAIL_ONLY[JOB_ID]` was just set in step 3 above, skip the rest of this step (scraper + Step 1.6) entirely for this job and continue to Step 2.
+
+Otherwise, set `SCRAPE_URL` to whichever URL was found. Print: `Scraping apply URL: SCRAPE_URL`
 
 Run the scraper. Non-blocking — if it finds nothing or errors, continue to Step 2 normally.
 
@@ -245,17 +255,23 @@ Write the tailored JSON to `PRIVATE\Resumes\JOB_ID\JOB_ID_data.json` — overwri
 - `tailored_at`: set to the current ISO timestamp (e.g., `"2026-07-16T12:00:00+03:00"`) representing the exact time you are running this skill.
 - `tailor_model`: set to `"claude-sonnet-4-6"`
 
+**`resume.name`:** Always `"Manju Krishna Haridas"` — copy verbatim from the template. Never omit this field; `make_resume.py` silently renders a blank header line if it's missing.
+
+**`resume.contact`:** Always copy the entire object verbatim from the template (`address`, `phone`, `email`, `linkedin_url`, `linkedin_display`) — these are static and never job-specific. Never omit this object; a missing `contact` silently renders a blank line under the name with no error.
+
 **`resume.role`:** `"JOB_TITLE Candidate"`
 
 **`resume.profile`:** 2–3 sentences, highly specific to this role and company. Directly connect Manju's most relevant background to the stated requirements. Do not just summarise her CV — name the company and what they need.
 
 **`resume.experience`:** Keep all four entries exactly as in the template (same dates, companies, titles). Reorder the four entries so the most relevant experience appears first. Within each entry, reorder and reword the bullets to front-load skills mentioned in the job description.
 
-**`resume.education`:** Keep all entries as in the template.
+**`resume.education`:** Keep all entries as in the template, **using the exact same keys** (`qual`, `inst`, and `bold` where set). Do not rename these keys (e.g. to `degree`/`school`) — `make_resume.py` reads `qual`/`inst` specifically and silently renders blank rows for any other key names.
 
 **`resume.languages_html`:** For Finnish-language postings, put Finnish first. For English-language postings, keep English first.
 
 **`resume.competencies_html`:** Completely rewrite 4–5 skill categories that map directly onto the key requirements in this job description. Use `<span class="skill-cat">Category:</span> description...` format.
+
+**`resume.references`:** Always copy the entire array verbatim from the template (same names, titles, contacts). Never omit this array; a missing `references` silently renders an empty "REFERENCES" section heading with no content and no error.
 
 **`cover_letter.date`:** Use today's date formatted as `"30 June 2026"`.
 
@@ -313,42 +329,54 @@ Print a one-line progress note after each job: `✓ JOB_ID (JOB_TITLE @ COMPANY)
 
 ---
 
+### Step 4.5 — Validate the generated resume
+
+`make_resume.py` has no required fields — every value defaults to `""` if a key is missing or misnamed, so a broken `data.json` produces a resume that *looks* generated (files exist, PDF opens fine) but has silently blank sections. This step exists to catch that before the resume ever reaches an application form.
+
+**Always run this step whenever Step 4 runs** — fresh, resumed from checkpoint, or auto-skipped straight here via the `tailor_model` fast path above. Never skip it.
+
+1. Read `PRIVATE\Resumes\JOB_ID\JOB_ID_data.json` and confirm ALL of the following are present and non-empty:
+   - `resume.name`
+   - `resume.contact.address`, `resume.contact.phone`, `resume.contact.email`
+   - `resume.education` — non-empty array, and **every** entry has non-empty `qual` and `inst`
+   - `resume.experience` — non-empty array, and every entry has non-empty `title`, `company`, `dates`, and at least one bullet
+   - `resume.languages_html`, `resume.competencies_html`
+   - `resume.references` — non-empty array, and every entry has non-empty `name`, `title`, `contact`
+   - `cover_letter.paragraphs` — non-empty array with at least 3 paragraphs
+
+2. If anything fails: fix `JOB_ID_data.json` (pull `name`/`contact`/`references` verbatim from the template read at the start of this skill; rename any wrong education keys to `qual`/`inst`), then redo Step 3 and Step 4 to regenerate, and re-check from the top of this step.
+
+3. Once the JSON check passes, read the regenerated resume PDF itself (via the Read tool) and visually confirm PROFESSIONAL PROFILE, EDUCATION, and REFERENCES actually contain rendered text — not just present-but-empty section headings. This catches template/rendering bugs that a JSON-only check would miss.
+
+Do not proceed to the Application Fill Phase or the next job until validation passes. Print: `✓ JOB_ID — resume validated (all sections populated)`.
+
+---
+
 ## End of loop
 
 ---
 
-## Application Fill Phase — Claude vision agent
+## Application Fill Phase — Interactive Hardcoded Script
 
-Only run this phase if at least one job produced a `JOB_ID_answers.json` file.
+Instead of using a generic API-based fill agent, you (the AI) must use your own intelligence in the chat to create a custom hardcoded Playwright Python script for each job that needs to be filled!
 
-Collect the job IDs that have answers files into a space-separated list (`FILL_IDS`), then run:
+Only run this phase for jobs that produced a `JOB_ID_answers.json` file **and** are not in `EMAIL_ONLY`.
 
-```powershell
-# Default: Claude API with vision
-python "PUBLIC\fill_agent.py" `
-    --job-id FILL_IDS `
-    --private-dir "PRIVATE"
+For each job ID in `EMAIL_ONLY`, skip this phase entirely and print: `JOB_ID — apply by sending the resume and cover letter PDFs directly to EMAIL_ONLY[JOB_ID].` List the exact PDF paths from `PRIVATE\Resumes\JOB_ID\` alongside it.
 
-# Local LLM (vision model in LM Studio):
-# python "PUBLIC\fill_agent.py" --job-id FILL_IDS --private-dir "PRIVATE" --local
-
-# Local LLM, text-only model (e.g. Hermes 3, Llama 3.1):
-# python "PUBLIC\fill_agent.py" --job-id FILL_IDS --private-dir "PRIVATE" --local --no-vision
-```
-
-The agent opens a visible browser for each job in turn. After every action it checks the current page state and decides what to click, type, or scroll — handling cookie walls, GravityForms re-renders, Finnish dropdowns, and unusual layouts without hardcoded selectors.
-
-**Vision mode (default / `--local` without `--no-vision`):** The agent receives a screenshot after every action and uses it to verify values and find the next field.
-
-**No-vision mode (`--local --no-vision`):** The agent receives a structured DOM text dump listing every visible field with its CSS selector, label, and current value. It uses `fill_field`, `select_option`, `check`, and `click_selector` tools to target fields by selector — suitable for text-only models like Hermes 3 Llama 3.1.
-
-1. Agent sees the page, dismisses any cookie banner, then fills each field
-2. After every action the agent verifies the value appeared; re-fills if cleared
-3. When all fields are filled the agent calls `done()` — the form is **not** submitted
-4. Manju reviews the completed form in the browser and clicks Submit manually
-5. Manju presses Enter in the terminal → browser closes → next job opens
-
-A summary is printed when all jobs are done. After this phase, continue to Step 5.
+For each remaining job ID in this phase:
+1. **Analyze the form:** Read `JOB_ID_answers.json`. If you need more information about the form's HTML structure, use your tools (e.g. `run_command` with python) to fetch the form page and inspect its fields.
+2. **Write a custom script:** Create a Python Playwright script at `scratch\hardcoded_fill_JOB_ID.py`.
+   - The script must launch a **visible** Chrome browser (`headless=False`).
+   - It must navigate to the job's apply URL.
+   - It must hardcode the Playwright locators to fill in the specific values from `JOB_ID_answers.json`.
+   - It must attach the specific PDF resume and cover letter generated in Step 4.
+   - When finished filling, it must **pause indefinitely** (e.g., `page.wait_for_timeout(600000)`) and explicitly NOT submit the form, allowing Manju to review and click submit manually.
+3. **Launch via Schtasks:** Because you are running in Session 0, you must apply the `open_visible_browser` skill technique to launch your custom script visibly on the user's desktop!
+   - Kill background chrome: `powershell -Command "Stop-Process -Name chrome -Force -ErrorAction SilentlyContinue; taskkill /F /IM chrome.exe /T"`
+   - Create a batch wrapper: `scratch\run_hardcoded_fill_JOB_ID.bat` that runs `python -u "PUBLIC\scratch\hardcoded_fill_JOB_ID.py" > "PUBLIC\scratch\fill_JOB_ID.log" 2>&1`
+   - Launch it using: `cmd /c "schtasks /delete /tn "AntigravityVisibleBrowser" /f & schtasks /create /tn "AntigravityVisibleBrowser" /tr "\"PUBLIC\scratch\run_hardcoded_fill_JOB_ID.bat\"" /sc once /st 00:00 /ru vinee /it /f & schtasks /run /tn "AntigravityVisibleBrowser""`
+4. **Wait for completion:** Wait for the user to confirm they have submitted the form and closed the browser before proceeding to the next job or Step 5.
 
 ---
 
@@ -396,10 +424,17 @@ No authentication is required to read this (same open-access pattern as the exis
 ```powershell
 git -C "PUBLIC" add input.csv
 git -C "PUBLIC" commit -m "Update resume links for JOB_ID_1 JOB_ID_2 ... (retailored with claude-sonnet-4-6)"
-git -C "PUBLIC" push origin main
 ```
 
 If `input.csv` has no changes, skip the commit and note that it was already up to date.
+
+**Push with retry** — the scraper may have pushed again in the time this session has been running (it commits every ~12 min), so a plain push can be rejected as non-fast-forward. Don't treat that as a failure; resolve it the same way the scraper itself does:
+
+```powershell
+git -C "PUBLIC" push origin main
+```
+
+If rejected: `git -C "PUBLIC" pull --rebase origin main`, resolve any conflict per the `CLAUDE.md` rule (union of fields, never silently drop one side), then retry the push. Repeat up to 3 times total before surfacing it to the user as a real failure — a single rejection here is expected/routine, not exceptional.
 
 ---
 
@@ -407,9 +442,12 @@ If `input.csv` has no changes, skip the commit and note that it was already up t
 
 Print a summary table for all processed jobs:
 
-| Job ID | Title | Company | Resume PDF | Cover Letter PDF | Firestore | Answers |
-|--------|-------|---------|------------|------------------|-----------|---------|
-| abc123 | ... | ... | filename.pdf | filename.pdf | ✓ | ✓ (N questions) |
+| Job ID | Title | Company | Resume PDF | Cover Letter PDF | Firestore | Answers | Apply Method |
+|--------|-------|---------|------------|------------------|-----------|---------|---------------|
+| abc123 | ... | ... | filename.pdf | filename.pdf | ✓ | ✓ (N questions) | Form |
+| def456 | ... | ... | filename.pdf | filename.pdf | ✓ | — | Email: marika@example.com |
+
+Use `Email: EMAIL_ONLY[JOB_ID]` for jobs resolved to `RESULT_TYPE: email` in Step 1.5; otherwise `Form`.
 
 For jobs with an answers upload, print the fetch URL:
 ```
