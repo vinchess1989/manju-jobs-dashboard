@@ -1987,6 +1987,71 @@ def poll_re_review_request():
         print(f"Error handling re-review request: {e}")
 
 
+def poll_manual_deletions():
+    """Check shared_state/job_status (the same doc job_status_store.py writes
+    apply_url/tailor_model etc. to) for jobs flagged with a 'deletion_reason'
+    and move them from jobs.json to deleted.json.
+
+    This exists so a job can be marked missed/closed (e.g. by the
+    find-apply-link skill, or manually via job_status_store.py) without ever
+    hand-patching jobs.json directly -- job_status is the one shared_state doc
+    Firestore rules let anyone update without auth, so this is the only
+    channel available to non-dashboard callers (the user_feedback collection's
+    'delete_update' type above requires an authenticated dashboard session).
+    """
+    try:
+        from job_status_store import get_job_status, patch_job_status
+        current = get_job_status()
+    except Exception as e:
+        print(f"Error polling manual deletions: {e}")
+        return
+
+    pending = {
+        url: entry.get("deletion_reason")
+        for url, entry in current.items()
+        if isinstance(entry, dict) and entry.get("deletion_reason")
+    }
+    if not pending or not os.path.exists(JOBS_FILE):
+        return
+
+    try:
+        jobs = db_utils.load_jobs()
+        deleted_jobs = []
+        if os.path.exists(DELETED_FILE):
+            try:
+                with open(DELETED_FILE, 'r', encoding='utf-8') as f:
+                    deleted_jobs = json.load(f)
+            except Exception:
+                pass
+        seen_deleted = {j.get('url') for j in deleted_jobs if j.get('url')}
+
+        remaining = []
+        moved = 0
+        for j in jobs:
+            if j.get('url') in pending:
+                j['deletion_reason'] = pending[j['url']]
+                if j.get('url') not in seen_deleted:
+                    deleted_jobs.append(j)
+                    seen_deleted.add(j.get('url'))
+                moved += 1
+            else:
+                remaining.append(j)
+
+        if moved:
+            db_utils.save_jobs(remaining)
+            with open(DELETED_FILE, 'w', encoding='utf-8') as f:
+                json.dump(deleted_jobs, f, indent=2)
+            print(f"INFO: Moved {moved} job(s) to deleted.json via manual deletion_reason flag in job_status.")
+
+            for job_url in pending:
+                entry = current.get(job_url, {})
+                entry.pop("deletion_reason", None)
+                current[job_url] = entry
+            patch_job_status(current)
+    except Exception as e:
+        print(f"Error processing manual deletions: {e}")
+
+
 def main():
     global _tee_logger
     os.makedirs(LOGS_DIR, exist_ok=True)
@@ -2113,6 +2178,11 @@ def main():
             poll_firebase_feedback()
         except Exception as e:
             print(f"Error polling firebase: {e}")
+
+        try:
+            poll_manual_deletions()
+        except Exception as e:
+            print(f"Error polling manual deletions: {e}")
 
         try:
             poll_re_review_request()
