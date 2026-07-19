@@ -52,7 +52,7 @@ PRIVATE : <resolved path>
 ```
 
 Read the structural template **once** before the loop:
-Read `PRIVATE\Resumes\f6aaa66f\f6aaa66f_data.json`. Every output JSON must match this structure exactly (same keys, same nesting).
+Read `PRIVATE\Resumes\Master\master_data.json`. Every output JSON must match this structure exactly (same keys, same nesting).
 
 ---
 
@@ -190,7 +190,7 @@ Read `PRIVATE\Resumes\JOB_ID\JOB_ID_questions.json`. Using the job description f
 - **Factual fields** — use these exact values:
   - Phone: leave blank, set `is_placeholder: true`
   - Address: `Oulu, Finland`
-  - Availability: `September 2026`
+  - Availability: `Next possible working day`
   - Salary expectation: leave blank, set `is_placeholder: true`
   - Right to work in Finland: `Yes — EU residence permit`
 - **Language:** Answer in the same language as the question (Finnish if Finnish, English if English).
@@ -267,7 +267,7 @@ Write the tailored JSON to `PRIVATE\Resumes\JOB_ID\JOB_ID_data.json` — overwri
 
 **`resume.education`:** Keep all entries as in the template, **using the exact same keys** (`qual`, `inst`, and `bold` where set). Do not rename these keys (e.g. to `degree`/`school`) — `make_resume.py` reads `qual`/`inst` specifically and silently renders blank rows for any other key names.
 
-**`resume.languages_html`:** For Finnish-language postings, put Finnish first. For English-language postings, keep English first.
+**`resume.languages_html`:** For Finnish-language postings, put Finnish first. For English-language postings, keep English first. Always keep the palkkatuki (wage subsidy) eligibility line from the template as the last line — copy it verbatim.
 
 **`resume.competencies_html`:** Completely rewrite 4–5 skill categories that map directly onto the key requirements in this job description. Use `<span class="skill-cat">Category:</span> description...` format.
 
@@ -277,12 +277,13 @@ Write the tailored JSON to `PRIVATE\Resumes\JOB_ID\JOB_ID_data.json` — overwri
 
 **`cover_letter.recipient`:** Fill `company` with `COMPANY` and `city` with the job location. Use `"Hiring Manager"` for title if no name is known.
 
-**`cover_letter.paragraphs`:** 4–5 paragraphs written in the **same language as the job posting** (Finnish for Finnish postings, English for English postings):
+**`cover_letter.paragraphs`:** 5–6 paragraphs written in the **same language as the job posting** (Finnish for Finnish postings, English for English postings):
   1. Hook — what drew Manju to this company and role specifically.
   2. Most relevant experience — connect it directly to the job requirements.
   3. Finland integration — Finnish B2, Oulu roots, IHO internship, OPH bar path.
   4. Why this company — something specific from the posting or company.
-  5. Close — availability (September 2026), contact invitation.
+  5. Wage subsidy (palkkatuki) — mention her eligibility and offer to handle her part of the joint application. English: "I'm eligible for wage subsidy support (palkkatuki), and would be glad to handle my part of the joint application with BusinessOulu if this makes hiring more accessible for your organization." Translate naturally to Finnish for Finnish-language postings.
+  6. Close — availability (next possible working day), contact invitation.
 
 **`cover_letter.sign_off`:** `"Ystävällisin terveisin"` for Finnish, `"Yours sincerely"` for English.
 
@@ -295,7 +296,8 @@ Write the tailored JSON to `PRIVATE\Resumes\JOB_ID\JOB_ID_data.json` — overwri
 - Intern: International House Oulu — 14 events, OuluBot (Jan–Apr 2025, Sep–Oct 2024)
 - Legal Associate: Poise Legal India (Oct 2021–May 2022) — 5–7 contracts/month
 - Junior Lawyer: Juris Nexus India (Sep 2015–Jan 2016) — family & civil law
-- Finnish B2, English C1, Malayalam native. Based in Oulu. Available Sep 2026.
+- Finnish B2, English C1, Malayalam native. Based in Oulu. Available: next possible working day.
+- Eligible for palkkatuki (wage subsidy) via BusinessOulu employment services — approx. 50% wage cost support for employer.
 
 ---
 

@@ -1,8 +1,13 @@
 Fill one or more job application forms using a freshly generated Claude vision agent.
 
-Job IDs to process: **$ARGUMENTS**
+Arguments: **$ARGUMENTS**
 
-Parse `$ARGUMENTS` as a space-separated list of job IDs. Process each one sequentially.
+Parse `$ARGUMENTS` as a space-separated list. Split into:
+- `URL_OVERRIDE` — the first token that starts with `http` (if any); used as the apply URL instead of the one in answers.json
+- `JOB_IDS` — all remaining tokens (the job IDs to process sequentially)
+
+Example: `/fill-form abc12345 https://company.com/apply` → JOB_ID=`abc12345`, URL_OVERRIDE=`https://company.com/apply`
+Example: `/fill-form abc12345 def67890` → two job IDs, no URL override
 
 ---
 
@@ -10,15 +15,35 @@ Parse `$ARGUMENTS` as a space-separated list of job IDs. Process each one sequen
 
 **`PRIVATE`** — resolve in order, stop at first hit:
 1. `$env:MANJU_PRIVATE_DIR` if set
-2. A sibling of the current directory whose name contains "private" (case-insensitive):
+2. A sibling of the current directory whose name matches "Manju-jobs" or "Manju_jobs" (case-insensitive):
    ```powershell
    $parent  = Split-Path (Get-Location).Path -Parent
+   $PRIVATE = Get-ChildItem $parent -Directory |
+              Where-Object { $_.Name -match 'Manju.jobs' } |
+              Select-Object -First 1 -ExpandProperty FullName
+   ```
+3. A sibling whose name contains "private" (case-insensitive):
+   ```powershell
    $PRIVATE = Get-ChildItem $parent -Directory |
               Where-Object { $_.Name -match 'private' } |
               Select-Object -First 1 -ExpandProperty FullName
    ```
 
 Print: `PRIVATE : <resolved path>`
+
+If PRIVATE is not found, abort with an error.
+
+---
+
+## Git pull (do once after path resolution)
+
+Pull the latest files from the private GitHub repo:
+
+```powershell
+git -C "$PRIVATE" pull --ff-only
+```
+
+Print the output. If pull fails (e.g. no network), print a warning and continue with the local files.
 
 ---
 
@@ -35,10 +60,27 @@ SKIP JOB_ID — no answers file found. Run /tailor-resume first.
 and continue to the next job ID.
 
 Extract:
-- `APPLY_URL`  — `apply_url` field (fall back to `job_url` if absent)
+- `APPLY_URL`  — if `URL_OVERRIDE` was provided use that; otherwise use `apply_url` field (fall back to `job_url`)
 - `ANSWERS`    — the `answers` array (list of objects with label/type/answer/is_placeholder)
 
 If `APPLY_URL` is empty or `ANSWERS` is empty, print an error and skip.
+
+**Fix file paths** — For every answer where `type` is `"file"`:
+- The `answer` field is a comma-separated list of absolute file paths
+- For each path, check if it exists on disk
+- If a path does not exist, replace its base directory with `PRIVATE\Resumes\JOB_ID\` and keep only the filename
+  ```
+  e.g. C:\Users\vinee\Manju_jobs_private\Resumes\abc12345\resume.pdf
+       → PRIVATE\Resumes\abc12345\resume.pdf
+  ```
+- If the fixed path still does not exist, print a warning for that file but keep it in the list
+- Update the answer value with the fixed (comma-joined) paths
+
+**If `answers.json` does not exist** — check for `PRIVATE\Resumes\JOB_ID\JOB_ID_data.json`:
+- If found: set `DATA_MODE = true`, read it, set `PROFILE = <contents>`. Scan `PRIVATE\Resumes\JOB_ID\` for `*_resume.pdf` and `*_cover_letter.pdf` and record their absolute paths as `RESUME_PDF` and `COVER_LETTER_PDF`. Print: `No answers.json — using data.json in DATA_MODE`
+- If neither file exists: print `SKIP JOB_ID — no answers.json or data.json. Run /make-resumes first.` and continue to next job ID.
+
+When `DATA_MODE = true`: set `ANSWERS = []` and proceed to Step 2 (do not skip).
 
 ---
 
@@ -49,7 +91,11 @@ Write the following Python script to `PRIVATE\Resumes\JOB_ID\fill_JOB_ID.py`.
 Substitute:
 - `<<<JOB_ID>>>` → the actual job ID string
 - `<<<APPLY_URL>>>` → the actual apply URL string
-- `<<<ANSWERS_JSON>>>` → the answers array serialised as a compact JSON literal (use `json.dumps(answers_list)`)
+- `<<<ANSWERS_JSON>>>` → the answers array as compact JSON (`json.dumps(answers_list)`), or `[]` in DATA_MODE
+- `<<<DATA_MODE>>>` → `True` if using data.json, `False` if using answers.json
+- `<<<PROFILE_JSON>>>` → data.json contents as compact JSON (`json.dumps(profile_dict)`), or `{}`
+- `<<<RESUME_PDF>>>` → absolute path string to the `*_resume.pdf` file, or `""`
+- `<<<COVER_LETTER_PDF>>>` → absolute path string to the `*_cover_letter.pdf` file, or `""`
 
 ```python
 #!/usr/bin/env python3
@@ -59,47 +105,34 @@ import base64, json, os, time
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 
-# ── Answers baked in ───────────────────────────────────────────────────────────
-APPLY_URL = "<<<APPLY_URL>>>"
-ANSWERS   = <<<ANSWERS_JSON>>>
+# ── Source data ────────────────────────────────────────────────────────────────
+APPLY_URL       = "<<<APPLY_URL>>>"
+DATA_MODE       = <<<DATA_MODE>>>
+ANSWERS         = <<<ANSWERS_JSON>>>
+PROFILE         = <<<PROFILE_JSON>>>
+RESUME_PDF      = "<<<RESUME_PDF>>>"
+COVER_LETTER_PDF= "<<<COVER_LETTER_PDF>>>"
 
 MAX_STEPS = 50
 VIEWPORT  = {"width": 1280, "height": 900}
-MODEL     = "claude-sonnet-4-6"
+MODEL     = "gemini-2.5-flash"
 
 # ── Auth ───────────────────────────────────────────────────────────────────────
 
 def _load_auth() -> None:
-    if os.environ.get("ANTHROPIC_API_KEY") or os.environ.get("ANTHROPIC_AUTH_TOKEN"):
+    if os.environ.get("GEMINI_API_KEY"):
         return
-    # Try .env files
-    for candidate in [
-        Path(__file__).parent.parent.parent / ".env",   # PRIVATE/.env
-        Path(".env"),
-    ]:
+    for candidate in [Path(__file__).parent.parent.parent / ".env", Path(".env")]:
         if candidate.exists():
             for line in candidate.read_text(encoding="utf-8").splitlines():
                 line = line.strip()
-                if line.startswith("ANTHROPIC_API_KEY=") and "=" in line:
+                if line.startswith("GEMINI_API_KEY=") and "=" in line:
                     key = line.split("=", 1)[1].strip().strip('"').strip("'")
                     if key:
-                        os.environ["ANTHROPIC_API_KEY"] = key
-                        print(f"  [auth] ANTHROPIC_API_KEY loaded from {candidate}")
+                        os.environ["GEMINI_API_KEY"] = key
+                        print(f"  [auth] GEMINI_API_KEY loaded from {candidate}")
                         return
-    # Try Claude Code OAuth token
-    creds_file = Path.home() / ".claude" / ".credentials.json"
-    if creds_file.exists():
-        try:
-            creds = json.loads(creds_file.read_text(encoding="utf-8"))
-            oauth = creds.get("claudeAiOauth", {})
-            token = oauth.get("accessToken", "")
-            if token:
-                os.environ["ANTHROPIC_AUTH_TOKEN"] = token
-                print("  [auth] using Claude Code OAuth token")
-                return
-        except Exception as e:
-            print(f"  [auth] could not read credentials: {e}")
-    raise RuntimeError("No Anthropic credentials found. Set ANTHROPIC_API_KEY or open Claude Code.")
+    raise RuntimeError("No Gemini credentials found. Set GEMINI_API_KEY in .env.")
 
 
 # ── Tool definitions ───────────────────────────────────────────────────────────
@@ -108,12 +141,12 @@ TOOLS = [
     {
         "name": "screenshot",
         "description": "Capture the current browser viewport as a PNG and return it.",
-        "input_schema": {"type": "object", "properties": {}, "required": []},
+        "parameters": {"type": "object", "properties": {}, "required": []},
     },
     {
         "name": "click",
         "description": "Click at pixel coordinates (x, y).",
-        "input_schema": {
+        "parameters": {
             "type": "object",
             "properties": {
                 "x": {"type": "number"},
@@ -125,7 +158,7 @@ TOOLS = [
     {
         "name": "click_selector",
         "description": "Click an element by CSS selector.",
-        "input_schema": {
+        "parameters": {
             "type": "object",
             "properties": {"selector": {"type": "string"}},
             "required": ["selector"],
@@ -134,7 +167,7 @@ TOOLS = [
     {
         "name": "type_text",
         "description": "Type text into the currently focused element (preserves existing content).",
-        "input_schema": {
+        "parameters": {
             "type": "object",
             "properties": {"text": {"type": "string"}},
             "required": ["text"],
@@ -143,7 +176,7 @@ TOOLS = [
     {
         "name": "replace_text",
         "description": "Select all content in the focused field and replace it with new text.",
-        "input_schema": {
+        "parameters": {
             "type": "object",
             "properties": {"text": {"type": "string"}},
             "required": ["text"],
@@ -155,7 +188,7 @@ TOOLS = [
             "Set a field value by CSS selector via jQuery/DOM events. "
             "Reliable for GravityForms fields that ignore keyboard events."
         ),
-        "input_schema": {
+        "parameters": {
             "type": "object",
             "properties": {
                 "selector": {"type": "string"},
@@ -167,7 +200,7 @@ TOOLS = [
     {
         "name": "choose_option",
         "description": "Select a <select> dropdown option by its visible text.",
-        "input_schema": {
+        "parameters": {
             "type": "object",
             "properties": {
                 "selector": {"type": "string"},
@@ -179,7 +212,7 @@ TOOLS = [
     {
         "name": "tick_checkbox",
         "description": "Check a checkbox by CSS selector.",
-        "input_schema": {
+        "parameters": {
             "type": "object",
             "properties": {"selector": {"type": "string"}},
             "required": ["selector"],
@@ -188,7 +221,7 @@ TOOLS = [
     {
         "name": "press_key",
         "description": "Press a keyboard key or combination, e.g. Tab, Enter, Control+a.",
-        "input_schema": {
+        "parameters": {
             "type": "object",
             "properties": {"key": {"type": "string"}},
             "required": ["key"],
@@ -197,7 +230,7 @@ TOOLS = [
     {
         "name": "scroll_page",
         "description": "Scroll the page up or down by a given number of pixels.",
-        "input_schema": {
+        "parameters": {
             "type": "object",
             "properties": {
                 "direction": {"type": "string", "enum": ["down", "up"]},
@@ -209,7 +242,7 @@ TOOLS = [
     {
         "name": "attach_files",
         "description": "Attach one or more files to a file-input element.",
-        "input_schema": {
+        "parameters": {
             "type": "object",
             "properties": {
                 "selector": {
@@ -233,7 +266,7 @@ TOOLS = [
             "Call when every field is filled and the form is ready for human review. "
             "Do NOT click Submit — the user does that manually."
         ),
-        "input_schema": {
+        "parameters": {
             "type": "object",
             "properties": {
                 "summary":  {"type": "string", "description": "Brief description of what was filled"},
@@ -385,7 +418,64 @@ def run_tool(page, name: str, inp: dict) -> tuple[bool, str]:
 
 # ── System prompt ──────────────────────────────────────────────────────────────
 
-SYSTEM = f"""You are filling a job application form on behalf of Manju Krishna Haridas.
+_job_title = PROFILE.get("job_title", "") if DATA_MODE else ""
+_company   = PROFILE.get("company", "")   if DATA_MODE else ""
+
+_HOW_TO_WORK = """
+RULES:
+1. After every action you receive a fresh screenshot. Use it to verify the action worked and find the next field.
+2. If a cookie/consent banner is visible, dismiss it first (click its Accept/Hyväksy button).
+3. Ignore live-chat widgets — they do not block the form.
+4. For text, email, tel, textarea fields: click the field, then use replace_text to set the value. After typing, take a screenshot to confirm the value is visible. If GravityForms cleared it, use set_field with the element's CSS selector.
+5. For <select> dropdowns: use choose_option with the selector and visible option text.
+6. For checkboxes: use tick_checkbox.
+7. For file uploads: use attach_files with the absolute paths provided.
+8. When all fields are filled, call done(). Do NOT click Submit.
+9. The form may be in Finnish — match fields by meaning, not exact wording.
+"""
+
+if DATA_MODE:
+    _resume      = PROFILE.get("resume", {})
+    _cl          = PROFILE.get("cover_letter", {})
+    _cl_text     = "\n\n".join(_cl.get("paragraphs", []))
+    _pdfs        = [p for p in [RESUME_PDF, COVER_LETTER_PDF] if p and Path(p).exists()]
+
+    SYSTEM = f"""You are filling a job application form on behalf of Manju Krishna Haridas.
+
+TARGET URL: {APPLY_URL}
+ROLE: {_job_title} at {_company}
+
+STANDARD FIELDS — always use these exact values:
+- First name: Manju
+- Last name: Krishna Haridas
+- Full name: Manju Krishna Haridas
+- Email: munchnambiar@gmail.com
+- Phone: +358 415765217
+- Address: Tuirantie 13 A22
+- City / Kaupunki: Oulu
+- Postal code: 90500
+- Country: Finland
+- LinkedIn: linkedin.com/in/manjukrishnaharidas
+- Availability / Start date: Next possible working day
+- Salary / Pay expectation: leave blank
+- Right to work in Finland: Yes — EU residence permit
+
+TAILORED COVER LETTER (use for motivation, open-text, "why this role" fields):
+{_cl_text}
+
+FULL PROFILE DATA (use for any other open questions):
+{json.dumps(PROFILE, indent=2, ensure_ascii=False)}
+
+FILE UPLOADS:
+Resume PDF      : {RESUME_PDF if RESUME_PDF else "not found"}
+Cover letter PDF: {COVER_LETTER_PDF if COVER_LETTER_PDF else "not found"}
+Attach the resume PDF to any resume/CV upload field.
+Attach the cover letter PDF to any cover letter / motivation letter upload field.
+If there is a single combined upload field, attach both files together.
+{_HOW_TO_WORK}"""
+
+else:
+    SYSTEM = f"""You are filling a job application form on behalf of Manju Krishna Haridas.
 
 TARGET URL: {APPLY_URL}
 
@@ -416,36 +506,46 @@ NUDGE = (
 # ── Agent loop ─────────────────────────────────────────────────────────────────
 
 def run_agent(page, client) -> bool:
-    import anthropic
+    from google.genai import types
 
-    def snap() -> str:
-        return base64.standard_b64encode(page.screenshot()).decode()
-
-    def img(b64: str) -> dict:
-        return {"type": "image", "source": {"type": "base64", "media_type": "image/png", "data": b64}}
+    def get_screenshot_part():
+        return types.Part.from_bytes(data=page.screenshot(), mime_type="image/png")
 
     messages = [
-        {
-            "role": "user",
-            "content": [img(snap()), {"type": "text", "text": "Here is the form. Please fill it in now."}],
-        }
+        types.Content(
+            role="user",
+            parts=[
+                get_screenshot_part(),
+                types.Part.from_text("Here is the form. Please fill it in now.")
+            ]
+        )
     ]
 
     nudge_count = 0
     max_nudges  = 3
+    
+    config = types.GenerateContentConfig(
+        system_instruction=SYSTEM,
+        tools=[{"function_declarations": TOOLS}],
+        temperature=0.0
+    )
 
     for step in range(1, MAX_STEPS + 1):
-        response = client.messages.create(
-            model=MODEL,
-            max_tokens=2048,
-            system=SYSTEM,
-            tools=TOOLS,
-            messages=messages,
-        )
-        messages.append({"role": "assistant", "content": response.content})
-
-        tool_calls = [(b.name, b.input, b.id) for b in response.content if b.type == "tool_use"]
-        text_out   = " ".join(b.text for b in response.content if b.type == "text")
+        try:
+            response = client.models.generate_content(
+                model=MODEL,
+                contents=messages,
+                config=config,
+            )
+        except Exception as e:
+            print(f"  [API Error] {e}")
+            return False
+            
+        if response.candidates:
+            messages.append(response.candidates[0].content)
+        
+        tool_calls = response.function_calls or []
+        text_out = response.text or ""
 
         if not tool_calls:
             if text_out:
@@ -453,48 +553,45 @@ def run_agent(page, client) -> bool:
             if nudge_count < max_nudges:
                 nudge_count += 1
                 print(f"  [nudge {nudge_count}/{max_nudges}]")
-                messages.append({
-                    "role": "user",
-                    "content": [img(snap()), {"type": "text", "text": NUDGE}],
-                })
+                messages.append(
+                    types.Content(
+                        role="user", 
+                        parts=[get_screenshot_part(), types.Part.from_text(NUDGE)]
+                    )
+                )
                 continue
             print("  Agent stopped calling tools — giving up.")
             return False
 
         nudge_count = 0
-        results     = []
         keep_going  = True
+        parts_results = []
 
-        for name, inp, call_id in tool_calls:
+        for fn_call in tool_calls:
+            name = fn_call.name
+            inp = fn_call.args if fn_call.args else {}
             print(f"  [step {step}] {name}({str(inp)[:80]})")
             keep_going, msg = run_tool(page, name, inp)
             print(f"             → {msg}")
-            current_snap = snap()
-            results.append((call_id, msg, current_snap))
+            
+            parts_results.append(types.Part.from_function_response(
+                name=name,
+                response={"result": msg}
+            ))
+            
             if not keep_going:
-                messages.append({
-                    "role": "user",
-                    "content": [
-                        {
-                            "type": "tool_result",
-                            "tool_use_id": call_id,
-                            "content": [{"type": "text", "text": msg}, img(current_snap)],
-                        }
-                    ],
-                })
-                return True
-
-        messages.append({
-            "role": "user",
-            "content": [
-                {
-                    "type": "tool_result",
-                    "tool_use_id": call_id,
-                    "content": [{"type": "text", "text": msg}, img(snap_b64)],
-                }
-                for call_id, msg, snap_b64 in results
-            ],
-        })
+                break
+                
+        # Append the results back to the conversation
+        messages.append(
+            types.Content(
+                role="user",
+                parts=parts_results + [get_screenshot_part()]
+            )
+        )
+        
+        if not keep_going:
+            return True
 
     print(f"  Reached {MAX_STEPS}-step limit.")
     return False
@@ -504,19 +601,25 @@ def run_agent(page, client) -> bool:
 
 def main():
     _load_auth()
-    import anthropic
-    client = anthropic.Anthropic()
+    from google import genai
+    client = genai.Client()
 
     print(f"\n{'=' * 60}")
-    print(f"  Job  : <<<JOB_ID>>>")
-    print(f"  URL  : {APPLY_URL}")
-    print(f"  Model: {MODEL}")
-    print(f"  Fields: {len(ANSWERS)}")
+    print(f"  Job   : <<<JOB_ID>>>")
+    print(f"  URL   : {APPLY_URL}")
+    print(f"  Model : {MODEL}")
+    print(f"  Mode  : {'data.json (auto-infer)' if DATA_MODE else f'{len(ANSWERS)} pre-computed answers'}")
+    if DATA_MODE:
+        print(f"  Resume: {RESUME_PDF or 'NOT FOUND'}")
+        print(f"  CL    : {COVER_LETTER_PDF or 'NOT FOUND'}")
     print(f"{'=' * 60}\n")
 
     with sync_playwright() as pw:
-        browser = pw.chromium.launch(headless=False)
-        context = browser.new_context(
+        user_data_dir = os.path.join(os.environ.get("LOCALAPPDATA", r"C:\Users\vinee\AppData\Local"), r"Google\Chrome\Automation Profile")
+        context = pw.chromium.launch_persistent_context(
+            user_data_dir,
+            channel="chrome",
+            headless=False,
             viewport=VIEWPORT,
             user_agent=(
                 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -524,7 +627,7 @@ def main():
                 "Chrome/120.0.0.0 Safari/537.36"
             ),
         )
-        page = context.new_page()
+        page = context.pages[0] if context.pages else context.new_page()
         page.goto(APPLY_URL, wait_until="networkidle")
         time.sleep(2)
 

@@ -47,13 +47,13 @@ PRIVATE : <resolved path>
 ```
 
 Read the structural template **once** before the loop:
-Read `PRIVATE\Resumes\f6aaa66f\f6aaa66f_data.json`. Every output JSON must match this structure exactly (same keys, same nesting).
+Read `PRIVATE\Resumes\Master\master_data.json`. Every output JSON must match this structure exactly (same keys, same nesting).
 
 ---
 
 ## Checkpoint Check — runs once before the loop
 
-Canonical step order: `0 → 1 → 2 → 3 → 4`
+Canonical step order: `0 → 1 → 2 → 3 → 4 → 4.5`
 
 For each JOB_ID in the list, check whether `PRIVATE\Resumes\JOB_ID\JOB_ID_checkpoint.json` exists.
 
@@ -84,7 +84,7 @@ If the user chooses `[0]` (fresh), delete the existing checkpoint file before en
 
 **If `START_STEP[JOB_ID]` is `"skip"`, skip this job entirely.**
 
-**Skip rule:** At the start of each step, if the step ID comes *before* `START_STEP[JOB_ID]` in the canonical order `[0, 1, 2, 3, 4]`, print `↷ Skipping Step N (checkpoint)` and move to the next step.
+**Skip rule:** At the start of each step, if the step ID comes *before* `START_STEP[JOB_ID]` in the canonical order `[0, 1, 2, 3, 4, 4.5]`, print `↷ Skipping Step N (checkpoint)` and move to the next step. Step 4.5 is the one exception: it **always** runs whenever Step 4 runs (fresh or resumed) and is never skipped by checkpoint state, since it is what catches a broken Step 4 output.
 
 **Checkpoint write rule:** After each step completes successfully, write or update `PRIVATE\Resumes\JOB_ID\JOB_ID_checkpoint.json`:
 ```json
@@ -139,28 +139,35 @@ Write the tailored JSON to `PRIVATE\Resumes\JOB_ID\JOB_ID_data.json` — overwri
 - `tailored_at`: set to the current ISO timestamp (e.g., `"2026-07-16T12:00:00+03:00"`) representing the exact time you are running this skill.
 - `tailor_model`: set to `"claude-sonnet-4-6"`
 
+**`resume.name`:** Always `"Manju Krishna Haridas"` — copy verbatim from the template. Never omit this field; `make_resume.py` silently renders a blank header line if it's missing.
+
+**`resume.contact`:** Always copy the entire object verbatim from the template (`address`, `phone`, `email`, `linkedin_url`, `linkedin_display`) — these are static and never job-specific. Never omit this object; a missing `contact` silently renders a blank line under the name with no error.
+
 **`resume.role`:** `"JOB_TITLE Candidate"`
 
 **`resume.profile`:** 2–3 sentences, highly specific to this role and company. Directly connect Manju's most relevant background to the stated requirements. Do not just summarise her CV — name the company and what they need.
 
 **`resume.experience`:** Keep all four entries exactly as in the template (same dates, companies, titles). Reorder the four entries so the most relevant experience appears first. Within each entry, reorder and reword the bullets to front-load skills mentioned in the job description.
 
-**`resume.education`:** Keep all entries as in the template.
+**`resume.education`:** Keep all entries as in the template, **using the exact same keys** (`qual`, `inst`, and `bold` where set). Do not rename these keys (e.g. to `degree`/`school`) — `make_resume.py` reads `qual`/`inst` specifically and silently renders blank rows for any other key names.
 
-**`resume.languages_html`:** For Finnish-language postings, put Finnish first. For English-language postings, keep English first.
+**`resume.languages_html`:** For Finnish-language postings, put Finnish first. For English-language postings, keep English first. Always keep the palkkatuki (wage subsidy) eligibility line from the template as the last line — copy it verbatim.
 
 **`resume.competencies_html`:** Completely rewrite 4–5 skill categories that map directly onto the key requirements in this job description. Use `<span class="skill-cat">Category:</span> description...` format.
+
+**`resume.references`:** Always copy the entire array verbatim from the template (same names, titles, contacts). Never omit this array; a missing `references` silently renders an empty "REFERENCES" section heading with no content and no error.
 
 **`cover_letter.date`:** Use today's date formatted as `"30 June 2026"`.
 
 **`cover_letter.recipient`:** Fill `company` with `COMPANY` and `city` with the job location. Use `"Hiring Manager"` for title if no name is known.
 
-**`cover_letter.paragraphs`:** 4–5 paragraphs written in the **same language as the job posting** (Finnish for Finnish postings, English for English postings):
+**`cover_letter.paragraphs`:** 5–6 paragraphs written in the **same language as the job posting** (Finnish for Finnish postings, English for English postings):
   1. Hook — what drew Manju to this company and role specifically.
   2. Most relevant experience — connect it directly to the job requirements.
   3. Finland integration — Finnish B2, Oulu roots, IHO internship, OPH bar path.
   4. Why this company — something specific from the posting or company.
-  5. Close — availability (September 2026), contact invitation.
+  5. Wage subsidy (palkkatuki) — mention her eligibility and offer to handle her part of the joint application. English: "I'm eligible for wage subsidy support (palkkatuki), and would be glad to handle my part of the joint application with BusinessOulu if this makes hiring more accessible for your organization." Translate naturally to Finnish for Finnish-language postings.
+  6. Close — availability (next possible working day), contact invitation.
 
 **`cover_letter.sign_off`:** `"Ystävällisin terveisin"` for Finnish, `"Yours sincerely"` for English.
 
@@ -173,7 +180,8 @@ Write the tailored JSON to `PRIVATE\Resumes\JOB_ID\JOB_ID_data.json` — overwri
 - Intern: International House Oulu — 14 events, OuluBot (Jan–Apr 2025, Sep–Oct 2024)
 - Legal Associate: Poise Legal India (Oct 2021–May 2022) — 5–7 contracts/month
 - Junior Lawyer: Juris Nexus India (Sep 2015–Jan 2016) — family & civil law
-- Finnish B2, English C1, Malayalam native. Based in Oulu. Available Sep 2026.
+- Finnish B2, English C1, Malayalam native. Based in Oulu. Available: next possible working day.
+- Eligible for palkkatuki (wage subsidy) via BusinessOulu employment services — approx. 50% wage cost support for employer.
 
 ---
 
@@ -204,6 +212,29 @@ foreach ($html in $htmlFiles) {
 Confirm both PDF files exist. If either is missing, report the error but continue processing remaining job IDs.
 
 Print a one-line progress note after each job: `✓ JOB_ID (JOB_TITLE @ COMPANY) — PDFs generated`
+
+---
+
+### Step 4.5 — Validate the generated resume
+
+`make_resume.py` has no required fields — every value defaults to `""` if a key is missing or misnamed, so a broken `data.json` produces a resume that *looks* generated (files exist, PDF opens fine) but has silently blank sections. This step exists to catch that before it goes anywhere.
+
+**Always run this step whenever Step 4 runs** — never skip it, including on a checkpoint-resume.
+
+1. Read `PRIVATE\Resumes\JOB_ID\JOB_ID_data.json` and confirm ALL of the following are present and non-empty:
+   - `resume.name`
+   - `resume.contact.address`, `resume.contact.phone`, `resume.contact.email`
+   - `resume.education` — non-empty array, and **every** entry has non-empty `qual` and `inst`
+   - `resume.experience` — non-empty array, and every entry has non-empty `title`, `company`, `dates`, and at least one bullet
+   - `resume.languages_html`, `resume.competencies_html`
+   - `resume.references` — non-empty array, and every entry has non-empty `name`, `title`, `contact`
+   - `cover_letter.paragraphs` — non-empty array with at least 3 paragraphs
+
+2. If anything fails: fix `JOB_ID_data.json` (pull `name`/`contact`/`references` verbatim from the template read at the start of this skill; rename any wrong education keys to `qual`/`inst`), then redo Step 3 and Step 4 to regenerate, and re-check from the top of this step.
+
+3. Once the JSON check passes, read the regenerated resume PDF itself (via the Read tool) and visually confirm PROFESSIONAL PROFILE, EDUCATION, and REFERENCES actually contain rendered text — not just present-but-empty section headings. This catches template/rendering bugs that a JSON-only check would miss.
+
+Do not proceed to the next job or to Step 5 until validation passes. Print: `✓ JOB_ID — resume validated (all sections populated)`.
 
 ---
 
