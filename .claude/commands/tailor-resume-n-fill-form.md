@@ -385,16 +385,33 @@ For each job ID in `EMAIL_ONLY`, skip this phase entirely and print: `JOB_ID —
 For each remaining job ID in this phase:
 1. **Analyze the form:** Read `JOB_ID_answers.json`. If you need more information about the form's HTML structure, use your tools (e.g. `run_command` with python) to fetch the form page and inspect its fields.
 2. **Write a custom script:** Create a Python Playwright script at `scratch\hardcoded_fill_JOB_ID.py`.
-   - The script must launch a **visible** Chrome browser (`headless=False`).
-   - It must navigate to the job's apply URL.
+   - The script must connect to Chrome over CDP (`browser = p.chromium.connect_over_cdp("http://127.0.0.1:9222")`).
+   - It must reuse an existing tab if its URL matches the job's URL, otherwise open a new tab.
+   - It must navigate to the job's apply URL (if opening a new tab).
    - It must hardcode the Playwright locators to fill in the specific values from `JOB_ID_answers.json`.
+   - **Form Filling Rules**:
+     - Always use the LinkedIn profile link from Manju's resume for the LinkedIn profile field (do not leave it empty).
+     - If asked about employment status, always answer "not currently employed" (or the equivalent "no").
+     - If asked if the application can be used for other applications/future opportunities, always answer "yes" / agree to it.
+     - If asked how she heard about the job, look up the `source` column for this job in `jobs.json` and use that value.
    - It must attach the specific PDF resume and cover letter generated in Step 4.
-   - When finished filling, it must **pause indefinitely** (e.g., `page.wait_for_timeout(600000)`) and explicitly NOT submit the form, allowing Manju to review and click submit manually.
-3. **Launch via Schtasks:** Because you are running in Session 0, you must apply the `open_visible_browser` skill technique to launch your custom script visibly on the user's desktop!
-   - Kill background chrome: `powershell -Command "Stop-Process -Name chrome -Force -ErrorAction SilentlyContinue; taskkill /F /IM chrome.exe /T"`
-   - Create a batch wrapper: `scratch\run_hardcoded_fill_JOB_ID.bat` that runs `python -u "PUBLIC\scratch\hardcoded_fill_JOB_ID.py" > "PUBLIC\scratch\fill_JOB_ID.log" 2>&1`
-   - Launch it using: `cmd /c "schtasks /delete /tn "AntigravityVisibleBrowser" /f & schtasks /create /tn "AntigravityVisibleBrowser" /tr "\"PUBLIC\scratch\run_hardcoded_fill_JOB_ID.bat\"" /sc once /st 00:00 /ru vinee /it /f & schtasks /run /tn "AntigravityVisibleBrowser""`
-4. **Wait for completion:** Wait for the user to confirm they have submitted the form and closed the browser before proceeding to the next job or Step 5.
+   - When finished filling, it must disconnect cleanly (`browser.close()`), explicitly NOT submitting the form, allowing Manju to review and click submit manually.
+
+3. **Launch Chrome in CDP mode:** Because you are running in Session 0, launch Chrome visibly via schtasks if it isn't already running, so your script can connect to it.
+```powershell
+$port_open = Test-NetConnection -ComputerName 127.0.0.1 -Port 9222 -WarningAction SilentlyContinue
+if (-not $port_open.TcpTestSucceeded) {
+    Write-Host "Launching visible Chrome via CDP..."
+    Stop-Process -Name chrome -Force -ErrorAction SilentlyContinue
+    taskkill /F /IM chrome.exe /T
+    $batPath = "PUBLIC\scratch\launch_cdp_chrome.bat"
+    Set-Content -Path $batPath -Value "@echo off`n`"C:\Program Files\Google\Chrome\Application\chrome.exe`" --remote-debugging-port=9222 --user-data-dir=`"$env:LOCALAPPDATA\Google\Chrome\Automation Profile`""
+    cmd /c "schtasks /delete /tn `"AntigravityVisibleBrowser`" /f & schtasks /create /tn `"AntigravityVisibleBrowser`" /tr `"\`"$batPath\`"`" /sc once /st 00:00 /ru vinee /it /f & schtasks /run /tn `"AntigravityVisibleBrowser`""
+    Start-Sleep -Seconds 4
+}
+```
+4. **Execute the Script:** Run your script (`python -u PUBLIC\scratch\hardcoded_fill_JOB_ID.py`). It will connect to Chrome over CDP, open a new tab (or reuse an existing one for the same job URL), fill the fields, and then disconnect (`browser.close()`).
+5. **Wait for completion:** Wait for the user to confirm they have reviewed the form (they can keep the browser open) before proceeding to the next job or Step 5.
 
 ---
 
@@ -475,3 +492,9 @@ https://firestore.googleapis.com/v1/projects/manju-jobs-dashboard/databases/(def
 Then note: "Dashboard links will appear live in the Docs column within ~30 seconds (Firebase realtime sync)."
 
 If any job was skipped, list them with the reason.
+
+## Application Form Rules
+- The field for linkedin profile is left empty. Use the linkedin profile link from the resume.
+- I'm not currently employed.
+- My application can be used for other applications.
+- Whenever they ask how did we hear about the job, mention the source column corresponding to this job in dashboard.

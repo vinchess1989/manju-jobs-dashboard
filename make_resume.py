@@ -390,7 +390,7 @@ def generate(data_path, photo_path, out_dir):
     b64 = photo_to_b64(photo_path)
 
     # ── File naming ───────────────────────────────────────────────────────────
-    slug = f"Manju_Krishna_{slugify(job_title)}_{slugify(company)}"
+    slug = "Manju_Krishna"
     folder = os.path.join(out_dir, job_id)
     os.makedirs(folder, exist_ok=True)
 

@@ -22,7 +22,7 @@ Immediately discard a job if ANY of the following are true:
 * **Seniority:** The job title contains "Senior", "Manager", "Head of", "Director", or "Lead". The candidate does not have enough experience for these levels.
 * **Specific Subsidized Employment:** The role is strictly for subsidized employment (e.g. requires the applicant to be long-term unemployed, under 25 or over 50, disabled, or specifically a resident of Helsinki/another specific municipality for a municipal job).
 * **Advanced Technical Degrees:** The job requires an MSc or PhD in technical areas (e.g. electrical, telecommunications, IT, engineering) or a specific technical degree (architecture, science) — unless the posting explicitly says the degree requirement can be waived with experience.
-* **Specialized / Vocational Degrees:** The job strictly requires a specific vocational or educational degree such as merkonomi, tradenomi, nursing (lähihoitaja), forestry, restaurant/catering studies, automotive technology, or requires a hygiene pass.
+* **Specialized / Vocational Degrees:** The job strictly requires a specific vocational or educational degree such as merkonomi, tradenomi, nursing (lähihoitaja), forestry, restaurant/catering studies, automotive technology, hospital/institutional cleaning and support (e.g. laitoshuoltaja, requiring specific training), or requires a hygiene pass.
 * **Medical / Social Welfare:** The job requires Valvira accreditation, a valid medical license, or a licensed social welfare professional qualification. Roles requiring clinical training (physician, pharmacist, nurse practitioner, lab technician, physiotherapist) are hard rejections.
 * **Early Childhood Education:** Early childhood education, daycare, or kindergarten roles (e.g., Varhaiskasvatuksen sosionomi, varhaiskasvatuksen opettaja, lastenhoitaja), as these require specific Finnish pedagogical degrees and qualifications.
 * **Trade / Manual-labour:** The job is a trade or manual-labour role requiring specific vocational training: carpentry, welding, metalwork/fabrication, scaffold assembly, asbestos/demolition, crane/heavy equipment operation, refrigeration installation, electrical work, construction experts, cooking/chef, security guard, or any similar skilled-trade position.
@@ -30,6 +30,7 @@ Immediately discard a job if ANY of the following are true:
 * **Location Restrictions:** The job explicitly requires US residency or requires the applicant to currently live in a specific city other than Oulu (unless the job itself is located in that city and matches the target criteria).
 * **Closed Applications:** The job posting explicitly states that it is no longer accepting applications.
 * **Unrelated Roles:** The job title is clearly unrelated to office or service work — e.g. husky guide, dog handler, pest control, diver, retinal photographer, etc.
+* **Religious / Clergy Roles:** The job is for a parish priest, pastor, or other specific religious clerical role.
 
 ## Target Job Criteria
 
@@ -78,9 +79,3 @@ When evaluating a job posting, use your web fetch tool to visit the URL and read
 **Tracking Evaluations:** After evaluating a "pending" job in `jobs.json`, update that job's entry in-place: set `"visited": "yes"`, set `"matches_requirements"` to `"yes"`, `"maybe"`, or `"no"`, and set `"reason"` to a brief 1-sentence explanation. Do NOT delete records.
 
 
-### Automatically Added Negative Constraints (from UI Rejections):
-- NEGATIVE CONSTRAINT: The user explicitly rejected a previous job because: 'Its for Parish Priest'. Do NOT match jobs that have this issue.
-
-
-### Automatically Added Negative Constraints (from UI Rejections):
-- NEGATIVE CONSTRAINT: The user explicitly rejected a previous job because: 'requires specific training for cleaning/support role in hospital setting'. Do NOT match jobs that have this issue.

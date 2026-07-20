@@ -1,671 +1,180 @@
-Fill one or more job application forms using a freshly generated Claude vision agent.
+Open a single job's application form in a visible, already-logged-in browser and fill it using your own judgment — ensures a Claude-tailored resume/cover letter exist first, resolves the real form URL via find-apply-link, then pauses before submit so Manju can review and click submit herself.
 
-Arguments: **$ARGUMENTS**
+The job ID is: **$ARGUMENTS**
 
-Parse `$ARGUMENTS` as a space-separated list. Split into:
-- `URL_OVERRIDE` — the first token that starts with `http` (if any); used as the apply URL instead of the one in answers.json
-- `JOB_IDS` — all remaining tokens (the job IDs to process sequentially)
-
-Example: `/fill-form abc12345 https://company.com/apply` → JOB_ID=`abc12345`, URL_OVERRIDE=`https://company.com/apply`
-Example: `/fill-form abc12345 def67890` → two job IDs, no URL override
+Parse `$ARGUMENTS` as a single `JOB_ID` (the first whitespace-separated token). If empty, ask the user for a job ID before proceeding.
 
 ---
 
-## Path resolution (do once before the loop)
+## Constants (resolved at runtime — device-agnostic)
 
-**`PRIVATE`** — resolve in order, stop at first hit:
-1. `$env:MANJU_PRIVATE_DIR` if set
-2. A sibling of the current directory whose name matches "Manju-jobs" or "Manju_jobs" (case-insensitive):
+**`PUBLIC`** — repo root. `$PUBLIC = (Get-Location).Path`
+
+**`PRIVATE`** — the private companion repo. Resolve in this order and stop at the first hit:
+1. The environment variable `MANJU_PRIVATE_DIR` if set.
+2. A sibling of PUBLIC whose name contains "private" (case-insensitive):
    ```powershell
-   $parent  = Split-Path (Get-Location).Path -Parent
-   $PRIVATE = Get-ChildItem $parent -Directory |
-              Where-Object { $_.Name -match 'Manju.jobs' } |
-              Select-Object -First 1 -ExpandProperty FullName
-   ```
-3. A sibling whose name contains "private" (case-insensitive):
-   ```powershell
+   $parent  = Split-Path $PUBLIC -Parent
    $PRIVATE = Get-ChildItem $parent -Directory |
               Where-Object { $_.Name -match 'private' } |
               Select-Object -First 1 -ExpandProperty FullName
    ```
+3. A sibling of PUBLIC that contains a `Resumes\` subfolder:
+   ```powershell
+   $PRIVATE = Get-ChildItem $parent -Directory |
+              Where-Object { Test-Path "$($_.FullName)\Resumes" } |
+              Select-Object -First 1 -ExpandProperty FullName
+   ```
+4. If still not found — stop and ask the user to set `MANJU_PRIVATE_DIR`, then re-run.
 
-Print: `PRIVATE : <resolved path>`
+**`JOBS_JSON`** = `PUBLIC\jobs.json` — read-only lookup only.
 
-If PRIVATE is not found, abort with an error.
+**`AUTOMATION_PROFILE`** = `$env:LOCALAPPDATA\Google\Chrome\Automation Profile` — the persistent Chrome profile with Manju's saved logins (LinkedIn, Eezy Talents, etc.). Always launch against this profile, never a fresh/incognito context, so platforms she's already authenticated on don't hit a login wall. See `.agents\skills\open_visible_browser\SKILL.md` and the `talent.core.eezy.fi` entry in `site_patterns.json` for the working reference pattern.
 
 ---
 
-## Git pull (do once after path resolution)
+## Step 0 — Resolve the job
 
-Pull the latest files from the private GitHub repo:
+Read `JOBS_JSON`, find the entry with `id == JOB_ID`. If not found, abort with an error rather than guessing.
+
+Record `JOB_TITLE`, `COMPANY`, `JOB_URL`.
+
+---
+
+## Step 1 — Ensure a Claude-tailored resume and cover letter exist
+
+Check whether `PRIVATE\Resumes\JOB_ID\JOB_ID_data.json` exists, whether matching resume/cover-letter PDFs exist alongside it, and whether `data.json`'s `tailor_model` field contains `"claude"` (case-insensitive).
+
+- **All true** → use as-is. Print `Using existing Claude-tailored docs for JOB_ID.`
+- **Anything false or missing** → run the **tailor-resume** skill for this job (`.claude/commands/tailor-resume.md`, i.e. `/tailor-resume JOB_ID`) to generate or redo the resume/cover letter, then re-check.
+
+Locate the exact filenames once docs are confirmed:
+```powershell
+$resumePdf = Get-ChildItem "PRIVATE\Resumes\JOB_ID\*_resume.pdf"        | Select-Object -First 1 -ExpandProperty FullName
+$coverPdf  = Get-ChildItem "PRIVATE\Resumes\JOB_ID\*_cover_letter.pdf"  | Select-Object -First 1 -ExpandProperty FullName
+```
+Abort if either is still missing after tailoring.
+
+---
+
+## Step 2 — Resolve the application form URL
+
+Priority order, stopping at the first hit:
+
+1. **Firestore cache**:
+   ```powershell
+   python job_status_store.py get --url "JOB_URL" --field apply_email
+   python job_status_store.py get --url "JOB_URL" --field apply_url
+   ```
+   - `apply_email` present (not `NONE`) → email-only, see below.
+   - `apply_url` present (not `NONE`) → `APPLY_URL = <that value>`.
+2. Otherwise, apply the **find-apply-link** skill technique (`.claude/commands/find-apply-link.md`) using `JOB_URL` as `BASE_URL` and `JOB_ID` as `JOB_ID`. It resolves multi-hop "Apply" chains and JS-rendered links, and self-persists whatever it finds to Firestore (`apply_url`/`apply_email`) so this lookup is instant next time.
+   - `RESULT_TYPE: form` → `APPLY_URL = RESULT`.
+   - `RESULT_TYPE: email` → email-only, see below.
+   - `RESULT_TYPE: not_found` → fall back to `JOB_URL` itself, and warn the user this may just be the listing page rather than the real form.
+
+**Email-only jobs:** if the resolved result is an email address, there is no form to fill. Print `JOB_ID applies via email only (ADDRESS) — no form to fill.`, list the exact `$resumePdf` / `$coverPdf` paths from Step 1 so Manju can attach them herself, and **stop here** — do not continue to Step 3.
+
+---
+
+## Step 3 — Get the form's fields and draft answers
+
+1. If `PRIVATE\Resumes\JOB_ID\JOB_ID_answers.json` already exists and its `apply_url` matches `APPLY_URL`, reuse it as-is and skip to Step 4.
+2. Otherwise, extract the form's questions:
+   ```powershell
+   python "PUBLIC\scrape_application.py" --job-url "APPLY_URL" --job-id "JOB_ID" --out-dir "PRIVATE\Resumes\JOB_ID" --private-dir "PRIVATE"
+   ```
+   - `question_count > 0` → generate tailored answers exactly per **Step 1.6** of `tailor-resume-n-fill-form.md` (factual-field values, language matching the question, no invented facts) and write `JOB_ID_answers.json` + the cheatsheet HTML.
+   - 0 questions / failure (e.g. a login-wall redirect) → no answers file will exist. You'll inspect the live form yourself once the browser is open in Step 5 — use WebFetch or a quick throwaway Playwright inspection script against `APPLY_URL` beforehand if you need the field structure before writing the fill script.
+
+---
+
+## Step 4 — Launch Chrome (CDP mode)
+
+We use a detached browser architecture. The automation script connects to Chrome over CDP (port 9222) so it can open new tabs without locking up the browser, allowing multiple forms to be filled sequentially and left open for review.
 
 ```powershell
-git -C "$PRIVATE" pull --ff-only
+$port_open = Test-NetConnection -ComputerName 127.0.0.1 -Port 9222 -WarningAction SilentlyContinue
+if (-not $port_open.TcpTestSucceeded) {
+    Write-Host "Launching visible Chrome via CDP..."
+    Stop-Process -Name chrome -Force -ErrorAction SilentlyContinue
+    taskkill /F /IM chrome.exe /T
+    $batPath = "PUBLIC\scratch\launch_cdp_chrome.bat"
+    Set-Content -Path $batPath -Value "@echo off`n`"C:\Program Files\Google\Chrome\Application\chrome.exe`" --remote-debugging-port=9222 --user-data-dir=`"$env:LOCALAPPDATA\Google\Chrome\Automation Profile`""
+    cmd /c "schtasks /delete /tn `"AntigravityVisibleBrowser`" /f & schtasks /create /tn `"AntigravityVisibleBrowser`" /tr `"\`"$batPath\`"`" /sc once /st 00:00 /ru vinee /it /f & schtasks /run /tn `"AntigravityVisibleBrowser`""
+    Start-Sleep -Seconds 4
+}
 ```
-
-Print the output. If pull fails (e.g. no network), print a warning and continue with the local files.
 
 ---
 
-## Loop — for each JOB_ID
+## Step 5 — Write and Run the Fill Script
 
-### Step 1 — Read the answers file
-
-Read `PRIVATE\Resumes\JOB_ID\JOB_ID_answers.json`.
-
-If the file does not exist, print:
-```
-SKIP JOB_ID — no answers file found. Run /tailor-resume first.
-```
-and continue to the next job ID.
-
-Extract:
-- `APPLY_URL`  — if `URL_OVERRIDE` was provided use that; otherwise use `apply_url` field (fall back to `job_url`)
-- `ANSWERS`    — the `answers` array (list of objects with label/type/answer/is_placeholder)
-
-If `APPLY_URL` is empty or `ANSWERS` is empty, print an error and skip.
-
-**Fix file paths** — For every answer where `type` is `"file"`:
-- The `answer` field is a comma-separated list of absolute file paths
-- For each path, check if it exists on disk
-- If a path does not exist, replace its base directory with `PRIVATE\Resumes\JOB_ID\` and keep only the filename
-  ```
-  e.g. C:\Users\vinee\Manju_jobs_private\Resumes\abc12345\resume.pdf
-       → PRIVATE\Resumes\abc12345\resume.pdf
-  ```
-- If the fixed path still does not exist, print a warning for that file but keep it in the list
-- Update the answer value with the fixed (comma-joined) paths
-
-**If `answers.json` does not exist** — check for `PRIVATE\Resumes\JOB_ID\JOB_ID_data.json`:
-- If found: set `DATA_MODE = true`, read it, set `PROFILE = <contents>`. Scan `PRIVATE\Resumes\JOB_ID\` for `*_resume.pdf` and `*_cover_letter.pdf` and record their absolute paths as `RESUME_PDF` and `COVER_LETTER_PDF`. Print: `No answers.json — using data.json in DATA_MODE`
-- If neither file exists: print `SKIP JOB_ID — no answers.json or data.json. Run /make-resumes first.` and continue to next job ID.
-
-When `DATA_MODE = true`: set `ANSWERS = []` and proceed to Step 2 (do not skip).
-
----
-
-### Step 2 — Write the agent script
-
-Write the following Python script to `PRIVATE\Resumes\JOB_ID\fill_JOB_ID.py`.
-
-Substitute:
-- `<<<JOB_ID>>>` → the actual job ID string
-- `<<<APPLY_URL>>>` → the actual apply URL string
-- `<<<ANSWERS_JSON>>>` → the answers array as compact JSON (`json.dumps(answers_list)`), or `[]` in DATA_MODE
-- `<<<DATA_MODE>>>` → `True` if using data.json, `False` if using answers.json
-- `<<<PROFILE_JSON>>>` → data.json contents as compact JSON (`json.dumps(profile_dict)`), or `{}`
-- `<<<RESUME_PDF>>>` → absolute path string to the `*_resume.pdf` file, or `""`
-- `<<<COVER_LETTER_PDF>>>` → absolute path string to the `*_cover_letter.pdf` file, or `""`
+Create `PUBLIC\scratch\hardcoded_fill_JOB_ID.py`. It must:
 
 ```python
-#!/usr/bin/env python3
-"""Claude vision agent — form filler for <<<JOB_ID>>>"""
-
-import base64, json, os, time
-from pathlib import Path
+import os
+import time
 from playwright.sync_api import sync_playwright
 
-# ── Source data ────────────────────────────────────────────────────────────────
-APPLY_URL       = "<<<APPLY_URL>>>"
-DATA_MODE       = <<<DATA_MODE>>>
-ANSWERS         = <<<ANSWERS_JSON>>>
-PROFILE         = <<<PROFILE_JSON>>>
-RESUME_PDF      = "<<<RESUME_PDF>>>"
-COVER_LETTER_PDF= "<<<COVER_LETTER_PDF>>>"
+url = "APPLY_URL"
 
-MAX_STEPS = 50
-VIEWPORT  = {"width": 1280, "height": 900}
-MODEL     = "gemini-2.5-flash"
-
-# ── Auth ───────────────────────────────────────────────────────────────────────
-
-def _load_auth() -> None:
-    if os.environ.get("GEMINI_API_KEY"):
-        return
-    for candidate in [Path(__file__).parent.parent.parent / ".env", Path(".env")]:
-        if candidate.exists():
-            for line in candidate.read_text(encoding="utf-8").splitlines():
-                line = line.strip()
-                if line.startswith("GEMINI_API_KEY=") and "=" in line:
-                    key = line.split("=", 1)[1].strip().strip('"').strip("'")
-                    if key:
-                        os.environ["GEMINI_API_KEY"] = key
-                        print(f"  [auth] GEMINI_API_KEY loaded from {candidate}")
-                        return
-    raise RuntimeError("No Gemini credentials found. Set GEMINI_API_KEY in .env.")
-
-
-# ── Tool definitions ───────────────────────────────────────────────────────────
-
-TOOLS = [
-    {
-        "name": "screenshot",
-        "description": "Capture the current browser viewport as a PNG and return it.",
-        "parameters": {"type": "object", "properties": {}, "required": []},
-    },
-    {
-        "name": "click",
-        "description": "Click at pixel coordinates (x, y).",
-        "parameters": {
-            "type": "object",
-            "properties": {
-                "x": {"type": "number"},
-                "y": {"type": "number"},
-            },
-            "required": ["x", "y"],
-        },
-    },
-    {
-        "name": "click_selector",
-        "description": "Click an element by CSS selector.",
-        "parameters": {
-            "type": "object",
-            "properties": {"selector": {"type": "string"}},
-            "required": ["selector"],
-        },
-    },
-    {
-        "name": "type_text",
-        "description": "Type text into the currently focused element (preserves existing content).",
-        "parameters": {
-            "type": "object",
-            "properties": {"text": {"type": "string"}},
-            "required": ["text"],
-        },
-    },
-    {
-        "name": "replace_text",
-        "description": "Select all content in the focused field and replace it with new text.",
-        "parameters": {
-            "type": "object",
-            "properties": {"text": {"type": "string"}},
-            "required": ["text"],
-        },
-    },
-    {
-        "name": "set_field",
-        "description": (
-            "Set a field value by CSS selector via jQuery/DOM events. "
-            "Reliable for GravityForms fields that ignore keyboard events."
-        ),
-        "parameters": {
-            "type": "object",
-            "properties": {
-                "selector": {"type": "string"},
-                "value":    {"type": "string"},
-            },
-            "required": ["selector", "value"],
-        },
-    },
-    {
-        "name": "choose_option",
-        "description": "Select a <select> dropdown option by its visible text.",
-        "parameters": {
-            "type": "object",
-            "properties": {
-                "selector": {"type": "string"},
-                "text":     {"type": "string"},
-            },
-            "required": ["selector", "text"],
-        },
-    },
-    {
-        "name": "tick_checkbox",
-        "description": "Check a checkbox by CSS selector.",
-        "parameters": {
-            "type": "object",
-            "properties": {"selector": {"type": "string"}},
-            "required": ["selector"],
-        },
-    },
-    {
-        "name": "press_key",
-        "description": "Press a keyboard key or combination, e.g. Tab, Enter, Control+a.",
-        "parameters": {
-            "type": "object",
-            "properties": {"key": {"type": "string"}},
-            "required": ["key"],
-        },
-    },
-    {
-        "name": "scroll_page",
-        "description": "Scroll the page up or down by a given number of pixels.",
-        "parameters": {
-            "type": "object",
-            "properties": {
-                "direction": {"type": "string", "enum": ["down", "up"]},
-                "pixels":    {"type": "number"},
-            },
-            "required": ["direction", "pixels"],
-        },
-    },
-    {
-        "name": "attach_files",
-        "description": "Attach one or more files to a file-input element.",
-        "parameters": {
-            "type": "object",
-            "properties": {
-                "selector": {
-                    "type": "string",
-                    "description": "CSS selector for the file input (preferred over coordinates)",
-                },
-                "x": {"type": "number", "description": "Fallback x coordinate near the input"},
-                "y": {"type": "number", "description": "Fallback y coordinate near the input"},
-                "paths": {
-                    "type": "array",
-                    "items": {"type": "string"},
-                    "description": "Absolute file paths to attach",
-                },
-            },
-            "required": ["paths"],
-        },
-    },
-    {
-        "name": "done",
-        "description": (
-            "Call when every field is filled and the form is ready for human review. "
-            "Do NOT click Submit — the user does that manually."
-        ),
-        "parameters": {
-            "type": "object",
-            "properties": {
-                "summary":  {"type": "string", "description": "Brief description of what was filled"},
-                "skipped":  {
-                    "type": "array",
-                    "items": {"type": "string"},
-                    "description": "Fields deliberately left blank (placeholders, salary, etc.)",
-                },
-            },
-            "required": ["summary"],
-        },
-    },
-]
-
-
-# ── Browser tool executor ──────────────────────────────────────────────────────
-
-def run_tool(page, name: str, inp: dict) -> tuple[bool, str]:
-    """Execute a tool call. Returns (keep_going, status_text)."""
-    try:
-        if name == "screenshot":
-            return True, "page refreshed"
-
-        elif name == "click":
-            page.mouse.click(inp["x"], inp["y"])
-            time.sleep(0.7)
-            return True, f"clicked ({inp['x']:.0f}, {inp['y']:.0f})"
-
-        elif name == "click_selector":
-            el = page.query_selector(inp["selector"])
-            if el:
-                el.scroll_into_view_if_needed()
-                el.click()
-                time.sleep(0.7)
-                return True, f"clicked {inp['selector']}"
-            return True, f"selector not found: {inp['selector']}"
-
-        elif name == "type_text":
-            page.keyboard.type(inp["text"], delay=40)
-            time.sleep(0.3)
-            return True, f"typed {inp['text'][:60]!r}"
-
-        elif name == "replace_text":
-            page.keyboard.press("Control+a")
-            time.sleep(0.1)
-            page.keyboard.press("Delete")
-            time.sleep(0.1)
-            page.keyboard.type(inp["text"], delay=40)
-            time.sleep(0.3)
-            return True, f"replaced with {inp['text'][:60]!r}"
-
-        elif name == "set_field":
-            sel = inp["selector"].replace("'", "\\'")
-            val = inp["value"].replace("\\", "\\\\").replace("'", "\\'").replace("\n", "\\n")
-            page.evaluate(f"""
-                (function() {{
-                    var el = document.querySelector('{sel}');
-                    if (!el) return;
-                    if (window.jQuery) {{
-                        jQuery(el).val('{val}').trigger('input').trigger('change');
-                    }} else {{
-                        el.value = '{val}';
-                        el.dispatchEvent(new Event('input',  {{bubbles: true}}));
-                        el.dispatchEvent(new Event('change', {{bubbles: true}}));
-                    }}
-                }})()
-            """)
-            time.sleep(0.3)
-            return True, f"set_field {inp['selector']} = {inp['value'][:60]!r}"
-
-        elif name == "choose_option":
-            el = page.query_selector(inp["selector"])
-            if el:
-                el.select_option(label=inp["text"])
-                time.sleep(0.4)
-                return True, f"selected {inp['text']!r} in {inp['selector']}"
-            return True, f"select not found: {inp['selector']}"
-
-        elif name == "tick_checkbox":
-            el = page.query_selector(inp["selector"])
-            if el:
-                if not el.is_checked():
-                    el.check()
-                time.sleep(0.3)
-                return True, f"ticked {inp['selector']}"
-            # jQuery fallback
-            safe = inp["selector"].replace("'", "\\'")
-            page.evaluate(f"""
-                (function() {{
-                    var el = document.querySelector('{safe}');
-                    if (!el) return;
-                    if (window.jQuery) {{
-                        jQuery(el).prop('checked', true).trigger('change');
-                    }} else {{
-                        el.checked = true;
-                        el.dispatchEvent(new Event('change', {{bubbles: true}}));
-                    }}
-                }})()
-            """)
-            time.sleep(0.3)
-            return True, f"ticked (jQuery) {inp['selector']}"
-
-        elif name == "press_key":
-            page.keyboard.press(inp["key"])
-            time.sleep(0.4)
-            return True, f"pressed {inp['key']}"
-
-        elif name == "scroll_page":
-            px = inp["pixels"] * (-1 if inp["direction"] == "up" else 1)
-            page.evaluate(f"window.scrollBy(0, {px})")
-            time.sleep(0.3)
-            return True, f"scrolled {inp['direction']} {inp['pixels']}px"
-
-        elif name == "attach_files":
-            paths = [p for p in inp.get("paths", []) if Path(p).exists()]
-            if not paths:
-                return True, "attach_files: none of the paths exist on disk"
-            file_input = None
-            sel = inp.get("selector", "")
-            if sel:
-                file_input = page.query_selector(sel)
-            if not file_input and "x" in inp and "y" in inp:
-                file_input = page.evaluate_handle(f"""
-                    (function() {{
-                        var el = document.elementFromPoint({inp['x']}, {inp['y']});
-                        for (var i = 0; i < 6 && el; i++) {{
-                            if (el.tagName === 'INPUT' && el.type === 'file') return el;
-                            el = el.parentElement;
-                        }}
-                        return null;
-                    }})()
-                """).as_element()
-            if not file_input:
-                file_input = page.query_selector('input[type="file"]')
-            if file_input:
-                file_input.set_input_files(paths)
-                time.sleep(0.7)
-                return True, f"attached {[Path(p).name for p in paths]}"
-            return True, "attach_files: no file input found"
-
-        elif name == "done":
-            return False, inp.get("summary", "done")
-
-    except Exception as e:
-        return True, f"ERROR in {name}: {e}"
-
-    return True, f"unknown tool: {name}"
-
-
-# ── System prompt ──────────────────────────────────────────────────────────────
-
-_job_title = PROFILE.get("job_title", "") if DATA_MODE else ""
-_company   = PROFILE.get("company", "")   if DATA_MODE else ""
-
-_HOW_TO_WORK = """
-RULES:
-1. After every action you receive a fresh screenshot. Use it to verify the action worked and find the next field.
-2. If a cookie/consent banner is visible, dismiss it first (click its Accept/Hyväksy button).
-3. Ignore live-chat widgets — they do not block the form.
-4. For text, email, tel, textarea fields: click the field, then use replace_text to set the value. After typing, take a screenshot to confirm the value is visible. If GravityForms cleared it, use set_field with the element's CSS selector.
-5. For <select> dropdowns: use choose_option with the selector and visible option text.
-6. For checkboxes: use tick_checkbox.
-7. For file uploads: use attach_files with the absolute paths provided.
-8. When all fields are filled, call done(). Do NOT click Submit.
-9. The form may be in Finnish — match fields by meaning, not exact wording.
-"""
-
-if DATA_MODE:
-    _resume      = PROFILE.get("resume", {})
-    _cl          = PROFILE.get("cover_letter", {})
-    _cl_text     = "\n\n".join(_cl.get("paragraphs", []))
-    _pdfs        = [p for p in [RESUME_PDF, COVER_LETTER_PDF] if p and Path(p).exists()]
-
-    SYSTEM = f"""You are filling a job application form on behalf of Manju Krishna Haridas.
-
-TARGET URL: {APPLY_URL}
-ROLE: {_job_title} at {_company}
-
-STANDARD FIELDS — always use these exact values:
-- First name: Manju
-- Last name: Krishna Haridas
-- Full name: Manju Krishna Haridas
-- Email: munchnambiar@gmail.com
-- Phone: +358 415765217
-- Address: Tuirantie 13 A22
-- City / Kaupunki: Oulu
-- Postal code: 90500
-- Country: Finland
-- LinkedIn: linkedin.com/in/manjukrishnaharidas
-- Availability / Start date: Next possible working day
-- Willing to relocate: Yes — open to relocation within Finland, including Helsinki
-- Salary / Pay expectation: leave blank
-- Right to work in Finland: Yes — EU residence permit
-
-TAILORED COVER LETTER (use for motivation, open-text, "why this role" fields):
-{_cl_text}
-
-FULL PROFILE DATA (use for any other open questions):
-{json.dumps(PROFILE, indent=2, ensure_ascii=False)}
-
-FILE UPLOADS:
-Resume PDF      : {RESUME_PDF if RESUME_PDF else "not found"}
-Cover letter PDF: {COVER_LETTER_PDF if COVER_LETTER_PDF else "not found"}
-Attach the resume PDF to any resume/CV upload field.
-Attach the cover letter PDF to any cover letter / motivation letter upload field.
-If there is a single combined upload field, attach both files together.
-{_HOW_TO_WORK}"""
-
-else:
-    SYSTEM = f"""You are filling a job application form on behalf of Manju Krishna Haridas.
-
-TARGET URL: {APPLY_URL}
-
-ANSWERS TO USE:
-{json.dumps(ANSWERS, indent=2, ensure_ascii=False)}
-
-HOW TO WORK:
-1. After every action you receive a fresh screenshot. Use it to verify the action worked and find the next field.
-2. If a cookie/consent banner is visible, dismiss it first (click its Accept/Hyväksy button).
-3. Ignore live-chat widgets — they do not block the form.
-4. For text, email, tel, textarea fields: click the field, then use replace_text to set the value. After typing, take a screenshot to confirm the value is visible. If GravityForms cleared it, use set_field with the element's CSS selector.
-5. For <select> dropdowns: use choose_option with the selector and visible option text.
-6. For checkboxes: use tick_checkbox.
-7. For file uploads: use attach_files with the absolute paths from the answers JSON.
-8. Skip any field where is_placeholder is true.
-9. When all non-placeholder fields are filled, call done(). Do NOT click Submit.
-10. The form may be in Finnish — match fields by meaning, not exact wording.
-"""
-
-NUDGE = (
-    "You must call a tool to continue filling the form. "
-    "Do not respond with plain text. "
-    "Use replace_text, set_field, choose_option, tick_checkbox, attach_files, or done. "
-    "Here is the current page:"
-)
-
-
-# ── Agent loop ─────────────────────────────────────────────────────────────────
-
-def run_agent(page, client) -> bool:
-    from google.genai import types
-
-    def get_screenshot_part():
-        return types.Part.from_bytes(data=page.screenshot(), mime_type="image/png")
-
-    messages = [
-        types.Content(
-            role="user",
-            parts=[
-                get_screenshot_part(),
-                types.Part.from_text("Here is the form. Please fill it in now.")
-            ]
-        )
-    ]
-
-    nudge_count = 0
-    max_nudges  = 3
+with sync_playwright() as p:
+    print("Connecting to Chrome over CDP...")
+    browser = p.chromium.connect_over_cdp("http://127.0.0.1:9222")
+    context = browser.contexts[0]
     
-    config = types.GenerateContentConfig(
-        system_instruction=SYSTEM,
-        tools=[{"function_declarations": TOOLS}],
-        temperature=0.0
-    )
-
-    for step in range(1, MAX_STEPS + 1):
-        try:
-            response = client.models.generate_content(
-                model=MODEL,
-                contents=messages,
-                config=config,
-            )
-        except Exception as e:
-            print(f"  [API Error] {e}")
-            return False
+    # Reuse existing tab if URL matches, otherwise open a new one
+    page = None
+    for existing_page in context.pages:
+        if url in existing_page.url:
+            page = existing_page
+            print("Reusing existing tab for this job!")
+            page.bring_to_front()
+            break
             
-        if response.candidates:
-            messages.append(response.candidates[0].content)
-        
-        tool_calls = response.function_calls or []
-        text_out = response.text or ""
+    if not page:
+        print("Opening new page...")
+        page = context.new_page()
+        page.goto(url)
+        page.set_default_timeout(3000)
+        page.wait_for_load_state("load")
+    else:
+        page.set_default_timeout(3000)
 
-        if not tool_calls:
-            if text_out:
-                print(f"  [step {step}] model said: {text_out[:200]}")
-            if nudge_count < max_nudges:
-                nudge_count += 1
-                print(f"  [nudge {nudge_count}/{max_nudges}]")
-                messages.append(
-                    types.Content(
-                        role="user", 
-                        parts=[get_screenshot_part(), types.Part.from_text(NUDGE)]
-                    )
-                )
-                continue
-            print("  Agent stopped calling tools — giving up.")
-            return False
+    # ... hardcoded Playwright locators + fill/select calls for every field,
+    #     using the values from JOB_ID_answers.json (or your own live reading
+    #     of the form if no answers.json exists) ...
+    # ... attach $resumePdf and $coverPdf to whatever file-upload input(s) exist ...
 
-        nudge_count = 0
-        keep_going  = True
-        parts_results = []
-
-        for fn_call in tool_calls:
-            name = fn_call.name
-            inp = fn_call.args if fn_call.args else {}
-            print(f"  [step {step}] {name}({str(inp)[:80]})")
-            keep_going, msg = run_tool(page, name, inp)
-            print(f"             → {msg}")
-            
-            parts_results.append(types.Part.from_function_response(
-                name=name,
-                response={"result": msg}
-            ))
-            
-            if not keep_going:
-                break
-                
-        # Append the results back to the conversation
-        messages.append(
-            types.Content(
-                role="user",
-                parts=parts_results + [get_screenshot_part()]
-            )
-        )
-        
-        if not keep_going:
-            return True
-
-    print(f"  Reached {MAX_STEPS}-step limit.")
-    return False
-
-
-# ── Main ───────────────────────────────────────────────────────────────────────
-
-def main():
-    _load_auth()
-    from google import genai
-    client = genai.Client()
-
-    print(f"\n{'=' * 60}")
-    print(f"  Job   : <<<JOB_ID>>>")
-    print(f"  URL   : {APPLY_URL}")
-    print(f"  Model : {MODEL}")
-    print(f"  Mode  : {'data.json (auto-infer)' if DATA_MODE else f'{len(ANSWERS)} pre-computed answers'}")
-    if DATA_MODE:
-        print(f"  Resume: {RESUME_PDF or 'NOT FOUND'}")
-        print(f"  CL    : {COVER_LETTER_PDF or 'NOT FOUND'}")
-    print(f"{'=' * 60}\n")
-
-    with sync_playwright() as pw:
-        user_data_dir = os.path.join(os.environ.get("LOCALAPPDATA", r"C:\Users\vinee\AppData\Local"), r"Google\Chrome\Automation Profile")
-        context = pw.chromium.launch_persistent_context(
-            user_data_dir,
-            channel="chrome",
-            headless=False,
-            viewport=VIEWPORT,
-            user_agent=(
-                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-                "AppleWebKit/537.36 (KHTML, like Gecko) "
-                "Chrome/120.0.0.0 Safari/537.36"
-            ),
-        )
-        page = context.pages[0] if context.pages else context.new_page()
-        page.goto(APPLY_URL, wait_until="networkidle")
-        time.sleep(2)
-
-        success = run_agent(page, client)
-
-        if success:
-            print("\n" + "=" * 60)
-            print("  FORM FILLED — review everything in the browser, then click Submit.")
-            print("=" * 60)
-        else:
-            print("\n  Agent could not complete the form — check the browser and fill any remaining fields manually.")
-
-        input("\n  Press Enter when you are done (browser will close): ")
-        browser.close()
-
-
-if __name__ == "__main__":
-    main()
+    print("Form filled. Disconnecting...")
+    browser.close()
 ```
+
+- Run the script: `python -u PUBLIC\scratch\hardcoded_fill_JOB_ID.py`
+- **Form Filling Rules**:
+  - Always use the LinkedIn profile link from Manju's resume for the LinkedIn profile field (do not leave it empty).
+  - If asked about employment status, always answer "not currently employed" (or the equivalent "no").
+  - If asked if the application can be used for other applications/future opportunities, always answer "yes" / agree to it.
+  - If asked how she heard about the job, look up the `source` column for this job in `jobs.json` and use that value.
+- **Never click the final submit button.** Leave the form filled and waiting for review.
 
 ---
 
-### Step 3 — Run the script
+## Step 6 — Hand off for manual review
 
-```powershell
-python "PRIVATE\Resumes\JOB_ID\fill_JOB_ID.py"
+Print:
+```
+JOB_ID (JOB_TITLE @ COMPANY) — form opened and filled at APPLY_URL.
+Resume       : $resumePdf
+Cover letter : $coverPdf
+Review the filled form in the browser window, then click submit yourself — this skill never submits automatically.
 ```
 
-Wait for it to complete before moving to the next job ID. The browser stays open until the user presses Enter.
+Wait for the user to confirm they've reviewed and submitted (or otherwise closed the browser) before considering the task done. Do not mark the job `applied` anywhere automatically — that's a separate, explicit action the user takes.
 
----
-
-## End of loop
-
-After all jobs are processed, print a summary:
-
-| Job ID | Status |
-|--------|--------|
-| abc123 | done   |
-| def456 | skipped — no answers file |
+## Application Form Rules
+- The field for linkedin profile is left empty. Use the linkedin profile link from the resume.
+- I'm not currently employed.
+- My application can be used for other applications.
+- Whenever they ask how did we hear about the job, mention the source column corresponding to this job in dashboard.

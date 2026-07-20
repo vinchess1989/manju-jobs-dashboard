@@ -1496,7 +1496,7 @@ def dismiss_cookie_overlays(page):
 
 
 def scrape_generic(page, job_url, context=None, job_id=""):
-    page.goto(job_url, wait_until="networkidle")
+    page.goto(job_url, wait_until="domcontentloaded")
     time.sleep(2)
 
     accepted = accept_cookies(page)
@@ -1528,7 +1528,7 @@ def scrape_generic(page, job_url, context=None, job_id=""):
                 href = el.get_attribute("href")
                 if href:
                     apply_url = href if href.startswith("http") else urljoin(job_url, href)
-                    page.goto(apply_url, wait_until="networkidle")
+                    page.goto(apply_url, wait_until="domcontentloaded")
                     time.sleep(2)
                     accepted = accept_cookies(page)
                     if accepted:
@@ -1536,7 +1536,7 @@ def scrape_generic(page, job_url, context=None, job_id=""):
                         dismiss_cookie_overlays(page)
                 else:
                     el.click()
-                    page.wait_for_load_state("networkidle")
+                    page.wait_for_load_state("domcontentloaded")
                     apply_url = page.url
                     time.sleep(2)
                 break
@@ -1889,12 +1889,26 @@ def main():
                 context.close()
 
         else:
-            browser = p.chromium.launch(headless=headless)
-            ctx_opts = {}
-            if has_session:
-                ctx_opts["storage_state"] = str(spath)
-            context = browser.new_context(**ctx_opts)
-            page = context.new_page()
+            import socket
+            def is_port_in_use(port):
+                with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                    return s.connect_ex(('127.0.0.1', port)) == 0
+
+            if is_port_in_use(9222):
+                print("  Automation Profile locked (port 9222 in use). Connecting over CDP...")
+                browser = p.chromium.connect_over_cdp("http://127.0.0.1:9222")
+                context = browser.contexts[0]
+                is_cdp = True
+            else:
+                user_data_dir = os.path.join(os.environ.get("LOCALAPPDATA", r"C:\Users\vinee\AppData\Local"), r"Google\Chrome\Automation Profile")
+                context = p.chromium.launch_persistent_context(
+                    user_data_dir,
+                    channel="chrome",
+                    headless=headless,
+                    viewport={"width": 1280, "height": 900}
+                )
+                is_cdp = False
+            page = context.pages[0] if context.pages else context.new_page()
             page.add_init_script(
                 "Object.defineProperty(navigator, 'webdriver', {get: () => undefined})"
             )
@@ -1911,7 +1925,10 @@ def main():
             except Exception as e:
                 print(f"  ERROR: {e}", file=sys.stderr)
             finally:
-                browser.close()
+                if is_cdp:
+                    browser.disconnect()
+                else:
+                    context.close()
 
     is_expired = _scrape_flags.get("expired", False)
 
