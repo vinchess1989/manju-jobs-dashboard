@@ -1193,6 +1193,12 @@
 
                 const tr = document.createElement('tr');
                 tr.setAttribute('data-url', job.url);
+                
+                const deletionReason = (sharedJobsState[job.url] && sharedJobsState[job.url].deletion_reason) || job.deletion_reason;
+                if (deletionReason) {
+                    tr.style.backgroundColor = 'rgba(75, 85, 99, 0.4)'; // Grey background
+                }
+
                 const evalModel = job.eval_model || '';
                                 const tailorModel = (sharedJobsState[job.url] && sharedJobsState[job.url].tailor_model) || job.tailor_model || '';
                 const tailoredAtStr = (sharedJobsState[job.url] && sharedJobsState[job.url].tailored_at) || job.tailored_at || '';
