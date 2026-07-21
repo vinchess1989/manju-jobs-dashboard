@@ -1,3 +1,5 @@
+# Powershell Execution Rule
+- Wrap all commands you run for the user in PowerShell (e.g. `powershell -Command "..."`).
 
 ## Database Modifications and Race Conditions
 If we ever need to do bulk manual database modifications via scripts (e.g., editing jobs.json or curated_jobs.json), we must:
