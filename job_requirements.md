@@ -31,7 +31,7 @@ Immediately discard a job if ANY of the following are true:
 * **Closed Applications:** The job posting explicitly states that it is no longer accepting applications.
 * **Unrelated Roles:** The job title is clearly unrelated to office or service work — e.g. husky guide, dog handler, pest control, diver, retinal photographer, etc.
 * **Religious / Clergy Roles:** The job is for a parish priest, pastor, or other specific religious clerical role.
-
+* **US Remote Jobs:** Any remote job that is based in, located in, or restricted to the United States.
 ## Target Job Criteria
 
 A job is a match if it satisfies ALL of the following:
