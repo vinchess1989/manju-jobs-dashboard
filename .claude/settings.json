@@ -1,10 +1,29 @@
 {
   "permissions": {
+    "defaultMode": "bypassPermissions",
     "allow": [
-      "Write(C:\\Users\\vinee\\Manju_jobs_private\\Resumes\\*)"
+      "Bash(*)",
+      "PowerShell(*)",
+      "Read(*)",
+      "Edit(*)",
+      "Write(*)",
+      "Glob(*)",
+      "Grep(*)",
+      "WebFetch(*)",
+      "WebSearch(*)",
+      "TodoWrite(*)",
+      "Agent(*)"
+    ],
+    "deny": [
+      "Bash(*rm -rf*)",
+      "Bash(*rm -*f*)",
+      "Bash(*del /f*)",
+      "PowerShell(*Remove-Item*-Recurse*-Force*)",
+      "PowerShell(*Remove-Item*-Force*-Recurse*)"
     ],
     "additionalDirectories": [
-      "C:\\Users\\vinee\\Manju_jobs_private\\Resumes"
+      "C:\\Users\\vinee\\Documents\\manju jobs dashboard\\Manju-jobs",
+      "C:\\Users\\vinee\\Documents\\Resume"
     ]
   }
 }
