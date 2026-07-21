@@ -687,7 +687,7 @@
 </head>
 <body>
 
-    <header>
+<header>
         <div class="logo-area">
             <div class="logo-icon">M</div>
             <div class="logo-title">Manju's Master Job Board</div>
@@ -697,6 +697,13 @@
                 <div id="file-status-dot" class="status-dot"></div>
                 <span id="file-status-text">Connecting...</span>
             </div>
+
+            <!-- Scraper Status Indicator -->
+            <div class="file-status-indicator" style="cursor: help;" id="scraper-status-container" title="Waiting for monitor agent...">
+                <div id="scraper-status-dot" class="status-dot" style="background: #6b7280; box-shadow: none;"></div>
+                <span id="scraper-status-text">Scraper: Unknown</span>
+            </div>
+
             <!-- Re-Review Trigger -->
             <div style="display: flex; align-items: center; gap: 0.5rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 2rem; padding: 0.25rem 1rem 0.25rem 0.25rem;">
                 <button id="re-review-btn" onclick="triggerReReview()" title="Re-review all yes/maybe/pending jobs against current requirements">
@@ -777,6 +784,37 @@
             const userEmail = document.getElementById('user-email');
             const jobsContainer = document.getElementById('jobs-container');
             
+            // Listen for Scraper Monitor Status
+            db.collection('shared_state').doc('job_status').onSnapshot(doc => {
+                if (doc.exists) {
+                    const data = doc.data().orchestrator_status;
+                    if (!data) return;
+                    
+                    const statusDot = document.getElementById('scraper-status-dot');
+                    const statusText = document.getElementById('scraper-status-text');
+                    const container = document.getElementById('scraper-status-container');
+                    
+                    if (data.status === 'error') {
+                        statusDot.classList.remove('connected');
+                        statusDot.style.background = '#ef4444';
+                        statusDot.style.boxShadow = '0 0 8px #ef4444';
+                        statusText.innerHTML = `Scraper: Error!`;
+                        container.title = data.message || "Unknown error";
+                    } else if (data.status === 'ok') {
+                        statusDot.classList.add('connected');
+                        statusDot.style.background = '#10b981';
+                        statusDot.style.boxShadow = '0 0 8px #10b981';
+                        statusText.innerHTML = `Scraper: Healthy`;
+                        container.title = data.message || "Running smoothly";
+                    } else {
+                        statusDot.classList.remove('connected');
+                        statusDot.style.background = '#6b7280';
+                        statusText.innerHTML = `Scraper: ${data.status}`;
+                        container.title = data.message || "Unknown state";
+                    }
+                }
+            });
+
             auth.onAuthStateChanged(user => {
                 if (user) {
                     const isAuthorized = ALLOWED_EMAILS.includes(user.email);
