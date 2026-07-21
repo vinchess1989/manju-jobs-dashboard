@@ -23,7 +23,7 @@ PRIVATE_DIR = r"C:\Users\vinee\Manju_jobs_private"
 DESC_DIR = os.path.join(PUBLIC_DIR, "job_descriptions")
 OUT_DIR = os.path.join(PRIVATE_DIR, "Resumes")
 SAMPLES_DIR = os.path.join(PUBLIC_DIR, "samples_for_review")
-TEMPLATE_PATH = os.path.join(OUT_DIR, "f6aaa66f", "f6aaa66f_data.json")
+TEMPLATE_PATH = os.path.join(PRIVATE_DIR, "Resumes", "Master", "master_data.json")
 
 # Local LLM configuration from environment (with defaults)
 LLM_ENDPOINT = os.environ.get("LOCAL_LLM_ENDPOINT", "http://localhost:11434/v1/chat/completions")
