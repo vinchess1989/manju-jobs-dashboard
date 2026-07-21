@@ -14,7 +14,7 @@
   * Legal Associate — Poise Legal, India (10/2021–05/2022): drafted/reviewed 5–7 commercial agreements per month (NDAs, Service Agreements), legal analysis on Company & Contract Law, full contract lifecycle management for 4 corporate clients.
   * Junior Lawyer — Juris Nexus, India (09/2015–01/2016): litigation support, trial preparation, client representation in civil and family matters.
 * **Key Skills:** Contract Law & Drafting, Regulatory Compliance, Legal Research & Analysis, Project Coordination, Event Management, Client Advisory, Document Management, MS Office, Social Media Management, Digital Service Deployment.
-* **Languages:** English (C1 / Native-level), Finnish (B2 — Intermediate, actively improving), Malayalam (Native).
+* **Languages:** English (C2 / Expert-level - won gold medal in essay competitions), Finnish (B2 – Intermediate, actively improving), Malayalam (Native).
 * **Driving:** Has a valid driving license and can use her personal car for work if required.
 
 ## Hard Rejections
@@ -60,6 +60,7 @@ This is the PRIMARY match category. Match if the role is any entry-level or mid-
 A role qualifies if it is entry-level or does not list a strict degree requirement beyond a general bachelor's or equivalent.
 
 **Language note:** Manju's Finnish is B2 (Intermediate). Roles requiring fluent Finnish (C1+) as a hard requirement should be marked "no". Roles where Finnish is preferred but not mandatory, or where English is the working language, are fine to match.
+* **English Expertise:** The candidate is an expert in the English language (highest level/C2) and has won a gold medal in essay competitions. Any roles requiring strong written English, English language expertise, or AI training for English should NOT be rejected based on language.
 
 **3. Application Deadline:**
 * The application deadline MUST be in the future relative to today's date.
