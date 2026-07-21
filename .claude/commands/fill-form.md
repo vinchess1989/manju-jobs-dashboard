@@ -1,8 +1,8 @@
-Open a single job's application form in a visible, already-logged-in browser and fill it using your own judgment — ensures a Claude-tailored resume/cover letter exist first, resolves the real form URL via find-apply-link, then pauses before submit so Manju can review and click submit herself.
+Open a single job's application form in a visible, already-logged-in browser and fill it using your own judgment — ensures a Claude-tailored resume/cover letter exist first, resolves the real form URL via find-apply-link, then pauses before submit so Manju can review and click submit herself. With no job ID given, instead runs the full discovery flow first (find near-deadline unapplied jobs → verify liveness → flag expired ones for deletion → build a reasoned checklist → let Manju pick) and then applies the single-job flow to whatever she picks.
 
 The job ID is: **$ARGUMENTS**
 
-Parse `$ARGUMENTS` as a single `JOB_ID` (the first whitespace-separated token). If empty, ask the user for a job ID before proceeding.
+Parse `$ARGUMENTS` as a single `JOB_ID` (the first whitespace-separated token). **If empty, do not ask for a job ID** — instead run Step -1 (below) to discover candidates, then come back and run Steps 0–6 for each job selected there.
 
 ---
 
@@ -30,6 +30,53 @@ Parse `$ARGUMENTS` as a single `JOB_ID` (the first whitespace-separated token). 
 **`JOBS_JSON`** = `PUBLIC\jobs.json` — read-only lookup only.
 
 **`AUTOMATION_PROFILE`** = `$env:LOCALAPPDATA\Google\Chrome\Automation Profile` — the persistent Chrome profile with Manju's saved logins (LinkedIn, Eezy Talents, etc.). Always launch against this profile, never a fresh/incognito context, so platforms she's already authenticated on don't hit a login wall. See `.agents\skills\open_visible_browser\SKILL.md` and the `talent.core.eezy.fi` entry in `site_patterns.json` for the working reference pattern.
+
+---
+
+## Step -1 — No job ID given: full discovery mode
+
+Only runs when `JOB_ID` is empty. Reproduces the end-to-end flow validated manually on 2026-07-21: find near-deadline unapplied jobs, verify each is genuinely still open, flag truly expired ones for deletion, build a reasoned fit checklist for what's left, let Manju pick, then fall through to Steps 0–6 for each pick.
+
+### -1.0 — Pull latest jobs.json
+
+```powershell
+git pull --rebase origin main
+```
+If `git status --short` shows unrelated pre-existing modified tracked files (e.g. from a concurrent session), stash just those paths first, pull, then pop — never discard someone else's in-progress work. See `CLAUDE.md`'s git hygiene section.
+
+### -1.1 — Find unapplied jobs with deadline today or tomorrow
+
+```powershell
+$today    = (Get-Date).ToString("yyyy-MM-dd")
+$tomorrow = (Get-Date).AddDays(1).ToString("yyyy-MM-dd")
+```
+Read `JOBS_JSON`. Candidates are entries where `deadline` equals `$today` or `$tomorrow`, **and** `applied` is not `"yes"`.
+
+For each candidate, also check Firestore's `applied` field (`python job_status_store.py get --url "JOB_URL" --field applied`) — jobs.json's cached `applied` can lag behind what's actually been submitted. Drop any job where **either** source says `"yes"` (jobs already handled don't need re-triage).
+
+If the raw candidate count is large, it's fine to narrow further using `matches_requirements` (prioritize `"yes"`/`"maybe"` over `"no"`) to keep the liveness-check pass manageable — state the excluded count when reporting so nothing silently vanishes.
+
+### -1.2 — Verify each candidate is still genuinely open
+
+For each remaining candidate:
+- **tyomarkkinatori.fi** listings: use the cached `api` strategy in `site_patterns.json` (`https://tyomarkkinatori.fi/api/jobposting-new/v1/public/jobpostings/{id}`) — check `metadata.status` (4 = active, 5 = closed) and `application.expires`. Don't rely solely on jobs.json's cached `deadline`: the live `expires` value can be later than the cached one (extended deadline — treat as not urgent, no deletion action needed) or the status can already be 5 before the cached deadline even passes.
+- **Other domains**: WebFetch the `url`. Ask a narrow, UI-only question — do **not** ask the model to reason about the deadline date, since that reasoning has proven unreliable (confirmed this session: it misclassified a still-open listing as expired purely from flawed date arithmetic). Use a prompt along the lines of: *"Reply ACTIVE if there is a live 'Apply'/'Hae paikkaa' button or open application form on this page. Reply CLOSED if the page explicitly states the position is filled, applications are no longer accepted, or the listing was removed. Do not reason about the deadline date — only report what the page's UI currently shows."*
+
+### -1.3 — Flag genuinely expired/closed jobs for deletion
+
+For each candidate confirmed CLOSED in -1.2, apply the **mark-job-deleted** skill technique (`.claude/commands/mark-job-deleted.md`), including its **applied guard**: if either jobs.json or Firestore already says `applied == "yes"` for that job, do not auto-delete — report it and ask the user first (leaving it alone is a valid outcome — a completed application shouldn't disappear from the dashboard just because the listing expired). Otherwise set `deletion_reason` in Firestore directly with no confirmation needed.
+
+### -1.4 — Build a reasoned checklist for what's left
+
+For every candidate confirmed ACTIVE, read its `description_file` (or WebFetch/search per Step 1 of `tailor-resume-n-fill-form.md` if missing) and write one row of honest fit reasoning per job: title, company, location, deadline, and an assessment against Manju's actual profile (Oulu-based, LL.M./LL.B. legal background, International House Oulu event-coordination + digital-tools experience, B2 Finnish / C1 English, driving license, palkkatuki-eligible). Call out location mismatches, hard-requirement gaps (e.g. SAP/procurement track record, industrial certifications, marketing-tech skills), and role-type issues (e.g. commission-only/entrepreneurial roles) as plainly as genuine strengths — don't inflate weak matches to pad the list. Present this as a table.
+
+### -1.5 — Let Manju select
+
+Ask which job ID(s) to proceed with — a plain-text question is fine (a checklist can easily run past `AskUserQuestion`'s 4-option cap). While waiting on her answer, for every checklisted job that is ultimately **not** selected, set `matches_requirements = "no"` and `user_reason = <the fit assessment written in -1.4>` in Firestore via `job_status_store.py`. This is what the live dashboard reads as an override on top of jobs.json's own `matches_requirements`/`reason` fields, so it corrects the scraper's classification for anyone reviewing the dashboard later — without ever touching `jobs.json` itself.
+
+### -1.6 — Apply Steps 0–6 to each selected job
+
+For each `JOB_ID` Manju selects, run Steps 0 through 6 below exactly as if that ID had been passed as `$ARGUMENTS`.
 
 ---
 
