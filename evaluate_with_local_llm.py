@@ -174,6 +174,10 @@ Output ONLY a JSON object exactly like this:
                 
         except Exception as e:
             print(f"  -> Failed to parse LLM response: {response_text}. Error: {e}")
+            master_job["visited"] = "yes"
+            master_job["matches_requirements"] = "error"
+            master_job["reason"] = f"Failed to parse LLM JSON: {e}"
+            evaluated_count += 1
 
     # Save the updated master jobs.json
     if evaluated_count > 0:
