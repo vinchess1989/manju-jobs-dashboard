@@ -3,10 +3,20 @@ Resolve a job posting URL down to the actual application form URL (or contact em
 Arguments: **$ARGUMENTS**
 
 Parse `$ARGUMENTS` as space-separated tokens:
-- `BASE_URL` — the first token starting with `http://` or `https://`. Required.
-- `JOB_ID` — the first remaining token, if any. Optional — only used to write the result back to Firestore (see Step 5; `jobs.json` itself is never written to).
+- `BASE_URL` — the first token starting with `http://` or `https://`, if any.
+- `JOB_ID` — the first remaining (non-URL) token, if any.
 
-Example: `/find-apply-link https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/e84e42ef-.../fi abc12345`
+At least one of the two must be present — abort with an error otherwise.
+
+**If `BASE_URL` was not given but `JOB_ID` was:** look it up. Read `PUBLIC\jobs.json` (read-only — see `JOBS_JSON` below) and find the entry whose `id` equals `JOB_ID`; use its `url` field as `BASE_URL`. If no job with that ID exists, abort with an error (`Job JOB_ID not found in jobs.json`) rather than guessing.
+
+If `BASE_URL` *was* given explicitly, use it as-is even when `JOB_ID` is also present (an explicit URL always wins over the jobs.json lookup — useful when jobs.json's `url` is itself just a listing-aggregator link and the caller already has something more direct).
+
+`JOB_ID`, whenever present, is also used to write the result back to Firestore (see Step 5; `jobs.json` itself is never written to).
+
+Examples:
+- `/find-apply-link https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/e84e42ef-.../fi abc12345` — explicit URL + JOB_ID
+- `/find-apply-link abc12345` — JOB_ID only; `BASE_URL` resolved from `jobs.json`
 
 ---
 

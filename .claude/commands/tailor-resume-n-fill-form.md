@@ -52,7 +52,7 @@ PRIVATE : <resolved path>
 ```
 
 Read the structural template **once** before the loop:
-Read `PRIVATE\Resumes\f6aaa66f\f6aaa66f_data.json`. Every output JSON must match this structure exactly (same keys, same nesting).
+Read `PRIVATE\Resumes\Master\master_data.json`. Every output JSON must match this structure exactly (same keys, same nesting).
 
 ---
 
@@ -190,7 +190,8 @@ Read `PRIVATE\Resumes\JOB_ID\JOB_ID_questions.json`. Using the job description f
 - **Factual fields** — use these exact values:
   - Phone: leave blank, set `is_placeholder: true`
   - Address: `Oulu, Finland`
-  - Availability: `September 2026`
+  - Availability: `Next possible working day`
+  - Willing to relocate: `Yes — open to relocation within Finland, including Helsinki`
   - Salary expectation: leave blank, set `is_placeholder: true`
   - Right to work in Finland: `Yes — EU residence permit`
 - **Language:** Answer in the same language as the question (Finnish if Finnish, English if English).
@@ -248,6 +249,8 @@ Write the tailored JSON to `PRIVATE\Resumes\JOB_ID\JOB_ID_data.json` — overwri
 
 #### Tailoring rules
 
+**Resume language:** Determine the job posting's language from the description obtained in Step 1. If the posting is primarily in Finnish, the **entire resume** must be written in Finnish — not just the cover letter. Read `PRIVATE\Resumes\Master\master_data_fi.json` now as the Finnish reference: it has the Finnish section labels, wage subsidy note, education, volunteering, achievements, publications, and reference titles already translated, plus the phrasing register to match for the job-specific fields you write yourself. If the posting is in English, use `master_data.json` only, as documented below.
+
 **Top-level fields:**
 - `job_id`: set to `JOB_ID`
 - `job_title`: set to `JOB_TITLE` (exact string from jobs.json)
@@ -259,30 +262,39 @@ Write the tailored JSON to `PRIVATE\Resumes\JOB_ID\JOB_ID_data.json` — overwri
 
 **`resume.contact`:** Always copy the entire object verbatim from the template (`address`, `phone`, `email`, `linkedin_url`, `linkedin_display`) — these are static and never job-specific. Never omit this object; a missing `contact` silently renders a blank line under the name with no error.
 
-**`resume.role`:** `"JOB_TITLE Candidate"`
+**`resume.role`:** `"JOB_TITLE Candidate"` for English postings. For Finnish postings, phrase it naturally in Finnish instead (e.g. `"JOB_TITLE-hakija"`) — match the register of `master_data_fi.json`'s `role` field.
 
-**`resume.profile`:** 2–3 sentences, highly specific to this role and company. Directly connect Manju's most relevant background to the stated requirements. Do not just summarise her CV — name the company and what they need.
+**`resume.profile`:** 2–3 sentences, highly specific to this role and company. Directly connect Manju's most relevant background to the stated requirements. Do not just summarise her CV — name the company and what they need. Write in the **same language as the job posting** — Finnish for Finnish postings, matching the phrasing style of `master_data_fi.json`'s profile.
 
-**`resume.experience`:** Keep all four entries exactly as in the template (same dates, companies, titles). Reorder the four entries so the most relevant experience appears first. Within each entry, reorder and reword the bullets to front-load skills mentioned in the job description.
+**`resume.experience`:** Keep all four entries exactly as in the template (same dates, companies, titles — company names stay as-is regardless of language). Reorder the four entries so the most relevant experience appears first. Within each entry, reorder and reword the bullets to front-load skills mentioned in the job description, in the same language as the posting (Finnish bullets for Finnish postings — see `master_data_fi.json`'s experience entries for phrasing).
 
-**`resume.education`:** Keep all entries as in the template, **using the exact same keys** (`qual`, `inst`, and `bold` where set). Do not rename these keys (e.g. to `degree`/`school`) — `make_resume.py` reads `qual`/`inst` specifically and silently renders blank rows for any other key names.
+**`resume.education`:** Keep all entries as in the template, **using the exact same keys** (`qual`, `inst`, and `bold` where set). Do not rename these keys (e.g. to `degree`/`school`) — `make_resume.py` reads `qual`/`inst` specifically and silently renders blank rows for any other key names. For Finnish postings, use the Finnish `qual` text from `master_data_fi.json` (institution names in `inst` stay as-is).
 
 **`resume.languages_html`:** For Finnish-language postings, put Finnish first. For English-language postings, keep English first.
 
-**`resume.competencies_html`:** Completely rewrite 4–5 skill categories that map directly onto the key requirements in this job description. Use `<span class="skill-cat">Category:</span> description...` format.
+**`resume.wage_subsidy_note`:** Always copy verbatim from the template — the Finnish version from `master_data_fi.json` for Finnish postings, the English version from `master_data.json` for English postings. `make_resume.py` renders this as a highlighted banner directly under the header, above Professional Profile — this is deliberate, since palkkatuki eligibility is critical information for the employer's hiring decision and should be visible immediately, not buried in a skills list.
 
-**`resume.references`:** Always copy the entire array verbatim from the template (same names, titles, contacts). Never omit this array; a missing `references` silently renders an empty "REFERENCES" section heading with no content and no error.
+**`resume.competencies_html`:** Completely rewrite 4–5 skill categories that map directly onto the key requirements in this job description. Use `<span class="skill-cat">Category:</span> description...` format. Write in the same language as the job posting.
+
+**`resume.references`:** Always copy the entire array verbatim from the template (same names, titles, contacts). Never omit this array; a missing `references` silently renders an empty "REFERENCES" section heading with no content and no error. For Finnish postings, use the Finnish reference `title` text from `master_data_fi.json` (names and contacts are unchanged).
+
+**`resume.volunteering`, `resume.achievements`, `resume.publications_html`:** Always copy verbatim from the template — static personal history, never job-specific. `achievements` is an array of strings, each rendered with a medal icon. Omitting these leaves the Volunteering/Achievements/Publications section headings present but empty. For Finnish postings, use the Finnish versions from `master_data_fi.json` (the publication's own title stays in English — that's its actual published name).
+
+**`resume.labels`:** **Required for Finnish postings** — copy the `labels` object verbatim from `master_data_fi.json` so section headings (Professional Profile, Education, Languages & Skills, etc.) render in Finnish too. Skipping this leaves Finnish body text sitting under English headings. Not needed for English postings (English is the built-in default).
 
 **`cover_letter.date`:** Use today's date formatted as `"30 June 2026"`.
 
 **`cover_letter.recipient`:** Fill `company` with `COMPANY` and `city` with the job location. Use `"Hiring Manager"` for title if no name is known.
 
-**`cover_letter.paragraphs`:** 4–5 paragraphs written in the **same language as the job posting** (Finnish for Finnish postings, English for English postings):
+**`cover_letter.salutation`:** For Finnish postings, set this explicitly (e.g. `"Hyvä <Name>,"` if a contact name is known, otherwise `"Hyvä vastaanottaja,"`) — the built-in default (`"Dear {recipient.title},"`) is English and must not be left in a Finnish letter. Not needed for English postings.
+
+**`cover_letter.paragraphs`:** 5–6 paragraphs written in the **same language as the job posting** (Finnish for Finnish postings, English for English postings):
   1. Hook — what drew Manju to this company and role specifically.
   2. Most relevant experience — connect it directly to the job requirements.
   3. Finland integration — Finnish B2, Oulu roots, IHO internship, OPH bar path.
   4. Why this company — something specific from the posting or company.
-  5. Close — availability (September 2026), contact invitation.
+  5. Wage subsidy (palkkatuki) — mention her eligibility and offer to handle her part of the joint application. English: "I'm eligible for wage subsidy support (palkkatuki), and would be glad to handle my part of the joint application with BusinessOulu if this makes hiring more accessible for your organization." Translate naturally to Finnish for Finnish-language postings.
+  6. Close — availability (next possible working day), contact invitation.
 
 **`cover_letter.sign_off`:** `"Ystävällisin terveisin"` for Finnish, `"Yours sincerely"` for English.
 
@@ -295,7 +307,13 @@ Write the tailored JSON to `PRIVATE\Resumes\JOB_ID\JOB_ID_data.json` — overwri
 - Intern: International House Oulu — 14 events, OuluBot (Jan–Apr 2025, Sep–Oct 2024)
 - Legal Associate: Poise Legal India (Oct 2021–May 2022) — 5–7 contracts/month
 - Junior Lawyer: Juris Nexus India (Sep 2015–Jan 2016) — family & civil law
-- Finnish B2, English C1, Malayalam native. Based in Oulu. Available Sep 2026.
+- Finnish B2, English C1, Malayalam native. Based in Oulu. Available: next possible working day.
+- Eligible for palkkatuki (wage subsidy) via BusinessOulu employment services — approx. 50% wage cost support for employer.
+- Open to relocation within Finland, including Helsinki.
+- Enthusiastic about AI and digital tools in legal work; experienced applying digital solutions to streamline legal processes.
+- Co-organised 'Namaste Oulu', a voluntary cross-cultural community event (separate from the IHO internship) — coordination with city authorities, community groups, and sponsors.
+- At Poise Legal: also developed and maintained contract templates and risk registers; coordinated with external counsel and client representatives as an in-house advisory interface.
+- Third reference available: Jaana Liukkonen, Teacher at OSAO — jaana.liukkonen@osao.fi, +358 40 570 7593.
 
 ---
 
@@ -367,16 +385,33 @@ For each job ID in `EMAIL_ONLY`, skip this phase entirely and print: `JOB_ID —
 For each remaining job ID in this phase:
 1. **Analyze the form:** Read `JOB_ID_answers.json`. If you need more information about the form's HTML structure, use your tools (e.g. `run_command` with python) to fetch the form page and inspect its fields.
 2. **Write a custom script:** Create a Python Playwright script at `scratch\hardcoded_fill_JOB_ID.py`.
-   - The script must launch a **visible** Chrome browser (`headless=False`).
-   - It must navigate to the job's apply URL.
+   - The script must connect to Chrome over CDP (`browser = p.chromium.connect_over_cdp("http://127.0.0.1:9222")`).
+   - It must reuse an existing tab if its URL matches the job's URL, otherwise open a new tab.
+   - It must navigate to the job's apply URL (if opening a new tab).
    - It must hardcode the Playwright locators to fill in the specific values from `JOB_ID_answers.json`.
+   - **Form Filling Rules**:
+     - Always use the LinkedIn profile link from Manju's resume for the LinkedIn profile field (do not leave it empty).
+     - If asked about employment status, always answer "not currently employed" (or the equivalent "no").
+     - If asked if the application can be used for other applications/future opportunities, always answer "yes" / agree to it.
+     - If asked how she heard about the job, look up the `source` column for this job in `jobs.json` and use that value.
    - It must attach the specific PDF resume and cover letter generated in Step 4.
-   - When finished filling, it must **pause indefinitely** (e.g., `page.wait_for_timeout(600000)`) and explicitly NOT submit the form, allowing Manju to review and click submit manually.
-3. **Launch via Schtasks:** Because you are running in Session 0, you must apply the `open_visible_browser` skill technique to launch your custom script visibly on the user's desktop!
-   - Kill background chrome: `powershell -Command "Stop-Process -Name chrome -Force -ErrorAction SilentlyContinue; taskkill /F /IM chrome.exe /T"`
-   - Create a batch wrapper: `scratch\run_hardcoded_fill_JOB_ID.bat` that runs `python -u "PUBLIC\scratch\hardcoded_fill_JOB_ID.py" > "PUBLIC\scratch\fill_JOB_ID.log" 2>&1`
-   - Launch it using: `cmd /c "schtasks /delete /tn "AntigravityVisibleBrowser" /f & schtasks /create /tn "AntigravityVisibleBrowser" /tr "\"PUBLIC\scratch\run_hardcoded_fill_JOB_ID.bat\"" /sc once /st 00:00 /ru vinee /it /f & schtasks /run /tn "AntigravityVisibleBrowser""`
-4. **Wait for completion:** Wait for the user to confirm they have submitted the form and closed the browser before proceeding to the next job or Step 5.
+   - When finished filling, it must disconnect cleanly (`browser.close()`), explicitly NOT submitting the form, allowing Manju to review and click submit manually.
+
+3. **Launch Chrome in CDP mode:** Because you are running in Session 0, launch Chrome visibly via schtasks if it isn't already running, so your script can connect to it.
+```powershell
+$port_open = Test-NetConnection -ComputerName 127.0.0.1 -Port 9222 -WarningAction SilentlyContinue
+if (-not $port_open.TcpTestSucceeded) {
+    Write-Host "Launching visible Chrome via CDP..."
+    Stop-Process -Name chrome -Force -ErrorAction SilentlyContinue
+    taskkill /F /IM chrome.exe /T
+    $batPath = "PUBLIC\scratch\launch_cdp_chrome.bat"
+    Set-Content -Path $batPath -Value "@echo off`n`"C:\Program Files\Google\Chrome\Application\chrome.exe`" --remote-debugging-port=9222 --user-data-dir=`"$env:LOCALAPPDATA\Google\Chrome\Automation Profile`""
+    cmd /c "schtasks /delete /tn `"AntigravityVisibleBrowser`" /f & schtasks /create /tn `"AntigravityVisibleBrowser`" /tr `"\`"$batPath\`"`" /sc once /st 00:00 /ru vinee /it /f & schtasks /run /tn `"AntigravityVisibleBrowser`""
+    Start-Sleep -Seconds 4
+}
+```
+4. **Execute the Script:** Run your script (`python -u PUBLIC\scratch\hardcoded_fill_JOB_ID.py`). It will connect to Chrome over CDP, open a new tab (or reuse an existing one for the same job URL), fill the fields, and then disconnect (`browser.close()`).
+5. **Wait for completion:** Wait for the user to confirm they have reviewed the form (they can keep the browser open) before proceeding to the next job or Step 5.
 
 ---
 
@@ -457,3 +492,9 @@ https://firestore.googleapis.com/v1/projects/manju-jobs-dashboard/databases/(def
 Then note: "Dashboard links will appear live in the Docs column within ~30 seconds (Firebase realtime sync)."
 
 If any job was skipped, list them with the reason.
+
+## Application Form Rules
+- The field for linkedin profile is left empty. Use the linkedin profile link from the resume.
+- I'm not currently employed.
+- My application can be used for other applications.
+- Whenever they ask how did we hear about the job, mention the source column corresponding to this job in dashboard.

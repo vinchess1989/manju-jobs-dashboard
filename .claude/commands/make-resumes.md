@@ -49,15 +49,18 @@ Show the curated list to the user before generating any files, and confirm befor
 ### 4b — Write tailored data.json
 Create `<PRIVATE>\Resumes\<job_id>\<job_id>_data.json`.
 
-Use `<PRIVATE>\Resumes\f6aaa66f\f6aaa66f_data.json` as the structural template.
+Use `<PRIVATE>\Resumes\Master\master_data.json` as the structural template — or `<PRIVATE>\Resumes\Master\master_data_fi.json` instead for Finnish-language roles (see the language rule below).
 
 Tailoring rules:
-- `role` field: match the exact job title
+- **Resume language:** if the job posting is in Finnish, the **entire resume** must be in Finnish, not just the cover letter. Base it on `master_data_fi.json`, which already has Finnish section labels (`labels`), wage subsidy note, education, volunteering, achievements, publications, and reference titles — write the job-specific fields (`role`, `profile`, `experience[].bullets`, `competencies_html`) in Finnish yourself, matching its register. Carry its `labels` object through unchanged so section headings render in Finnish too. For English postings, use `master_data.json` and write everything in English as below.
+- `role` field: match the exact job title (JOB_TITLE-hakija style for Finnish roles)
 - `profile` paragraph: 2–3 sentences. Reference the company and role specifically. Highlight the most relevant subset of Manju's background.
-- `experience[].bullets`: reorder or reword to front-load skills most relevant to this role. Keep all 4 experience entries.
+- `experience[].bullets`: reorder or reword to front-load skills most relevant to this role. Keep all 4 experience entries (company names unchanged regardless of language).
 - `competencies_html`: reorder skill categories to lead with what matters for this role.
 - `languages_html`: put Finnish first for Finnish-language roles.
-- `cover_letter`: write in **Finnish** for Finnish-language roles, **English** for English-language roles. Address the hiring manager by name if known from the description. 4–5 paragraphs: hook → relevant experience → Finland integration → why this company → close.
+- `wage_subsidy_note`: always copy verbatim from the template (Finnish version from `master_data_fi.json` for Finnish roles). Renders as a highlighted banner directly under the header, above Professional Profile — deliberate, since palkkatuki eligibility is critical information for the employer's hiring decision.
+- `references`, `volunteering`, `achievements`, `publications_html`: always copy verbatim from the template — static personal history, never job-specific. `achievements` is an array of strings, each rendered with a medal icon. Use the Finnish versions from `master_data_fi.json` for Finnish roles (the publication's own title stays in English — that's its actual published name).
+- `cover_letter`: write in **Finnish** for Finnish-language roles, **English** for English-language roles. Address the hiring manager by name if known from the description — for Finnish roles, also set `cover_letter.salutation` explicitly (e.g. `"Hyvä <Name>,"`), since the built-in default is English and must not be left in a Finnish letter. 5–6 paragraphs: hook → relevant experience → Finland integration → why this company → wage subsidy (palkkatuki) offer to handle her part of the joint BusinessOulu application → close with availability as next possible working day.
 - For legal/juristi roles: emphasise contract law, legal research, court experience, Finnish bar path.
 - For generalist/admin/coordinator roles: emphasise event coordination (IHO), organisational skills, multilingual communication, MS Office, Finnish B2.
 - For compliance roles: emphasise contract lifecycle management, regulatory research, GDPR awareness.
@@ -107,7 +110,13 @@ git push origin main
 - Intern: International House Oulu — 14 events, OuluBot (Jan–Apr 2025, Sep–Oct 2024)
 - Legal Associate: Poise Legal India (Oct 2021–May 2022) — 5–7 contracts/month
 - Junior Lawyer: Juris Nexus India (Sep 2015–Jan 2016) — family & civil law
-- Finnish B2, English C1, Malayalam native. Based in Oulu. Available Sep 2026.
+- Finnish B2, English C1, Malayalam native. Based in Oulu. Available: next possible working day.
+- Eligible for palkkatuki (wage subsidy) via BusinessOulu employment services — approx. 50% wage cost support for employer.
+- Open to relocation within Finland, including Helsinki.
+- Enthusiastic about AI and digital tools in legal work; experienced applying digital solutions to streamline legal processes.
+- Co-organised 'Namaste Oulu', a voluntary cross-cultural community event (separate from the IHO internship) — coordination with city authorities, community groups, and sponsors.
+- At Poise Legal: also developed and maintained contract templates and risk registers; coordinated with external counsel and client representatives as an in-house advisory interface.
+- Third reference available: Jaana Liukkonen, Teacher at OSAO — jaana.liukkonen@osao.fi, +358 40 570 7593.
 - Photo: `<PRIVATE>\manju_photo.JPG`
 
 ## Output naming convention
