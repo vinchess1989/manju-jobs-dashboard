@@ -1,5 +1,5 @@
 ---
-name: update_requirements
+name: update_requirements-vineeth
 description: Reads user_feedback.md, intelligently refactors job_requirements.md with generalized rules based on the feedback, and clears user_feedback.md.
 ---
 
