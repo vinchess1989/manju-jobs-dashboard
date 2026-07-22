@@ -32,6 +32,8 @@ Immediately discard a job if ANY of the following are true:
 * **Unrelated Roles:** The job title is clearly unrelated to office or service work — e.g. husky guide, dog handler, pest control, diver, retinal photographer, etc.
 * **Religious / Clergy Roles:** The job is for a parish priest, pastor, or other specific religious clerical role.
 * **US Remote Jobs:** Any remote job that is based in, located in, or restricted to the United States.
+* **Industry-Specific Prior Experience:** The job explicitly requires prior professional experience in a specific unrelated industry, platform, or software system as a mandatory qualification (e.g., staffing/recruitment agency experience, SAP/ERP system experience, insurance underwriting, real estate) which the candidate does not have.
+* **Commission-Only / Entrepreneurial Agent Roles:** The job is structured as a self-employed or commission-based agent role (e.g., insurance sales representative, real estate agent) rather than standard employment, typically requiring a credit check, a sales track record, or willingness to operate as an independent contractor.
 ## Target Job Criteria
 
 A job is a match if it satisfies ALL of the following:
@@ -52,7 +54,7 @@ This is the PRIMARY match category. Match if the role is any entry-level or mid-
 * **HR & People:** HR assistant, HR coordinator, recruitment coordinator, people ops assistant, talent acquisition support.
 * **Finance & Accounting Support:** accounts assistant, invoicing clerk, billing coordinator, payroll assistant — entry-level only, no CPA/accountant qualification required.
 * **Events & Communications:** event coordinator, event assistant, community coordinator, communications assistant, content coordinator, social media assistant — strong match given Manju's IHO experience organising 14+ community events and producing social media content.
-* **Marketing & Digital:** marketing assistant, digital content assistant — supported by her social media management and OuluBot digital deployment experience.
+* **Marketing & Digital:** marketing assistant, digital content assistant — supported by her social media management and OuluBot digital deployment experience. Does NOT include specialized/technical digital marketing roles requiring hands-on paid-campaign management (Google Ads, Meta Ads), SEO/SEM, or photo/video production as core duties — those require specific technical skills she does not have; mark "no".
 * **Data & Document Management:** data entry clerk, document controller, records coordinator, quality assistant.
 * **Logistics & Supply Chain Support:** logistics coordinator, supply chain assistant, procurement assistant — office-based, no warehouse/forklift work.
 * **Legal & Compliance (Priority Secondary):** Any legal, compliance, contract management, or corporate law role (trainee, junior, or permanent) that accepts an international/Indian law degree OR is a Finnish trainee role (laki-/lakiharjoittelu). Her LL.M. First Rank + active Finnish bar path (OPH recognised) make these strong fits.
