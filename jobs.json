@@ -130280,13 +130280,13 @@
     "location": "Sein\u00e4joki, Finland",
     "url": "https://duunitori.fi/tyopaikat/tyo/myyja-kodinturva-alalle-sdsuu-20438640",
     "visited": "yes",
-    "matches_requirements": "yes",
-    "reason": "The role is a generalist office position (sales) that does not require specific technical degrees and matches Manju's experience.",
+    "matches_requirements": "error",
+    "reason": "Failed to get or parse local LLM response: 400 Client Error: Bad Request for url: http://127.0.0.1:1234/v1/chat/completions",
     "id": "5babe17c",
     "source": "duunitori",
-    "posted_date": "2026-07-20",
-    "deadline": "2026-08-02",
-    "description_file": "job_descriptions/verisure_oy_myyj__kodinturva_alalle_5babe17c.txt"
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "description_file": null
   },
   {
     "title": "Talvikauden ty\u00f6paikkoja Lapland Hotelsin kohteissa Lapissa",
@@ -137854,12 +137854,12 @@
     "location": "Lahti, Finland",
     "url": "https://duunitori.fi/tyopaikat/tyo/iwsiwe-koordinaattori-sksil-20442728",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Failed to get or parse local LLM response: 400 Client Error: Bad Request for url: http://127.0.0.1:1234/v1/chat/completions",
+    "matches_requirements": "no",
+    "reason": "The role requires specific technical welding expertise (TIG-hitsaaja) which Manju does not have.",
     "id": "037c1b79",
     "source": "duunitori_coordinator",
-    "posted_date": "N/A",
-    "deadline": "N/A",
+    "posted_date": "2026-07-22",
+    "deadline": "2026-07-29",
     "description_file": null
   },
   {
@@ -139744,12 +139744,12 @@
     "location": "Kuopio, North Savo, Finland",
     "url": "https://fi.linkedin.com/jobs/view/audit-trainee-at-lakitoimisto-kpf-4443778436",
     "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "The role is for a trainee position in auditing and tax law, which requires specific Finnish legal qualifications that Manju does not have. She needs an LL.M. to qualify as a Finnish lawyer but has only completed supplementary studies so far.",
+    "matches_requirements": "error",
+    "reason": "Failed to get or parse local LLM response: 400 Client Error: Bad Request for url: http://127.0.0.1:1234/v1/chat/completions",
     "id": "35f6b81d",
     "source": "linkedin_fi_legal_trainee",
-    "posted_date": "2026-07-22",
-    "deadline": "Open until filled",
+    "posted_date": "N/A",
+    "deadline": "N/A",
     "description_file": null
   },
   {
@@ -141690,13 +141690,13 @@
     "location": "Helsinki Region, Finland",
     "url": "https://duunitori.fi/tyopaikat/tyo/tyosuhdejuristi-maaraaikainen-slsid-20442990",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Failed to get or parse local LLM response: 400 Client Error: Bad Request for url: http://127.0.0.1:1234/v1/chat/completions",
+    "matches_requirements": "yes",
+    "reason": "The role is an office-based HR/legal compliance position that fits Manju's background and experience, with a flexible hybrid work model.",
     "id": "b28a0a6e",
     "source": "duunitori_legal_counsel",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null
+    "posted_date": "2026-07-22",
+    "deadline": "2026-08-05",
+    "description_file": "job_descriptions/lidl_suomi_ky_ty_suhdejuristi__m__r_aikainen_b28a0a6e.txt"
   },
   {
     "title": "AI Native Engineer (Agentic Development)",
