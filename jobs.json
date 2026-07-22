@@ -49197,20 +49197,6 @@
     "tailor_model": "Local LLM"
   },
   {
-    "title": "Kehitysanalyytikko",
-    "company": "Terveystalo",
-    "location": "Helsinki Region, Finland",
-    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/3362a1b3-4bf9-4d28-bbbe-0f7b8f06e856/fi",
-    "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Failed to get or parse local LLM response: 400 Client Error: Bad Request for url: http://127.0.0.1:1234/v1/chat/completions",
-    "id": "0887fb63",
-    "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null
-  },
-  {
     "title": "Kirvesmies",
     "company": "Lekatalot Oy",
     "location": "Joensuu, Finland",
@@ -90617,14 +90603,13 @@
     "location": "Jyv\u00e4skyl\u00e4 Region, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/f99b647d-2726-41b0-81ab-5029eee5b1c4/fi",
     "visited": "yes",
-    "matches_requirements": "yes",
-    "reason": "Matches generalist office role criteria, hybrid work model, and is located in Jyv\u00e4skyl\u00e4 Region.",
+    "matches_requirements": "no",
+    "reason": "The job is located in J\u00e4ms\u00e4, which does not match Manju's target criteria of Oulu Region.",
     "id": "2f627298",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-08",
     "deadline": "2026-07-24",
-    "description_file": "job_descriptions/jysk_oy_myyj____15h_vko__jysk_j_ms___m_2f627298.txt",
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Kuorma-autonkuljettaja",
@@ -90899,13 +90884,12 @@
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/c7c61115-6e59-4483-8a97-457c1f1bac6f/fi",
     "visited": "yes",
     "matches_requirements": "yes",
-    "reason": "The role is a general office/admin support position, matching Manju's event management and coordination experience at IHO. It's also fully remote.",
+    "reason": "Matches generalist office role criteria for a flexible, on-call healthcare assistant position with no specific degree requirement beyond relevant vocational training.",
     "id": "c99751c7",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-09",
     "deadline": "2026-07-31",
-    "description_file": "job_descriptions/staffpoint_oy_sairaalahuoltaja__keikkaty___o_c99751c7.txt",
-    "needs_re_review": true
+    "description_file": "job_descriptions/staffpoint_oy_sairaalahuoltaja__keikkaty___o_c99751c7.txt"
   },
   {
     "title": "Sukittaja",
@@ -90913,14 +90897,13 @@
     "location": "Tampere Region, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/c820cef1-7146-41e1-848e-d2921c9b0454/fi",
     "visited": "yes",
-    "matches_requirements": "yes",
-    "reason": "The role is a generalist office position (sukittaja) that does not require a specific technical degree, and it's located in Tampere Region.",
+    "matches_requirements": "maybe",
+    "reason": "The role is a generalist office position that fits Manju's background, but requires LVI (low voltage installation) education which she does not have.",
     "id": "ed584ce1",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-09",
     "deadline": "2026-08-03",
-    "description_file": "job_descriptions/arwo_rekry_oy_sukittaja_ed584ce1.txt",
-    "needs_re_review": true
+    "description_file": "job_descriptions/arwo_rekry_oy_sukittaja_ed584ce1.txt"
   },
   {
     "title": "Varhaiskasvatuksen sosionomi, Suitsikujan p\u00e4iv\u00e4koti",
@@ -91027,13 +91010,12 @@
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/3635477f-fe80-4fca-b053-7f7e80385b14/fi",
     "visited": "yes",
     "matches_requirements": "yes",
-    "reason": "The role of a cafe worker matches Manju's profile and experience, especially given her event management background.",
+    "reason": "The role is an entry-level generalist office position (kahvilaty\u00f6ntekij\u00e4) that does not require a specific technical degree. Manju's background in event management and customer service makes her a strong fit.",
     "id": "fe7954df",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-09",
     "deadline": "2026-07-27",
-    "description_file": "job_descriptions/nordrec_henkil_st_pa_kahvilaty_ntekij__fe7954df.txt",
-    "needs_re_review": true
+    "description_file": "job_descriptions/nordrec_henkil_st_pa_kahvilaty_ntekij__fe7954df.txt"
   },
   {
     "title": "Koulutuskoordinaattori",
@@ -91042,13 +91024,12 @@
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/740b8441-f811-4b22-a582-adf9f7604247/fi",
     "visited": "yes",
     "matches_requirements": "maybe",
-    "reason": "The role is in Turku, which matches Manju's target criteria of being open to roles anywhere in Finland. It also fits a generalist office/service role.",
+    "reason": "The role is in Turku, which is a 'Turku Region, Finland' match based on city.",
     "id": "c20e440c",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-09",
     "deadline": "2026-07-30",
-    "description_file": "job_descriptions/utu_excellence_oy_koulutuskoordinaattori_c20e440c.txt",
-    "needs_re_review": true
+    "description_file": "job_descriptions/utu_excellence_oy_koulutuskoordinaattori_c20e440c.txt"
   },
   {
     "title": "Siivooja ISS:lle Kaakkuri ja Maikkula, Oulu",
@@ -91070,14 +91051,13 @@
     "location": "Heinola, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/370133d7-6ee8-46e6-a09b-31062e2ead06/fi",
     "visited": "yes",
-    "matches_requirements": "maybe",
-    "reason": "The role is a match for office/service roles, but requires specific social work experience which needs verification.",
+    "matches_requirements": "no",
+    "reason": "The role requires a Valvira registration, which is a specific Finnish accreditation for social work that Manju does not have.",
     "id": "5a3bc2fa",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-09",
     "deadline": "2026-07-31",
-    "description_file": "job_descriptions/kristillinen_alkohol_vastaava_ohjaaja__sosionomi__k_5a3bc2fa.txt",
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "HVAC Huoltoteknikko, Datakeskus, Trane Finland Oy",
@@ -91099,14 +91079,13 @@
     "location": "Helsinki Region, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/6b0240f0-d184-4d54-9133-30f40df33947/fi",
     "visited": "yes",
-    "matches_requirements": "yes",
-    "reason": "Matches generalist office/service role criteria, with primary focus on customer service & sales for beauty/wellness products at a large event.",
+    "matches_requirements": "error",
+    "reason": "Failed to get or parse local LLM response: 400 Client Error: Bad Request for url: http://127.0.0.1:1234/v1/chat/completions",
     "id": "09b3d38c",
     "source": "tyomarkkinatori",
-    "posted_date": "2026-07-09",
-    "deadline": "Open until filled",
-    "description_file": "job_descriptions/tooth_fairy_gmbh_yritt_j____palveluntarjoaja_i__09b3d38c.txt",
-    "needs_re_review": true
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "description_file": null
   },
   {
     "title": "Muurareita \u2013 Helsinki",
@@ -92276,14 +92255,13 @@
     "location": "Kotka, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/039174dc-16bb-4a06-aaad-a23a04c15e62/fi",
     "visited": "yes",
-    "matches_requirements": "yes",
-    "reason": "The role of 'St\u00e4ndimyyj\u00e4' (salesperson) aligns with Manju's event management experience at International House Oulu and fits a generalist office/service position.",
+    "matches_requirements": "no",
+    "reason": "The role is a sales representative position requiring at least 18 years of age and prior sales/customer service experience, which Manju does not have. The job also requires Finnish fluency, which she has only an intermediate level.",
     "id": "70c6bcfa",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-09",
     "deadline": "2026-08-12",
-    "description_file": "job_descriptions/suoramarkkinointi_me_st_ndimyyj__kotkaan_70c6bcfa.txt",
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Henkil\u00f6kohtainen avustaja, Espoo",
@@ -92292,13 +92270,12 @@
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/c9ed17c4-4437-4b08-8fb0-5cb854d18e78/fi",
     "visited": "yes",
     "matches_requirements": "yes",
-    "reason": "The role of a personal assistant fits Manju's profile, given her event management and client advisory experience at International House Oulu. The job is in Espoo, Finland, and allows flexibility in work hours.",
+    "reason": "The role of Personal Assistant matches Manju's event management, digital service deployment, and client advisory experience from her International House Oulu internship.",
     "id": "658bed75",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-09",
     "deadline": "2026-08-02",
-    "description_file": "job_descriptions/suomen_seniorihoiva_henkil_kohtainen_avustaja__esp_658bed75.txt",
-    "needs_re_review": true
+    "description_file": "job_descriptions/suomen_seniorihoiva_henkil_kohtainen_avustaja__esp_658bed75.txt"
   },
   {
     "title": "Kirvesmies",
@@ -92852,14 +92829,13 @@
     "location": "Joensuu, Finland",
     "url": "https://duunitori.fi/tyopaikat/tyo/edunvalvontasihteeri-pohjois-karjalan-edunvalvontatoimisto-joensuun-tai-lieksan-toimipaikka-svsal-20423195",
     "visited": "yes",
-    "matches_requirements": "yes",
-    "reason": "The role of Edunvalvontasihteeri matches a generalist office/service position that does not require a specific technical degree.",
+    "matches_requirements": "error",
+    "reason": "Failed to get or parse local LLM response: 400 Client Error: Bad Request for url: http://127.0.0.1:1234/v1/chat/completions",
     "id": "425513e3",
     "source": "duunitori_office_secretary",
-    "posted_date": "2026-07-07",
-    "deadline": "2026-07-24",
-    "description_file": "job_descriptions/oikeuspalveluvirasto_edunvalvontasihteeri__pohjois__425513e3.txt",
-    "needs_re_review": true
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "description_file": null
   },
   {
     "title": "Maintenance Worker",
@@ -92910,13 +92886,12 @@
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/17076a5e-06ea-4aaa-b200-4e3b7cef987c/fi",
     "visited": "yes",
     "matches_requirements": "yes",
-    "reason": "The role matches a generalist office/service position that does not require a specific technical degree.",
+    "reason": "The role is an office-based customer service coordination position, matching Manju's skills and experience.",
     "id": "9e14af63",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-09",
     "deadline": "2026-07-24",
-    "description_file": "job_descriptions/cap_group_oy_asiakaspalvelukoordinaattori___9e14af63.txt",
-    "needs_re_review": true
+    "description_file": "job_descriptions/cap_group_oy_asiakaspalvelukoordinaattori___9e14af63.txt"
   },
   {
     "title": "Muovity\u00f6ntekij\u00e4",
@@ -93050,14 +93025,13 @@
     "location": "Helsinki Region, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/2f08b952-2c46-4e9b-a97d-a42d5d497de1/fi",
     "visited": "yes",
-    "matches_requirements": "maybe",
-    "reason": "The role is a personal assistant position, but it also involves living with the employer and assisting with daily life tasks. This could be either an office job or live-in care/assistance.",
+    "matches_requirements": "no",
+    "reason": "The role requires living with the employer, which is not suitable for Manju's situation.",
     "id": "8cb5970b",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-09",
     "deadline": "2026-08-01",
-    "description_file": "job_descriptions/anonyymi_ty_nantaja_henkil_kohtainen_avustaja_kesk_8cb5970b.txt",
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "B2B-buukkari, ajanvaraaja",
@@ -93387,14 +93361,13 @@
     "location": "Sotkamo, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/19e1e64f-f352-4dec-8424-3fd6b1558cb8/fi",
     "visited": "yes",
-    "matches_requirements": "maybe",
-    "reason": "The role is a marketing assistant position, which matches Manju's key skills and experience.",
+    "matches_requirements": "yes",
+    "reason": "This marketing assistant role matches Manju's skills, especially her experience with event management and digital service deployment at International House Oulu. The job is in Sotkamo, which is within reasonable commuting distance from Oulu.",
     "id": "f94eb428",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-09",
     "deadline": "2026-07-24",
-    "description_file": "job_descriptions/jobmakers_oy_markkinointi_assistensi_f94eb428.txt",
-    "needs_re_review": true
+    "description_file": "job_descriptions/jobmakers_oy_markkinointi_assistensi_f94eb428.txt"
   },
   {
     "title": "Ammatillinen tukihenkil\u00f6, ANNU sosiaalipalvelut, Sein\u00e4joki",
@@ -93893,13 +93866,12 @@
     "url": "https://fi.indeed.com/rc/clk?jk=5eecd8a1e0fcfd55",
     "visited": "yes",
     "matches_requirements": "yes",
-    "reason": "The role is a generalist office/service position that does not require a specific technical degree and fits the Helsinki location criteria.",
+    "reason": "The role is a generalist office/service position that does not require a specific technical degree, and fits Manju's profile.",
     "id": "af1ca2ce",
     "source": "indeed",
     "posted_date": "2026-07-09",
     "deadline": "2026-07-23",
-    "description_file": "job_descriptions/helsingin_kaupunki_hoitoavustaja__koskelan_palvel_af1ca2ce.txt",
-    "needs_re_review": true
+    "description_file": "job_descriptions/helsingin_kaupunki_hoitoavustaja__koskelan_palvel_af1ca2ce.txt"
   },
   {
     "title": "Rakennusinsin\u00f6\u00f6rin virka",
@@ -94131,14 +94103,13 @@
     "location": "Rovaniemi Region, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/28c4ab45-df42-4b2c-ad54-6fd7011bcfa0/fi",
     "visited": "yes",
-    "matches_requirements": "yes",
-    "reason": "The role of 'Suunnittelija, digitaalisten palveluiden kehitt\u00e4minen' matches Manju's key skills in digital service deployment and event management.",
+    "matches_requirements": "maybe",
+    "reason": "The role is a match for generalist office/service roles, but it's unclear if Manju's Finnish (B2) would be sufficient for this position which likely requires fluent Finnish. More context needed.",
     "id": "39a2a250",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-09",
     "deadline": "2026-08-07",
-    "description_file": "job_descriptions/lapin_hyvinvointialu_suunnittelija__digitaalisten_p_39a2a250.txt",
-    "needs_re_review": true
+    "description_file": "job_descriptions/lapin_hyvinvointialu_suunnittelija__digitaalisten_p_39a2a250.txt"
   },
   {
     "title": "Perhety\u00f6ntekij\u00e4, Kemij\u00e4rvi",
@@ -94146,14 +94117,13 @@
     "location": "Rovaniemi Region, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/3f51be5e-273a-42d3-a706-9862862b603d/fi",
     "visited": "yes",
-    "matches_requirements": "yes",
-    "reason": "The role is a generalist office position that matches Manju's profile, requiring a relevant degree and offering flexible working hours.",
+    "matches_requirements": "maybe",
+    "reason": "The role is a generalist office position that matches Manju's skills and experience, but requires fluent Finnish which she does not have.",
     "id": "875b3401",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-09",
     "deadline": "2026-08-10",
-    "description_file": "job_descriptions/lapin_hyvinvointialu_perhety_ntekij___kemij_rvi_875b3401.txt",
-    "needs_re_review": true
+    "description_file": "job_descriptions/lapin_hyvinvointialu_perhety_ntekij___kemij_rvi_875b3401.txt"
   },
   {
     "title": "Tiedolla johtamisen suunnittelija, Lapin hyvinvointialue",
@@ -94162,13 +94132,12 @@
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/9e3934d4-5f54-4b40-a504-0407d1bff2bd/fi",
     "visited": "yes",
     "matches_requirements": "yes",
-    "reason": "The role of 'Tiedolla johtamisen suunnittelija' matches Manju's legal and administrative coordination experience, and is a strong fit for her supplementary Finnish law studies.",
+    "reason": "The role is an administration position that fits Manju's background and experience.",
     "id": "5979f30c",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-09",
     "deadline": "2026-08-07",
-    "description_file": "job_descriptions/lapin_hyvinvointialu_tiedolla_johtamisen_suunnittel_5979f30c.txt",
-    "needs_re_review": true
+    "description_file": "job_descriptions/lapin_hyvinvointialu_tiedolla_johtamisen_suunnittel_5979f30c.txt"
   },
   {
     "title": "ryhm\u00e4valmentaja",
@@ -94218,14 +94187,13 @@
     "location": "Helsinki Region, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/1b2e38cd-aac5-49c7-913c-55923f3e72e1/fi",
     "visited": "yes",
-    "matches_requirements": "maybe",
-    "reason": "The job is located in Helsinki Region, Finland, but does not specify on-site, hybrid, or remote work.",
+    "matches_requirements": "no",
+    "reason": "The role is for a construction worker, which does not require legal expertise and is hard rejected based on her qualifications.",
     "id": "1337b9c8",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-09",
     "deadline": "2026-07-23",
-    "description_file": "job_descriptions/kaveriontti_oy_rakennusapulainen_p__k_upunkis_1337b9c8.txt",
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Tekninen huoltoasentaja, Vantaa",
@@ -94836,13 +94804,12 @@
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/ea66327f-f1aa-499c-8a6c-848f28b4948f/fi",
     "visited": "yes",
     "matches_requirements": "yes",
-    "reason": "The role is an entry-level office position (cashier) that does not require a specific technical degree.",
+    "reason": "Generalist office role with no specific degree requirements, matches Manju's profile.",
     "id": "cd16e93d",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-09",
     "deadline": "2026-07-27",
-    "description_file": "job_descriptions/bolt_works_oy_kassamyyj___halpa_halli_siilin_cd16e93d.txt",
-    "needs_re_review": true
+    "description_file": "job_descriptions/bolt_works_oy_kassamyyj___halpa_halli_siilin_cd16e93d.txt"
   },
   {
     "title": "Koulutettu hieroja",
@@ -95061,13 +95028,12 @@
     "url": "https://fi.linkedin.com/jobs/view/viestinn%C3%A4n-suunnittelija-at-h%C3%A4me-university-of-applied-sciences-hamk-4435667636",
     "visited": "yes",
     "matches_requirements": "maybe",
-    "reason": "The role is a match for generalist office roles, and Manju's experience with event management and digital service deployment aligns well. However, it does not explicitly state requiring fluent Finnish as a hard requirement.",
+    "reason": "The role is in H\u00e4meenlinna, which falls under 'Helsinki Region, Finland'. The job description does not specify a work model (on-site, hybrid, remote).",
     "id": "44a42754",
     "source": "linkedin_fi_communications",
     "posted_date": "2026-07-09",
     "deadline": "2026-08-09",
-    "description_file": "job_descriptions/h_me_university_of_a_viestinn_n_suunnittelija_44a42754.txt",
-    "needs_re_review": true
+    "description_file": "job_descriptions/h_me_university_of_a_viestinn_n_suunnittelija_44a42754.txt"
   },
   {
     "title": "Office Support Assistant",
@@ -95201,14 +95167,13 @@
     "location": "Helsinki Region, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/e7316e2d-5767-40ae-a464-8ea7907e8dea/fi",
     "visited": "yes",
-    "matches_requirements": "yes",
-    "reason": "The role of sosiaality\u00f6ntekij\u00e4 matches Manju's profile, and the location is in Helsinki Region.",
+    "matches_requirements": "error",
+    "reason": "Failed to get or parse local LLM response: 400 Client Error: Bad Request for url: http://127.0.0.1:1234/v1/chat/completions",
     "id": "1d41dcf7",
     "source": "tyomarkkinatori",
-    "posted_date": "2026-07-09",
-    "deadline": "2026-07-23",
-    "description_file": "job_descriptions/it__uudenmaan_hyvinv_sosiaality_ntekij___lastensuoj_1d41dcf7.txt",
-    "needs_re_review": true
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "description_file": null
   },
   {
     "title": "Elektroniikka ja kodinkoneiden testaaja ja lajittelija",
@@ -95412,14 +95377,13 @@
     "location": "Kittil\u00e4, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/0353e4f7-4f29-46a8-a142-2f26504330bb/fi",
     "visited": "yes",
-    "matches_requirements": "yes",
-    "reason": "The role is a generalist office position that matches Manju's skills and experience, especially her event management background from International House Oulu. The job also requires English language skills.",
+    "matches_requirements": "no",
+    "reason": "The role requires specific sales and office skills, including English fluency, that Manju does not have.",
     "id": "a40cd198",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-09",
     "deadline": "2026-07-31",
-    "description_file": "job_descriptions/levin_huskypuisto_oy_myynti__ja_toimistotaitoinen_p_a40cd198.txt",
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Ruskasesonki, myyji\u00e4 (18h) Levi, Kittil\u00e4, Yll\u00e4s ja Kolari",
@@ -95609,14 +95573,13 @@
     "location": "Helsinki Region, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/12d068b3-0444-46fd-9277-8c4ac5a51985/fi",
     "visited": "yes",
-    "matches_requirements": "yes",
-    "reason": "Matches generalist office role criteria, suitable for Manju's practical skills and experience coordinating events at International House Oulu.",
+    "matches_requirements": "no",
+    "reason": "The role requires practical maintenance, repair, and construction skills which Manju does not have.",
     "id": "b82d4352",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-09",
     "deadline": "2026-10-30",
-    "description_file": "job_descriptions/espoon_kiinteist_huo_kiinteist_huoltot_iden_moniosa_b82d4352.txt",
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Siivoojia kotisiivoukseen",
@@ -95933,13 +95896,12 @@
     "url": "https://mx.linkedin.com/jobs/view/asistente-direccion-ejecutiva-at-universia-m%C3%A9xico-4437366655",
     "visited": "yes",
     "matches_requirements": "maybe",
-    "reason": "The job is located in Panind\u00edcuaro, Michoac\u00e1n, Mexico which does not directly map to one of the specified regions. It could potentially be considered as 'Hometown, Mexico' if we were allowed to infer country-level locations from city names alone.",
+    "reason": "The role is an Executive Assistant position, but it does not specify a seniority level that would disqualify Manju based on her experience.",
     "id": "f70ddcd9",
     "source": "linkedin_ww",
     "posted_date": "2026-07-09",
     "deadline": "Open until filled",
-    "description_file": "job_descriptions/universia_m_xico_asistente_direccion_ejecutiva_f70ddcd9.txt",
-    "needs_re_review": true
+    "description_file": "job_descriptions/universia_m_xico_asistente_direccion_ejecutiva_f70ddcd9.txt"
   },
   {
     "title": "IT Support Technician",
@@ -96283,14 +96245,13 @@
     "location": "Helsinki Region, Finland",
     "url": "https://fi.indeed.com/rc/clk?jk=aeb3cfc83754c4d0",
     "visited": "yes",
-    "matches_requirements": "maybe",
-    "reason": "The role is a generalist office position (Nuoriso-ohjaaja) in Helsinki Region, Finland. It does not require specific technical degrees and fits Manju's profile.",
+    "matches_requirements": "no",
+    "reason": "The role is a youth worker position, specifically for nuoriso-ohjaaja (youth worker) in Tuusula. This does not match the generalist office/service roles or legal positions that Manju Krishna Haridas is qualified for.",
     "id": "d66e0764",
     "source": "indeed",
     "posted_date": "2026-07-09",
     "deadline": "2026-08-09",
-    "description_file": "job_descriptions/tule_tekem__n_merkit_nuoriso_ohjaaja__osa_aikainen__d66e0764.txt",
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Yhdistelm\u00e4ty\u00f6ntekij\u00e4 ravintola Sofiaan Porin Puuvillaan",
@@ -96327,13 +96288,12 @@
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/566e5276-f91b-48bb-94b4-3f2a125bf55a/fi",
     "visited": "yes",
     "matches_requirements": "yes",
-    "reason": "The role of a property caretaker matches Manju's profile and experience, especially her event management work at International House Oulu.",
+    "reason": "The role is an office-based generalist administrative position that fits Manju's background and experience in event coordination, digital service deployment, client advisory, and legal support.",
     "id": "d8031fed",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-09",
     "deadline": "2026-07-22",
-    "description_file": "job_descriptions/osuma_henkil_st_palv_kiinteist_nhoitaja_d8031fed.txt",
-    "needs_re_review": true
+    "description_file": "job_descriptions/osuma_henkil_st_palv_kiinteist_nhoitaja_d8031fed.txt"
   },
   {
     "title": "Tarjoilija",
@@ -97448,14 +97408,13 @@
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/51f16d0e-df67-4a9b-be40-369199d2882f/fi",
     "visited": "yes",
     "matches_requirements": "yes",
-    "reason": "Matches generalist office role criteria, with primary work location in Helsinki Region.",
+    "reason": "The role of Social Worker matches Manju's background and experience, especially her work with international communities.",
     "id": "311fdd54",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-10",
     "deadline": "2026-07-31",
     "description_file": "job_descriptions/maahanmuuttovirasto_sosiaaliohjaaja_311fdd54.txt",
-    "tailor_model": "Gemini 3.1 Pro",
-    "needs_re_review": true
+    "tailor_model": "Gemini 3.1 Pro"
   },
   {
     "title": "Regulatory Compliance Exam Specialist",
@@ -98765,14 +98724,13 @@
     "location": "Oulu Region, Finland",
     "url": "https://fi.linkedin.com/jobs/view/tutkimusrahoitusasiantuntija-tutkimus-ja-projektipalvelut-at-6g-flagship-4429172289",
     "visited": "yes",
-    "matches_requirements": "yes",
-    "reason": "The role is a generalist office position that matches Manju's profile, especially given her experience with international house event management and digital service deployment.",
+    "matches_requirements": "maybe",
+    "reason": "The role is a match for generalist office/service roles and Manju's event management experience, but requires EU research funding knowledge which is unclear from her background.",
     "id": "d39187d8",
     "source": "linkedin_fi_legal_counsel",
     "posted_date": "2026-06-16",
     "deadline": "2026-07-27",
-    "description_file": "job_descriptions/6g_flagship_tutkimusrahoitusasiantuntija___d39187d8.txt",
-    "needs_re_review": true
+    "description_file": "job_descriptions/6g_flagship_tutkimusrahoitusasiantuntija___d39187d8.txt"
   },
   {
     "title": "Data Steward, Master Data",
@@ -99509,13 +99467,12 @@
     "url": "https://fi.indeed.com/rc/clk?jk=38b622b9481e00dd",
     "visited": "yes",
     "matches_requirements": "yes",
-    "reason": "The role of 'Tiedolla johtamisen suunnittelija' (Design Coordinator for Data-Driven) fits a generalist office/service position and matches Manju's profile.",
+    "reason": "The role is an administration position focused on coordinating data management and reporting for healthcare services, which Manju's experience aligns with.",
     "id": "e929dc17",
     "source": "indeed",
     "posted_date": "2026-07-09",
     "deadline": "2026-08-07",
-    "description_file": "job_descriptions/lapin_hyvinvointialu_tiedolla_johtamisen_suunnittel_e929dc17.txt",
-    "needs_re_review": true
+    "description_file": "job_descriptions/lapin_hyvinvointialu_tiedolla_johtamisen_suunnittel_e929dc17.txt"
   },
   {
     "title": "Verkkokauppaty\u00f6ntekij\u00e4ksi Plugolle",
@@ -99523,14 +99480,13 @@
     "location": "Helsinki Region, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/1c116865-bf02-465c-82b1-c0c843092f3a/fi",
     "visited": "yes",
-    "matches_requirements": "yes",
-    "reason": "The role is a generalist office position that fits Manju's profile and experience.",
+    "matches_requirements": "no",
+    "reason": "The role is a logistics coordinator position for an e-commerce company, requiring specific experience with online and/or clothing retail. Manju does not have this prior experience.",
     "id": "282423b2",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-10",
     "deadline": "2026-07-24",
-    "description_file": "job_descriptions/barona_varastopalvel_verkkokauppaty_ntekij_ksi_plug_282423b2.txt",
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Customer Success Specialist, Vaisala, Vantaa",
@@ -99678,14 +99634,13 @@
     "location": "Helsinki Region, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/454d0d7c-57ab-470b-9425-d469423870b0/fi",
     "visited": "yes",
-    "matches_requirements": "yes",
-    "reason": "The role is for a social worker (sosiaality\u00f6ntekij\u00e4) in Helsinki, matching Manju's profile and criteria.",
+    "matches_requirements": "no",
+    "reason": "This role requires a specific social work degree as per Finnish law, which Manju does not have.",
     "id": "a2b73614",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-10",
     "deadline": "2026-07-27",
-    "description_file": "job_descriptions/helsingin_kaupunki_sosiaality_ntekij___lastensuoj_a2b73614.txt",
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Ohjaaja (AMK), Aurinkolahden ryhm\u00e4koti",
@@ -99862,15 +99817,14 @@
     "url": "https://www.jobly.fi/tyopaikka/asiakasohjaaja-arviointitoiminta-pohjoinen-asiakasohjaus-2713545",
     "visited": "yes",
     "matches_requirements": "yes",
-    "reason": "The role is a generalist office position that fits Manju's profile, with no specific degree requirements beyond a bachelor's level.",
+    "reason": "This office coordinator role matches Manju's skills and experience, especially given her event management at IHO. The Helsinki location is also a good fit.",
     "id": "bc0c2907",
     "source": "jobly",
     "posted_date": "2026-07-10",
     "deadline": "2026-07-24",
     "description_file": "job_descriptions/helsingin_kaupunki_asiakasohjaaja__arviointitoimi_bc0c2907.txt",
     "tailor_model": "Antigravity IDE",
-    "user_reason": "Requires Bachelor of Social Services, Bachelor of Elderly Care or Nursing",
-    "needs_re_review": true
+    "user_reason": "Requires Bachelor of Social Services, Bachelor of Elderly Care or Nursing"
   },
   {
     "title": "Keitti\u00f6ty\u00f6ntekij\u00e4 keikkaty\u00f6h\u00f6n \u2013 Heinola",
@@ -100592,14 +100546,13 @@
     "location": "Kauhava, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/87b8c0ad-8619-4a3a-810e-cd6faa0aa42d/fi",
     "visited": "yes",
-    "matches_requirements": "yes",
-    "reason": "The role of Customer Advisor/Economist matches Manju's profile, especially her experience in international house Oulu event management and communications.",
+    "matches_requirements": "maybe",
+    "reason": "The role is an office customer service position that does not require a specific technical degree, and Manju's event management experience aligns well with the 'hyv\u00e4t vuorovaikutustaidot' requirement. However, her Finnish B2 level might be insufficient for the job.",
     "id": "976fbb43",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-10",
     "deadline": "2026-08-02",
-    "description_file": "job_descriptions/pohjanmaan_osuuspank_asiakasneuvoja___talouden_asia_976fbb43.txt",
-    "needs_re_review": true
+    "description_file": "job_descriptions/pohjanmaan_osuuspank_asiakasneuvoja___talouden_asia_976fbb43.txt"
   },
   {
     "title": "Pys\u00e4k\u00f6inninvalvoja Turun alueelle.",
@@ -100985,14 +100938,13 @@
     "location": "Helsinki Region, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/20bcdcb7-0a6e-4a02-a4b4-f7c65caf838c/fi",
     "visited": "yes",
-    "matches_requirements": "yes",
-    "reason": "The role is a generalist office/service position that does not require a specific technical degree and matches Manju's experience in event management, digital service deployment, communications & social media, and client advisory.",
+    "matches_requirements": "maybe",
+    "reason": "The role is an office coordination specialist position, which matches Manju's event management and project coordination experience from her IHO internship. However, it does not require Finnish fluency (B2) as a hard requirement.",
     "id": "f81b1b94",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-10",
     "deadline": "2026-07-24",
-    "description_file": "job_descriptions/helsingin_kaupunki_asiantuntija__palveluiden_koor_f81b1b94.txt",
-    "needs_re_review": true
+    "description_file": "job_descriptions/helsingin_kaupunki_asiantuntija__palveluiden_koor_f81b1b94.txt"
   },
   {
     "title": "Edustustarjoilijaksi Hype Hybridiareenalle",
@@ -101056,14 +101008,13 @@
     "location": "Helsinki Region, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/c8c8da2e-28d9-4e07-812f-efc28d4b6d7a/fi",
     "visited": "yes",
-    "matches_requirements": "maybe",
-    "reason": "The role involves communication about health and wellbeing, which matches Manju's experience from IHO event management.",
+    "matches_requirements": "no",
+    "reason": "This is a university trainee position for public health promotion, which requires specific university-level education in public health, social sciences, or related fields. Manju's background is in law and international relations, not public health.",
     "id": "f190cde5",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-10",
     "deadline": "2026-08-07",
-    "description_file": "job_descriptions/sipoon_kunta_korkeakouluharjoittelija__hyvi_f190cde5.txt",
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Tiimivastaava, Pit\u00e4j\u00e4nm\u00e4en peruskoulu",
@@ -101351,14 +101302,13 @@
     "location": "Helsinki Region, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/0e289411-8f60-49ad-ad68-88da56ddca3a/fi",
     "visited": "yes",
-    "matches_requirements": "maybe",
-    "reason": "The role is a generalist office position that fits Manju's profile, but requires Finnish fluency which she is still improving.",
+    "matches_requirements": "yes",
+    "reason": "Matches generalist office role criteria, especially event management and communications experience from IHO internship",
     "id": "b4114a1d",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-10",
     "deadline": "2026-08-14",
-    "description_file": "job_descriptions/sipoon_kunta_ty_llisyyskoordinaattori_b4114a1d.txt",
-    "needs_re_review": true
+    "description_file": "job_descriptions/sipoon_kunta_ty_llisyyskoordinaattori_b4114a1d.txt"
   },
   {
     "title": "Avustaja.fi, Henkil\u00f6kohtainen avustaja, Vihti",
@@ -101422,14 +101372,13 @@
     "location": "Rauma, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/c2ee7ceb-7596-42e8-9f14-338b4306c420/fi",
     "visited": "yes",
-    "matches_requirements": "yes",
-    "reason": "The role of Coordinator matches Manju's experience with event management and digital service deployment at International House Oulu.",
+    "matches_requirements": "error",
+    "reason": "Failed to get or parse local LLM response: 400 Client Error: Bad Request for url: http://127.0.0.1:1234/v1/chat/completions",
     "id": "53ad121c",
     "source": "tyomarkkinatori",
-    "posted_date": "2026-07-10",
-    "deadline": "2026-08-16",
-    "description_file": "job_descriptions/valo_valmennusyhdist_ohjaaja_53ad121c.txt",
-    "needs_re_review": true
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "description_file": null
   },
   {
     "title": "Ohjaaja",
@@ -101438,13 +101387,12 @@
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/a62d9cd6-207b-41d7-b25e-f68b426518e7/fi",
     "visited": "yes",
     "matches_requirements": "yes",
-    "reason": "The role of Coordinator fits a generalist office/service position, and Manju's experience in event management and digital service deployment makes her a strong match.",
+    "reason": "The role of 'Ohjaaja' at Valo-Valmennusyhdistys ry in Huittinen is an office coordination position that fits Manju's background and skills, especially given her experience with community event management at International House Oulu.",
     "id": "01e9c062",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-10",
     "deadline": "2026-08-16",
-    "description_file": "job_descriptions/valo_valmennusyhdist_ohjaaja_01e9c062.txt",
-    "needs_re_review": true
+    "description_file": "job_descriptions/valo_valmennusyhdist_ohjaaja_01e9c062.txt"
   },
   {
     "title": "Kirvesmies",
@@ -101887,14 +101835,13 @@
     "location": "Inari, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/48209101-c594-42bb-a0d6-173422a6f914/fi",
     "visited": "yes",
-    "matches_requirements": "yes",
-    "reason": "The role matches a generalist office/service position that does not require a specific technical degree.",
+    "matches_requirements": "maybe",
+    "reason": "The role is a mix of reception, restaurant service, and housekeeping tasks which Manju's past experience could cover. However, it requires fluent Finnish and local area knowledge which are not mentioned in her profile.",
     "id": "b49e1133",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-10",
     "deadline": "2026-09-30",
-    "description_file": "job_descriptions/northern_lights_vill_guest_host_b49e1133.txt",
-    "needs_re_review": true
+    "description_file": "job_descriptions/northern_lights_vill_guest_host_b49e1133.txt"
   },
   {
     "title": "Siivoojia (ulkoalueet)",
@@ -101986,14 +101933,13 @@
     "location": "Helsinki Region, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/d357788e-0b11-43c6-9db7-fe1fbb9d6045/fi",
     "visited": "yes",
-    "matches_requirements": "maybe",
-    "reason": "The role is a generalist office position coordinating youth services, which Manju's prior experience in event management and community coordination fits well for. The Finnish requirement is also suitable given her active B2 level.",
+    "matches_requirements": "no",
+    "reason": "The role requires a relevant higher education degree, which Manju does not have.",
     "id": "0bc6f7ec",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-10",
     "deadline": "2026-08-10",
-    "description_file": "job_descriptions/vantaan_kaupunki_nuorisoty_n_esihenkil___alueel_0bc6f7ec.txt",
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Toimintaterapeutti, Lasten ja nuorten vastaanottotoiminta",
@@ -102225,14 +102171,13 @@
     "location": "Helsinki Region, Finland",
     "url": "https://fi.linkedin.com/jobs/view/asiantuntija-palveluiden-koordinaatio-at-helsingin-kaupunki-%E2%80%93-helsingfors-stad-%E2%80%93-city-of-helsinki-4439029700",
     "visited": "yes",
-    "matches_requirements": "maybe",
-    "reason": "The role is a match for generalist office/service roles, but the Finnish language requirement may be too strong given Manju's B2 level.",
+    "matches_requirements": "error",
+    "reason": "Failed to get or parse local LLM response: 400 Client Error: Bad Request for url: http://127.0.0.1:1234/v1/chat/completions",
     "id": "0ab7577b",
     "source": "linkedin_fi_coordinator",
-    "posted_date": "2026-07-11",
-    "deadline": "2026-07-24",
-    "description_file": "job_descriptions/helsingin_kaupunki___asiantuntija__palveluiden_koor_0ab7577b.txt",
-    "needs_re_review": true
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "description_file": null
   },
   {
     "title": "Careers",
@@ -102310,14 +102255,13 @@
     "location": "H\u00e4meenlinna, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/3f4ad78b-f32c-42e0-bbbf-085ed995ee5c/fi",
     "visited": "yes",
-    "matches_requirements": "yes",
-    "reason": "The job is for a production worker at Vitabalans Oy, which matches Manju's generalist office role criteria.",
+    "matches_requirements": "no",
+    "reason": "The role is a production worker position, which requires specific vocational training that Manju does not have.",
     "id": "a98a56fc",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-10",
     "deadline": "2026-08-07",
-    "description_file": "job_descriptions/vitabalans_oy_tuotantoty_ntekij__a98a56fc.txt",
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Raskaskonemekaanikko, Suomen Rakennuskone Oy",
@@ -102495,14 +102439,13 @@
     "location": "Oulu Region, Finland",
     "url": "https://duunitori.fi/tyopaikat/tyo/juristi-tekoaly-ja-valvonta-svsal-20425519",
     "visited": "yes",
-    "matches_requirements": "maybe",
-    "reason": "The role is a generalist office position, but requires strong Finnish language skills (C1+) which Manju currently has at B2 level. She may need to improve her Finnish further before applying.",
+    "matches_requirements": "error",
+    "reason": "Failed to get or parse local LLM response: 400 Client Error: Bad Request for url: http://127.0.0.1:1234/v1/chat/completions",
     "id": "a988e98a",
     "source": "duunitori_legal_counsel",
-    "posted_date": "2026-07-10",
-    "deadline": "Open until filled",
-    "description_file": "job_descriptions/lupa__ja_valvontavir_juristi__teko_ly_ja_valvonta__a988e98a.txt",
-    "needs_re_review": true
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "description_file": null
   },
   {
     "title": "Jurist (artificiell intelligens och tillsyn)",
@@ -102707,13 +102650,12 @@
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/f268a4c2-9fb3-4337-a8b2-d068056cf815/fi",
     "visited": "yes",
     "matches_requirements": "maybe",
-    "reason": "The role is a legal position, but it does not specifically require an international law degree or Finnish bar qualification.",
+    "reason": "The role is a legal position, but Manju's Finnish bar studies and international law background could potentially qualify her.",
     "id": "297e83db",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-10",
     "deadline": "2026-08-07",
-    "description_file": "job_descriptions/h_meen_poliisilaitos_lupasihteeri_07_04__kaksi_virk_297e83db.txt",
-    "needs_re_review": true
+    "description_file": "job_descriptions/h_meen_poliisilaitos_lupasihteeri_07_04__kaksi_virk_297e83db.txt"
   },
   {
     "title": "Johdon assistentti Pohjois-Pirkanmaalle",
@@ -102721,14 +102663,13 @@
     "location": "M\u00e4ntt\u00e4-Vilppula, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/4fcf6110-bc6f-40f9-bef2-dbe049332e6b/fi",
     "visited": "yes",
-    "matches_requirements": "maybe",
-    "reason": "The role is a generalist office position that fits Manju's profile, but requires fluent Finnish which she has at B2 level.",
+    "matches_requirements": "no",
+    "reason": "The role requires fluency in Finnish, which Manju does not have.",
     "id": "e5dc227d",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-10",
     "deadline": "2026-07-26",
-    "description_file": "job_descriptions/pihlajalinna_johdon_assistentti_pohjois_pir_e5dc227d.txt",
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Prosessinkehitt\u00e4j\u00e4, asennus",
@@ -102904,14 +102845,13 @@
     "location": "Helsinki Region, Finland",
     "url": "https://fi.indeed.com/rc/clk?jk=968d1cfda8b47083",
     "visited": "yes",
-    "matches_requirements": "yes",
-    "reason": "The role of 'Korkeakouluharjoittelija, hyvinvoinnin ja terveyden edist\u00e4minen / viestint\u00e4' aligns with Manju's profile and education.",
+    "matches_requirements": "maybe",
+    "reason": "The role is a generalist office position focused on health and wellbeing communications, which fits Manju's profile.",
     "id": "6a00f3ce",
     "source": "indeed",
     "posted_date": "2026-07-10",
     "deadline": "2026-08-07",
-    "description_file": "job_descriptions/sipoon_kunta_korkeakouluharjoittelija__hyvi_6a00f3ce.txt",
-    "needs_re_review": true
+    "description_file": "job_descriptions/sipoon_kunta_korkeakouluharjoittelija__hyvi_6a00f3ce.txt"
   },
   {
     "title": "Teko\u00e4lykehitt\u00e4j\u00e4",
@@ -102976,13 +102916,12 @@
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/a058abfa-43d8-493f-ab60-01e293c6faf4/fi",
     "visited": "yes",
     "matches_requirements": "yes",
-    "reason": "The role is a generalist office position that fits Manju's profile, especially her customer service and event management experience.",
+    "reason": "The role is a customer service representative position that fits Manju's profile, especially given her experience with international community event management and digital services at International House Oulu. The job is in Pietarsaari, Finland.",
     "id": "423efec0",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-10",
     "deadline": "2026-08-02",
-    "description_file": "job_descriptions/ostp_finland_oy_ab_customer_care_specialist_423efec0.txt",
-    "needs_re_review": true
+    "description_file": "job_descriptions/ostp_finland_oy_ab_customer_care_specialist_423efec0.txt"
   },
   {
     "title": "Siivooja Uusimaa",
@@ -103033,13 +102972,12 @@
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/c9ad9b0e-7a82-4981-b416-f73679e83358/fi",
     "visited": "yes",
     "matches_requirements": "yes",
-    "reason": "The role is a generalist office position that matches Manju's skills and experience, especially her event management at International House Oulu.",
+    "reason": "The role is an entry-level office position that fits Manju's background and skills, especially given her experience with event management at IHO.",
     "id": "bf67694f",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-10",
     "deadline": "2026-07-23",
-    "description_file": "job_descriptions/arvojes_oy_kotisiivooja_bf67694f.txt",
-    "needs_re_review": true
+    "description_file": "job_descriptions/arvojes_oy_kotisiivooja_bf67694f.txt"
   },
   {
     "title": "Kaivinkoneenkuljettaja - Sotkamo",
@@ -103524,13 +103462,12 @@
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/837464c3-a356-40db-bfd5-b4b10f9a31b1/fi",
     "visited": "yes",
     "matches_requirements": "maybe",
-    "reason": "The role is a match for generalist office/service roles, and Manju's event management experience aligns with the coaching aspect. However, it requires specific Finnish qualifications (sosionomi, toimintaterapeutti) that she does not have.",
+    "reason": "The role is a match for generalist office roles, and Manju's event management experience aligns with community coordinator duties. However, it requires an AMK degree which she does not have.",
     "id": "22fcb9d2",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-10",
     "deadline": "2026-08-06",
-    "description_file": "job_descriptions/arffman_finland_oy_valmentaja_kuopioon_22fcb9d2.txt",
-    "needs_re_review": true
+    "description_file": "job_descriptions/arffman_finland_oy_valmentaja_kuopioon_22fcb9d2.txt"
   },
   {
     "title": "Valmentaja CV- ja Digiklinikalle Joensuuhun",
@@ -104226,13 +104163,12 @@
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/af63572f-28ae-42b2-93d6-ba0ec7d7a503/fi",
     "visited": "yes",
     "matches_requirements": "maybe",
-    "reason": "The role is a sales support position, but it's unclear if Manju's Finnish and international experience would be sufficient.",
+    "reason": "The role is a sales support position, but it also involves customer service and product knowledge which Manju could handle with her strong English skills and event management experience.",
     "id": "c31a8166",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-10",
     "deadline": "Open until filled",
-    "description_file": "job_descriptions/mph_headgear_oy_myynnin_tukihenkil___mph_headg_c31a8166.txt",
-    "needs_re_review": true
+    "description_file": "job_descriptions/mph_headgear_oy_myynnin_tukihenkil___mph_headg_c31a8166.txt"
   },
   {
     "title": "Kaivinkoneenkuljettaja",
@@ -104268,14 +104204,13 @@
     "location": "Uusikaupunki, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/58ae7732-e8fb-4f4f-b900-2092698f5776/fi",
     "visited": "yes",
-    "matches_requirements": "maybe",
-    "reason": "The role is an office coordinator position that fits Manju's background, but requires Finnish as well which she has only at B2 level.",
+    "matches_requirements": "yes",
+    "reason": "The role is an office-based administrative assistant position, a strong match for Manju's background.",
     "id": "a4f5ae8b",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-10",
     "deadline": "2026-07-31",
-    "description_file": "job_descriptions/rtj_siivous_oy_projektihallinnon_koordinaatto_a4f5ae8b.txt",
-    "needs_re_review": true
+    "description_file": "job_descriptions/rtj_siivous_oy_projektihallinnon_koordinaatto_a4f5ae8b.txt"
   },
   {
     "title": "Asbestinpurkajia reissut\u00f6ihin",
@@ -104563,14 +104498,13 @@
     "location": "Muonio, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/b42296bf-1094-422b-af89-dd5ea71c267f/fi",
     "visited": "yes",
-    "matches_requirements": "maybe",
-    "reason": "The job is located in Muonio, which falls under the broader 'Rovaniemi Region, Finland' category. However, it's close enough to Oulu that Manju might consider it for her search.",
+    "matches_requirements": "no",
+    "reason": "The role requires guiding nature tours, which Manju does not have experience with.",
     "id": "9bc15bba",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-10",
     "deadline": "2026-08-09",
-    "description_file": "job_descriptions/destination_lapland__er_opas__nivunki_village__muon_9bc15bba.txt",
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Ohjaaja Pienryhm\u00e4koti Keltasirkkuun Kellokoskelle, Terva Care Oy",
@@ -104677,13 +104611,12 @@
     "url": "https://www.jobly.fi/tyopaikka/asiakaspalvelijoita-kaleva-medialle-ouluun-jyvaskylaan-2705944",
     "visited": "yes",
     "matches_requirements": "yes",
-    "reason": "Matches primary criteria of being an office/service role, with no specific degree requirements.",
+    "reason": "The role is an office customer service position that does not require a specific technical degree and is located in Oulu Region, Finland.",
     "id": "4c1e576e",
     "source": "jobly",
     "posted_date": "2026-07-10",
     "deadline": "Open until filled",
-    "description_file": "job_descriptions/kaleva_media_asiakaspalvelijoita_kaleva_med_4c1e576e.txt",
-    "needs_re_review": true
+    "description_file": "job_descriptions/kaleva_media_asiakaspalvelijoita_kaleva_med_4c1e576e.txt"
   },
   {
     "title": "Konesihteeri Hyvink\u00e4\u00e4lle",
@@ -104832,13 +104765,12 @@
     "url": "https://fi.linkedin.com/jobs/view/office-assistant-internship-at-verda-4437978517",
     "visited": "yes",
     "matches_requirements": "yes",
-    "reason": "The role is an office assistant internship in Helsinki, which matches Manju's profile.",
+    "reason": "Matches generalist office role criteria, with no seniority or technical degree requirements.",
     "id": "b9df0bee",
     "source": "linkedin_fi_coordinator",
     "posted_date": "2026-07-10",
     "deadline": "N/A",
-    "description_file": "job_descriptions/verda_office_assistant__internship__b9df0bee.txt",
-    "needs_re_review": true
+    "description_file": "job_descriptions/verda_office_assistant__internship__b9df0bee.txt"
   },
   {
     "title": "Research Assistant",
@@ -105028,14 +104960,13 @@
     "location": "M\u00e4ntyharju, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/ba18dee9-37cc-42f5-9305-ca1ed540506d/fi",
     "visited": "yes",
-    "matches_requirements": "maybe",
-    "reason": "The role is a mid-level office position that does not require a specific technical degree, and it's located in M\u00e4ntyharju. However, the job description text is quite long and detailed, so double-checking all criteria would be prudent before confirming a match.",
+    "matches_requirements": "yes",
+    "reason": "The role of Financial Planner matches Manju's skills and experience, especially her legal research and contract management background which is applicable to budgeting and financial planning.",
     "id": "1774e736",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-10",
     "deadline": "2026-08-09",
-    "description_file": "job_descriptions/m_ntyharjun_kunta_taloussuunnittelija_1774e736.txt",
-    "needs_re_review": true
+    "description_file": "job_descriptions/m_ntyharjun_kunta_taloussuunnittelija_1774e736.txt"
   },
   {
     "title": "Kassa-myyji\u00e4, Kuusamo (m\u00e4\u00e4r\u00e4aikainen 30 h/vko)",
@@ -105058,13 +104989,12 @@
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/90cc6ef2-d844-44bc-a761-8fa4aa36ec23/fi",
     "visited": "yes",
     "matches_requirements": "maybe",
-    "reason": "The role is a match for generalist office roles, and Manju's event management experience at IHO fits well with the 'casualty' aspect of wanting to break things. However, it requires fluent Finnish which she currently has only at B2 level.",
+    "reason": "The role is a generalist office position that fits Manju's background, but requires fluent Finnish which she does not have as her level is B2 Intermediate.",
     "id": "555fc58d",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-10",
     "deadline": "2026-09-01",
-    "description_file": "job_descriptions/rise_technologies_oy_kirjanpit_j___joka_haluaa_murt_555fc58d.txt",
-    "needs_re_review": true
+    "description_file": "job_descriptions/rise_technologies_oy_kirjanpit_j___joka_haluaa_murt_555fc58d.txt"
   },
   {
     "title": "Bioanalyytikko, Helsinki",
@@ -105100,14 +105030,13 @@
     "location": "Helsinki Region, Finland",
     "url": "https://www.jobly.fi/tyopaikka/kiinteistonvalittaja-helsinki-oulunkyla-kapyla-2537835",
     "visited": "yes",
-    "matches_requirements": "maybe",
-    "reason": "The role is an office-based generalist real estate agent position, which matches Manju's profile and experience.",
+    "matches_requirements": "no",
+    "reason": "The role is a Kiinteist\u00f6nv\u00e4litt\u00e4j\u00e4 (Real Estate Agent) position, which requires specific Finnish real estate expertise and experience that Manju does not have.",
     "id": "b4d125c1",
     "source": "jobly",
     "posted_date": "2026-07-10",
     "deadline": "2026-07-31",
-    "description_file": "job_descriptions/kiinteist_maailma_kiinteist_nv_litt_j__helsinki__b4d125c1.txt",
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Maanrakennusty\u00f6ntekij\u00e4",
@@ -105423,14 +105352,13 @@
     "location": "Helsinki Region, Finland",
     "url": "https://www.jobly.fi/tyopaikka/solution-analyst-espoo-2706050",
     "visited": "yes",
-    "matches_requirements": "yes",
-    "reason": "The role is a generalist office position that fits Manju's background and experience.",
+    "matches_requirements": "no",
+    "reason": "The role requires strong Excel skills and experience with financial models and CAPEX calculations, which Manju does not have.",
     "id": "d9a7c4f5",
     "source": "jobly",
     "posted_date": "2026-07-10",
     "deadline": "Open until filled",
-    "description_file": "job_descriptions/academic_work_solution_analyst___espoo_d9a7c4f5.txt",
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Projektihallinnon koordinaattori / assistentti",
@@ -105453,13 +105381,12 @@
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/0223a94f-26ed-4fff-95ae-5d7e6bdf89a4/fi",
     "visited": "yes",
     "matches_requirements": "yes",
-    "reason": "The role of a personal assistant fits Manju's profile, especially given her experience with event management and digital service deployment at International House Oulu.",
+    "reason": "The role of a personal assistant fits Manju's experience with event management, digital service deployment, and client advisory from her work at International House Oulu.",
     "id": "704e808a",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-10",
     "deadline": "2026-07-31",
-    "description_file": "job_descriptions/sisulla_oy_henkil_kohtainen_avustaja_704e808a.txt",
-    "needs_re_review": true
+    "description_file": "job_descriptions/sisulla_oy_henkil_kohtainen_avustaja_704e808a.txt"
   },
   {
     "title": "Tarvittaessa ty\u00f6h\u00f6n kutsuttava kokki/keitt\u00e4j\u00e4",
@@ -106251,14 +106178,13 @@
     "location": "Helsinki Region, Finland",
     "url": "https://www.jobly.fi/tyopaikka/kohde-esihenkilo-welcome-aulapalvelukohteeseen-helsinki-salmisaari-2714086",
     "visited": "yes",
-    "matches_requirements": "yes",
-    "reason": "The role of 'Kohde-esihenkil\u00f6 welcome-aulapalvelukohteeseen' fits a generalist office/service position, and the location is in Helsinki which matches Manju's target criteria.",
+    "matches_requirements": "maybe",
+    "reason": "The role is a match for generalist office/service roles, and Manju's event management experience aligns with the 'Welcome' service context. However, Finnish fluency is required as a hard requirement.",
     "id": "5803ab21",
     "source": "jobly_event",
     "posted_date": "2026-07-10",
     "deadline": "Open until filled",
-    "description_file": "job_descriptions/securitas_oy_kohde_esihenkil__welcome_aulap_5803ab21.txt",
-    "needs_re_review": true
+    "description_file": "job_descriptions/securitas_oy_kohde_esihenkil__welcome_aulap_5803ab21.txt"
   },
   {
     "title": "Lastenhoitajan keikkat\u00f6it\u00e4 -p\u00e4iv\u00e4koteihin ja iltap\u00e4iv\u00e4kerhoihin",
@@ -106280,14 +106206,13 @@
     "location": "Oulu Region, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/218a587d-6d9a-43ea-bfda-c3f6bcece6a0/fi",
     "visited": "yes",
-    "matches_requirements": "yes",
-    "reason": "The role is an office administration position that Manju's experience qualifies her for, and it is located in Helsinki which she can commute to from Oulu.",
+    "matches_requirements": "maybe",
+    "reason": "The role is an administration position, but requires a valid B driving license and personal car use for work.",
     "id": "acbc3256",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-10",
     "deadline": "2026-07-24",
-    "description_file": "job_descriptions/keha_keskus_toimistoty_ntekij__acbc3256.txt",
-    "needs_re_review": true
+    "description_file": "job_descriptions/keha_keskus_toimistoty_ntekij__acbc3256.txt"
   },
   {
     "title": "FALSE ALARM COORD",
@@ -108860,14 +108785,13 @@
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/665e0bc8-9f96-49c3-a8f8-0d1dc9909cd5/fi",
     "visited": "yes",
     "matches_requirements": "yes",
-    "reason": "The role is an office and service position that does not require a specific technical degree, and Manju's experience with event management and digital services aligns well.",
+    "reason": "The role is an office service position that does not require a specific technical degree, and it's located in Kilpisj\u00e4rvi which is within the Enonteki\u00f6 region.",
     "id": "20193643",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-11",
     "deadline": "2026-09-30",
     "description_file": "job_descriptions/kilpissafarit_oy_toimisto__ja_asiakaspalveluvas_20193643.txt",
-    "tailor_model": "Gemini 3.1 Pro",
-    "needs_re_review": true
+    "tailor_model": "Gemini 3.1 Pro"
   },
   {
     "title": "Bussikortillinen aktiviteettiopas Kilpisj\u00e4rvelle",
@@ -109015,15 +108939,14 @@
     "location": "Pyh\u00e4tunturi, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/2f413ea2-8862-4822-8adc-2ab39242df76/fi",
     "visited": "yes",
-    "matches_requirements": "yes",
-    "reason": "The role of server matches Manju's experience in event management and customer service at International House Oulu, as well as her legal work in India.",
+    "matches_requirements": "error",
+    "reason": "Failed to get or parse local LLM response: 400 Client Error: Bad Request for url: http://127.0.0.1:1234/v1/chat/completions",
     "id": "3f88d761",
     "source": "tyomarkkinatori",
-    "posted_date": "2026-07-11",
-    "deadline": "2026-10-30",
-    "description_file": "job_descriptions/sunday_morning_colle_tarjoilijoita__ravintola_aihki_3f88d761.txt",
-    "tailor_model": "Gemini 3.1 Pro",
-    "needs_re_review": true
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "description_file": null,
+    "tailor_model": "Gemini 3.1 Pro"
   },
   {
     "title": "Principal Flute, Tapiola Sinfonietta",
@@ -109341,14 +109264,13 @@
     "location": "Kankaanp\u00e4\u00e4, Finland",
     "url": "https://fi.indeed.com/rc/clk?jk=b440c3afcdfc85f4",
     "visited": "yes",
-    "matches_requirements": "yes",
-    "reason": "The role of a caregiver at Attendo Kuninkaanpuisto in Kankaanp\u00e4\u00e4 matches Manju's profile, especially given her experience with international residents and community events at International House Oulu.",
+    "matches_requirements": "error",
+    "reason": "Failed to get or parse local LLM response: 400 Client Error: Bad Request for url: http://127.0.0.1:1234/v1/chat/completions",
     "id": "8044d38b",
     "source": "indeed",
     "posted_date": "N/A",
-    "deadline": "2026-07-24",
-    "description_file": "job_descriptions/attendo_oy_hoitoapulainen_attendo_kuninka_8044d38b.txt",
-    "needs_re_review": true
+    "deadline": "N/A",
+    "description_file": null
   },
   {
     "title": "Paralegal",
@@ -110130,14 +110052,13 @@
     "location": "Oulu Region, Finland",
     "url": "https://fi.indeed.com/rc/clk?jk=835a77e1a78db1fa",
     "visited": "yes",
-    "matches_requirements": "maybe",
-    "reason": "The role involves digital service development for healthcare, which matches Manju's experience from International House Oulu.",
+    "matches_requirements": "yes",
+    "reason": "The role is an administration and coordination position that fits Manju's background, with a focus on digital service development.",
     "id": "d1c8a304",
     "source": "indeed_communications",
     "posted_date": "2026-07-09",
     "deadline": "2026-08-07",
-    "description_file": "job_descriptions/lapin_hyvinvointialu_suunnittelija__digitaalisten_p_d1c8a304.txt",
-    "needs_re_review": true
+    "description_file": "job_descriptions/lapin_hyvinvointialu_suunnittelija__digitaalisten_p_d1c8a304.txt"
   },
   {
     "title": "Kunnossapitoasentaja",
@@ -110173,14 +110094,13 @@
     "location": "Oulu Region, Finland",
     "url": "https://fi.indeed.com/rc/clk?jk=a971854d2150cc23",
     "visited": "yes",
-    "matches_requirements": "yes",
-    "reason": "The role of Communication Designer matches Manju's profile, especially given her experience with event management and digital service deployment at International House Oulu.",
+    "matches_requirements": "maybe",
+    "reason": "The role of Communication Designer matches Manju's event management and digital service deployment experience from her International House Oulu internship. However, it does not explicitly require an international/Indian law degree or Finnish bar qualification.",
     "id": "1737e460",
     "source": "indeed_communications",
     "posted_date": "2026-07-09",
     "deadline": "2026-08-09",
-    "description_file": "job_descriptions/h_meen_ammattikorkea_viestinn_n_suunnittelija_1737e460.txt",
-    "needs_re_review": true
+    "description_file": "job_descriptions/h_meen_ammattikorkea_viestinn_n_suunnittelija_1737e460.txt"
   },
   {
     "title": "HR-koordinaattori",
@@ -110792,13 +110712,12 @@
     "url": "https://fi.indeed.com/rc/clk?jk=2826143512ad240f",
     "visited": "yes",
     "matches_requirements": "yes",
-    "reason": "The role is an office administration position that matches Manju's profile and experience.",
+    "reason": "The role is an administration and coordination position that fits Manju's profile, especially given her experience with international community events and digital service deployment at IHO.",
     "id": "a8dc024c",
     "source": "indeed_office_secretary",
     "posted_date": "2026-06-30",
     "deadline": "2026-08-16",
-    "description_file": "job_descriptions/yp_j_n_kunta_toimistosihteeri_a8dc024c.txt",
-    "needs_re_review": true
+    "description_file": "job_descriptions/yp_j_n_kunta_toimistosihteeri_a8dc024c.txt"
   },
   {
     "title": "Communications Specialist",
@@ -111016,14 +110935,13 @@
     "location": "Helsinki Region, Finland",
     "url": "https://fi.linkedin.com/jobs/view/social-media-and-marketing-intern-at-actors-academy-finland-4439101168",
     "visited": "yes",
-    "matches_requirements": "yes",
-    "reason": "The role is a generalist marketing/social media internship that matches Manju's skills and experience.",
+    "matches_requirements": "maybe",
+    "reason": "The role is a strong fit for Manju's event management and digital service deployment experience from her IHO internship, but the job description does not clearly state if fluent English (her strongest language) is required or preferred. More details are needed to make a definitive match.",
     "id": "5ee5023e",
     "source": "linkedin_fi_communications",
     "posted_date": "2026-07-12",
     "deadline": "Open until filled",
-    "description_file": "job_descriptions/actors_academy_finla_social_media_and_marketing_int_5ee5023e.txt",
-    "needs_re_review": true
+    "description_file": "job_descriptions/actors_academy_finla_social_media_and_marketing_int_5ee5023e.txt"
   },
   {
     "title": "Creative Production Coordinator",
@@ -111186,13 +111104,12 @@
     "url": "https://fi.indeed.com/rc/clk?jk=8b31c308cc1f2ae4",
     "visited": "yes",
     "matches_requirements": "maybe",
-    "reason": "The role is in Helsinki region, but Manju's Finnish is only B2 (Intermediate).",
+    "reason": "The job is located in Helsinki Region, but does not specify on-site, hybrid, or remote work.",
     "id": "a8b7fc43",
     "source": "indeed_office_secretary_p3",
     "posted_date": "2026-07-03",
     "deadline": "2026-07-24",
-    "description_file": "job_descriptions/helsingin_kaupunki_yleishallinnon_tuki__hallintoa_a8b7fc43.txt",
-    "needs_re_review": true
+    "description_file": "job_descriptions/helsingin_kaupunki_yleishallinnon_tuki__hallintoa_a8b7fc43.txt"
   },
   {
     "title": "Founding CEO / Operator Partner",
@@ -111355,14 +111272,13 @@
     "location": "Tornio Region, Finland",
     "url": "https://fi.indeed.com/rc/clk?jk=aaf38784e5753216",
     "visited": "yes",
-    "matches_requirements": "maybe",
-    "reason": "The role is a generalist office position that does not require a specific technical degree, and it's located in the Tornio Region which Manju has experience with. However, it requires Finnish as the primary working language (B2 level) which may be challenging for her.",
+    "matches_requirements": "no",
+    "reason": "The role requires specific education in educational administration, which is a specialized vocational degree.",
     "id": "3a07ce91",
     "source": "indeed_coordinator_p3",
     "posted_date": "2026-06-22",
     "deadline": "2026-07-31",
-    "description_file": "job_descriptions/tornion_kaupunki_projektikoordinaattori_3a07ce91.txt",
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Critical Environment Technician",
@@ -111496,14 +111412,13 @@
     "location": "Helsinki Region, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/3c5356dc-9ed8-4881-bb63-ba5873675787/fi",
     "visited": "yes",
-    "matches_requirements": "maybe",
-    "reason": "The role is a good match for Manju's skills and experience, especially her event management at IHO and legal drafting from Poise Legal. The Helsinki location is also suitable.",
+    "matches_requirements": "no",
+    "reason": "The role requires specific technical expertise in real estate systems and property management, which Manju does not have.",
     "id": "230421e5",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-13",
     "deadline": "2026-08-09",
-    "description_file": "job_descriptions/p__kaupunkiseudun_ka_kiinteist_j_rjestelm_asiantunt_230421e5.txt",
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Ilta ja viikonlopputy\u00f6ntekij\u00e4 kotihoitoon Lohjalle",
@@ -111525,14 +111440,13 @@
     "location": "Punkalaidun, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/52e6f624-f490-462a-a097-8f6f27cc27cd/fi",
     "visited": "yes",
-    "matches_requirements": "maybe",
-    "reason": "The role is a generalist office position that does not require a specific technical degree, and it's located in Punkalaidun which falls under Tampere Region.",
+    "matches_requirements": "no",
+    "reason": "The role requires a specific vocational degree (nuorisovalvoja) as a hard requirement, which Manju does not have.",
     "id": "2cc5aa05",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-13",
     "deadline": "2026-08-11",
-    "description_file": "job_descriptions/punkalaitumen_kunta_nuoriso_ohjaaja_2cc5aa05.txt",
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Ohjelmistotestaaja",
@@ -111540,14 +111454,13 @@
     "location": "Oulu Region, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/679dbe26-a189-45cb-b163-05ddc84e457e/fi",
     "visited": "yes",
-    "matches_requirements": "yes",
-    "reason": "The role of a software tester matches Manju's experience and skills, especially given her event management background at International House Oulu.",
+    "matches_requirements": "error",
+    "reason": "Failed to get or parse local LLM response: 400 Client Error: Bad Request for url: http://127.0.0.1:1234/v1/chat/completions",
     "id": "268d33a6",
     "source": "tyomarkkinatori",
-    "posted_date": "2026-07-13",
-    "deadline": "2026-07-26",
-    "description_file": "job_descriptions/anfra_oy_ohjelmistotestaaja_268d33a6.txt",
-    "needs_re_review": true
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "description_file": null
   },
   {
     "title": "L\u00e4rare inom fordonsbranschen",
@@ -111709,14 +111622,13 @@
     "location": "Vihanti, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/c447317c-1a7b-4299-bca2-d0acfaf7e8c6/fi",
     "visited": "yes",
-    "matches_requirements": "yes",
-    "reason": "The role is an office-based construction assistant position that matches Manju's profile.",
+    "matches_requirements": "no",
+    "reason": "The role is for construction assistants, which requires specific vocational training and experience that Manju does not have.",
     "id": "bff1c2ec",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-13",
     "deadline": "Open until filled",
-    "description_file": "job_descriptions/lavonia_oy_rakennusapulaisia_vihtiin_bff1c2ec.txt",
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Palosuojamaalari / Hiekkapuhaltaja",
@@ -111766,14 +111678,13 @@
     "location": "Sein\u00e4joki, Finland",
     "url": "https://fi.indeed.com/rc/clk?jk=1b4c274c432bf591",
     "visited": "yes",
-    "matches_requirements": "yes",
-    "reason": "The role is an office-based generalist administrative position that does not require a specific technical degree.",
+    "matches_requirements": "no",
+    "reason": "The role is a fast food restaurant position, specifically a 'hampurilaisty\u00f6ntekij\u00e4' (burger cook), which does not match the generalist office/service roles that Manju Krishna Haridas is qualified for.",
     "id": "a4f3de62",
     "source": "indeed",
     "posted_date": "N/A",
     "deadline": "2026-07-26",
-    "description_file": "job_descriptions/burger_in_oy__hesbur_hampurilaisty_ntekij__hesburge_a4f3de62.txt",
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Sosiaaliohjaaja, Vammaispalvelut, Masku",
@@ -111991,14 +111902,13 @@
     "location": "Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/0e2d3e72-3be0-42e9-97c6-b65a10ed019c/fi",
     "visited": "yes",
-    "matches_requirements": "yes",
-    "reason": "The role is a communications specialist position, which matches Manju's key skills and experience in event management and digital service deployment.",
+    "matches_requirements": "maybe",
+    "reason": "The role is a communications specialist, which matches Manju's event management and digital service deployment experience from her International House Oulu internship. However, it does not clearly specify if this role requires fluent Finnish or if English would be acceptable for the work.",
     "id": "9d490a5c",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-13",
     "deadline": "2026-07-26",
-    "description_file": "job_descriptions/naisten_linja_suomes_viestinn_n_asiantuntija_naiste_9d490a5c.txt",
-    "needs_re_review": true
+    "description_file": "job_descriptions/naisten_linja_suomes_viestinn_n_asiantuntija_naiste_9d490a5c.txt"
   },
   {
     "title": "Compliance Analyst - Freelance AI Trainer",
@@ -112104,14 +112014,13 @@
     "location": "Helsinki Region, Finland",
     "url": "https://fi.indeed.com/rc/clk?jk=9ebac1bc096f2c53",
     "visited": "yes",
-    "matches_requirements": "maybe",
-    "reason": "The role is an HR trainee position, which fits Manju's profile and target criteria for generalist office roles. However, it is located in Helsinki rather than Oulu.",
+    "matches_requirements": "no",
+    "reason": "The role is a fixed-term traineeship restricted to enrolled students below a specific degree tier (bachelor's-level, not yet graduated) and/or a specific age bracket (typically 18\u201325), as part of a government 'first job' youth-employment scheme. The candidate already holds completed LL.B. and LL.M., so she does not meet the enrolled-student eligibility tier these programs target, regardless of subject-matter overlap.",
     "id": "6913933c",
     "source": "indeed",
     "posted_date": "N/A",
     "deadline": "2026-07-27",
-    "description_file": "job_descriptions/helsingin_yliopisto__hr_harjoittelija_6913933c.txt",
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "AI Solution Architect",
@@ -112175,15 +112084,14 @@
     "location": "Helsinki Region, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/67305916-5ecb-49aa-8be7-fb35d7f89c8d/fi",
     "visited": "yes",
-    "matches_requirements": "yes",
-    "reason": "The role is an office service position that matches Manju's profile, and it's located in Helsinki Region.",
+    "matches_requirements": "no",
+    "reason": "The role requires specific healthcare experience (laitoshuollon tai palveluty\u00f6ntekij\u00e4n ammatillista koulutusta ja ty\u00f6kokemusta laitoshuollosta ja asiakaspalvelusta) which the candidate does not have.",
     "id": "31e9158f",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-13",
     "deadline": "2026-07-27",
-    "description_file": "job_descriptions/hus_helsingin_yliopi_palveluty_ntekij__31e9158f.txt",
-    "user_reason": "requires specific training for cleaning/support role in hospital setting",
-    "needs_re_review": true
+    "description_file": null,
+    "user_reason": "requires specific training for cleaning/support role in hospital setting"
   },
   {
     "title": "Content Curator",
@@ -112303,14 +112211,13 @@
     "location": "Helsinki Region, Finland",
     "url": "https://fi.linkedin.com/jobs/view/digitaalisen-markkinoinnin-ja-viestinn%C3%A4n-osaaja-at-vierityspalkki-fi-4439767922",
     "visited": "yes",
-    "matches_requirements": "maybe",
-    "reason": "The role involves digital marketing, content creation, and communication which Manju's experience with event management and social media could be applicable to.",
+    "matches_requirements": "yes",
+    "reason": "The role is an entry-level digital marketing and communications position that matches Manju's skills, especially her event management experience from International House Oulu. The job also allows remote work which fits her current location.",
     "id": "66665cdb",
     "source": "linkedin_fi_communications",
     "posted_date": "2026-07-13",
     "deadline": "2026-07-21",
-    "description_file": "job_descriptions/vierityspalkki_fi_digitaalisen_markkinoinnin_ja__66665cdb.txt",
-    "needs_re_review": true
+    "description_file": "job_descriptions/vierityspalkki_fi_digitaalisen_markkinoinnin_ja__66665cdb.txt"
   },
   {
     "title": "Tuotanto-AD K-ryhm\u00e4\u00e4n",
@@ -112346,14 +112253,13 @@
     "location": "Oulu Region, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/8ccfab4b-4052-4b08-a197-6fe6c3659808/fi",
     "visited": "yes",
-    "matches_requirements": "yes",
-    "reason": "The role is a generalist IT support technician position, which matches Manju's background in digital service deployment and event management.",
+    "matches_requirements": "maybe",
+    "reason": "The role is a match for generalist office/service roles, specifically IT support and technical training in that area. Manju's background in event management, digital service deployment, and communications also aligns well with this position.",
     "id": "8134e5a3",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-13",
     "deadline": "2026-07-30",
-    "description_file": "job_descriptions/koulutuskuntayhtym___ohjaaja_8134e5a3.txt",
-    "needs_re_review": true
+    "description_file": "job_descriptions/koulutuskuntayhtym___ohjaaja_8134e5a3.txt"
   },
   {
     "title": "Nuorisotilaohjaaja",
@@ -112431,14 +112337,13 @@
     "location": "Akaa, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/0ab86a86-f525-47cc-a37d-968d7f518723/fi",
     "visited": "yes",
-    "matches_requirements": "yes",
-    "reason": "The role of Youth Worker matches Manju's profile and experience, especially her community event management at International House Oulu.",
+    "matches_requirements": "maybe",
+    "reason": "The role is a match for generalist office/service work, but requires an Amk degree (equivalent to a bachelor's) in social work or youth work. Manju has an LL.B and LL.M, which are not equivalent to an Amk degree.",
     "id": "90a11f58",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-13",
     "deadline": "2026-08-07",
-    "description_file": "job_descriptions/akaan_kaupunki_nuorisoty_ntekij__90a11f58.txt",
-    "needs_re_review": true
+    "description_file": "job_descriptions/akaan_kaupunki_nuorisoty_ntekij__90a11f58.txt"
   },
   {
     "title": "Ruokapalveluty\u00f6ntekij\u00e4",
@@ -112558,14 +112463,13 @@
     "location": "Mikkeli, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/8d486e6e-b73e-49a2-a3e0-13fc5b476186/fi",
     "visited": "yes",
-    "matches_requirements": "yes",
-    "reason": "The role matches a generalist office/service position that does not require a specific technical degree.",
+    "matches_requirements": "no",
+    "reason": "The role requires a specific social work qualification as a hard requirement, which Manju does not have.",
     "id": "3e68cfc3",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-13",
     "deadline": "2026-07-31",
-    "description_file": "job_descriptions/etel__savon_hyvinvoi_sosiaality_ntekij___ty_ik_iste_3e68cfc3.txt",
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Specialklassl\u00e4rare (1086), timl\u00e4rare i huvudsyssla",
@@ -113315,14 +113219,13 @@
     "location": "Oulu Region, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/b6443af8-5f80-4ba4-9ae4-dba1503f7817/fi",
     "visited": "yes",
-    "matches_requirements": "maybe",
-    "reason": "The role is a generalist office position that does not require specific technical degrees, and Manju's experience with document management and coordination could be applicable.",
+    "matches_requirements": "yes",
+    "reason": "The role of Project Coordinator / Document Control Specialist in Kouvola matches Manju's profile, especially given her event management experience at International House Oulu which is highly relevant to coordinating community events and supporting project workflows.",
     "id": "f96610ef",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-13",
     "deadline": "2026-07-31",
-    "description_file": "job_descriptions/eezy_henkil_st_palve_projekti_koordinaattori___doku_f96610ef.txt",
-    "needs_re_review": true
+    "description_file": "job_descriptions/eezy_henkil_st_palve_projekti_koordinaattori___doku_f96610ef.txt"
   },
   {
     "title": "Putkiasentajia urakointiin, Lahti",
@@ -113540,14 +113443,13 @@
     "location": "Helsinki Region, Finland",
     "url": "https://www.jobly.fi/tyopaikka/erikoiskirjastonhoitaja-herttoniemen-roihuvuoren-ja-laajasalon-kolmoiskirjasto-2701855",
     "visited": "yes",
-    "matches_requirements": "maybe",
-    "reason": "The role is a strong match for Manju's skills and experience, especially her event management at International House Oulu. However, it requires fluent Finnish (C1+) which she has only at B2 Intermediate level.",
+    "matches_requirements": "no",
+    "reason": "The role requires a relevant higher education degree, specifically fluent Finnish language skills, and work experience with children and youth. Manju's profile does not fully meet these requirements.",
     "id": "96e0c54f",
     "source": "jobly",
     "posted_date": "2026-07-13",
     "deadline": "2026-07-27",
-    "description_file": "job_descriptions/helsingin_kaupunki_erikoiskirjastonhoitaja__hertt_96e0c54f.txt",
-    "needs_re_review": true
+    "description_file": null
   },
   {
     "title": "Keitti\u00f6apulainen, P\u00e4iv\u00e4keskus Symppis, palkkatuettu ty\u00f6suhde",
@@ -113625,15 +113527,14 @@
     "location": "Helsinki Region, Finland",
     "url": "https://duunitori.fi/tyopaikat/tyo/viestinnan-asiantuntija-naisten-linjalle-stsyo-20428385",
     "visited": "yes",
-    "matches_requirements": "maybe",
-    "reason": "The role is a communications specialist, which matches Manju's event management and digital service deployment experience at International House Oulu. However, it requires fluent Finnish, which she currently has only at B2 (Intermediate) level.",
+    "matches_requirements": "error",
+    "reason": "Failed to get or parse local LLM response: 400 Client Error: Bad Request for url: http://127.0.0.1:1234/v1/chat/completions",
     "id": "423c4978",
     "source": "duunitori_communications",
-    "posted_date": "2026-07-13",
-    "deadline": "2026-07-26",
-    "description_file": "job_descriptions/naisten_linja_suomes_viestinn_n_asiantuntija_naiste_423c4978.txt",
-    "tailor_model": "Gemini 3.1 Pro",
-    "needs_re_review": true
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "description_file": null,
+    "tailor_model": "Gemini 3.1 Pro"
   },
   {
     "title": "Projekti koordinaattori / dokumentinhallinnan asiantuntija Kouvolaan",
@@ -113910,13 +113811,12 @@
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/9d66643f-753b-41a1-a4c8-fa7611ab04ee/fi",
     "visited": "yes",
     "matches_requirements": "maybe",
-    "reason": "The role involves social support work, which is a match for Manju's background. However, it's in Helsinki and hybrid/remote, so we need to clarify if this allows Oulu-based candidates.",
+    "reason": "The role is a match for Manju's skills, but the Finnish language requirement may be too strong.",
     "id": "ce3cf699",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-13",
     "deadline": "2026-08-24",
-    "description_file": "job_descriptions/into___etsiv__nuoris_sosiaalisen_vahvistamisen_asia_ce3cf699.txt",
-    "needs_re_review": true
+    "description_file": "job_descriptions/into___etsiv__nuoris_sosiaalisen_vahvistamisen_asia_ce3cf699.txt"
   },
   {
     "title": "Kirvesmies toimitilakohteisiin",
@@ -114022,14 +113922,13 @@
     "location": "Helsinki Region, Finland",
     "url": "https://fi.indeed.com/rc/clk?jk=3b753124faedd55d",
     "visited": "yes",
-    "matches_requirements": "yes",
-    "reason": "The role is a generalist office position that fits Manju's profile, requiring Finnish and international law degrees.",
+    "matches_requirements": "error",
+    "reason": "Failed to get or parse local LLM response: 400 Client Error: Bad Request for url: http://127.0.0.1:1234/v1/chat/completions",
     "id": "f7988d66",
     "source": "indeed_event_coordinator",
-    "posted_date": "2026-07-27",
-    "deadline": "2026-08-07",
-    "description_file": "job_descriptions/l_hitapiola_henkiyht_asiantuntija_l_hitapiola_henki_f7988d66.txt",
-    "needs_re_review": true
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "description_file": null
   },
   {
     "title": "Turvaj\u00e4rjestelm\u00e4asentaja",
@@ -114289,14 +114188,13 @@
     "location": "Muonio, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/c2400ba2-1b7f-414f-84f9-bf0bbaf169fd/fi",
     "visited": "yes",
-    "matches_requirements": "maybe",
-    "reason": "The role is an \u00e0 la carte server position at Lapland Hotels Olos, which matches Manju's culinary and event management experience. However, Finnish language proficiency may be a barrier.",
+    "matches_requirements": "yes",
+    "reason": "The role is an entry-level \u00e0 la carte server position at a hotel, fitting generalist office/service criteria.",
     "id": "304d0d2d",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-13",
     "deadline": "2026-08-31",
-    "description_file": "job_descriptions/lapland_hotels_a_la_carte_tarjoilija__lapland_304d0d2d.txt",
-    "needs_re_review": true
+    "description_file": "job_descriptions/lapland_hotels_a_la_carte_tarjoilija__lapland_304d0d2d.txt"
   },
   {
     "title": "Project Coordinator \u2013 Tue projektien onnistumista ja asiakastyytyv\u00e4isyytt\u00e4",
@@ -114305,13 +114203,12 @@
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/59d80b4c-e20e-45aa-93e2-d0b3f5bacf57/fi",
     "visited": "yes",
     "matches_requirements": "maybe",
-    "reason": "The role is a match for generalist office/service positions, but it's unclear if Voimatel would accept an international law degree.",
+    "reason": "The role is an office coordination position, but it's unclear if Voimatel has a Sein\u00e4joki location. More context needed.",
     "id": "a426824b",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-13",
     "deadline": "2026-08-09",
-    "description_file": "job_descriptions/voimatel_project_coordinator___tue_proj_a426824b.txt",
-    "needs_re_review": true
+    "description_file": "job_descriptions/voimatel_project_coordinator___tue_proj_a426824b.txt"
   },
   {
     "title": "Kuorma-auton kuljettaja \u2013 Kymenlaakso / P\u00e4ij\u00e4t-H\u00e4me",
@@ -114432,13 +114329,12 @@
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/33042bb2-d474-4e5a-b509-3ee4f234132b/fi",
     "visited": "yes",
     "matches_requirements": "maybe",
-    "reason": "The role is primarily based in Oulu, but also involves travel to Keminmaa and other international locations. Manju's experience with international residents and her ability to learn new systems quickly would likely be valuable here.",
+    "reason": "The role is primarily an 'Ohjelmistokehitt\u00e4j\u00e4' (Software Developer) position, but it also involves some field work and international travel. This could potentially fit Manju's profile.",
     "id": "3a470428",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-13",
     "deadline": "2027-01-09",
-    "description_file": "job_descriptions/fishheart_oy_ltd__ohjelmistokehitt_j___fishheart_3a470428.txt",
-    "needs_re_review": true
+    "description_file": "job_descriptions/fishheart_oy_ltd__ohjelmistokehitt_j___fishheart_3a470428.txt"
   },
   {
     "title": "Osa-aikaisia Myyji\u00e4 Raisioon",
@@ -114642,14 +114538,13 @@
     "location": "Oulu Region, Finland",
     "url": "https://www.jobly.fi/tyopaikka/projektikoordinaattori-logistiikan-kehityshankkeeseen-helsinki-oulu-tai-turku-2714665",
     "visited": "yes",
-    "matches_requirements": "maybe",
-    "reason": "The role is a generalist office position that does not require specific technical degrees, and it's located in Oulu Region. However, it may be more suitable for someone with prior project management experience.",
+    "matches_requirements": "yes",
+    "reason": "The role is a generalist office position coordinating logistics projects across Finland, fitting Manju's background and experience.",
     "id": "62a615c4",
     "source": "jobly_coordinator",
     "posted_date": "2026-07-13",
     "deadline": "Open until filled",
-    "description_file": "job_descriptions/academic_work_projektikoordinaattori_logisti_62a615c4.txt",
-    "needs_re_review": true
+    "description_file": "job_descriptions/academic_work_projektikoordinaattori_logisti_62a615c4.txt"
   },
   {
     "title": "Clases de Refuerzo Primaria - Media Jornada",
@@ -114966,13 +114861,12 @@
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/187b0d37-dcb7-4a5d-92de-8c165577ab55/fi",
     "visited": "yes",
     "matches_requirements": "maybe",
-    "reason": "The role is in Turku, which is a match for the 'Turku Region, Finland' criteria.",
+    "reason": "The role is an on-site kitchen coordinator position in Turku, which fits Manju's profile and experience.",
     "id": "000c2600",
     "source": "tyomarkkinatori",
     "posted_date": "2026-07-13",
     "deadline": "2026-08-02",
-    "description_file": "job_descriptions/kaarea_oy_vuorovastaava_000c2600.txt",
-    "needs_re_review": true
+    "description_file": "job_descriptions/kaarea_oy_vuorovastaava_000c2600.txt"
   },
   {
     "title": "Kokki, Wanha Klubi",
@@ -115221,13 +115115,12 @@
     "url": "https://fi.linkedin.com/jobs/view/legal-assistant-executive-legal-assistant-at-roschier-4437267535",
     "visited": "yes",
     "matches_requirements": "maybe",
-    "reason": "The role is in Helsinki, but it's unclear if this is a fully remote position or requires on-site work.",
+    "reason": "The role is a match for generalist office roles, but requires prior experience from working at a law firm which Manju does not have.",
     "id": "425adc76",
     "source": "linkedin_fi_event_coordinator",
     "posted_date": "2026-07-13",
     "deadline": "2026-08-09",
-    "description_file": "job_descriptions/roschier_legal_assistant___executive_le_425adc76.txt",
-    "needs_re_review": true
+    "description_file": "job_descriptions/roschier_legal_assistant___executive_le_425adc76.txt"
   },
   {
     "title": "Sponsor Relations Coordinator (Events)",
