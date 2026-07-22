@@ -87393,12 +87393,12 @@
     "location": "Helsinki Region, Finland",
     "url": "https://duunitori.fi/tyopaikat/tyo/julkinen-oikeusavustaja-ita-uudenmaan-oikeusaputoimisto-vantaa-svsal-20420107",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Failed to get or parse local LLM response: 400 Client Error: Bad Request for url: http://127.0.0.1:1234/v1/chat/completions",
+    "matches_requirements": "no",
+    "reason": "The role is for a public legal counsel at a regional justice office, which requires an advanced Finnish bar qualification (OPH recognition) in addition to international law degrees. Manju's current supplementary studies are recognized by OPH but she does not yet have the full Finnish bar accreditation needed.",
     "id": "e2ed8b56",
     "source": "duunitori_lawyer",
-    "posted_date": "N/A",
-    "deadline": "N/A",
+    "posted_date": "2026-07-08",
+    "deadline": "2026-07-28",
     "description_file": null
   },
   {
@@ -113527,13 +113527,13 @@
     "location": "Helsinki Region, Finland",
     "url": "https://duunitori.fi/tyopaikat/tyo/viestinnan-asiantuntija-naisten-linjalle-stsyo-20428385",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Failed to get or parse local LLM response: 400 Client Error: Bad Request for url: http://127.0.0.1:1234/v1/chat/completions",
+    "matches_requirements": "yes",
+    "reason": "The role is an office communications & marketing position that matches Manju's event management and digital service deployment experience.",
     "id": "423c4978",
     "source": "duunitori_communications",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
+    "posted_date": "2026-07-13",
+    "deadline": "2026-07-26",
+    "description_file": "job_descriptions/naisten_linja_suomes_viestinn_n_asiantuntija_naiste_423c4978.txt",
     "tailor_model": "Gemini 3.1 Pro"
   },
   {
@@ -133542,13 +133542,13 @@
     "location": "Lappeenranta sub-region, South Karelia, Finland",
     "url": "https://fi.linkedin.com/jobs/view/ict-hankintajuristi-at-gofore-4440117190",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Failed to get or parse local LLM response: 400 Client Error: Bad Request for url: http://127.0.0.1:1234/v1/chat/completions",
+    "matches_requirements": "yes",
+    "reason": "The role is an ICT procurement lawyer position that accepts an international/Indian law degree, which matches Manju's qualifications.",
     "id": "5a9526ff",
     "source": "linkedin_fi_lawyer",
-    "posted_date": "N/A",
+    "posted_date": "2026-07-20",
     "deadline": "N/A",
-    "description_file": null
+    "description_file": "job_descriptions/gofore_ict_hankintajuristi_5a9526ff.txt"
   },
   {
     "title": "Associate Lawyer",
@@ -140556,13 +140556,13 @@
     "location": "Helsinki Region, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/d1f01be6-4d7e-44f9-a4b4-d8b8bbcd829d/fi",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Failed to get or parse local LLM response: 400 Client Error: Bad Request for url: http://127.0.0.1:1234/v1/chat/completions",
+    "matches_requirements": "maybe",
+    "reason": "The role is an office sales position at a K-Citymarket grocery store, which fits Manju's background in event management and customer service.",
     "id": "582db068",
     "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null
+    "posted_date": "2026-07-22",
+    "deadline": "2026-08-02",
+    "description_file": "job_descriptions/k_ryhm__myyji___15_h_vko__k_citymarket_582db068.txt"
   },
   {
     "title": "Henkil\u00f6kohtainen avustaja puitesopimuksella Oulaisiin \u2013 joustavaa keikkaty\u00f6t\u00e4",
