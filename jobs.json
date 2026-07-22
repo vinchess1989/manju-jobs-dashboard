@@ -129552,13 +129552,13 @@
     "location": "Helsinki Region, Finland",
     "url": "https://duunitori.fi/tyopaikat/tyo/office-assistant-stsyo-20439208",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Failed to get or parse local LLM response: 400 Client Error: Bad Request for url: http://127.0.0.1:1234/v1/chat/completions",
+    "matches_requirements": "maybe",
+    "reason": "The role is an office assistant position, but it's located in M\u00e4nts\u00e4l\u00e4 which falls under Helsinki Region. Manju has experience with event management and digital service deployment at International House Oulu that could be relevant.",
     "id": "b0b504d7",
     "source": "duunitori_office_secretary",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null
+    "posted_date": "2026-07-20",
+    "deadline": "2026-07-26",
+    "description_file": "job_descriptions/poolia_office_profes_office_assistant_b0b504d7.txt"
   },
   {
     "title": "Rakennusliikkeen Toimisto Assistentti",
