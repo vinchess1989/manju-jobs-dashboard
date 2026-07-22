@@ -122728,13 +122728,13 @@
     "location": "Jyv\u00e4skyl\u00e4 Region, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/8c0ab22a-b3cb-4abe-bd61-0bb57e82982c/fi",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Failed to get or parse local LLM response: 400 Client Error: Bad Request for url: http://127.0.0.1:1234/v1/chat/completions",
+    "matches_requirements": "maybe",
+    "reason": "The role is an office position coordinating youth activities, which Manju's event management and international resident advisory experience could translate to. The Finnish language requirement is intermediate (B2), within her skill range.",
     "id": "b8984913",
     "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null
+    "posted_date": "2026-07-14",
+    "deadline": "2026-07-27",
+    "description_file": "job_descriptions/jyv_skyl_n_kaupunki_nuorisonohjaaja_liikkuvaan_nuo_b8984913.txt"
   },
   {
     "title": "Teippari / Asentaja Savon alueelle",
@@ -127125,20 +127125,6 @@
     "description_file": null
   },
   {
-    "title": "Juristi, Lakipalvelut, OP Uusimaa",
-    "company": "OP Pohjola",
-    "location": "Helsinki Region, Finland",
-    "url": "https://fi.linkedin.com/jobs/view/juristi-lakipalvelut-op-uusimaa-at-op-pohjola-4442581498",
-    "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Failed to get or parse local LLM response: 400 Client Error: Bad Request for url: http://127.0.0.1:1234/v1/chat/completions",
-    "id": "ba5a663b",
-    "source": "linkedin_fi_legal_counsel_p2",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null
-  },
-  {
     "title": "Commercial Counsel",
     "company": "Jobgether",
     "location": "United States",
@@ -127298,13 +127284,13 @@
     "location": "Jyv\u00e4skyl\u00e4 Region, Finland",
     "url": "https://duunitori.fi/tyopaikat/tyo/altius-asianajotoimisto-oy-juristi-sdsuu-20437703",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Failed to get or parse local LLM response: 400 Client Error: Bad Request for url: http://127.0.0.1:1234/v1/chat/completions",
+    "matches_requirements": "yes",
+    "reason": "The role is an office-based legal position that matches Manju's Finnish bar studies and international law degree.",
     "id": "625fd913",
     "source": "duunitori_legal_counsel",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null
+    "posted_date": "2026-07-20",
+    "deadline": "2026-07-31",
+    "description_file": "job_descriptions/altius_asianajotoimi_juristi_625fd913.txt"
   },
   {
     "title": "Juristi",
@@ -129132,13 +129118,13 @@
     "location": "Kuopio Region, Finland",
     "url": "https://duunitori.fi/tyopaikat/tyo/kansainvalisten-asioiden-koordinaattori-sksun-20440927",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Failed to get or parse local LLM response: 400 Client Error: Bad Request for url: http://127.0.0.1:1234/v1/chat/completions",
+    "matches_requirements": "yes",
+    "reason": "The role is an office-based coordination position that fits Manju's background and experience with international event management, digital service deployment, and client advisory.",
     "id": "fd60353c",
     "source": "duunitori_coordinator",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null
+    "posted_date": "2026-07-20",
+    "deadline": "2026-08-10",
+    "description_file": "job_descriptions/savon_koulutuskuntay_kansainv_listen_asioiden_koord_fd60353c.txt"
   },
   {
     "title": "AI-avusteisen markkinoinnin koordinaattori (RekryKoulutus)",
@@ -133640,12 +133626,12 @@
     "location": "Helsinki Region, Finland",
     "url": "https://duunitori.fi/tyopaikat/tyo/mediateknikko-puoli-seitseman-yle-urheilu-ja-tapahtumat-scsom-20441447",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Failed to get or parse local LLM response: 400 Client Error: Bad Request for url: http://127.0.0.1:1234/v1/chat/completions",
+    "matches_requirements": "no",
+    "reason": "The role requires specific technical expertise in multi-camera production and live IP technology, which the candidate does not have.",
     "id": "f478e469",
     "source": "duunitori_event",
-    "posted_date": "N/A",
-    "deadline": "N/A",
+    "posted_date": "2026-07-20",
+    "deadline": "Open until filled",
     "description_file": null
   },
   {
