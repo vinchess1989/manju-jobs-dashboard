@@ -34,6 +34,7 @@ Immediately discard a job if ANY of the following are true:
 * **US Remote Jobs:** Any remote job that is based in, located in, or restricted to the United States.
 * **Industry-Specific Prior Experience:** The job explicitly requires prior professional experience in a specific unrelated industry, platform, or software system as a mandatory qualification (e.g., staffing/recruitment agency experience, SAP/ERP system experience, insurance underwriting, real estate) which the candidate does not have.
 * **Commission-Only / Entrepreneurial Agent Roles:** The job is structured as a self-employed or commission-based agent role (e.g., insurance sales representative, real estate agent) rather than standard employment, typically requiring a credit check, a sales track record, or willingness to operate as an independent contractor.
+* **Youth/Student-Only Government Trainee Programs:** The role is a fixed-term traineeship (harjoittelija) explicitly restricted to currently-enrolled students below a certain degree tier (e.g. "kandidaatti-vaiheen opiskelija" / bachelor's-level, not yet graduated) and/or a specific age bracket (typically 18–25), as part of a government "first job" youth-employment scheme. The candidate already holds a completed LL.B. and LL.M., so she does not meet the enrolled-student eligibility tier these programs target, regardless of subject-matter overlap.
 ## Target Job Criteria
 
 A job is a match if it satisfies ALL of the following:
