@@ -142882,11 +142882,11 @@
     "location": "United States",
     "url": "https://www.linkedin.com/jobs/view/human-resources-business-partner-hr-generalist-at-escalon-services-4443944184",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Failed to get or parse local LLM response: 400 Client Error: Bad Request for url: http://127.0.0.1:1234/v1/chat/completions",
+    "matches_requirements": "no",
+    "reason": "The job is located in the United States, not Finland.",
     "id": "a61593f9",
     "source": "linkedin_ww",
-    "posted_date": "N/A",
+    "posted_date": "2026-07-23",
     "deadline": "N/A",
     "description_file": null
   },
@@ -142938,12 +142938,12 @@
     "location": "San Francisco, CA",
     "url": "https://www.linkedin.com/jobs/view/coach-recruiter-operations-coordinator-at-mento-4443976992",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Failed to get or parse local LLM response: 400 Client Error: Bad Request for url: http://127.0.0.1:1234/v1/chat/completions",
+    "matches_requirements": "no",
+    "reason": "The job is located in San Francisco, California, United States, which does not match Manju's target criteria of being in Finland.",
     "id": "8f99eb2b",
     "source": "linkedin_ww",
-    "posted_date": "N/A",
-    "deadline": "N/A",
+    "posted_date": "2026-07-23",
+    "deadline": "Open until filled",
     "description_file": null
   },
   {
@@ -143036,12 +143036,12 @@
     "location": "Florida, United States",
     "url": "https://www.linkedin.com/jobs/view/freelance-brand-designer-at-mindrift-4443753707",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Failed to get or parse local LLM response: 400 Client Error: Bad Request for url: http://127.0.0.1:1234/v1/chat/completions",
+    "matches_requirements": "no",
+    "reason": "The role requires strong English language skills, but Manju's Finnish is only B2 (Intermediate). The job is also fully remote in Florida, USA.",
     "id": "1046c735",
     "source": "linkedin_ww",
-    "posted_date": "N/A",
-    "deadline": "N/A",
+    "posted_date": "2026-07-23",
+    "deadline": "Open until filled",
     "description_file": null
   },
   {
@@ -143101,47 +143101,45 @@
     "description_file": null
   },
   {
-    "title": "Commercial Contract Attorney",
-    "company": "Robert Half",
-    "location": "Itasca, IL",
-    "url": "https://www.linkedin.com/jobs/view/commercial-contract-attorney-at-robert-half-4443377424",
-    "visited": "no",
-    "matches_requirements": "pending",
-    "reason": "",
-    "id": "e560fc27",
-    "source": "linkedin_ww_lawyer"
-  },
-  {
     "title": "Commercial Litigation Attorney",
     "company": "Verrus",
     "location": "United States",
     "url": "https://www.linkedin.com/jobs/view/commercial-litigation-attorney-at-verrus-4443349326",
-    "visited": "no",
-    "matches_requirements": "pending",
-    "reason": "",
+    "visited": "yes",
+    "matches_requirements": "error",
+    "reason": "Failed to get or parse local LLM response: 400 Client Error: Bad Request for url: http://127.0.0.1:1234/v1/chat/completions",
     "id": "7b93b87c",
-    "source": "linkedin_ww_lawyer"
+    "source": "linkedin_ww_lawyer",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "description_file": null
   },
   {
     "title": "Transactional Attorney - Remote",
     "company": "Innovative Driven",
     "location": "United States",
     "url": "https://www.linkedin.com/jobs/view/transactional-attorney-remote-at-innovative-driven-4442647530",
-    "visited": "no",
-    "matches_requirements": "pending",
-    "reason": "",
+    "visited": "yes",
+    "matches_requirements": "error",
+    "reason": "Failed to get or parse local LLM response: 400 Client Error: Bad Request for url: http://127.0.0.1:1234/v1/chat/completions",
     "id": "83c231a5",
-    "source": "linkedin_ww_lawyer"
+    "source": "linkedin_ww_lawyer",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "description_file": null
   },
   {
     "title": "Attorney",
     "company": "MASSACHUSETTS CHAPTER OF THE NTL ACADEMY OF ELDER LAW ATTYS INC",
     "location": "Hart's Location, NH",
     "url": "https://www.linkedin.com/jobs/view/attorney-at-massachusetts-chapter-of-the-ntl-academy-of-elder-law-attys-inc-4442751676",
-    "visited": "no",
-    "matches_requirements": "pending",
-    "reason": "",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The role requires at least 5 years of experience in estate planning and estate administration, which is senior-level and exceeds Manju's current experience.",
     "id": "a89bd44e",
-    "source": "linkedin_ww_lawyer"
+    "source": "linkedin_ww_lawyer",
+    "posted_date": "2026-07-21",
+    "deadline": "Open until filled",
+    "description_file": null
   }
 ]
