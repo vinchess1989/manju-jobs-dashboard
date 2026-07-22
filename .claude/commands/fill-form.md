@@ -1,8 +1,19 @@
 Open a single job's application form in a visible, already-logged-in browser and fill it using your own judgment — ensures a Claude-tailored resume/cover letter exist first, resolves the real form URL via find-apply-link, then pauses before submit so Manju can review and click submit herself. With no job ID given, instead runs the full discovery flow first (find near-deadline unapplied jobs → verify liveness → flag expired ones for deletion → build a reasoned checklist → let Manju pick) and then applies the single-job flow to whatever she picks.
 
-The job ID is: **$ARGUMENTS**
+The arguments are: **$ARGUMENTS**
 
-Parse `$ARGUMENTS` as a single `JOB_ID` (the first whitespace-separated token). **If empty, do not ask for a job ID** — instead run Step -1 (below) to discover candidates, then come back and run Steps 0–6 for each job selected there.
+Parse `$ARGUMENTS` by space-separated tokens:
+- Any token matching `^[0-9a-fA-F]{8}$` (case-insensitive) is treated as an explicit `JOB_ID`.
+- Any token matching `^post<(\d+)$` or `^posted<(\d+)$` (case-insensitive) extracts `POSTED_DAYS_LIMIT` (e.g. `post<3` means jobs posted in the last 3 days, i.e., `posted_date >= today - 3 days`).
+- Any token matching `^dead<(\d+)$` or `^deadline<(\d+)$` (case-insensitive) extracts `DEADLINE_DAYS_LIMIT` (e.g. `dead<3` means jobs expiring in the next 3 days, i.e., `today <= deadline <= today + 3 days`).
+
+**If no explicit `JOB_ID` token is given**: Run Step -1 (discovery mode) using the parsed `POSTED_DAYS_LIMIT` and/or `DEADLINE_DAYS_LIMIT` filters, then come back and run Steps 0–6 for each job selected there.
+
+Examples:
+- `/fill-form 1ee84312` — process single explicit job ID
+- `/fill-form post<3 dead<3` — discover unapplied jobs posted in the last 3 days AND expiring within the next 3 days
+- `/fill-form dead<5` — discover unapplied jobs expiring within the next 5 days
+- `/fill-form` — discover unapplied jobs expiring today or tomorrow (default)
 
 ---
 
@@ -33,9 +44,9 @@ Parse `$ARGUMENTS` as a single `JOB_ID` (the first whitespace-separated token). 
 
 ---
 
-## Step -1 — No job ID given: full discovery mode
+## Step -1 — Discovery mode (no explicit JOB_ID given)
 
-Only runs when `JOB_ID` is empty. Reproduces the end-to-end flow validated manually on 2026-07-21: find near-deadline unapplied jobs, verify each is genuinely still open, flag truly expired ones for deletion, build a reasoned fit checklist for what's left, let Manju pick, then fall through to Steps 0–6 for each pick.
+Only runs when no explicit `JOB_ID` token is provided. Reproduces the end-to-end flow validated manually on 2026-07-21: find unapplied jobs matching date filters (`post<X` and/or `dead<Y`), verify each is genuinely still open, flag truly expired ones for deletion, build a reasoned fit checklist for what's left, let Manju pick, then fall through to Steps 0–6 for each pick.
 
 ### -1.0 — Pull latest jobs.json
 
@@ -44,13 +55,16 @@ git pull --rebase origin main
 ```
 If `git status --short` shows unrelated pre-existing modified tracked files (e.g. from a concurrent session), stash just those paths first, pull, then pop — never discard someone else's in-progress work. See `CLAUDE.md`'s git hygiene section.
 
-### -1.1 — Find unapplied jobs with deadline today or tomorrow
+### -1.1 — Find unapplied jobs matching date filters
+
+Calculate filter dates based on parsed `$ARGUMENTS`:
+- **Deadline filter (`dead<Y`)**: If `dead<Y` is given, filter jobs with `deadline` between `$today` and `$today + Y days`. If neither `dead` nor `post` is specified, default to `Y = 1` (today or tomorrow).
+- **Posted filter (`post<X`)**: If `post<X` is given, filter jobs with `posted_date` between `$today - X days` and `$today`.
 
 ```powershell
-$today    = (Get-Date).ToString("yyyy-MM-dd")
-$tomorrow = (Get-Date).AddDays(1).ToString("yyyy-MM-dd")
+$today = (Get-Date).ToString("yyyy-MM-dd")
 ```
-Read `JOBS_JSON`. Candidates are entries where `deadline` equals `$today` or `$tomorrow`, **and** `applied` is not `"yes"`.
+Read `JOBS_JSON`. Candidates are entries satisfying the active `posted_date` and `deadline` filters, **and** where `applied` is not `"yes"`.
 
 For each candidate, also check Firestore's `applied` field (`python job_status_store.py get --url "JOB_URL" --field applied`) — jobs.json's cached `applied` can lag behind what's actually been submitted. Drop any job where **either** source says `"yes"` (jobs already handled don't need re-triage).
 
@@ -68,7 +82,7 @@ For each candidate confirmed CLOSED in -1.2, apply the **mark-job-deleted** skil
 
 ### -1.4 — Build a reasoned checklist for what's left
 
-For every candidate confirmed ACTIVE, read its `description_file` (or WebFetch/search per Step 1 of `tailor-resume-n-fill-form.md` if missing) and write one row of honest fit reasoning per job: title, company, location, deadline, and an assessment against Manju's actual profile (Oulu-based, LL.M./LL.B. legal background, International House Oulu event-coordination + digital-tools experience, B2 Finnish / C1 English, driving license, palkkatuki-eligible). Call out location mismatches, hard-requirement gaps (e.g. SAP/procurement track record, industrial certifications, marketing-tech skills), and role-type issues (e.g. commission-only/entrepreneurial roles) as plainly as genuine strengths — don't inflate weak matches to pad the list. Present this as a table.
+For every candidate confirmed ACTIVE, read its `description_file` (accept it if it has more than 200 meaningful words after the `JOB DESCRIPTION:` header; otherwise WebFetch the job's `url`, or search `"JOB_TITLE" "COMPANY" Finland job` as a last resort) and write one row of honest fit reasoning per job: title, company, location, deadline, and an assessment against Manju's actual profile (Oulu-based, LL.M./LL.B. legal background, International House Oulu event-coordination + digital-tools experience, B2 Finnish / C1 English, driving license, palkkatuki-eligible). Call out location mismatches, hard-requirement gaps (e.g. SAP/procurement track record, industrial certifications, marketing-tech skills), and role-type issues (e.g. commission-only/entrepreneurial roles) as plainly as genuine strengths — don't inflate weak matches to pad the list. Present this as a table.
 
 ### -1.5 — Let Manju select
 
@@ -131,7 +145,13 @@ Priority order, stopping at the first hit:
    ```powershell
    python "PUBLIC\scrape_application.py" --job-url "APPLY_URL" --job-id "JOB_ID" --out-dir "PRIVATE\Resumes\JOB_ID" --private-dir "PRIVATE"
    ```
-   - `question_count > 0` → generate tailored answers exactly per **Step 1.6** of `tailor-resume-n-fill-form.md` (factual-field values, language matching the question, no invented facts) and write `JOB_ID_answers.json` + the cheatsheet HTML.
+   - `question_count > 0` → generate tailored answers and write `JOB_ID_answers.json` + the cheatsheet HTML. **Answer rules:** text/textarea fields get 1–4 sentences (or a full paragraph for open-ended ones), naming the company/role where it fits; select/dropdown fields pick the closest matching option; answer in the same language as the question; never invent facts not in Manju's profile. **Known factual fields** — read these from `PRIVATE\Resumes\Master\master_data.json`'s `resume.contact` (or hardcode if faster):
+     - Date of birth: `contact.date_of_birth` (`1990-07-25`, i.e. 25 July 1990) — use for any birth-date field (split into year/month/day sub-fields if the form asks for them separately).
+     - Phone / salary expectation: leave blank, mark as a placeholder for manual fill.
+     - Address: `Oulu, Finland`.
+     - Availability: `Next possible working day`.
+     - Willing to relocate: `Yes — open to relocation within Finland, including Helsinki`.
+     - Right to work in Finland: `Yes — EU residence permit` (on forms with a structured work-permit dropdown instead of free text, pick the option meaning "I hold a valid work/residence permit", not "EU/Finnish citizen").
    - 0 questions / failure (e.g. a login-wall redirect) → no answers file will exist. You'll inspect the live form yourself once the browser is open in Step 5 — use WebFetch or a quick throwaway Playwright inspection script against `APPLY_URL` beforehand if you need the field structure before writing the fill script.
 
 ---
@@ -204,6 +224,7 @@ with sync_playwright() as p:
   - If asked about employment status, always answer "not currently employed" (or the equivalent "no").
   - If asked if the application can be used for other applications/future opportunities, always answer "yes" / agree to it.
   - If asked how she heard about the job, look up the `source` column for this job in `jobs.json` and use that value.
+  - If asked for date of birth, use `1990-07-25` (25 July 1990) — from `master_data.json`'s `resume.contact.date_of_birth`.
 - **Never click the final submit button.** Leave the form filled and waiting for review.
 
 ---
