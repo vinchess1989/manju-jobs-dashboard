@@ -146966,17 +146966,17 @@
   },
   {
     "title": "Asiakasvastaava, ty\u00f6voimapalvelut",
-    "company": "Rauman kaupunki",
-    "location": "Huittinen, Finland",
+    "company": "Extract via OpenClaw",
+    "location": "Extract via OpenClaw",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/51fc2aa5-7820-4f47-a685-40f14d9b9c51/fi",
     "visited": "yes",
-    "matches_requirements": "yes",
-    "reason": "The role of Customer Advisor matches Manju's experience with international residents and community events from her work at International House Oulu, as well as her strong English language skills.",
+    "matches_requirements": "error",
+    "reason": "Failed to get or parse local LLM response: 400 Client Error: Bad Request for url: http://127.0.0.1:1234/v1/chat/completions",
     "id": "f38ec375",
     "source": "tyomarkkinatori",
-    "posted_date": "2026-07-23",
-    "deadline": "2026-08-14",
-    "description_file": "job_descriptions/rauman_kaupunki_asiakasvastaava__ty_voimapalve_f38ec375.txt"
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "description_file": null
   },
   {
     "title": "Henkil\u00f6kohtainen avustaja",
@@ -147190,16 +147190,16 @@
   },
   {
     "title": "Kohdevastaava / vahtimestari koulukohteeseen Helsinkiin",
-    "company": "Extract via OpenClaw",
-    "location": "Extract via OpenClaw",
+    "company": "SOL Palvelut Oy",
+    "location": "Helsinki Region, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/0fbd04b0-0313-4624-bc90-69a761f4399f/fi",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Failed to get or parse local LLM response: 400 Client Error: Bad Request for url: http://127.0.0.1:1234/v1/chat/completions",
+    "matches_requirements": "maybe",
+    "reason": "The role is a generalist office position that does not require a specific technical degree, and Manju's event management experience aligns well with the duties described.",
     "id": "0031022a",
     "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null
+    "posted_date": "2026-07-23",
+    "deadline": "2026-08-04",
+    "description_file": "job_descriptions/sol_palvelut_oy_kohdevastaava___vahtimestari_k_0031022a.txt"
   }
 ]
