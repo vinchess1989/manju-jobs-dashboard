@@ -144977,20 +144977,6 @@
     "description_file": null
   },
   {
-    "title": "L\u00e4hihoitaja, Onnikoti Martti, Jyv\u00e4skyl\u00e4",
-    "company": "Extract via OpenClaw",
-    "location": "Extract via OpenClaw",
-    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/6fbf5ae3-4fea-41b0-84aa-d83b28a3aa9a/fi",
-    "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Failed to get or parse local LLM response: 400 Client Error: Bad Request for url: http://127.0.0.1:1234/v1/chat/completions",
-    "id": "bb617180",
-    "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null
-  },
-  {
     "title": "Account Clerk",
     "company": "Qatarin Suurl\u00e4hetyst\u00f6",
     "location": "Helsinki Region, Finland",
@@ -145019,20 +145005,6 @@
     "description_file": null
   },
   {
-    "title": "L\u00e4hihoitaja/l\u00e4hihoitajaopiskelija (keikkaty\u00f6), Mainiokoti Martinl\u00e4hteeseen, Hyvink\u00e4\u00e4lle",
-    "company": "Extract via OpenClaw",
-    "location": "Extract via OpenClaw",
-    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/f24c0d01-71dd-4e87-97d1-d59d4487516b/fi",
-    "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Failed to get or parse local LLM response: 400 Client Error: Bad Request for url: http://127.0.0.1:1234/v1/chat/completions",
-    "id": "c0ca7e26",
-    "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null
-  },
-  {
     "title": "Siivooja",
     "company": "Suomen Turvamiehet Yhti\u00f6t Oy",
     "location": "Kokkola, Finland",
@@ -145051,10 +145023,13 @@
     "company": "Guru Hospitality",
     "location": "Rochester, NY",
     "url": "https://www.linkedin.com/jobs/view/banquet-staff-at-guru-hospitality-4438900068",
-    "visited": "no",
-    "matches_requirements": "pending",
-    "reason": "",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The job is for a banquet staff role, which requires specific technical degree (hospitality management) as a hard requirement. The candidate does not have this.",
     "id": "9248c9bd",
-    "source": "linkedin_ww_event_p2"
+    "source": "linkedin_ww_event_p2",
+    "posted_date": "2026-07-16",
+    "deadline": "N/A",
+    "description_file": null
   }
 ]
