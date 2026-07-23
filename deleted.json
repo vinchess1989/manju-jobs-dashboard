@@ -125677,5 +125677,35 @@
     "deadline": "N/A",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'l\u00e4hihoitaja'"
+  },
+  {
+    "title": "LVI-asentaja, Teerij\u00e4rvi",
+    "company": "Extract via OpenClaw",
+    "location": "Extract via OpenClaw",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/47baca8f-b2be-4a09-a3fc-b37c6db88072/fi",
+    "visited": "yes",
+    "matches_requirements": "error",
+    "reason": "Failed to get or parse local LLM response: 400 Client Error: Bad Request for url: http://127.0.0.1:1234/v1/chat/completions",
+    "id": "6e86163e",
+    "source": "tyomarkkinatori",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'lvi-asentaja'"
+  },
+  {
+    "title": "Varhaiskasvatuksen opettaja luonto- ja kielipainotteiseen Pilke Revontuleen",
+    "company": "Extract via OpenClaw",
+    "location": "Extract via OpenClaw",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/c6df035e-ef57-4d6b-94db-767a9110d983/fi",
+    "visited": "yes",
+    "matches_requirements": "error",
+    "reason": "Failed to get or parse local LLM response: 400 Client Error: Bad Request for url: http://127.0.0.1:1234/v1/chat/completions",
+    "id": "1b06e185",
+    "source": "tyomarkkinatori",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'opettaja'"
   }
 ]
