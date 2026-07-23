@@ -150063,15 +150063,15 @@
   {
     "title": "Ty\u00f6suhdejuristi",
     "company": "Lidl Suomi",
-    "location": "Helsinki Region, Finland",
+    "location": "Espoo, Uusimaa, Finland",
     "url": "https://fi.linkedin.com/jobs/view/ty%C3%B6suhdejuristi-at-lidl-suomi-4444432430",
     "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "The role requires Finnish citizenship as a hard requirement, which the candidate does not have.",
+    "matches_requirements": "error",
+    "reason": "Failed to get or parse local LLM response: 400 Client Error: Bad Request for url: http://127.0.0.1:1234/v1/chat/completions",
     "id": "ed3de38b",
     "source": "linkedin_fi_legal_counsel",
-    "posted_date": "2026-07-23",
-    "deadline": "05t23:59",
+    "posted_date": "N/A",
+    "deadline": "N/A",
     "description_file": null
   },
   {
@@ -150118,16 +150118,16 @@
   },
   {
     "title": "Matkailu koordinaattori/myyj\u00e4 kansainv\u00e4liseen kauppaan",
-    "company": "Extract via OpenClaw",
-    "location": "Extract via OpenClaw",
+    "company": "Toranda Oy",
+    "location": "Tornio, Finland",
     "url": "https://duunitori.fi/tyopaikat/tyo/matkailu-koordinaattorimyyja-kansainvaliseen-kauppaan-stsyo-20443550",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Failed to get or parse local LLM response: 400 Client Error: Bad Request for url: http://127.0.0.1:1234/v1/chat/completions",
+    "matches_requirements": "maybe",
+    "reason": "The role is a match for Generalist Office Roles, specifically Events & Communications based on Manju's experience organizing community events at International House Oulu.",
     "id": "b16270ad",
     "source": "duunitori_coordinator",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null
+    "posted_date": "2026-07-22",
+    "deadline": "2026-08-07",
+    "description_file": "job_descriptions/toranda_oy_matkailu_koordinaattori_myyj___b16270ad.txt"
   }
 ]
