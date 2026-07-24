@@ -679,6 +679,130 @@
             cursor: pointer;
             flex-shrink: 0;
         }
+
+        /* Summary Section */
+        .summary-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            backdrop-filter: blur(12px);
+        }
+        .summary-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            user-select: none;
+        }
+        .summary-header h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: rgba(255,255,255,0.6);
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0;
+        }
+        .summary-toggle-icon {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.4);
+            transition: transform 0.3s;
+        }
+        .summary-toggle-icon.collapsed { transform: rotate(-90deg); }
+        .summary-body {
+            overflow: hidden;
+            transition: max-height 0.3s ease, opacity 0.3s ease;
+            max-height: 300px;
+            opacity: 1;
+        }
+        .summary-body.collapsed {
+            max-height: 0;
+            opacity: 0;
+        }
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 0.75rem;
+            font-size: 0.8rem;
+        }
+        .summary-table th {
+            color: rgba(255,255,255,0.45);
+            font-weight: 600;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            padding: 0.4rem 0.75rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            cursor: default;
+            background: transparent;
+        }
+        .summary-table th:first-child { text-align: left; }
+        .summary-table td {
+            padding: 0.4rem 0.75rem;
+            text-align: center;
+            color: var(--text-primary);
+            font-weight: 500;
+            font-variant-numeric: tabular-nums;
+            border-bottom: none;
+        }
+        .summary-table td:first-child {
+            text-align: left;
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.75rem;
+        }
+        .summary-table tr:hover td { background: rgba(255,255,255,0.02); }
+        .summary-val-pos { color: #10b981; }
+        .summary-val-neg { color: #f87171; }
+        .summary-val-zero { color: rgba(255,255,255,0.25); }
+
+        /* Chart modal controls */
+        .chart-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .chart-toggle-btn {
+            padding: 3px 10px;
+            border-radius: 999px;
+            border: 1px solid rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.05);
+            color: var(--text-secondary);
+            font-size: 0.72rem;
+            cursor: pointer;
+            transition: all 0.15s;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .chart-toggle-btn:hover { border-color: rgba(99,102,241,0.5); color: var(--text-primary); }
+        .chart-toggle-btn.active {
+            background: rgba(99,102,241,0.2);
+            border-color: #6366f1;
+            color: #a5b4fc;
+            font-weight: 600;
+        }
+        .yaxis-input {
+            width: 52px;
+            padding: 2px 6px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 4px;
+            color: white;
+            font-size: 0.7rem;
+            font-family: 'Space Grotesk', sans-serif;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .yaxis-input:focus { border-color: #6366f1; }
+        .yaxis-label {
+            font-size: 0.65rem;
+            color: rgba(255,255,255,0.4);
+            margin-right: 2px;
+        }
     </style>
     <!-- Firebase Compat SDKs -->
     <script src="/__/firebase/10.7.1/firebase-app-compat.js"></script>
@@ -726,6 +850,32 @@
         <h3 class="upload-title">Drop your jobs.json file here</h3>
         <p class="upload-desc">Or click to select it. Drag and drop is required if you are viewing this page directly via file://</p>
         <input type="file" id="file-input" style="display: none;" accept=".json">
+    </section>
+
+    <!-- Jobs Activity Summary -->
+    <section class="summary-section" id="jobs-summary-section" style="display:none;">
+        <div class="summary-header" onclick="toggleSummary()">
+            <h3><i class="fas fa-chart-bar" style="margin-right:6px;"></i> Jobs Activity Summary</h3>
+            <span class="summary-toggle-icon" id="summary-toggle-icon">▼</span>
+        </div>
+        <div class="summary-body" id="summary-body">
+            <table class="summary-table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Today</th>
+                        <th>Yesterday</th>
+                        <th>This Week</th>
+                        <th>Last Week</th>
+                        <th>This Month</th>
+                        <th>Last Month</th>
+                    </tr>
+                </thead>
+                <tbody id="summary-table-body">
+                    <tr><td colspan="7" style="text-align:center;color:var(--text-secondary);">Loading...</td></tr>
+                </tbody>
+            </table>
+        </div>
     </section>
 
     <div class="table-container" id="jobs-container">
@@ -826,6 +976,7 @@
                     
                     fetchJobsData();
                     setupUploadListeners();
+                    buildSummary();
                     
                     if (firestoreUnsubscribe) firestoreUnsubscribe();
                     firestoreUnsubscribe = db.collection('shared_state').doc('job_status').onSnapshot(doc => {
@@ -1096,7 +1247,7 @@
                         <th class="col-matches resizable-th"><div class="resizable-header" onclick="sortTable(9)" title="Whether the job matches your requirements based on AI evaluation">Matches ↕<div class="active-filters-summary" id="active-filters-9"></div></div></th>
                         <th class="col-reason resizable-th"><div class="resizable-header" onclick="sortTable(10)" title="The reasoning provided by the AI for its match decision">AI Reason ↕<div class="active-filters-summary" id="active-filters-10"></div></div></th>
                         <th class="col-user-reason resizable-th"><div class="resizable-header" onclick="sortTable(11)" title="Your manual reasoning if you override the AI's decision">User Reason ↕<div class="active-filters-summary" id="active-filters-11"></div></div></th>
-                        <th class="col-applied resizable-th"><div class="resizable-header" onclick="sortTable(12)" title="Whether you have applied for this job">Applied ↕<div class="active-filters-summary" id="active-filters-12"></div></div></th>
+                        <th class="col-applied resizable-th"><div class="resizable-header" onclick="sortTable(12)" title="Application date (or 'no' if not applied)">Applied ↕<div class="active-filters-summary" id="active-filters-12"></div></div></th>
                         <th class="col-user-review resizable-th"><div class="resizable-header" onclick="sortTable(13)" title="Your manual review status for this job (e.g., Pending, Yes, No)">User Review ↕<div class="active-filters-summary" id="active-filters-13"></div></div></th>
                         <th class="col-docs resizable-th"><div class="resizable-header" onclick="sortTable(14)" title="Links to generated documents like tailored resumes and cover letters">Docs ↕<div class="active-filters-summary" id="active-filters-14"></div></div></th>
                         <th class="col-tailored-date resizable-th"><div class="resizable-header" onclick="sortTable(15)" title="Date and time when the resume was tailored">Tailored ↕<div class="active-filters-summary" id="active-filters-15"></div></div></th>
@@ -1186,6 +1337,7 @@
             allJobs.forEach((job, index) => {
                 const matchVal = (sharedJobsState[job.url] && sharedJobsState[job.url].matches_requirements) || job.matches_requirements || 'pending';
                 let appliedStatus = (sharedJobsState[job.url] && sharedJobsState[job.url].applied) || job.applied || 'no';
+                let appliedDate = (sharedJobsState[job.url] && sharedJobsState[job.url].applied_date) || job.applied_date || '';
                 if (matchVal === 'no' && appliedStatus !== 'yes' && !sessionNoChanges.has(job.url) && !showArchivedNo) return;
 
                 const jobIdSafe = job.id || job.url.replace(/[\.\#\$\/\[\]]/g, '_');
@@ -1243,14 +1395,14 @@
                     </td>
                     <td class="col-reason"><div class="reason-cell" title="${aiReason.replace(/"/g, '&quot;')}">${aiReason}</div></td>
                     <td class="col-user-reason"><div class="user-reason-cell" title="${userReason.replace(/"/g, '&quot;')}">${userReason}</div></td>
-                    <td class="col-applied" data-value="${appliedStatus}">
+                    <td class="col-applied" data-value="${appliedStatus === 'yes' ? (appliedDate || 'yes') : 'no'}">
                         ${isAuthorized ? `
                         <select class="status-pill ${appliedStatus === 'yes' ? 'yes' : 'no'}" onchange="toggleApplied(this, '${job.url}', '${appliedStatus}')">
                             <option value="no" ${appliedStatus === 'no' ? 'selected' : ''}>no</option>
-                            <option value="yes" ${appliedStatus === 'yes' ? 'selected' : ''}>yes</option>
+                            <option value="yes" ${appliedStatus === 'yes' ? 'selected' : ''}>${appliedStatus === 'yes' && appliedDate ? appliedDate : 'yes'}</option>
                         </select>
                         ` : `
-                        <span class="status-btn ${appliedStatus === 'yes' ? 'status-yes' : 'status-no'}" style="cursor: default; display:inline-block; text-align:center;">${appliedStatus}</span>
+                        <span class="status-btn ${appliedStatus === 'yes' ? 'status-yes' : 'status-no'}" style="cursor: default; display:inline-block; text-align:center;">${appliedStatus === 'yes' && appliedDate ? appliedDate : appliedStatus}</span>
                         `}
                     </td>
                     <td class="col-user-review" data-value="${userReview}">
@@ -1866,27 +2018,42 @@
 
         async function toggleApplied(select, url, originalValue) {
             const newState = select.value;
+            const appliedDateStr = newState === 'yes' ? new Date().toISOString().split('T')[0] : '';
             
             localStorage.setItem('applied_' + url, newState);
             
             if (typeof db !== 'undefined' && db !== null) {
                 try {
                     select.disabled = true;
-                    await db.collection("user_feedback").add({
+                    const feedbackEntry = {
                         url: url,
                         type: "applied_update",
                         applied: newState,
                         status: "unread",
                         timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                    });
+                    };
+                    if (appliedDateStr) feedbackEntry.applied_date = appliedDateStr;
+                    await db.collection("user_feedback").add(feedbackEntry);
                     
-                    await db.collection("shared_state").doc("job_status").update(
-                        new firebase.firestore.FieldPath(url, 'applied'), newState
-                    );
+                    const updates = [
+                        [new firebase.firestore.FieldPath(url, 'applied'), newState]
+                    ];
+                    if (appliedDateStr) {
+                        updates.push([new firebase.firestore.FieldPath(url, 'applied_date'), appliedDateStr]);
+                    }
+                    await db.collection("shared_state").doc("job_status").update(...updates.flat());
                     
                     select.disabled = false;
                     select.className = 'status-pill ' + (newState === 'yes' ? 'yes' : 'no');
-                    select.closest('td').setAttribute('data-value', newState);
+                    // Update the option text to show the date
+                    if (newState === 'yes' && appliedDateStr) {
+                        const yesOpt = select.querySelector('option[value="yes"]');
+                        if (yesOpt) yesOpt.textContent = appliedDateStr;
+                    } else {
+                        const yesOpt = select.querySelector('option[value="yes"]');
+                        if (yesOpt) yesOpt.textContent = 'yes';
+                    }
+                    select.closest('td').setAttribute('data-value', newState === 'yes' ? (appliedDateStr || 'yes') : 'no');
                     select.setAttribute('onchange', `toggleApplied(this, '${url}', '${newState}')`);
                     
                     filterTable(); 
@@ -1899,7 +2066,7 @@
                 }
             } else {
                 select.className = 'status-pill ' + (newState === 'yes' ? 'yes' : 'no');
-                select.closest('td').setAttribute('data-value', newState);
+                select.closest('td').setAttribute('data-value', newState === 'yes' ? (appliedDateStr || 'yes') : 'no');
                 filterTable(); 
                 autoMarkUserReviewDone(url);
             }
@@ -2139,44 +2306,78 @@
 
             return [..._chartHistory, livePoint];
         }
-        function _renderChart(canvas, data, metric) {
+        let _chartDailyMode = false;
+        let _chartYAxisOverrides = { min: null, max: null, interval: null };
+
+        function _collapseToDaily(data) {
+            const byDay = {};
+            data.forEach(d => {
+                const dayKey = d.timestamp.slice(0, 10);
+                // Keep the last entry per day, but accumulate added/deleted
+                if (!byDay[dayKey]) {
+                    byDay[dayKey] = { ...d, _dailyAdded: d.added ?? 0, _dailyDeleted: d.deleted ?? 0 };
+                } else {
+                    byDay[dayKey]._dailyAdded += (d.added ?? 0);
+                    byDay[dayKey]._dailyDeleted += (d.deleted ?? 0);
+                    // Overwrite with latest snapshot values
+                    Object.assign(byDay[dayKey], { ...d, _dailyAdded: byDay[dayKey]._dailyAdded, _dailyDeleted: byDay[dayKey]._dailyDeleted });
+                }
+            });
+            return Object.keys(byDay).sort().map(k => {
+                const d = byDay[k];
+                return { ...d, added: d._dailyAdded, deleted: d._dailyDeleted, _hasChurn: (d._dailyAdded > 0 || d._dailyDeleted > 0) };
+            });
+        }
+
+        function _renderChart(canvas, data, metric, opts) {
+            opts = opts || {};
+            const dailyMode = opts.dailyMode || false;
+            const yOverrides = opts.yAxisOverrides || { min: null, max: null, interval: null };
             const ctx = canvas.getContext('2d');
             const W = canvas.width, H = canvas.height;
             ctx.clearRect(0, 0, W, H);
             const _cutoffMs = new Date('2026-06-15T00:00:00').getTime();
             data = (data || []).filter(d => new Date(d.timestamp).getTime() >= _cutoffMs);
-            const _24hAgoMs = Date.now() - 24 * 60 * 60 * 1000;
-            const _older = data.filter(d => new Date(d.timestamp).getTime() < _24hAgoMs);
-            const _recent = data.filter(d => new Date(d.timestamp).getTime() >= _24hAgoMs)
-                .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
-            const _bySlot = {}, _bySlotApplied = {}, _bySlotAdded = {}, _bySlotDeleted = {}, _bySlotChurn = {};
-            _older.forEach(d => {
-                const _dt = new Date(d.timestamp);
-                const slot = d.timestamp.slice(0, 10) + 'T' + String(Math.floor(_dt.getHours() / 6) * 6).padStart(2, '0');
-                _bySlot[slot] = d;
-                if (d.applied != null && d.applied > (_bySlotApplied[slot] ?? 0)) _bySlotApplied[slot] = d.applied;
-                _bySlotAdded[slot] = (_bySlotAdded[slot] ?? 0) + (d.added ?? 0);
-                _bySlotDeleted[slot] = (_bySlotDeleted[slot] ?? 0) + (d.deleted ?? 0);
-                if (d.added !== undefined || d.deleted !== undefined) _bySlotChurn[slot] = true;
-            });
-            const _olderPoints = Object.keys(_bySlot).sort().map(slot => ({
-                ..._bySlot[slot],
-                applied: _bySlotApplied[slot] ?? 0,
-                added: _bySlotAdded[slot] ?? 0,
-                deleted: _bySlotDeleted[slot] ?? 0,
-                _hasChurn: _bySlotChurn[slot] ?? false,
-            }));
-            const _changeFields = ['total', 'yes', 'maybe', 'applied'];
-            let _lastVals = null;
-            const _recentPoints = [];
-            _recent.forEach(d => {
-                const vals = _changeFields.map(f => d[f] ?? 0).join(',');
-                if (vals !== _lastVals) {
-                    _recentPoints.push({ ...d, _raw: true, _hasChurn: d.added !== undefined || d.deleted !== undefined });
-                    _lastVals = vals;
-                }
-            });
-            data = _olderPoints.concat(_recentPoints);
+
+            if (dailyMode) {
+                // In daily mode, collapse ALL data to one point per day
+                data = _collapseToDaily(data);
+            } else {
+                // Original bucketing: 6h slots for older, change-based for recent
+                const _24hAgoMs = Date.now() - 24 * 60 * 60 * 1000;
+                const _older = data.filter(d => new Date(d.timestamp).getTime() < _24hAgoMs);
+                const _recent = data.filter(d => new Date(d.timestamp).getTime() >= _24hAgoMs)
+                    .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+                const _bySlot = {}, _bySlotApplied = {}, _bySlotAdded = {}, _bySlotDeleted = {}, _bySlotChurn = {};
+                _older.forEach(d => {
+                    const _dt = new Date(d.timestamp);
+                    const slot = d.timestamp.slice(0, 10) + 'T' + String(Math.floor(_dt.getHours() / 6) * 6).padStart(2, '0');
+                    _bySlot[slot] = d;
+                    if (d.applied != null && d.applied > (_bySlotApplied[slot] ?? 0)) _bySlotApplied[slot] = d.applied;
+                    _bySlotAdded[slot] = (_bySlotAdded[slot] ?? 0) + (d.added ?? 0);
+                    _bySlotDeleted[slot] = (_bySlotDeleted[slot] ?? 0) + (d.deleted ?? 0);
+                    if (d.added !== undefined || d.deleted !== undefined) _bySlotChurn[slot] = true;
+                });
+                const _olderPoints = Object.keys(_bySlot).sort().map(slot => ({
+                    ..._bySlot[slot],
+                    applied: _bySlotApplied[slot] ?? 0,
+                    added: _bySlotAdded[slot] ?? 0,
+                    deleted: _bySlotDeleted[slot] ?? 0,
+                    _hasChurn: _bySlotChurn[slot] ?? false,
+                }));
+                const _changeFields = ['total', 'yes', 'maybe', 'applied'];
+                let _lastVals = null;
+                const _recentPoints = [];
+                _recent.forEach(d => {
+                    const vals = _changeFields.map(f => d[f] ?? 0).join(',');
+                    if (vals !== _lastVals) {
+                        _recentPoints.push({ ...d, _raw: true, _hasChurn: d.added !== undefined || d.deleted !== undefined });
+                        _lastVals = vals;
+                    }
+                });
+                data = _olderPoints.concat(_recentPoints);
+            }
+
             if (!data || data.length < 2) {
                 ctx.fillStyle = 'rgba(255,255,255,0.4)'; ctx.font = '11px sans-serif'; ctx.textAlign = 'center';
                 ctx.fillText('Not enough data yet', W / 2, H / 2); return;
@@ -2195,9 +2396,6 @@
             const CHURN_KEY = metric === 'yes' ? 'yes' : metric === 'applied' ? 'applied' : 'total';
             const ADDED_COLOR = '#94a3b8';
             const DELETED_COLOR = '#f87171';
-            // Prefer the real added/deleted churn scraper.py records for 'total'; fall back to the
-            // net change in the metric's own key (covers historical points and the yes/applied views,
-            // which have no separate churn instrumentation).
             const addedVals = data.map((d, i) => {
                 if (CHURN_KEY === 'total' && d._hasChurn) return d.added ?? 0;
                 if (i === 0) return 0;
@@ -2217,19 +2415,27 @@
                 rRange = rMax - rMin;
             }
             const allVals = data.flatMap(d => LINES.map(l => d[l.key] ?? 0));
-            const minVal = Math.max(0, Math.min(...allVals) - 1), maxVal = Math.max(...allVals) + 1, range = maxVal - minVal || 1;
+            let minVal = Math.max(0, Math.min(...allVals) - 1);
+            let maxVal = Math.max(...allVals) + 1;
+            // Apply Y-axis overrides
+            if (yOverrides.min !== null && !isNaN(yOverrides.min)) minVal = yOverrides.min;
+            if (yOverrides.max !== null && !isNaN(yOverrides.max)) maxVal = yOverrides.max;
+            const range = maxVal - minVal || 1;
+            const gridLines = (yOverrides.interval !== null && !isNaN(yOverrides.interval) && yOverrides.interval > 0)
+                ? Math.max(1, Math.floor(range / yOverrides.interval))
+                : 4;
             const pL = 38, pR = showAdded ? 34 : 10, pT = 22, pB = 36, cW = W - pL - pR, cH = H - pT - pB;
             ctx.strokeStyle = 'rgba(255,255,255,0.06)'; ctx.lineWidth = 1;
-            for (let i = 0; i <= 4; i++) {
-                const y = pT + cH * i / 4;
+            for (let i = 0; i <= gridLines; i++) {
+                const y = pT + cH * i / gridLines;
                 ctx.beginPath(); ctx.moveTo(pL, y); ctx.lineTo(pL + cW, y); ctx.stroke();
                 ctx.fillStyle = 'rgba(255,255,255,0.35)'; ctx.font = '9px sans-serif'; ctx.textAlign = 'right';
-                ctx.fillText(Math.round(maxVal - range * i / 4), pL - 3, y + 3);
+                ctx.fillText(Math.round(maxVal - range * i / gridLines), pL - 3, y + 3);
             }
             if (showAdded) {
-                for (let i = 0; i <= 4; i++) {
-                    const y = pT + cH * i / 4;
-                    const val = Math.round(rMax - rRange * i / 4);
+                for (let i = 0; i <= gridLines; i++) {
+                    const y = pT + cH * i / gridLines;
+                    const val = Math.round(rMax - rRange * i / gridLines);
                     ctx.fillStyle = 'rgba(148,163,184,0.55)'; ctx.font = '9px sans-serif'; ctx.textAlign = 'left';
                     ctx.fillText((val > 0 ? '+' : '') + val, pL + cW + 4, y + 3);
                 }
@@ -2267,14 +2473,14 @@
                 ctx.strokeStyle = line.color; ctx.lineWidth = 2; ctx.lineJoin = 'round'; ctx.beginPath();
                 data.forEach((d, i) => {
                     const x = pL + (i / (data.length - 1)) * cW;
-                    const y = pT + cH - ((d[line.key] ?? 0) - minVal) / range * cH;
+                    const y = pT + cH - (Math.min(Math.max((d[line.key] ?? 0), minVal), maxVal) - minVal) / range * cH;
                     i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
                 }); ctx.stroke();
                 if (data.length <= 40) {
                     ctx.fillStyle = line.color;
                     data.forEach((d, i) => {
                         const x = pL + (i / (data.length - 1)) * cW;
-                        const y = pT + cH - ((d[line.key] ?? 0) - minVal) / range * cH;
+                        const y = pT + cH - (Math.min(Math.max((d[line.key] ?? 0), minVal), maxVal) - minVal) / range * cH;
                         ctx.beginPath(); ctx.arc(x, y, 2.5, 0, Math.PI * 2); ctx.fill();
                     });
                 }
@@ -2300,7 +2506,11 @@
                 ctx.translate(x, pT + cH + 5);
                 ctx.rotate(-Math.PI / 4);
                 ctx.fillStyle = 'rgba(255,255,255,0.4)'; ctx.font = '9px sans-serif'; ctx.textAlign = 'right';
-                ctx.fillText(isNewDay ? dt.toLocaleString([], { month: 'short', day: 'numeric' }) : fmtTime(d), 0, 0);
+                if (dailyMode) {
+                    ctx.fillText(dt.toLocaleString([], { month: 'short', day: 'numeric' }), 0, 0);
+                } else {
+                    ctx.fillText(isNewDay ? dt.toLocaleString([], { month: 'short', day: 'numeric' }) : fmtTime(d), 0, 0);
+                }
                 ctx.restore();
             });
             let lx = pL;
@@ -2325,7 +2535,7 @@
             canvas._chartPoints = data.map((d, i) => {
                 const x = pL + (i / (data.length - 1)) * cW;
                 const yMap = {};
-                LINES.forEach(l => { yMap[l.key] = pT + cH - ((d[l.key] ?? 0) - minVal) / range * cH; });
+                LINES.forEach(l => { yMap[l.key] = pT + cH - (Math.min(Math.max((d[l.key] ?? 0), minVal), maxVal) - minVal) / range * cH; });
                 const lines = LINES.map(l => ({ key: l.key, label: l.label, color: l.color, val: d[l.key] ?? 0 }));
                 if (showAdded) {
                     const addedVal = addedVals[i], deletedVal = deletedVals[i];
@@ -2365,21 +2575,55 @@
             _renderChart(document.getElementById('chart-tooltip-canvas'), data, metric);
         }
         function _hideChartTooltip() { document.getElementById('chart-tooltip').style.display = 'none'; }
+        let _chartModalMetric = 'total';
+        let _chartModalData = null;
         async function _openChartModal(metric) {
             _hideChartTooltip();
+            _chartModalMetric = metric;
             const modal = document.getElementById('chart-modal');
             document.getElementById('chart-modal-title').textContent =
                 metric === 'yes' ? 'Yes & Maybe matches over time'
                 : metric === 'applied' ? 'Applied jobs over time'
                 : 'Yes matches over time';
             modal.style.display = 'flex';
-            const data = await _loadChartHistory();
+            _chartModalData = await _loadChartHistory();
+            // Reset controls
+            const dailyBtn = document.getElementById('chart-daily-btn');
+            if (dailyBtn) {
+                dailyBtn.classList.toggle('active', _chartDailyMode);
+                dailyBtn.textContent = _chartDailyMode ? '◉ Daily' : '○ Daily';
+            }
+            _redrawChartModal();
+        }
+        function _redrawChartModal() {
+            if (!_chartModalData) return;
             const canvas = document.getElementById('chart-modal-canvas');
-            _renderChart(canvas, data, metric);
+            _renderChart(canvas, _chartModalData, _chartModalMetric, {
+                dailyMode: _chartDailyMode,
+                yAxisOverrides: _chartYAxisOverrides
+            });
             canvas.removeEventListener('mousemove', _onModalMouseMove);
             canvas.addEventListener('mousemove', _onModalMouseMove);
             canvas.removeEventListener('mouseleave', _onModalMouseLeave);
             canvas.addEventListener('mouseleave', _onModalMouseLeave);
+        }
+        function _toggleDailyMode() {
+            _chartDailyMode = !_chartDailyMode;
+            const btn = document.getElementById('chart-daily-btn');
+            if (btn) {
+                btn.classList.toggle('active', _chartDailyMode);
+                btn.textContent = _chartDailyMode ? '◉ Daily' : '○ Daily';
+            }
+            _redrawChartModal();
+        }
+        function _updateYAxis() {
+            const minEl = document.getElementById('yaxis-min');
+            const maxEl = document.getElementById('yaxis-max');
+            const intEl = document.getElementById('yaxis-interval');
+            _chartYAxisOverrides.min = (minEl && minEl.value !== '') ? parseFloat(minEl.value) : null;
+            _chartYAxisOverrides.max = (maxEl && maxEl.value !== '') ? parseFloat(maxEl.value) : null;
+            _chartYAxisOverrides.interval = (intEl && intEl.value !== '') ? parseFloat(intEl.value) : null;
+            _redrawChartModal();
         }
         function _onModalMouseMove(e) {
             const canvas = e.currentTarget;
@@ -2423,6 +2667,87 @@
             el.addEventListener('mouseleave', _scheduleChartHide);
             el.addEventListener('click', () => _openChartModal(metric));
         }
+        // ── Summary section logic ────────────────────────────────────────────
+        function toggleSummary() {
+            const body = document.getElementById('summary-body');
+            const icon = document.getElementById('summary-toggle-icon');
+            body.classList.toggle('collapsed');
+            icon.classList.toggle('collapsed');
+        }
+
+        async function buildSummary() {
+            const historyData = await _loadChartHistory();
+            if (!historyData || historyData.length < 2) return;
+
+            const section = document.getElementById('jobs-summary-section');
+            section.style.display = 'block';
+
+            const now = new Date();
+            const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const yesterdayStart = new Date(todayStart.getTime() - 86400000);
+            const dayOfWeek = now.getDay() === 0 ? 7 : now.getDay(); // Mon=1
+            const thisWeekStart = new Date(todayStart.getTime() - (dayOfWeek - 1) * 86400000);
+            const lastWeekStart = new Date(thisWeekStart.getTime() - 7 * 86400000);
+            const thisMonthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+            const lastMonthStart = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+
+            function getPeriodStats(startMs, endMs) {
+                const pointsInRange = historyData.filter(d => {
+                    const t = new Date(d.timestamp).getTime();
+                    return t >= startMs && t < endMs;
+                });
+                if (pointsInRange.length === 0) return { added: 0, deleted: 0, appliedDelta: 0, matchedDelta: 0 };
+
+                let totalAdded = 0, totalDeleted = 0;
+                pointsInRange.forEach(d => {
+                    totalAdded += (d.added ?? 0);
+                    totalDeleted += (d.deleted ?? 0);
+                });
+
+                // Find the nearest point before the period for baseline
+                const allBefore = historyData.filter(d => new Date(d.timestamp).getTime() < startMs);
+                const baseline = allBefore.length > 0 ? allBefore[allBefore.length - 1] : pointsInRange[0];
+                const last = pointsInRange[pointsInRange.length - 1];
+
+                const appliedDelta = (last.applied ?? 0) - (baseline.applied ?? 0);
+                const matchedDelta = ((last.yes ?? 0) + (last.maybe ?? 0)) - ((baseline.yes ?? 0) + (baseline.maybe ?? 0));
+
+                return { added: totalAdded, deleted: totalDeleted, appliedDelta, matchedDelta };
+            }
+
+            const periods = [
+                getPeriodStats(todayStart.getTime(), now.getTime() + 1),
+                getPeriodStats(yesterdayStart.getTime(), todayStart.getTime()),
+                getPeriodStats(thisWeekStart.getTime(), now.getTime() + 1),
+                getPeriodStats(lastWeekStart.getTime(), thisWeekStart.getTime()),
+                getPeriodStats(thisMonthStart.getTime(), now.getTime() + 1),
+                getPeriodStats(lastMonthStart.getTime(), thisMonthStart.getTime()),
+            ];
+
+            function fmtVal(v) {
+                if (v === 0) return '<span class="summary-val-zero">0</span>';
+                if (v > 0) return `<span class="summary-val-pos">+${v}</span>`;
+                return `<span class="summary-val-neg">${v}</span>`;
+            }
+            function fmtAbs(v) {
+                if (v === 0) return '<span class="summary-val-zero">0</span>';
+                return `<span style="color:var(--text-primary);">${v}</span>`;
+            }
+
+            const rows = [
+                { label: '📦 Added', key: 'added', fmt: fmtAbs },
+                { label: '🗑️ Deleted', key: 'deleted', fmt: fmtAbs },
+                { label: '📝 Applied', key: 'appliedDelta', fmt: fmtVal },
+                { label: '✅ Matched (yes+maybe)', key: 'matchedDelta', fmt: fmtVal },
+            ];
+
+            const tbody = document.getElementById('summary-table-body');
+            tbody.innerHTML = rows.map(r =>
+                `<tr><td>${r.label}</td>${periods.map(p => `<td>${r.fmt(p[r.key])}</td>`).join('')}</tr>`
+            ).join('');
+        }
+        // ── End summary section logic ────────────────────────────────────────
+
         document.addEventListener('DOMContentLoaded', () => {
             const tip = document.getElementById('chart-tooltip');
             tip.addEventListener('mouseenter', _cancelChartHide);
@@ -2448,9 +2773,16 @@
     <!-- Expanded chart modal -->
     <div id="chart-modal" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,0.72);align-items:center;justify-content:center;">
         <div style="background:#161b2e;border:1px solid rgba(255,255,255,0.12);border-radius:1rem;padding:1.25rem 1.5rem;position:relative;width:680px;max-width:95vw;box-shadow:0 30px 80px rgba(0,0,0,0.8);">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.5rem;">
                 <div id="chart-modal-title" style="font-size:0.72rem;font-weight:600;color:rgba(255,255,255,0.55);font-family:'Space Grotesk',sans-serif;letter-spacing:0.04em;text-transform:uppercase;"></div>
                 <button id="chart-modal-close" style="background:none;border:none;color:rgba(255,255,255,0.5);font-size:1.4rem;cursor:pointer;padding:0;line-height:1;font-family:sans-serif;">×</button>
+            </div>
+            <div class="chart-controls">
+                <button id="chart-daily-btn" class="chart-toggle-btn" onclick="_toggleDailyMode()">○ Daily</button>
+                <span style="width:1px;height:16px;background:rgba(255,255,255,0.1);"></span>
+                <span class="yaxis-label">Y Min</span><input type="number" id="yaxis-min" class="yaxis-input" placeholder="auto" onchange="_updateYAxis()" onkeyup="_updateYAxis()">
+                <span class="yaxis-label">Y Max</span><input type="number" id="yaxis-max" class="yaxis-input" placeholder="auto" onchange="_updateYAxis()" onkeyup="_updateYAxis()">
+                <span class="yaxis-label">Interval</span><input type="number" id="yaxis-interval" class="yaxis-input" placeholder="auto" onchange="_updateYAxis()" onkeyup="_updateYAxis()" min="1">
             </div>
             <div style="position:relative;">
                 <canvas id="chart-modal-canvas" width="628" height="240" style="display:block;width:100%;"></canvas>
