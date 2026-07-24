@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review — Manju's Job Board</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-primary: #0a0d16;
+            --bg-secondary: #111524;
+            --bg-card: rgba(17, 21, 37, 0.7);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --color-yes: #10b981;
+            --color-no: #ef4444;
+            --color-pending: #f59e0b;
+            --color-maybe: #60a5fa;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.15) transparent; }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+        header {
+            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;
+            padding: 1rem 2rem; background: var(--bg-secondary); border-bottom: 1px solid var(--border-color);
+            position: sticky; top: 0; z-index: 10;
+        }
+        .logo-area { display: flex; align-items: center; gap: 0.75rem; }
+        .logo-icon {
+            width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700; font-size: 1.1rem;
+        }
+        .logo-title { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.1rem; }
+        .back-link {
+            color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; display: flex; align-items: center; gap: 0.4rem;
+        }
+        .back-link:hover { color: var(--text-primary); }
+        #auth-container {
+            display: flex; gap: 1rem; align-items: center; background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border-color); border-radius: 2rem; padding: 0.25rem 0.25rem 0.25rem 1.25rem;
+        }
+        #user-email { font-size: 0.875rem; color: var(--text-secondary); display: none; }
+        #login-btn, #logout-btn {
+            border: none; padding: 0.5rem 1rem; border-radius: 2rem; cursor: pointer;
+            font-family: 'Space Grotesk', sans-serif; font-weight: 600; color: white;
+        }
+        #login-btn { background: #6366f1; }
+        #logout-btn { background: #ef4444; display: none; }
+
+        .tabs { display: flex; gap: 0.5rem; padding: 1.5rem 2rem 0; }
+        .tab-btn {
+            background: none; border: 1px solid var(--border-color); color: var(--text-secondary);
+            padding: 0.6rem 1.25rem; border-radius: 0.75rem 0.75rem 0 0; cursor: pointer;
+            font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 0.9rem;
+        }
+        .tab-btn.active { color: var(--text-primary); background: var(--bg-card); border-bottom-color: var(--bg-card); }
+        .tab-btn .count { color: var(--text-secondary); font-weight: 400; margin-left: 0.35rem; }
+
+        main { padding: 0 2rem 3rem; max-width: 1200px; margin: 0 auto; }
+        .panel { display: none; }
+        .panel.active { display: block; }
+
+        .empty-state { text-align: center; padding: 4rem 1rem; color: var(--text-secondary); }
+
+        .row-list { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1.5rem; }
+        .job-row {
+            background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 0.9rem;
+            padding: 1rem 1.25rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;
+        }
+        .job-row .job-info { flex: 1; min-width: 260px; }
+        .job-row .job-title { font-weight: 600; font-size: 1rem; }
+        .job-row .job-title a { color: var(--text-primary); text-decoration: none; }
+        .job-row .job-title a:hover { text-decoration: underline; }
+        .job-row .job-meta { color: var(--text-secondary); font-size: 0.85rem; margin-top: 0.25rem; }
+        .job-row .job-reason { color: var(--text-secondary); font-size: 0.82rem; margin-top: 0.4rem; max-width: 640px; }
+        .job-row .job-actions { display: flex; gap: 0.5rem; align-items: center; }
+
+        .btn {
+            border: none; border-radius: 0.6rem; padding: 0.55rem 1rem; cursor: pointer;
+            font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 0.85rem; color: white;
+            display: flex; align-items: center; gap: 0.4rem;
+        }
+        .btn.apply { background: var(--color-yes); }
+        .btn.delete { background: var(--color-no); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .section-label {
+            font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 0.95rem; text-transform: uppercase;
+            letter-spacing: 0.04em; color: var(--text-secondary); margin: 1.75rem 0 0.5rem;
+        }
+        .section-label:first-child { margin-top: 1.5rem; }
+
+        .action-row {
+            background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 0.9rem;
+            padding: 0.9rem 1.25rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;
+        }
+        .action-row.done { opacity: 0.6; }
+        .action-info { flex: 1; min-width: 260px; }
+        .action-type-badge {
+            display: inline-block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase;
+            padding: 0.15rem 0.55rem; border-radius: 1rem; margin-right: 0.5rem; color: white;
+        }
+        .action-type-badge.create_login { background: var(--color-pending); }
+        .action-type-badge.upload_video { background: var(--color-maybe); }
+        .action-type-badge.email_application { background: #8b5cf6; }
+        .action-job-title { font-weight: 600; }
+        .action-job-title a { color: var(--text-primary); text-decoration: none; }
+        .action-job-title a:hover { text-decoration: underline; }
+        .action-detail { color: var(--text-secondary); font-size: 0.82rem; margin-top: 0.3rem; }
+        .action-date { color: var(--text-secondary); font-size: 0.75rem; margin-top: 0.2rem; }
+        .action-check { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: var(--text-secondary); cursor: pointer; }
+        .action-check input { width: 18px; height: 18px; cursor: pointer; }
+
+        .spinner-container { text-align: center; padding: 4rem 1rem; color: var(--text-secondary); }
+        .spinner {
+            width: 36px; height: 36px; border: 3px solid var(--border-color); border-top-color: #6366f1;
+            border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 1rem;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+    <!-- Firebase Compat SDKs -->
+    <script src="/__/firebase/10.7.1/firebase-app-compat.js"></script>
+    <script src="/__/firebase/10.7.1/firebase-auth-compat.js"></script>
+    <script src="/__/firebase/10.7.1/firebase-firestore-compat.js"></script>
+</head>
+<body>
+
+<header>
+    <div class="logo-area">
+        <div class="logo-icon">M</div>
+        <div class="logo-title">Review Queue</div>
+        <a class="back-link" href="index.html"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+    </div>
+    <div id="auth-container">
+        <span id="user-email"></span>
+        <button id="login-btn">Sign in with Google</button>
+        <button id="logout-btn">Sign Out</button>
+    </div>
+</header>
+
+<div class="tabs">
+    <button class="tab-btn active" id="tab-btn-weak" onclick="switchTab('weak')">Weak Matches <span class="count" id="weak-count"></span></button>
+    <button class="tab-btn" id="tab-btn-actions" onclick="switchTab('actions')">Action Items <span class="count" id="actions-count"></span></button>
+</div>
+
+<main>
+    <div class="panel active" id="panel-weak">
+        <div id="weak-content" class="spinner-container"><div class="spinner"></div><div>Loading jobs…</div></div>
+    </div>
+    <div class="panel" id="panel-actions">
+        <div id="actions-content" class="spinner-container"><div class="spinner"></div><div>Loading jobs…</div></div>
+    </div>
+</main>
+
+<script>
+    const firebaseConfig = {
+        projectId: "manju-jobs-dashboard",
+        appId: "1:429610244337:web:6117ee37d384af03b33150",
+        storageBucket: "manju-jobs-dashboard.firebasestorage.app",
+        apiKey: "AIzaSyAWBGcQjYZ0oGlxkGMl5Rrm5eHxOZBRqa4",
+        authDomain: "manju-jobs-dashboard.firebaseapp.com",
+        messagingSenderId: "429610244337",
+        measurementId: "G-EQ4XK63BVW"
+    };
+    firebase.initializeApp(firebaseConfig);
+
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    const ALLOWED_EMAILS = ['vineethkaimal1989@gmail.com', 'munchnambiar@gmail.com'];
+
+    let currentUser = null;
+    let isAuthorized = false;
+    let sharedJobsState = {};
+    let firestoreUnsubscribe = null;
+    let allJobs = [];
+    let deletedJobsData = [];
+    let dataLoaded = false;
+
+    const ACTION_TYPE_LABELS = {
+        create_login: 'Create Login',
+        upload_video: 'Upload Video',
+        email_application: 'Email Application',
+    };
+
+    function escapeHtml(str) {
+        const div = document.createElement('div');
+        div.textContent = str == null ? '' : String(str);
+        return div.innerHTML;
+    }
+
+    function switchTab(tab) {
+        document.getElementById('tab-btn-weak').classList.toggle('active', tab === 'weak');
+        document.getElementById('tab-btn-actions').classList.toggle('active', tab === 'actions');
+        document.getElementById('panel-weak').classList.toggle('active', tab === 'weak');
+        document.getElementById('panel-actions').classList.toggle('active', tab === 'actions');
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+        const loginBtn = document.getElementById('login-btn');
+        const logoutBtn = document.getElementById('logout-btn');
+        const userEmail = document.getElementById('user-email');
+
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                currentUser = user;
+                isAuthorized = ALLOWED_EMAILS.includes(user.email);
+                loginBtn.style.display = 'none';
+                logoutBtn.style.display = 'block';
+                userEmail.style.display = 'block';
+                userEmail.textContent = user.email + (isAuthorized ? '' : ' (Read-Only)');
+
+                fetchJobsData();
+
+                if (firestoreUnsubscribe) firestoreUnsubscribe();
+                firestoreUnsubscribe = db.collection('shared_state').doc('job_status').onSnapshot(doc => {
+                    sharedJobsState = doc.exists ? doc.data() : {};
+                    if (dataLoaded) renderAll();
+                });
+            } else {
+                currentUser = null;
+                isAuthorized = false;
+                loginBtn.style.display = 'block';
+                logoutBtn.style.display = 'none';
+                userEmail.style.display = 'none';
+                userEmail.textContent = '';
+                sharedJobsState = {};
+                if (firestoreUnsubscribe) { firestoreUnsubscribe(); firestoreUnsubscribe = null; }
+                document.getElementById('weak-content').innerHTML = '<div class="empty-state">Please sign in with Google to view the review queue.</div>';
+                document.getElementById('actions-content').innerHTML = '<div class="empty-state">Please sign in with Google to view the review queue.</div>';
+            }
+        });
+
+        loginBtn.addEventListener('click', () => {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            auth.signInWithPopup(provider).catch(err => {
+                console.error(err);
+                alert('Login Error: ' + err.message);
+            });
+        });
+
+        logoutBtn.addEventListener('click', () => auth.signOut().catch(console.error));
+    });
+
+    function fetchJobsData() {
+        Promise.all([
+            fetch('https://vinchess1989.github.io/manju-jobs-dashboard/jobs.json?nocache=' + Date.now()),
+            fetch('https://vinchess1989.github.io/manju-jobs-dashboard/deleted.json?nocache=' + Date.now()).catch(() => null)
+        ]).then(responses => Promise.all([
+            responses[0].json(),
+            responses[1] && responses[1].ok ? responses[1].json() : Promise.resolve([])
+        ])).then(([jobs, deleted]) => {
+            allJobs = jobs;
+            deletedJobsData = deleted || [];
+            dataLoaded = true;
+            renderAll();
+        }).catch(err => {
+            console.error('Failed to load jobs data', err);
+            document.getElementById('weak-content').innerHTML = '<div class="empty-state">Could not load jobs.json.</div>';
+            document.getElementById('actions-content').innerHTML = '<div class="empty-state">Could not load jobs.json.</div>';
+        });
+    }
+
+    function renderAll() {
+        renderWeakMatches();
+        renderActionItems();
+    }
+
+    // ── Weak Matches tab ──────────────────────────────────────────────
+    function renderWeakMatches() {
+        const container = document.getElementById('weak-content');
+        const weak = allJobs.filter(job => {
+            const state = sharedJobsState[job.url] || {};
+            if (state.deletion_reason) return false;
+            const matchVal = state.matches_requirements || job.matches_requirements || 'pending';
+            return matchVal === 'maybe';
+        });
+
+        document.getElementById('weak-count').textContent = weak.length ? `(${weak.length})` : '';
+
+        if (weak.length === 0) {
+            container.innerHTML = '<div class="empty-state">No weak matches waiting for review.</div>';
+            return;
+        }
+
+        container.innerHTML = '<div class="row-list">' + weak.map(job => {
+            const reason = escapeHtml(job.reason || '');
+            return `
+                <div class="job-row" data-url="${escapeHtml(job.url)}">
+                    <div class="job-info">
+                        <div class="job-title"><a href="${escapeHtml(job.url)}" target="_blank" rel="noopener">${escapeHtml(job.title)}</a></div>
+                        <div class="job-meta">${escapeHtml(job.company)} · ${escapeHtml(job.location)} · Deadline: ${escapeHtml(job.deadline || 'N/A')}</div>
+                        ${reason ? `<div class="job-reason">${reason}</div>` : ''}
+                    </div>
+                    <div class="job-actions">
+                        <button class="btn apply" ${isAuthorized ? '' : 'disabled'} onclick="applyWeakMatch('${escapeHtml(job.url)}', this)"><i class="fas fa-check"></i> Apply</button>
+                        <button class="btn delete" ${isAuthorized ? '' : 'disabled'} onclick="deleteWeakMatch('${escapeHtml(job.url)}', this)"><i class="fas fa-trash"></i> Delete</button>
+                    </div>
+                </div>
+            `;
+        }).join('') + '</div>';
+    }
+
+    async function applyWeakMatch(url, btn) {
+        const reason = prompt("Why should this job be promoted to a 'yes' match? (optional)");
+        if (reason === null) return;
+        const finalReason = reason.trim() || 'Promoted from weak match via review dashboard';
+        btn.disabled = true;
+        try {
+            await db.collection('shared_state').doc('job_status').update(
+                new firebase.firestore.FieldPath(url, 'matches_requirements'), 'yes',
+                new firebase.firestore.FieldPath(url, 'user_reason'), finalReason
+            );
+        } catch (e) {
+            console.error(e);
+            alert('Failed to save to cloud database.');
+            btn.disabled = false;
+        }
+    }
+
+    async function deleteWeakMatch(url, btn) {
+        const state = sharedJobsState[url] || {};
+        const job = allJobs.find(j => j.url === url) || {};
+        const alreadyApplied = state.applied === 'yes' || job.applied === 'yes';
+        if (alreadyApplied && !confirm('This job is marked as already applied. Delete anyway?')) return;
+
+        const reason = prompt('Reason for deleting this job?', 'No longer accepting applications');
+        if (reason === null) return;
+        btn.disabled = true;
+        try {
+            await db.collection('shared_state').doc('job_status').update(
+                new firebase.firestore.FieldPath(url, 'deletion_reason'), reason.trim() || 'No longer accepting applications'
+            );
+        } catch (e) {
+            console.error(e);
+            alert('Failed to save to cloud database.');
+            btn.disabled = false;
+        }
+    }
+
+    // ── Action Items tab ──────────────────────────────────────────────
+    function renderActionItems() {
+        const container = document.getElementById('actions-content');
+        const items = [];
+        for (const [url, state] of Object.entries(sharedJobsState)) {
+            if (state && state.action_item) {
+                const job = allJobs.find(j => j.url === url) || deletedJobsData.find(j => j.url === url) || {};
+                items.push({ url, job, actionItem: state.action_item });
+            }
+        }
+
+        const outstanding = items.filter(i => i.actionItem.status !== 'done')
+            .sort((a, b) => new Date(b.actionItem.created_at || 0) - new Date(a.actionItem.created_at || 0));
+        const completed = items.filter(i => i.actionItem.status === 'done')
+            .sort((a, b) => new Date(b.actionItem.done_at || 0) - new Date(a.actionItem.done_at || 0));
+
+        document.getElementById('actions-count').textContent = outstanding.length ? `(${outstanding.length})` : '';
+
+        if (items.length === 0) {
+            container.innerHTML = '<div class="empty-state">No action items right now.</div>';
+            return;
+        }
+
+        const renderRow = (item, done) => {
+            const title = item.job.title || '(job no longer in jobs.json)';
+            const company = item.job.company || '';
+            const type = item.actionItem.type || 'unknown';
+            const typeLabel = ACTION_TYPE_LABELS[type] || type;
+            const detail = escapeHtml(item.actionItem.detail || '');
+            const dateStr = done
+                ? (item.actionItem.done_at ? new Date(item.actionItem.done_at).toLocaleString() : '')
+                : (item.actionItem.created_at ? new Date(item.actionItem.created_at).toLocaleString() : '');
+            const dateLabel = done ? 'Completed' : 'Created';
+            const titleHtml = item.job.url
+                ? `<a href="${escapeHtml(item.job.url)}" target="_blank" rel="noopener">${escapeHtml(title)}</a>`
+                : escapeHtml(title);
+            return `
+                <div class="action-row ${done ? 'done' : ''}" data-url="${escapeHtml(item.url)}">
+                    <div class="action-info">
+                        <span class="action-type-badge ${escapeHtml(type)}">${escapeHtml(typeLabel)}</span>
+                        <span class="action-job-title">${titleHtml}${company ? ' · ' + escapeHtml(company) : ''}</span>
+                        ${detail ? `<div class="action-detail">${detail}</div>` : ''}
+                        ${dateStr ? `<div class="action-date">${dateLabel}: ${escapeHtml(dateStr)}</div>` : ''}
+                    </div>
+                    <label class="action-check">
+                        <input type="checkbox" ${done ? 'checked disabled' : ''} ${isAuthorized ? '' : 'disabled'}
+                               onchange="toggleActionItemDone('${escapeHtml(item.url)}', this)">
+                        Done
+                    </label>
+                </div>
+            `;
+        };
+
+        let html = '';
+        html += '<div class="section-label">Outstanding</div>';
+        html += outstanding.length
+            ? outstanding.map(i => renderRow(i, false)).join('')
+            : '<div class="empty-state" style="padding:1.5rem;">Nothing outstanding.</div>';
+        html += '<div class="section-label">Completed</div>';
+        html += completed.length
+            ? completed.map(i => renderRow(i, true)).join('')
+            : '<div class="empty-state" style="padding:1.5rem;">Nothing completed yet.</div>';
+
+        container.innerHTML = html;
+    }
+
+    async function toggleActionItemDone(url, checkbox) {
+        if (!checkbox.checked) return;
+        checkbox.disabled = true;
+        try {
+            await db.collection('shared_state').doc('job_status').update(
+                new firebase.firestore.FieldPath(url, 'action_item', 'status'), 'done',
+                new firebase.firestore.FieldPath(url, 'action_item', 'done_at'), new Date().toISOString()
+            );
+        } catch (e) {
+            console.error(e);
+            alert('Failed to save to cloud database.');
+            checkbox.checked = false;
+            checkbox.disabled = false;
+        }
+    }
+</script>
+</body>
+</html>
