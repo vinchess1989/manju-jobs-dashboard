@@ -2744,9 +2744,9 @@
                 { label: '📦 Added (Yes)', key: 'addedYes', fmt: fmtAbs },
                 { label: '📦 Added (Maybe)', key: 'addedMaybe', fmt: fmtAbs },
                 { label: '📝 Applied', key: 'appliedDelta', fmt: fmtVal },
-                { label: '🗑️ Deleted', key: 'deleted', fmt: fmtAbs },
-                { label: '✅ Matched (yes+maybe)', key: 'matchedDelta', fmt: fmtVal },
-                { label: '❌ Rejected ("no")', key: 'rejected', fmt: fmtVal },
+                { label: '🗑️ Deleted (Expired/Closed)', key: 'deleted', fmt: fmtAbs },
+                { label: '✅ Matched (Yes+Maybe)', key: 'matchedDelta', fmt: fmtVal },
+                { label: '❌ Rejected (Moved to "No")', key: 'rejected', fmt: fmtVal },
             ];
 
             const tbody = document.getElementById('summary-table-body');
