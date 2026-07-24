@@ -497,7 +497,7 @@ def clean_old_backups(backup_dir):
     if deleted_count > 0:
         print(f"INFO: Cleaned up {deleted_count} old backups (kept {len(keepers)}).")
 
-def save_history_snapshot(jobs, added=0, deleted=0):
+def save_history_snapshot(jobs, added=0, deleted=0, added_yes=0, added_maybe=0):
     """Append a count snapshot to jobs_history.json for trend tracking.
 
     added/deleted capture this run's gross churn (new jobs discovered vs. jobs
@@ -514,6 +514,8 @@ def save_history_snapshot(jobs, added=0, deleted=0):
         "applied": sum(1 for j in jobs if j.get('applied') == 'yes'),
         "added": added,
         "deleted": deleted,
+        "added_yes": added_yes,
+        "added_maybe": added_maybe,
     }
     history = []
     if os.path.exists(HISTORY_FILE):
@@ -690,7 +692,9 @@ def scrape_all_jobs(max_jobs=200):
     print(f"Backup saved to: {backup_file}\n")
 
     # Append to history for trend chart
-    save_history_snapshot(combined_jobs, added=len(deduped_new))
+    added_yes_count = sum(1 for j in deduped_new if j.get('matches_requirements') == 'yes')
+    added_maybe_count = sum(1 for j in deduped_new if j.get('matches_requirements') == 'maybe')
+    save_history_snapshot(combined_jobs, added=len(deduped_new), added_yes=added_yes_count, added_maybe=added_maybe_count)
 
     # Run smart cleanup
     clean_old_backups(backup_dir)

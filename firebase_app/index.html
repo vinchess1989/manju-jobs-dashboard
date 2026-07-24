@@ -680,52 +680,45 @@
             flex-shrink: 0;
         }
 
-        /* Summary Section */
-        .summary-section {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
+        /* Summary Modal Styles */
+        .summary-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            background: rgba(0,0,0,0.72);
+            align-items: center;
+            justify-content: center;
+        }
+        .summary-modal-content {
+            background: #161b2e;
+            border: 1px solid rgba(255,255,255,0.12);
             border-radius: 1rem;
-            padding: 1rem 1.5rem;
-            margin-bottom: 1.5rem;
-            backdrop-filter: blur(12px);
+            padding: 1.5rem 2rem;
+            position: relative;
+            width: 800px;
+            max-width: 95vw;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.8);
         }
         .summary-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            cursor: pointer;
-            user-select: none;
+            margin-bottom: 1.5rem;
         }
         .summary-header h3 {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 0.85rem;
+            font-size: 1rem;
             font-weight: 600;
-            color: rgba(255,255,255,0.6);
+            color: rgba(255,255,255,0.8);
             letter-spacing: 0.04em;
             text-transform: uppercase;
             margin: 0;
         }
-        .summary-toggle-icon {
-            font-size: 0.75rem;
-            color: rgba(255,255,255,0.4);
-            transition: transform 0.3s;
-        }
-        .summary-toggle-icon.collapsed { transform: rotate(-90deg); }
-        .summary-body {
-            overflow: hidden;
-            transition: max-height 0.3s ease, opacity 0.3s ease;
-            max-height: 300px;
-            opacity: 1;
-        }
-        .summary-body.collapsed {
-            max-height: 0;
-            opacity: 0;
-        }
         .summary-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 0.75rem;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
         }
         .summary-table th {
             color: rgba(255,255,255,0.45);
@@ -828,9 +821,13 @@
                 <span id="scraper-status-text">Scraper: Unknown</span>
             </div>
 
-            <!-- Re-Review Trigger -->
+            <!-- Re-Review Trigger & Summary -->
             <div style="display: flex; align-items: center; gap: 0.5rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 2rem; padding: 0.25rem 1rem 0.25rem 0.25rem;">
-                <button id="re-review-btn" onclick="triggerReReview()" title="Re-review all yes/maybe/pending jobs against current requirements">
+                <button onclick="openSummaryModal()" style="background: none; border: none; color: white; cursor: pointer; display: flex; align-items: center; gap: 4px; padding: 0.25rem 0.5rem; border-radius: 2rem; font-family: 'Space Grotesk', sans-serif; font-weight: 600;" title="View Jobs Activity Summary">
+                    <i class="fas fa-chart-bar"></i> Summary
+                </button>
+                <div style="width: 1px; height: 16px; background: rgba(255,255,255,0.1);"></div>
+                <button id="re-review-btn" onclick="triggerReReview()" title="Re-review all yes/maybe/pending jobs against current requirements" style="padding-left: 0.5rem;">
                     <i class="fas fa-sync-alt"></i> Re-Review
                 </button>
                 <span id="re-review-status" style="color: var(--text-secondary);"></span>
@@ -852,13 +849,13 @@
         <input type="file" id="file-input" style="display: none;" accept=".json">
     </section>
 
-    <!-- Jobs Activity Summary -->
-    <section class="summary-section" id="jobs-summary-section" style="display:none;">
-        <div class="summary-header" onclick="toggleSummary()">
-            <h3><i class="fas fa-chart-bar" style="margin-right:6px;"></i> Jobs Activity Summary</h3>
-            <span class="summary-toggle-icon" id="summary-toggle-icon">▼</span>
-        </div>
-        <div class="summary-body" id="summary-body">
+    <!-- Jobs Activity Summary Modal -->
+    <div class="summary-modal" id="summary-modal">
+        <div class="summary-modal-content">
+            <div class="summary-header">
+                <h3><i class="fas fa-chart-bar" style="margin-right:6px;"></i> Jobs Activity Summary</h3>
+                <button onclick="closeSummaryModal()" style="background:none;border:none;color:rgba(255,255,255,0.5);font-size:1.4rem;cursor:pointer;padding:0;line-height:1;font-family:sans-serif;">×</button>
+            </div>
             <table class="summary-table">
                 <thead>
                     <tr>
@@ -876,7 +873,7 @@
                 </tbody>
             </table>
         </div>
-    </section>
+    </div>
 
     <div class="table-container" id="jobs-container">
         <div class="spinner-container">
@@ -2307,7 +2304,7 @@
             return [..._chartHistory, livePoint];
         }
         let _chartDailyMode = false;
-        let _chartYAxisOverrides = { min: null, max: null, interval: null };
+        let _chartYAxisOverrides = { min: null, max: null, interval: null, churnMax: null };
 
         function _collapseToDaily(data) {
             const byDay = {};
@@ -2410,7 +2407,11 @@
             });
             let rMin = -1, rMax = 1, rRange = 2;
             if (showAdded) {
-                rMax = Math.max(1, ...addedVals);
+                if (yOverrides.churnMax !== null && !isNaN(yOverrides.churnMax)) {
+                    rMax = Math.max(1, yOverrides.churnMax);
+                } else {
+                    rMax = Math.max(1, ...addedVals);
+                }
                 rMin = -Math.max(1, ...deletedVals);
                 rRange = rMax - rMin;
             }
@@ -2620,9 +2621,11 @@
             const minEl = document.getElementById('yaxis-min');
             const maxEl = document.getElementById('yaxis-max');
             const intEl = document.getElementById('yaxis-interval');
+            const churnMaxEl = document.getElementById('yaxis-churn-max');
             _chartYAxisOverrides.min = (minEl && minEl.value !== '') ? parseFloat(minEl.value) : null;
             _chartYAxisOverrides.max = (maxEl && maxEl.value !== '') ? parseFloat(maxEl.value) : null;
             _chartYAxisOverrides.interval = (intEl && intEl.value !== '') ? parseFloat(intEl.value) : null;
+            _chartYAxisOverrides.churnMax = (churnMaxEl && churnMaxEl.value !== '') ? parseFloat(churnMaxEl.value) : null;
             _redrawChartModal();
         }
         function _onModalMouseMove(e) {
@@ -2668,19 +2671,17 @@
             el.addEventListener('click', () => _openChartModal(metric));
         }
         // ── Summary section logic ────────────────────────────────────────────
-        function toggleSummary() {
-            const body = document.getElementById('summary-body');
-            const icon = document.getElementById('summary-toggle-icon');
-            body.classList.toggle('collapsed');
-            icon.classList.toggle('collapsed');
+        function openSummaryModal() {
+            document.getElementById('summary-modal').style.display = 'flex';
+            buildSummary(); // Re-build just in case
+        }
+        function closeSummaryModal() {
+            document.getElementById('summary-modal').style.display = 'none';
         }
 
         async function buildSummary() {
             const historyData = await _loadChartHistory();
             if (!historyData || historyData.length < 2) return;
-
-            const section = document.getElementById('jobs-summary-section');
-            section.style.display = 'block';
 
             const now = new Date();
             const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -2696,12 +2697,14 @@
                     const t = new Date(d.timestamp).getTime();
                     return t >= startMs && t < endMs;
                 });
-                if (pointsInRange.length === 0) return { added: 0, deleted: 0, appliedDelta: 0, matchedDelta: 0 };
+                if (pointsInRange.length === 0) return { addedYes: 0, addedMaybe: 0, deleted: 0, appliedDelta: 0, matchedDelta: 0, rejected: 0 };
 
-                let totalAdded = 0, totalDeleted = 0;
+                let totalAdded = 0, totalDeleted = 0, addedYes = 0, addedMaybe = 0;
                 pointsInRange.forEach(d => {
                     totalAdded += (d.added ?? 0);
                     totalDeleted += (d.deleted ?? 0);
+                    addedYes += (d.added_yes ?? 0);
+                    addedMaybe += (d.added_maybe ?? 0);
                 });
 
                 // Find the nearest point before the period for baseline
@@ -2711,8 +2714,11 @@
 
                 const appliedDelta = (last.applied ?? 0) - (baseline.applied ?? 0);
                 const matchedDelta = ((last.yes ?? 0) + (last.maybe ?? 0)) - ((baseline.yes ?? 0) + (baseline.maybe ?? 0));
+                
+                // Rejected jobs = net change in 'no' matches + jobs that were deleted (since blocked jobs become 'no' or are already 'no' before deletion)
+                const rejected = (last.no ?? 0) - (baseline.no ?? 0) + totalDeleted;
 
-                return { added: totalAdded, deleted: totalDeleted, appliedDelta, matchedDelta };
+                return { addedYes, addedMaybe, deleted: totalDeleted, appliedDelta, matchedDelta, rejected };
             }
 
             const periods = [
@@ -2735,10 +2741,12 @@
             }
 
             const rows = [
-                { label: '📦 Added', key: 'added', fmt: fmtAbs },
-                { label: '🗑️ Deleted', key: 'deleted', fmt: fmtAbs },
+                { label: '📦 Added (Yes)', key: 'addedYes', fmt: fmtAbs },
+                { label: '📦 Added (Maybe)', key: 'addedMaybe', fmt: fmtAbs },
                 { label: '📝 Applied', key: 'appliedDelta', fmt: fmtVal },
+                { label: '🗑️ Deleted', key: 'deleted', fmt: fmtAbs },
                 { label: '✅ Matched (yes+maybe)', key: 'matchedDelta', fmt: fmtVal },
+                { label: '❌ Rejected ("no")', key: 'rejected', fmt: fmtVal },
             ];
 
             const tbody = document.getElementById('summary-table-body');
@@ -2754,9 +2762,16 @@
             tip.addEventListener('mouseleave', _scheduleChartHide);
             document.getElementById('chart-tooltip-canvas').addEventListener('click', () => _openChartModal(tip._metric || 'total'));
             const modal = document.getElementById('chart-modal');
+            const summaryModal = document.getElementById('summary-modal');
             document.getElementById('chart-modal-close').addEventListener('click', () => { modal.style.display = 'none'; document.getElementById('chart-point-tip').style.display = 'none'; });
             modal.addEventListener('click', e => { if (e.target === modal) { modal.style.display = 'none'; document.getElementById('chart-point-tip').style.display = 'none'; } });
-            document.addEventListener('keydown', e => { if (e.key === 'Escape' && modal.style.display === 'flex') { modal.style.display = 'none'; document.getElementById('chart-point-tip').style.display = 'none'; } });
+            summaryModal.addEventListener('click', e => { if (e.target === summaryModal) closeSummaryModal(); });
+            document.addEventListener('keydown', e => { 
+                if (e.key === 'Escape') {
+                    if (modal.style.display === 'flex') { modal.style.display = 'none'; document.getElementById('chart-point-tip').style.display = 'none'; }
+                    if (summaryModal.style.display === 'flex') closeSummaryModal();
+                } 
+            });
         });
         // ── End history trend chart ────────────────────────────────────────────
     </script>
@@ -2779,10 +2794,12 @@
             </div>
             <div class="chart-controls">
                 <button id="chart-daily-btn" class="chart-toggle-btn" onclick="_toggleDailyMode()">○ Daily</button>
-                <span style="width:1px;height:16px;background:rgba(255,255,255,0.1);"></span>
-                <span class="yaxis-label">Y Min</span><input type="number" id="yaxis-min" class="yaxis-input" placeholder="auto" onchange="_updateYAxis()" onkeyup="_updateYAxis()">
-                <span class="yaxis-label">Y Max</span><input type="number" id="yaxis-max" class="yaxis-input" placeholder="auto" onchange="_updateYAxis()" onkeyup="_updateYAxis()">
-                <span class="yaxis-label">Interval</span><input type="number" id="yaxis-interval" class="yaxis-input" placeholder="auto" onchange="_updateYAxis()" onkeyup="_updateYAxis()" min="1">
+                <span style="width:1px;height:16px;background:rgba(255,255,255,0.1);margin:0 4px;"></span>
+                <span class="yaxis-label">Main Y Min</span><input type="number" id="yaxis-min" class="yaxis-input" placeholder="auto" onchange="_updateYAxis()" onkeyup="_updateYAxis()">
+                <span class="yaxis-label">Max</span><input type="number" id="yaxis-max" class="yaxis-input" placeholder="auto" onchange="_updateYAxis()" onkeyup="_updateYAxis()">
+                <span class="yaxis-label">Int</span><input type="number" id="yaxis-interval" class="yaxis-input" placeholder="auto" onchange="_updateYAxis()" onkeyup="_updateYAxis()" min="1" style="width:42px;">
+                <span style="width:1px;height:16px;background:rgba(255,255,255,0.1);margin:0 4px;"></span>
+                <span class="yaxis-label">Churn Y Max</span><input type="number" id="yaxis-churn-max" class="yaxis-input" placeholder="auto" onchange="_updateYAxis()" onkeyup="_updateYAxis()">
             </div>
             <div style="position:relative;">
                 <canvas id="chart-modal-canvas" width="628" height="240" style="display:block;width:100%;"></canvas>
