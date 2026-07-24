@@ -1707,7 +1707,33 @@ def send_email_notification(subject, body):
 
 
 def poll_firebase_feedback():
-    """Polls the Firebase Firestore REST API for user feedback, updates requirements, and deletes them."""
+    """Polls the Firebase Firestore REST API for user feedback, updates requirements, and deletes them.
+    Also fetches the latest shared_state/job_status to ensure jobs.json is perfectly in sync with all subagent updates."""
+    
+    # 1. First, sync shared_state/job_status into jobs.json
+    try:
+        if os.path.exists(JOBS_FILE):
+            jobs = db_utils.load_jobs()
+            from job_status_store import get_job_status
+            shared_state = get_job_status()
+            
+            changed = False
+            for j in jobs:
+                url = j.get('url')
+                if url in shared_state:
+                    state = shared_state[url]
+                    if isinstance(state, dict):
+                        for field in ['applied', 'matches_requirements', 'user_review', 'needs_re_review']:
+                            if field in state and j.get(field) != state[field]:
+                                j[field] = state[field]
+                                changed = True
+            if changed:
+                db_utils.save_jobs(jobs)
+                print("INFO: Successfully synced applied/match states from shared_state into jobs.json")
+    except Exception as e:
+        print(f"WARN: Failed to sync shared_state to jobs.json: {e}")
+
+    # 2. Then, process the user_feedback queue for new requirements rules
     url = "https://firestore.googleapis.com/v1/projects/manju-jobs-dashboard/databases/(default)/documents/user_feedback"
     try:
         response = requests.get(url, timeout=10)
