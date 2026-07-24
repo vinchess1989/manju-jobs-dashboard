@@ -696,8 +696,10 @@
             border-radius: 1rem;
             padding: 1.5rem 2rem;
             position: relative;
-            width: 800px;
+            width: auto;
+            min-width: 800px;
             max-width: 95vw;
+            overflow-x: auto;
             box-shadow: 0 30px 80px rgba(0,0,0,0.8);
         }
         .summary-header {
@@ -2718,7 +2720,7 @@
                 // Rejected jobs = net change in 'no' matches + jobs that were deleted (since blocked jobs become 'no' or are already 'no' before deletion)
                 const rejected = (last.no ?? 0) - (baseline.no ?? 0) + totalDeleted;
 
-                return { addedYes, addedMaybe, deleted: totalDeleted, appliedDelta, matchedDelta, rejected };
+                return { added: totalAdded, addedYes, addedMaybe, deleted: totalDeleted, appliedDelta, matchedDelta, rejected };
             }
 
             const periods = [
@@ -2741,8 +2743,9 @@
             }
 
             const rows = [
-                { label: '📦 Added (Yes)', key: 'addedYes', fmt: fmtAbs },
-                { label: '📦 Added (Maybe)', key: 'addedMaybe', fmt: fmtAbs },
+                { label: '📦 Added (Total)', key: 'added', fmt: fmtAbs },
+                { label: '&nbsp;&nbsp;&nbsp;└─ Yes', key: 'addedYes', fmt: fmtAbs },
+                { label: '&nbsp;&nbsp;&nbsp;└─ Maybe', key: 'addedMaybe', fmt: fmtAbs },
                 { label: '📝 Applied', key: 'appliedDelta', fmt: fmtVal },
                 { label: '🗑️ Deleted (Expired/Closed)', key: 'deleted', fmt: fmtAbs },
                 { label: '✅ Matched (Yes+Maybe)', key: 'matchedDelta', fmt: fmtVal },
