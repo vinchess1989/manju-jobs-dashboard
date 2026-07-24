@@ -1346,7 +1346,7 @@ Location: {job['location']}
 URL: {job['url']}
 
 ### Job Description:
-{cleaned_text[:18000]}
+{cleaned_text[:10000]}
 
 ### Instructions:
 Return a JSON object with exactly six keys:
