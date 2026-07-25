@@ -976,8 +976,7 @@
                     
                     fetchJobsData();
                     setupUploadListeners();
-                    buildSummary();
-                    
+
                     if (firestoreUnsubscribe) firestoreUnsubscribe();
                     firestoreUnsubscribe = db.collection('shared_state').doc('job_status').onSnapshot(doc => {
                         if (doc.exists) {
@@ -1501,7 +1500,7 @@
         };
 
         function _buildRowCache() {
-            const tbody = document.querySelector('table tbody');
+            const tbody = document.querySelector('#jobs-container table tbody');
             if (!tbody) return;
             const rows = tbody.querySelectorAll('tr');
             _rowCache = Array.from(rows, row => {
@@ -1694,7 +1693,7 @@
         };
 
         function sortTable(n) {
-            const tbody = document.querySelector('table tbody');
+            const tbody = document.querySelector('#jobs-container table tbody');
             if (!tbody) return;
             const rows = Array.from(tbody.querySelectorAll('tr'));
             
@@ -1965,7 +1964,7 @@
             if (_rowCache) {
                 for (let r = 0; r < _rowCache.length; r++) _rowCache[r].el.style.display = 'none';
             } else {
-                const tbody = document.querySelector('table tbody');
+                const tbody = document.querySelector('#jobs-container table tbody');
                 if (tbody) Array.from(tbody.querySelectorAll('tr')).forEach(row => { row.style.display = 'none'; });
             }
             for (let i = start; i < end && i < filteredRows.length; i++) {
