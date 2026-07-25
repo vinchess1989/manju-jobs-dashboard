@@ -1334,8 +1334,8 @@
 
             // 3. Rows
             allJobs.forEach((job, index) => {
-                const matchVal = (sharedJobsState[job.url] && sharedJobsState[job.url].matches_requirements) || job.matches_requirements || 'pending';
-                let appliedStatus = (sharedJobsState[job.url] && sharedJobsState[job.url].applied) || job.applied || 'no';
+                const matchVal = ((sharedJobsState[job.url] && sharedJobsState[job.url].matches_requirements) || job.matches_requirements || 'pending').toLowerCase();
+                let appliedStatus = ((sharedJobsState[job.url] && sharedJobsState[job.url].applied) || job.applied || 'no').toLowerCase();
                 let appliedDate = (sharedJobsState[job.url] && sharedJobsState[job.url].applied_date) || job.applied_date || '';
                 if (matchVal === 'no' && appliedStatus !== 'yes' && !sessionNoChanges.has(job.url) && !showArchivedNo) return;
 

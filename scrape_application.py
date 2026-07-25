@@ -187,7 +187,7 @@ EXPIRED_LISTING_SIGNALS = [
     "not currently actively recruiting",
 ]
 
-_scrape_flags: dict = {"expired": False}
+_scrape_flags: dict = {"expired": False, "login_wall": False}
 
 FIRESTORE_DOC_URL = (
     "https://firestore.googleapis.com/v1/projects/manju-jobs-dashboard"
@@ -399,7 +399,7 @@ def is_employer_portal(url: str) -> bool:
     return any(s in url_lower for s in EMPLOYER_PORTAL_SIGNALS)
 
 
-def navigate_through_login(page, context, target_url: str) -> bool:
+def navigate_through_login(page, context, target_url: str, non_interactive: bool = False) -> bool:
     """
     Handle being stuck on a login wall OR on an employer portal page that isn't a form.
     Tries saved session first (silent).  If that doesn't work, prompts the user to log
@@ -411,6 +411,11 @@ def navigate_through_login(page, context, target_url: str) -> bool:
 
     After this returns True the caller should check is_application_form(page) on the
     CURRENT page (user may have navigated there), then fall back to target_url if needed.
+
+    When non_interactive=True (unattended runs), never blocks on input(): if the saved
+    session doesn't clear a login wall, it records that in _scrape_flags["login_wall"]
+    and returns False so the caller can fall through to its normal "0 questions" path
+    instead of hanging forever waiting for a human who isn't there.
     """
     url = page.url
     url_lower = url.lower()
@@ -442,6 +447,14 @@ def navigate_through_login(page, context, target_url: str) -> bool:
         if not detect_login_wall(page):
             print(f"  Saved session restored for {domain}")
             return True
+
+    if non_interactive:
+        if is_login:
+            print(f"  Login wall not cleared by saved session — flagging for manual account setup: {domain}")
+            _scrape_flags["login_wall"] = True
+        else:
+            print(f"  Navigation assistance needed (unattended run, skipping): {domain}")
+        return False
 
     # Need the user's help
     print()
@@ -549,7 +562,7 @@ def extract_form_fields(page, scope=None):
     seen = set()
     questions = []
 
-    def add(label, ftype, options=None, required=False):
+    def add(label, ftype, options=None, required=False, accept=""):
         label = label.strip()
         if not label or label in seen or len(label) > 400:
             return
@@ -561,6 +574,7 @@ def extract_form_fields(page, scope=None):
             "type": ftype,
             "options": options or [],
             "required": required,
+            "accept": accept,
         })
 
     # Labels → associated fields
@@ -570,6 +584,7 @@ def extract_form_fields(page, scope=None):
         ftype = "text"
         options = []
         required = False
+        accept = ""
 
         if for_id:
             field = page.query_selector(f"#{for_id}")
@@ -588,16 +603,21 @@ def extract_form_fields(page, scope=None):
                     ftype = "textarea"
                 else:
                     ftype = field.get_attribute("type") or "text"
+                    if ftype == "file":
+                        accept = field.get_attribute("accept") or ""
 
-        add(text, ftype, options, required)
+        add(text, ftype, options, required, accept)
 
     # Standalone inputs/textareas with aria-label or placeholder
-    for sel in ["textarea", "input[aria-label]", "input[placeholder]"]:
+    for sel in ["textarea", "input[aria-label]", "input[placeholder]", "input[type='file']"]:
         for el in root.query_selector_all(sel):
             text = (el.get_attribute("aria-label") or el.get_attribute("placeholder") or "").strip()
             tag = el.evaluate("el => el.tagName.toLowerCase()")
             ftype = "textarea" if tag == "textarea" else (el.get_attribute("type") or "text")
-            add(text, ftype)
+            accept = el.get_attribute("accept") or "" if ftype == "file" else ""
+            if ftype == "file" and not text:
+                text = "File upload"
+            add(text, ftype, accept=accept)
 
     return questions
 
@@ -1192,7 +1212,7 @@ def goto_indeed(page, url):
     return direct
 
 
-def scrape_indeed(page, job_url, context, email, password, is_new_profile=False, job_id=""):
+def scrape_indeed(page, job_url, context, email, password, is_new_profile=False, job_id="", non_interactive=False):
     direct_url = goto_indeed(page, job_url)
 
     # Login needed if: brand-new profile, or Indeed redirected us to a login wall
@@ -1366,7 +1386,7 @@ def scrape_indeed(page, job_url, context, email, password, is_new_profile=False,
                 print(f"  Form confirmed: {form_reason}")
                 questions = extract_form_fields(page)
                 return questions, apply_url
-            if navigate_through_login(page, context, found_url):
+            if navigate_through_login(page, context, found_url, non_interactive=non_interactive):
                 already, date_str = detect_already_applied(page)
                 if already:
                     msg = f"Applied {date_str}" if date_str else "Already applied"
@@ -1401,7 +1421,7 @@ def scrape_indeed(page, job_url, context, email, password, is_new_profile=False,
             print(f"  {msg} — marking dashboard...")
             mark_job_applied_firestore(job_id, date_str)
             return [], job_url
-        if navigate_through_login(page, context, apply_url):
+        if navigate_through_login(page, context, apply_url, non_interactive=non_interactive):
             already, date_str = detect_already_applied(page)
             if already:
                 msg = f"Applied {date_str}" if date_str else "Already applied"
@@ -1426,7 +1446,7 @@ def scrape_indeed(page, job_url, context, email, password, is_new_profile=False,
                 apply_url = page.url
                 is_form, form_reason = is_application_form(page)
                 if not is_form:
-                    if navigate_through_login(page, context, found_url):
+                    if navigate_through_login(page, context, found_url, non_interactive=non_interactive):
                         already, date_str = detect_already_applied(page)
                         if already:
                             msg = f"Applied {date_str}" if date_str else "Already applied"
@@ -1495,7 +1515,7 @@ def dismiss_cookie_overlays(page):
             pass
 
 
-def scrape_generic(page, job_url, context=None, job_id=""):
+def scrape_generic(page, job_url, context=None, job_id="", non_interactive=False):
     page.goto(job_url, wait_until="domcontentloaded")
     time.sleep(2)
 
@@ -1553,7 +1573,7 @@ def scrape_generic(page, job_url, context=None, job_id=""):
             print(f"  {msg} — marking dashboard...")
             mark_job_applied_firestore(job_id, date_str)
             return [], job_url
-        if context and navigate_through_login(page, context, apply_url):
+        if context and navigate_through_login(page, context, apply_url, non_interactive=non_interactive):
             already, date_str = detect_already_applied(page)
             if already:
                 msg = f"Applied {date_str}" if date_str else "Already applied"
@@ -1583,7 +1603,7 @@ def scrape_generic(page, job_url, context=None, job_id=""):
                     return [], job_url
                 is_form, form_reason = is_application_form(page)
                 if not is_form and context:
-                    if navigate_through_login(page, context, found_url):
+                    if navigate_through_login(page, context, found_url, non_interactive=non_interactive):
                         already, date_str = detect_already_applied(page)
                         if already:
                             msg = f"Applied {date_str}" if date_str else "Already applied"
@@ -1775,6 +1795,10 @@ def main():
     parser.add_argument("--out-dir",     required=True, help="Output directory")
     parser.add_argument("--private-dir", default=str(PRIVATE_DIR),
                         help="Path to private repo (for .env and sessions)")
+    parser.add_argument("--non-interactive", action="store_true",
+                        help="Never block on input() (unattended runs, e.g. /fill-form auto). "
+                             "A login wall that a saved session can't clear is recorded via "
+                             "the login_wall flag in the output JSON instead of prompting.")
     args = parser.parse_args()
 
     PRIVATE_DIR = Path(args.private_dir)
@@ -1801,6 +1825,7 @@ def main():
     questions = []
     apply_url = args.job_url
     _scrape_flags["expired"] = False
+    _scrape_flags["login_wall"] = False
 
     with sync_playwright() as p:
         if platform == "indeed":
@@ -1841,7 +1866,7 @@ def main():
             try:
                 questions, apply_url = scrape_indeed(
                     page, args.job_url, context, email, password, is_new_profile,
-                    job_id=args.job_id,
+                    job_id=args.job_id, non_interactive=args.non_interactive,
                 )
             except Exception as e:
                 print(f"  ERROR: {e}", file=sys.stderr)
@@ -1920,17 +1945,24 @@ def main():
                         context.storage_state(path=str(spath))
                         print(f"  Session saved → {spath}")
                 else:
-                    questions, apply_url = scrape_generic(page, args.job_url, context, job_id=args.job_id)
+                    questions, apply_url = scrape_generic(
+                        page, args.job_url, context, job_id=args.job_id,
+                        non_interactive=args.non_interactive,
+                    )
 
             except Exception as e:
                 print(f"  ERROR: {e}", file=sys.stderr)
             finally:
                 if is_cdp:
-                    browser.disconnect()
+                    # Browser.close() on a connect_over_cdp() browser only detaches the
+                    # client -- it does not terminate the actual remote Chrome process
+                    # (unlike a launched browser). Browser has no disconnect() method.
+                    browser.close()
                 else:
                     context.close()
 
     is_expired = _scrape_flags.get("expired", False)
+    is_login_wall = _scrape_flags.get("login_wall", False)
 
     result = {
         "job_id":         args.job_id,
@@ -1938,6 +1970,7 @@ def main():
         "apply_url":      apply_url,
         "platform":       platform,
         "expired":        is_expired,
+        "login_wall":     is_login_wall,
         "question_count": len(questions),
         "questions":      questions,
     }

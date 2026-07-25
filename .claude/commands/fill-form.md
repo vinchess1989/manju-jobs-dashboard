@@ -6,14 +6,18 @@ Parse `$ARGUMENTS` by space-separated tokens:
 - Any token matching `^[0-9a-fA-F]{8}$` (case-insensitive) is treated as an explicit `JOB_ID`.
 - Any token matching `^post<(\d+)$` or `^posted<(\d+)$` (case-insensitive) extracts `POSTED_DAYS_LIMIT` (e.g. `post<3` means jobs posted in the last 3 days, i.e., `posted_date >= today - 3 days`).
 - Any token matching `^dead<(\d+)$` or `^deadline<(\d+)$` (case-insensitive) extracts `DEADLINE_DAYS_LIMIT` (e.g. `dead<3` means jobs expiring in the next 3 days, i.e., `today <= deadline <= today + 3 days`).
+- Any token matching `^auto$` (case-insensitive) sets `$AutoMode = $true` — unattended mode, meant for a recurring `/loop 60m /fill-form auto`. Picks a job itself instead of asking, and never blocks on user input anywhere in the run.
 
-**If no explicit `JOB_ID` token is given**: Run Step -1 (discovery mode) using the parsed `POSTED_DAYS_LIMIT` and/or `DEADLINE_DAYS_LIMIT` filters, then come back and run Steps 0–6 for each job selected there.
+**If no explicit `JOB_ID` token is given**:
+- `$AutoMode = $true` → run Step -1.A (auto-pick) instead of Step -1, then fall through to Steps 0–6 for whatever it picks (if anything — some cycles legitimately pick nothing).
+- Otherwise → run Step -1 (discovery mode) using the parsed `POSTED_DAYS_LIMIT`/`DEADLINE_DAYS_LIMIT` filters, then come back and run Steps 0–6 for each job selected there.
 
 Examples:
 - `/fill-form 1ee84312` — process single explicit job ID
 - `/fill-form post<3 dead<3` — discover unapplied jobs posted in the last 3 days AND expiring within the next 3 days
 - `/fill-form dead<5` — discover unapplied jobs expiring within the next 5 days
 - `/fill-form` — discover unapplied jobs expiring today or tomorrow (default)
+- `/fill-form auto` — unattended: auto-pick one strong-match job, fill it, stop before submit; never blocks waiting for input (meant to run every hour via `/loop 60m /fill-form auto`)
 
 ---
 
@@ -44,9 +48,9 @@ Examples:
 
 ---
 
-## Step -1 — Discovery mode (no explicit JOB_ID given)
+## Step -1 — Discovery mode (no explicit JOB_ID given, not `$AutoMode`)
 
-Only runs when no explicit `JOB_ID` token is provided. Reproduces the end-to-end flow validated manually on 2026-07-21: find unapplied jobs matching date filters (`post<X` and/or `dead<Y`), verify each is genuinely still open, flag truly expired ones for deletion, build a reasoned fit checklist for what's left, let Manju pick, then fall through to Steps 0–6 for each pick.
+Only runs when no explicit `JOB_ID` token is provided **and `$AutoMode` is false**. Reproduces the end-to-end flow validated manually on 2026-07-21: find unapplied jobs matching date filters (`post<X` and/or `dead<Y`), verify each is genuinely still open, flag truly expired ones for deletion, build a reasoned fit checklist for what's left, let Manju pick, then fall through to Steps 0–6 for each pick. (When `$AutoMode` is true, Step -1.A runs instead — see below — since this step's human picker at -1.5 has nobody to answer it during an unattended `/loop` tick.)
 
 ### -1.0 — Pull latest jobs.json
 
@@ -96,6 +100,84 @@ For each `JOB_ID` Manju selects, run Steps 0 through 6 below exactly as if that 
 
 ---
 
+## Step -1.A — Auto-pick (unattended, `$AutoMode` only)
+
+Only runs when `$AutoMode` is true. Meant to be invoked on a timer (`/loop 60m /fill-form auto`) with nobody necessarily watching, so nothing here may block on human input — anywhere Step -1/-1.5 would normally ask a question, this instead logs an action item or just moves to the next candidate.
+
+### -1.A.0 — Pull latest jobs.json
+
+```powershell
+git pull --rebase origin main
+```
+Same stash-first caveat as -1.0 if `git status --short` shows unrelated pre-existing modifications from a concurrent session.
+
+### -1.A.1 — Chrome/CDP pre-flight
+
+Confirm a working browser is actually reachable *before* touching any job's Firestore state — cheaper to find out now than after tailoring/scraping a candidate that can never reach Step 4 anyway:
+
+```powershell
+$port_open = Test-NetConnection -ComputerName 127.0.0.1 -Port 9222 -WarningAction SilentlyContinue
+if (-not $port_open.TcpTestSucceeded) {
+    # Same schtasks launch as Step 4
+    Stop-Process -Name chrome -Force -ErrorAction SilentlyContinue
+    taskkill /F /IM chrome.exe /T
+    $batPath = "PUBLIC\scratch\launch_cdp_chrome.bat"
+    Set-Content -Path $batPath -Value "@echo off`n`"C:\Program Files\Google\Chrome\Application\chrome.exe`" --remote-debugging-port=9222 --user-data-dir=`"$env:LOCALAPPDATA\Google\Chrome\Automation Profile`""
+    cmd /c "schtasks /delete /tn `"AntigravityVisibleBrowser`" /f & schtasks /create /tn `"AntigravityVisibleBrowser`" /tr `"\`"$batPath\`"`" /sc once /st 00:00 /ru vinee /it /f & schtasks /run /tn `"AntigravityVisibleBrowser`""
+    Start-Sleep -Seconds 4
+    $port_open = Test-NetConnection -ComputerName 127.0.0.1 -Port 9222 -WarningAction SilentlyContinue
+}
+if (-not $port_open.TcpTestSucceeded) {
+    Write-Host "Chrome/CDP unavailable this cycle (PC likely locked?) — skipping. Nothing marked attempted."
+    exit
+}
+```
+This is the known limitation of automating via `/loop` in a session Manju keeps open rather than a true background service: if the PC is locked when a tick fires, that hour is a clean no-op instead of a hang or a false failure — accepted, not something to solve here.
+
+### -1.A.2 — Build the candidate list
+
+From `JOBS_JSON`, a candidate satisfies **all** of:
+- `matches_requirements == "yes"` (Firestore's `shared_state/job_status` override wins over jobs.json's own field, same precedence the dashboard already uses — this now also includes weak matches Manju promoted via the `firebase_app/review.html` Apply button, since that button just sets this same field).
+- `applied != "yes"` (check both jobs.json **and** Firestore — jobs.json's cached value can lag behind reality).
+- Firestore's `deletion_reason` is not set.
+- Firestore's `action_item` is either absent or has `status == "done"` (a `"pending"` action item means this job is a known non-fillable case already on the checklist — don't re-surface it here).
+- Firestore's `auto_fill_attempted_at` is not set (a form already filled and staged for review is mid-flight, not idle — never reconsider it).
+
+### -1.A.3 — Sort and batch
+
+Sort the full eligible list by `deadline` ascending: parse `yyyy-MM-dd` entries and sort those first (soonest first); `"Open until filled"`, `"N/A"`, or anything unparseable sorts after all dated entries.
+
+Process in batches of 15 in that order: run -1.A.4 on batch 1 (candidates 1–15); only if the *entire* batch produces zero filled forms, move to batch 2 (16–30), and so on until either a form gets filled or the whole list is exhausted. This bounds each cycle's scrape/tailor cost without giving up early just because the first 15 all happened to be action-item cases.
+
+### -1.A.4 — Walk the batch
+
+For each candidate in order, **sanity-check it first** — cheap, no API cost beyond your own judgment, and worth doing before Step 1 spends real tailoring calls on it. Read the candidate's `title`, `location`, and `reason` (the scraper's own justification) straight from `JOBS_JSON` and briefly judge, against `job_requirements.md`'s own criteria, whether this still looks like a genuine match:
+- Does `reason` actually describe *this* job, or does it read like a mismatch (e.g. a cleaning/manual-labor job justified as "an office role")?
+- Does the title fall into an explicit `## Hard Rejections` category the scraper's LLM may have missed (trade/manual labor, a specific vocational/professional degree, medical/social-welfare licensure, subsidized employment, seniority)?
+- Is `location` actually consistent with the `## Target Job Criteria` location rule — anywhere in Finland, any work model (on-site, hybrid, or remote), is a full `"yes"` since Manju is open to relocating anywhere within Finland. Being outside Oulu is never itself a reason to demote a job.
+
+This is a quick plausibility read, not a full re-run of the scraper's evaluation — when genuinely unsure, treat it as passing and continue.
+
+- **Looks wrong** → don't tailor or fill anything for it. Demote it so Manju can decide on her own time instead of this unattended run either silently skipping it or blocking on her answer:
+  ```powershell
+  python job_status_store.py set --url "JOB_URL" --field matches_requirements --value "maybe"
+  python job_status_store.py set --url "JOB_URL" --field user_reason --value "Auto-pick flagged as a likely mismatch: <your one-line reason>"
+  ```
+  This surfaces it in `firebase_app/review.html`'s Weak Matches tab (Apply/Delete) and removes it from the `"yes"` auto-fill queue, so -1.A.2 won't re-offer it next cycle regardless of what Manju eventually decides. **Never pause this loop waiting for her decision** — move straight on to the next candidate.
+- **Looks fine** → run Steps 0–3 below with `$AutoMode` threaded through (Step 3's `$AutoMode` branch passes `--non-interactive` to `scrape_application.py` and does all the outcome branching — email/login-wall/video/normal-form). Step 3's branch itself decides whether to continue to the next candidate or fall through to Steps 4–6.
+
+Keep walking candidates until one falls through to a successful Step 6 hand-off (this cycle's job — stop) or the batch/list is exhausted.
+
+### -1.A.5 — If nothing was fillable
+
+If the whole candidate list is exhausted with no form filled, print a summary and stop cleanly:
+```
+No fillable form found this cycle — N action items logged, M ambiguous failures, 0 forms filled.
+```
+This is a legitimate outcome, not an error — some hours there just isn't a fillable candidate.
+
+---
+
 ## Step 0 — Resolve the job
 
 Read `JOBS_JSON`, find the entry with `id == JOB_ID`. If not found, abort with an error rather than guessing.
@@ -136,7 +218,33 @@ Priority order, stopping at the first hit:
    - `RESULT_TYPE: email` → email-only, see below.
    - `RESULT_TYPE: not_found` → fall back to `JOB_URL` itself, and warn the user this may just be the listing page rather than the real form.
 
-**Email-only jobs:** if the resolved result is an email address, there is no form to fill. Print `JOB_ID applies via email only (ADDRESS) — no form to fill.`, list the exact `$resumePdf` / `$coverPdf` paths from Step 1 so Manju can attach them herself, and **stop here** — do not continue to Step 3.
+**Email-only jobs:** if the resolved result is an email address, there is no form to fill. Print `JOB_ID applies via email only (ADDRESS) — no form to fill.`, list the exact `$resumePdf` / `$coverPdf` paths from Step 1 so Manju can attach them herself.
+
+Before stopping, make sure this is on the Action Items checklist (`firebase_app/review.html`) — a fresh `find-apply-link` run already writes this itself (its own Step 5), but a Firestore-cache hit above short-circuits before that ever runs, so backfill it here in that case. Skip if an `action_item` is already recorded `"done"` (don't reopen something already handled):
+```powershell
+$existing = python job_status_store.py get --url "JOB_URL" --field action_item
+$alreadyDone = $false
+if ($existing -ne "NONE") { try { $alreadyDone = ((ConvertFrom-Json $existing).status -eq "done") } catch {} }
+if (-not $alreadyDone) {
+    $actionItem = [ordered]@{
+        type = "email_application"; status = "pending"
+        created_at = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
+        done_at = $null; detail = "Apply via email: ADDRESS"
+    } | ConvertTo-Json -Compress
+    $tmpFile = "PUBLIC\scratch\action_item_JOB_ID.json"
+    Set-Content -Path $tmpFile -Value $actionItem -Encoding utf8 -NoNewline
+    python job_status_store.py set --url "JOB_URL" --field action_item --json --value-file $tmpFile
+    Remove-Item $tmpFile -ErrorAction SilentlyContinue
+}
+```
+(JSON must go through `--value-file`, never an inline `--value` — PowerShell 5.1 silently strips embedded double-quote characters from native-command arguments, so a raw JSON string never survives on the command line; see `job_status_store.py`'s own docstring.)
+
+In `$AutoMode`, also set `auto_fill_attempted_at` (this job is fully handled for this cycle — no more unattended work is possible on it):
+```powershell
+python job_status_store.py set --url "JOB_URL" --field auto_fill_attempted_at --value (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
+```
+
+**Stop here** — do not continue to Step 3. (In `$AutoMode`, this means: go pick the next candidate per Step -1.A.3, not just stop the whole cycle.)
 
 ---
 
@@ -147,6 +255,7 @@ Priority order, stopping at the first hit:
    ```powershell
    python "PUBLIC\scrape_application.py" --job-url "APPLY_URL" --job-id "JOB_ID" --out-dir "PRIVATE\Resumes\JOB_ID" --private-dir "PRIVATE"
    ```
+   In `$AutoMode`, always append `--non-interactive` — without it, a login wall or an unsupported ATS would block forever on an `input()` prompt with nobody there to answer it. The script always writes `PRIVATE\Resumes\JOB_ID\JOB_ID_questions.json` before exiting — even on 0 questions or an expired listing — so read that file for `expired`/`login_wall`/`question_count`/`questions` regardless of its exit code.
    - `question_count > 0` → generate tailored answers and write `JOB_ID_answers.json` + the cheatsheet HTML. **Answer rules:** text/textarea fields get 1–4 sentences (or a full paragraph for open-ended ones), naming the company/role where it fits; select/dropdown fields pick the closest matching option; answer in the same language as the question; never invent facts not in Manju's profile. **Known factual fields** — read these from `PRIVATE\Resumes\Master\master_data.json`'s `resume.contact` (or hardcode if faster):
      - Date of birth: `contact.date_of_birth` (`1990-07-25`, i.e. 25 July 1990) — use for any birth-date field (split into year/month/day sub-fields if the form asks for them separately).
      - Phone / salary expectation: leave blank, mark as a placeholder for manual fill.
@@ -154,7 +263,35 @@ Priority order, stopping at the first hit:
      - Availability: `Next possible working day`.
      - Willing to relocate: `Yes — open to relocation within Finland, including Helsinki`.
      - Right to work in Finland: `Yes — EU residence permit` (on forms with a structured work-permit dropdown instead of free text, pick the option meaning "I hold a valid work/residence permit", not "EU/Finnish citizen").
-   - 0 questions / failure (e.g. a login-wall redirect) → no answers file will exist. You'll inspect the live form yourself once the browser is open in Step 5 — use WebFetch or a quick throwaway Playwright inspection script against `APPLY_URL` beforehand if you need the field structure before writing the fill script.
+   - 0 questions / failure (e.g. a login-wall redirect):
+     - **Not `$AutoMode`:** no answers file will exist — inspect the live form yourself once the browser is open in Step 5, using WebFetch or a quick throwaway Playwright inspection script against `APPLY_URL` beforehand if you need the field structure before writing the fill script.
+     - **`$AutoMode`:** read `expired`/`login_wall` from the questions JSON and branch without asking anyone:
+       - `expired == true` → the script already moved this job to `deleted.json` itself. Print a note and go pick the next candidate (Step -1.A.3) — no action item, no `auto_fill_attempted_at` needed, it's gone from `jobs.json`.
+       - `login_wall == true` → write a `create_login` action item (pattern below; `detail`: `"Login/account required at <domain of APPLY_URL> — could not get past the login wall automatically."`), set `auto_fill_attempted_at`, go pick the next candidate.
+       - neither → ambiguous/unsupported ATS. Print a one-line warning, do **not** set `auto_fill_attempted_at` (cheap enough to just retry next hour rather than invent a fourth action-item type for this), go pick the next candidate.
+
+**`$AutoMode` video-upload check** (only reached when `question_count > 0`, i.e. a form was actually found): scan the questions JSON's `questions` array for any entry with `"type": "file"` where `accept` contains `"video"`, or whose `label` (lowercased) contains one of `video`, `esittelyvideo`, `videohaastattelu`, `video cv`, `pitch video`, `intro video`. This is a best-effort heuristic, not guaranteed detection — don't over-trust it.
+- **Match found** → write an `upload_video` action item (pattern below; `detail`: `"Requires video upload: '<matched field label>'"`), set `auto_fill_attempted_at`, go pick the next candidate — a required video recording isn't something this skill can produce on Manju's behalf.
+- **No match** → proceed to Step 4 normally; this candidate is this cycle's job.
+
+**Writing a `create_login` or `upload_video` action item** (`$AutoMode` only — substitute `TYPE`/`DETAIL` per the case above):
+```powershell
+$actionItem = [ordered]@{
+    type = "TYPE"; status = "pending"
+    created_at = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
+    done_at = $null; detail = "DETAIL"
+} | ConvertTo-Json -Compress
+$tmpFile = "PUBLIC\scratch\action_item_JOB_ID.json"
+Set-Content -Path $tmpFile -Value $actionItem -Encoding utf8 -NoNewline
+python job_status_store.py set --url "JOB_URL" --field action_item --json --value-file $tmpFile
+Remove-Item $tmpFile -ErrorAction SilentlyContinue
+```
+(JSON must go through `--value-file`, never an inline `--value` — PowerShell 5.1 silently strips embedded double-quote characters from native-command arguments; see `job_status_store.py`'s own docstring.)
+
+**Marking a job attempted** (`$AutoMode`, every branch above except "expired" and "ambiguous"):
+```powershell
+python job_status_store.py set --url "JOB_URL" --field auto_fill_attempted_at --value (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
+```
 
 ---
 
@@ -242,6 +379,11 @@ Review the filled form in the browser window, then click submit yourself — thi
 ```
 
 Wait for the user to confirm they've reviewed and submitted (or otherwise closed the browser) before considering the task done. Do not mark the job `applied` anywhere automatically — that's a separate, explicit action the user takes.
+
+**In `$AutoMode`**, there's nobody to wait for — after printing the hand-off message above, set `auto_fill_attempted_at` and stop the whole cycle (this job satisfies the "at least one filled form" goal; do not pick another candidate):
+```powershell
+python job_status_store.py set --url "JOB_URL" --field auto_fill_attempted_at --value (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
+```
 
 ## Application Form Rules
 - The field for linkedin profile is left empty. Use the linkedin profile link from the resume.

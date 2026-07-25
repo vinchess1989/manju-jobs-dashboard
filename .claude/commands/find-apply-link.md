@@ -222,6 +222,29 @@ Write it via `job_status_store.py` (Firestore `shared_state/job_status`, keyed b
 python job_status_store.py set --url "$JOB_URL" --field $FIELD_NAME --value "$RESULT"
 ```
 
+**`RESULT_TYPE=email` also needs an action item** — there's no form to fill for an email-only application, so it goes on the Action Items checklist (`firebase_app/review.html`) instead of getting silently lost. Skip this if an `action_item` is already recorded with `status: "done"` (don't reopen something already handled); otherwise write/refresh it:
+```powershell
+$existing = python job_status_store.py get --url "$JOB_URL" --field action_item
+$alreadyDone = $false
+if ($existing -ne "NONE") {
+    try { $alreadyDone = ((ConvertFrom-Json $existing).status -eq "done") } catch {}
+}
+if (-not $alreadyDone) {
+    $actionItem = [ordered]@{
+        type       = "email_application"
+        status     = "pending"
+        created_at = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
+        done_at    = $null
+        detail     = "Apply via email: $RESULT"
+    } | ConvertTo-Json -Compress
+    $tmpFile = "PUBLIC\scratch\action_item_$JOB_ID.json"
+    Set-Content -Path $tmpFile -Value $actionItem -Encoding utf8 -NoNewline
+    python job_status_store.py set --url "$JOB_URL" --field action_item --json --value-file $tmpFile
+    Remove-Item $tmpFile -ErrorAction SilentlyContinue
+}
+```
+(JSON must go through `--value-file`, not an inline `--value` — PowerShell 5.1 silently strips embedded double-quote characters from native-command arguments, so a raw JSON string never survives on the command line; see `job_status_store.py`'s own docstring.)
+
 ---
 
 ## Step 6 — Report
