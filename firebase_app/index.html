@@ -2407,13 +2407,13 @@
             const ADDED_COLOR = '#94a3b8';
             const DELETED_COLOR = '#f87171';
             const addedVals = data.map((d, i) => {
-                if (CHURN_KEY === 'total' && d._hasChurn) return d.added ?? 0;
+                if (d._hasChurn) return d.added ?? 0;
                 if (i === 0) return 0;
                 const net = (d[CHURN_KEY] ?? 0) - (data[i - 1][CHURN_KEY] ?? 0);
                 return net > 0 ? net : 0;
             });
             const deletedVals = data.map((d, i) => {
-                if (CHURN_KEY === 'total' && d._hasChurn) return d.deleted ?? 0;
+                if (d._hasChurn) return d.deleted ?? 0;
                 if (i === 0) return 0;
                 const net = (d[CHURN_KEY] ?? 0) - (data[i - 1][CHURN_KEY] ?? 0);
                 return net < 0 ? -net : 0;
