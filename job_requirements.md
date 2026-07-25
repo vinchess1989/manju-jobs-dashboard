@@ -44,10 +44,8 @@ A job is a match if it satisfies ALL of the following:
 
 **1. Location & Work Model:**
 * **Yes Match:** Must satisfy at least ONE of the following:
-  * Oulu AND On-site (or hybrid)
-  * Anywhere in Finland AND Hybrid or Remote
+  * Anywhere in Finland, any work model (on-site, hybrid, or remote) — Manju is open to relocating anywhere within Finland, so being outside Oulu is never itself a reason to demote a job. Do not mark a job "maybe" or "no" solely because it's on-site outside Oulu.
   * Fully Remote AND (location is "Worldwide" OR no specific country mentioned). Must NOT require EU/Finnish residency or US residency.
-* **Maybe Match:** On-site role outside Oulu (Helsinki, Tampere, Turku, etc.) that passes all other criteria.
 * **Location Inference:** If the job description is in Finnish and no location is specified, assume Finland.
 * **Country-specific remote jobs (UK, USA, India, etc.):** Only qualify as remote if the posting explicitly states it is open to applicants from anywhere. Otherwise treat as that country (→ "no").
 
