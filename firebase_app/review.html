@@ -345,32 +345,79 @@
 
     // ── Weak Matches tab ──────────────────────────────────────────────
 
+        
+        // Global storage for filters
+        if (!window._tableFilters) window._tableFilters = new Map();
+        
+        function clearAllFilters() {
+            document.querySelectorAll('.ms-dropdown input[type="checkbox"]').forEach(cb => {
+                cb.checked = false;
+            });
+            document.querySelectorAll('.ms-dropdown input[type="number"]').forEach(input => {
+                input.value = '';
+            });
+            document.querySelectorAll('.ms-dropdown input[type="text"]').forEach(input => {
+                input.value = '';
+                input.dispatchEvent(new Event('input'));
+            });
+            document.querySelectorAll('.panel.active table').forEach(table => applyTableFilters(table));
+        }
+
         function setupTableFilters(table) {
             const thead = table.querySelector('thead');
             const tbody = table.querySelector('tbody');
             if (!thead || !tbody) return;
             const headers = thead.querySelectorAll('tr:first-child th');
             
+            // Add Clear All Filters button if not exists
+            if (!document.getElementById('clear-filters-btn')) {
+                const tabsDiv = document.querySelector('.tabs');
+                if (tabsDiv) {
+                    const clearBtn = document.createElement('button');
+                    clearBtn.id = 'clear-filters-btn';
+                    clearBtn.className = 'btn';
+                    clearBtn.style = 'margin-left: auto; background: var(--bg-card); color: var(--text-secondary); border: 1px solid var(--border-color);';
+                    clearBtn.innerHTML = '<i class="fas fa-times"></i> Clear All Filters';
+                    clearBtn.onclick = clearAllFilters;
+                    tabsDiv.appendChild(clearBtn);
+                }
+            }
+            
             const filterRow = document.createElement('tr');
             filterRow.className = 'filter-row';
             
             headers.forEach((th, colIndex) => {
                 const fth = document.createElement('th');
-                if (th.textContent.trim() === 'Actions' || th.textContent.trim() === 'Status') {
+                const headerText = th.textContent.trim();
+                
+                if (headerText === 'Actions' || headerText === 'Status') {
                     filterRow.appendChild(fth);
                     return;
                 }
+                
                 const uniqueVals = new Set();
                 tbody.querySelectorAll('tr').forEach(tr => {
                     const td = tr.children[colIndex];
                     if (td) uniqueVals.add(td.textContent.trim());
                 });
                 const sortedVals = Array.from(uniqueVals).sort((a,b)=>a.localeCompare(b));
+                
+                let extraFilterHtml = '';
+                if (headerText === 'Deadline' || headerText === 'Created' || headerText === 'Completed' || headerText === 'Posted Date') {
+                    extraFilterHtml = `
+                        <div style="margin-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px;">
+                            <label style="font-size: 0.8rem; color: var(--text-secondary); display: block; margin-bottom: 4px;">Max days from today:</label>
+                            <input type="number" class="days-filter" placeholder="e.g. 2" style="width: 100%; padding: 4px 8px; border-radius: 4px; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); color: white; font-size: 0.8rem; box-sizing: border-box;" onchange="applyTableFilters(document.querySelector('.panel.active table'))">
+                        </div>
+                    `;
+                }
+
                 let optionsHtml = `
                     <div style="position: sticky; top: -8px; background: #1e243b; z-index: 10; padding: 8px 8px 4px 8px; margin: -8px -8px 4px -8px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                        ${extraFilterHtml}
                         <div style="display: flex; gap: 8px; margin-bottom: 4px;">
-                            <button type="button" onclick="const p=this.closest('.ms-dropdown'); p.querySelectorAll('input[type=checkbox]').forEach(cb=>{cb.checked=true; cb.dispatchEvent(new Event('change'))});" style="background:none; border:none; color:#a78bfa; font-size:0.75rem; cursor:pointer; padding:0;">Select All</button>
-                            <button type="button" onclick="const p=this.closest('.ms-dropdown'); p.querySelectorAll('input[type=checkbox]').forEach(cb=>{cb.checked=false; cb.dispatchEvent(new Event('change'))});" style="background:none; border:none; color:var(--text-secondary); font-size:0.75rem; cursor:pointer; padding:0;">Clear</button>
+                            <button type="button" onclick="const p=this.closest('.ms-dropdown'); p.querySelectorAll('input[type=checkbox]').forEach(cb=>{cb.checked=true;}); applyTableFilters(document.querySelector('.panel.active table'));" style="background:none; border:none; color:#a78bfa; font-size:0.75rem; cursor:pointer; padding:0;">Select All</button>
+                            <button type="button" onclick="const p=this.closest('.ms-dropdown'); p.querySelectorAll('input[type=checkbox]').forEach(cb=>{cb.checked=false;}); applyTableFilters(document.querySelector('.panel.active table'));" style="background:none; border:none; color:var(--text-secondary); font-size:0.75rem; cursor:pointer; padding:0;">Clear</button>
                         </div>
                         <div>
                             <input type="text" placeholder="Search..." oninput="const val=this.value.toLowerCase(); this.closest('.ms-dropdown').querySelectorAll('.ms-option').forEach(opt => { opt.style.display = opt.textContent.toLowerCase().includes(val) ? '' : 'none'; })" onclick="event.stopPropagation()" style="width: 100%; padding: 4px 8px; border-radius: 4px; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); color: white; font-size: 0.8rem; outline: none; box-sizing: border-box;">
@@ -380,15 +427,34 @@
                 sortedVals.forEach(val => {
                     optionsHtml += `<label class="ms-option"><input type="checkbox" value="${val.replace(/"/g, '&quot;')}"> ${val}</label>`;
                 });
+                
+                // Create the dropdown and append to body
+                const dropdownId = 'filter-col-' + Math.random().toString(36).substr(2, 9);
+                const dropdown = document.createElement('div');
+                dropdown.className = 'ms-dropdown';
+                dropdown.id = dropdownId;
+                dropdown.innerHTML = optionsHtml;
+                document.body.appendChild(dropdown);
+                
+                window._tableFilters.set(colIndex, dropdown);
+
                 fth.innerHTML = `
                     <div class="ms-container" style="position:relative;">
-                        <button class="ms-btn" onclick="const d = this.nextElementSibling; const show = d.classList.contains('show'); document.querySelectorAll('.ms-dropdown').forEach(x=>x.classList.remove('show')); if(!show) d.classList.add('show'); event.stopPropagation();">Filter... <span style="font-size:0.7em;">▼</span></button>
-                        <div class="ms-dropdown">
-                            ${optionsHtml}
-                        </div>
+                        <button class="ms-btn" onclick="
+                            event.stopPropagation();
+                            const d = document.getElementById('${dropdownId}');
+                            const rect = this.getBoundingClientRect();
+                            const show = d.classList.contains('show');
+                            document.querySelectorAll('.ms-dropdown').forEach(x => x.classList.remove('show'));
+                            if (!show) {
+                                d.style.top = (rect.bottom + window.scrollY) + 'px';
+                                d.style.left = rect.left + 'px';
+                                d.classList.add('show');
+                            }
+                        ">Filter... <span style="font-size:0.7em;">▼</span></button>
                     </div>
                 `;
-                fth.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+                dropdown.querySelectorAll('input[type="checkbox"]').forEach(cb => {
                     cb.addEventListener('change', () => applyTableFilters(table));
                 });
                 filterRow.appendChild(fth);
@@ -396,22 +462,75 @@
             thead.appendChild(filterRow);
         }
 
+        function parseDateApprox(str) {
+            if (!str) return null;
+            // finnish DD.MM.YYYY
+            let m = str.match(/(\d{1,2})\.(\d{1,2})\.(\d{4})/);
+            if (m) return new Date(m[3], m[2]-1, m[1]);
+            // finnish without year DD.MM.
+            m = str.match(/^(\d{1,2})\.(\d{1,2})\.?$/);
+            if (m) {
+                const now = new Date();
+                let year = now.getFullYear();
+                if (m[2] < now.getMonth() + 1) year++;
+                return new Date(year, m[2]-1, m[1]);
+            }
+            // standard YYYY-MM-DD
+            m = str.match(/(\d{4})-(\d{2})-(\d{2})/);
+            if (m) return new Date(m[1], m[2]-1, m[3]);
+            // try normal parse
+            const d = new Date(str);
+            return isNaN(d.getTime()) ? null : d;
+        }
+
         function applyTableFilters(table) {
             const tbody = table.querySelector('tbody');
-            const filterRow = table.querySelector('.filter-row');
+            const thead = table.querySelector('thead');
+            if (!thead || !tbody) return;
+            
+            const filterRow = thead.querySelector('.filter-row');
             if (!filterRow) return;
             const cols = filterRow.children;
+            const today = new Date();
+            today.setHours(0,0,0,0);
             
             tbody.querySelectorAll('tr').forEach(tr => {
                 let showRow = true;
                 for (let colIndex = 0; colIndex < cols.length; colIndex++) {
-                    const dropdown = cols[colIndex].querySelector('.ms-dropdown');
+                    const dropdown = window._tableFilters.get(colIndex);
                     if (!dropdown) continue;
+                    
+                    const cellVal = tr.children[colIndex] ? tr.children[colIndex].textContent.trim() : '';
+                    
+                    // Days filter
+                    const daysInput = dropdown.querySelector('.days-filter');
+                    if (daysInput && daysInput.value) {
+                        const maxDays = parseInt(daysInput.value, 10);
+                        if (!isNaN(maxDays)) {
+                            const d = parseDateApprox(cellVal);
+                            if (d) {
+                                const diffDays = Math.ceil((d.getTime() - today.getTime()) / (1000 * 3600 * 24));
+                                if (diffDays > maxDays) {
+                                    showRow = false;
+                                    break;
+                                }
+                            } else {
+                                // Not a valid date - hide them if days specified
+                                const lower = cellVal.toLowerCase();
+                                if (lower.includes('open') || lower.includes('n/a')) {
+                                    showRow = false;
+                                    break;
+                                } else {
+                                    showRow = false;
+                                    break;
+                                }
+                            }
+                        }
+                    }
                     
                     const checkedBoxes = Array.from(dropdown.querySelectorAll('input[type="checkbox"]:checked'));
                     if (checkedBoxes.length > 0) {
                         const allowedVals = checkedBoxes.map(cb => cb.value);
-                        const cellVal = tr.children[colIndex] ? tr.children[colIndex].textContent.trim() : '';
                         if (!allowedVals.includes(cellVal)) {
                             showRow = false;
                             break;
@@ -421,9 +540,13 @@
                 tr.style.display = showRow ? '' : 'none';
             });
         }
-        document.addEventListener('click', () => {
-            document.querySelectorAll('.ms-dropdown').forEach(d => d.classList.remove('show'));
+        
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.ms-dropdown') && !e.target.closest('.ms-btn')) {
+                document.querySelectorAll('.ms-dropdown').forEach(d => d.classList.remove('show'));
+            }
         });
+
 
 
     function renderWeakMatches() {
@@ -448,6 +571,7 @@
                     <table>
                         <thead>
                             <tr>
+                                <th class="resizable-th"><div class="resizable-header" style="width: 80px">ID</div></th>
                                 <th class="resizable-th"><div class="resizable-header" style="width: 150px">Company</div></th>
                                 <th class="resizable-th"><div class="resizable-header" style="width: 250px">Job Title</div></th>
                                 <th class="resizable-th"><div class="resizable-header" style="width: 150px">Location</div></th>
@@ -461,6 +585,7 @@
                                 const reason = escapeHtml(job.reason || '');
                                 return `
                                     <tr data-url="${escapeHtml(job.url)}">
+                                        <td style="font-family: monospace;">${escapeHtml(job.id || '')}</td>
                                         <td>${escapeHtml(job.company)}</td>
                                         <td><a href="${escapeHtml(job.url)}" target="_blank" rel="noopener">${escapeHtml(job.title)}</a></td>
                                         <td>${escapeHtml(job.location)}</td>
@@ -550,9 +675,12 @@
                             <thead>
                                 <tr>
                                     <th class="resizable-th"><div class="resizable-header" style="width: 140px">Type</div></th>
-                                    <th class="resizable-th"><div class="resizable-header" style="width: 150px">Company</div></th>
+                                    <th class="resizable-th"><div class="resizable-header" style="width: 80px">ID</div></th>
+                                <th class="resizable-th"><div class="resizable-header" style="width: 150px">Company</div></th>
                                     <th class="resizable-th"><div class="resizable-header" style="width: 250px">Job Title</div></th>
                                     <th class="resizable-th"><div class="resizable-header" style="width: 300px">Detail</div></th>
+                                    <th class="resizable-th"><div class="resizable-header" style="width: 120px">Posted Date</div></th>
+                                    <th class="resizable-th"><div class="resizable-header" style="width: 120px">Deadline</div></th>
                                     <th class="resizable-th"><div class="resizable-header" style="width: 150px">${done ? 'Completed' : 'Created'}</div></th>
                                     <th class="resizable-th"><div class="resizable-header" style="width: 100px">Status</div></th>
                                 </tr>
@@ -573,9 +701,12 @@
                                     return `
                                         <tr class="${done ? 'done' : ''}" data-url="${escapeHtml(item.url)}">
                                             <td><span class="action-type-badge ${escapeHtml(type)}">${escapeHtml(typeLabel)}</span></td>
+                                            <td style="font-family: monospace;">${escapeHtml(item.job.id || '')}</td>
                                             <td>${escapeHtml(company)}</td>
                                             <td>${titleHtml}</td>
                                             <td><div style="max-height: 80px; overflow-y: auto;">${detail}</div></td>
+                                            <td>${escapeHtml(item.job.posted_date || 'N/A')}</td>
+                                            <td>${escapeHtml(item.job.deadline || 'N/A')}</td>
                                             <td>${escapeHtml(dateStr)}</td>
                                             <td>
                                                 <label class="action-check" style="cursor: pointer; display: flex; align-items: center; gap: 0.5rem;">
