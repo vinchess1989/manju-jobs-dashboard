@@ -523,10 +523,21 @@ def save_history_snapshot(jobs, added=0, deleted=0, added_yes=0, added_maybe=0):
             with open(HISTORY_FILE, 'r', encoding='utf-8') as f:
                 history = json.load(f)
         except Exception:
+            # Don't silently discard whatever history the file held - preserve
+            # it for forensics/recovery instead of overwriting it with a
+            # single-entry file.
+            backup_path = HISTORY_FILE + f".corrupt-{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+            try:
+                os.replace(HISTORY_FILE, backup_path)
+                print(f"WARN: {HISTORY_FILE} was unreadable; backed up to {backup_path} and starting fresh.")
+            except Exception:
+                pass
             history = []
     history.append(snapshot)
-    with open(HISTORY_FILE, 'w', encoding='utf-8') as f:
+    tmp_path = HISTORY_FILE + ".tmp"
+    with open(tmp_path, 'w', encoding='utf-8') as f:
         json.dump(history, f, indent=2)
+    os.replace(tmp_path, HISTORY_FILE)
 
 def generate_history_from_backups():
     """One-time: build jobs_history.json from all existing backup files."""
