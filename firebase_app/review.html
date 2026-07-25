@@ -71,53 +71,99 @@
 
         .empty-state { text-align: center; padding: 4rem 1rem; color: var(--text-secondary); }
 
-        .row-list { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1.5rem; }
-        .job-row {
-            background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 0.9rem;
-            padding: 1rem 1.25rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;
+        .table-container {
+            width: 100%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 1.25rem 1.25rem 0 0;
+            padding: 1.5rem;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(12px);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            margin-top: 1.5rem;
         }
-        .job-row .job-info { flex: 1; min-width: 260px; }
-        .job-row .job-title { font-weight: 600; font-size: 1rem; }
-        .job-row .job-title a { color: var(--text-primary); text-decoration: none; }
-        .job-row .job-title a:hover { text-decoration: underline; }
-        .job-row .job-meta { color: var(--text-secondary); font-size: 0.85rem; margin-top: 0.25rem; }
-        .job-row .job-reason { color: var(--text-secondary); font-size: 0.82rem; margin-top: 0.4rem; max-width: 640px; }
-        .job-row .job-actions { display: flex; gap: 0.5rem; align-items: center; }
-
+        .table-scroll-area {
+            overflow-x: auto;
+            overflow-y: auto;
+            max-height: calc(100vh - 250px);
+            margin: 0 -1.5rem; margin-bottom: 0;
+            padding: 0 1.5rem;
+        }
+        table {
+            width: 100%;
+            min-width: 1000px;
+            border-collapse: separate;
+            border-spacing: 0;
+            text-align: left;
+            font-size: 0.925rem;
+        }
+        thead {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            background-color: #121727;
+        }
+        th, td {
+            padding: 1rem 0.75rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        th {
+            color: #ffffff;
+            font-weight: 700;
+            font-family: 'Space Grotesk', sans-serif;
+            cursor: pointer;
+            user-select: none;
+            transition: background-color 0.2s;
+        }
+        th:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        tr:hover td {
+            background-color: rgba(255, 255, 255, 0.015);
+        }
+        .resizable-header {
+            resize: horizontal;
+            overflow: auto;
+            min-width: 60px;
+            padding: 1rem 0.75rem;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        th.resizable-th {
+            padding: 0;
+        }
+        
+        .action-type-badge {
+            display: inline-block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase;
+            padding: 0.25rem 0.65rem; border-radius: 1rem; color: white; white-space: nowrap;
+        }
+        .action-type-badge.create_login { background: var(--color-pending); }
+        .action-type-badge.upload_video { background: var(--color-maybe); }
+        .action-type-badge.email_application { background: #8b5cf6; }
+        
+        tr.done td { opacity: 0.6; }
+        
         .btn {
             border: none; border-radius: 0.6rem; padding: 0.55rem 1rem; cursor: pointer;
             font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 0.85rem; color: white;
-            display: flex; align-items: center; gap: 0.4rem;
+            display: inline-flex; align-items: center; gap: 0.4rem; margin-right: 0.5rem;
         }
         .btn.apply { background: var(--color-yes); }
         .btn.delete { background: var(--color-no); }
         .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
         .section-label {
-            font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 0.95rem; text-transform: uppercase;
-            letter-spacing: 0.04em; color: var(--text-secondary); margin: 1.75rem 0 0.5rem;
+            font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.1rem; text-transform: uppercase;
+            letter-spacing: 0.04em; color: var(--text-primary); margin: 1.75rem 0 1rem; padding-left: 0.5rem;
         }
-        .section-label:first-child { margin-top: 1.5rem; }
-
-        .action-row {
-            background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 0.9rem;
-            padding: 0.9rem 1.25rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;
-        }
-        .action-row.done { opacity: 0.6; }
-        .action-info { flex: 1; min-width: 260px; }
-        .action-type-badge {
-            display: inline-block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase;
-            padding: 0.15rem 0.55rem; border-radius: 1rem; margin-right: 0.5rem; color: white;
-        }
-        .action-type-badge.create_login { background: var(--color-pending); }
-        .action-type-badge.upload_video { background: var(--color-maybe); }
-        .action-type-badge.email_application { background: #8b5cf6; }
-        .action-job-title { font-weight: 600; }
-        .action-job-title a { color: var(--text-primary); text-decoration: none; }
-        .action-job-title a:hover { text-decoration: underline; }
-        .action-detail { color: var(--text-secondary); font-size: 0.82rem; margin-top: 0.3rem; }
-        .action-date { color: var(--text-secondary); font-size: 0.75rem; margin-top: 0.2rem; }
-        .action-check { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: var(--text-secondary); cursor: pointer; }
+        .section-label:first-child { margin-top: 0; }
+        
+        a { color: #60a5fa; text-decoration: none; }
+        a:hover { text-decoration: underline; }
         .action-check input { width: 18px; height: 18px; cursor: pointer; }
 
         .spinner-container { text-align: center; padding: 4rem 1rem; color: var(--text-secondary); }
@@ -292,22 +338,42 @@
             return;
         }
 
-        container.innerHTML = '<div class="row-list">' + weak.map(job => {
-            const reason = escapeHtml(job.reason || '');
-            return `
-                <div class="job-row" data-url="${escapeHtml(job.url)}">
-                    <div class="job-info">
-                        <div class="job-title"><a href="${escapeHtml(job.url)}" target="_blank" rel="noopener">${escapeHtml(job.title)}</a></div>
-                        <div class="job-meta">${escapeHtml(job.company)} · ${escapeHtml(job.location)} · Deadline: ${escapeHtml(job.deadline || 'N/A')}</div>
-                        ${reason ? `<div class="job-reason">${reason}</div>` : ''}
-                    </div>
-                    <div class="job-actions">
-                        <button class="btn apply" ${isAuthorized ? '' : 'disabled'} onclick="applyWeakMatch('${escapeHtml(job.url)}', this)"><i class="fas fa-check"></i> Apply</button>
-                        <button class="btn delete" ${isAuthorized ? '' : 'disabled'} onclick="deleteWeakMatch('${escapeHtml(job.url)}', this)"><i class="fas fa-trash"></i> Delete</button>
-                    </div>
+        container.innerHTML = `
+            <div class="table-container">
+                <div class="table-scroll-area">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="resizable-th"><div class="resizable-header" style="width: 150px">Company</div></th>
+                                <th class="resizable-th"><div class="resizable-header" style="width: 250px">Job Title</div></th>
+                                <th class="resizable-th"><div class="resizable-header" style="width: 150px">Location</div></th>
+                                <th class="resizable-th"><div class="resizable-header" style="width: 120px">Deadline</div></th>
+                                <th class="resizable-th"><div class="resizable-header" style="width: 300px">Reason</div></th>
+                                <th class="resizable-th"><div class="resizable-header" style="width: 220px">Actions</div></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${weak.map(job => {
+                                const reason = escapeHtml(job.reason || '');
+                                return `
+                                    <tr data-url="${escapeHtml(job.url)}">
+                                        <td>${escapeHtml(job.company)}</td>
+                                        <td><a href="${escapeHtml(job.url)}" target="_blank" rel="noopener">${escapeHtml(job.title)}</a></td>
+                                        <td>${escapeHtml(job.location)}</td>
+                                        <td>${escapeHtml(job.deadline || 'N/A')}</td>
+                                        <td><div style="max-height: 80px; overflow-y: auto;">${reason}</div></td>
+                                        <td>
+                                            <button class="btn apply" ${isAuthorized ? '' : 'disabled'} onclick="applyWeakMatch('${escapeHtml(job.url)}', this)"><i class="fas fa-check"></i> Apply</button>
+                                            <button class="btn delete" ${isAuthorized ? '' : 'disabled'} onclick="deleteWeakMatch('${escapeHtml(job.url)}', this)"><i class="fas fa-trash"></i> Delete</button>
+                                        </td>
+                                    </tr>
+                                `;
+                            }).join('')}
+                        </tbody>
+                    </table>
                 </div>
-            `;
-        }).join('') + '</div>';
+            </div>
+        `;
     }
 
     async function applyWeakMatch(url, btn) {
@@ -370,45 +436,64 @@
             return;
         }
 
-        const renderRow = (item, done) => {
-            const title = item.job.title || '(job no longer in jobs.json)';
-            const company = item.job.company || '';
-            const type = item.actionItem.type || 'unknown';
-            const typeLabel = ACTION_TYPE_LABELS[type] || type;
-            const detail = escapeHtml(item.actionItem.detail || '');
-            const dateStr = done
-                ? (item.actionItem.done_at ? new Date(item.actionItem.done_at).toLocaleString() : '')
-                : (item.actionItem.created_at ? new Date(item.actionItem.created_at).toLocaleString() : '');
-            const dateLabel = done ? 'Completed' : 'Created';
-            const titleHtml = item.job.url
-                ? `<a href="${escapeHtml(item.job.url)}" target="_blank" rel="noopener">${escapeHtml(title)}</a>`
-                : escapeHtml(title);
+        const renderTable = (itemsList, done) => {
+            if (!itemsList.length) return '<div class="empty-state" style="padding:1.5rem;">Nothing here yet.</div>';
             return `
-                <div class="action-row ${done ? 'done' : ''}" data-url="${escapeHtml(item.url)}">
-                    <div class="action-info">
-                        <span class="action-type-badge ${escapeHtml(type)}">${escapeHtml(typeLabel)}</span>
-                        <span class="action-job-title">${titleHtml}${company ? ' · ' + escapeHtml(company) : ''}</span>
-                        ${detail ? `<div class="action-detail">${detail}</div>` : ''}
-                        ${dateStr ? `<div class="action-date">${dateLabel}: ${escapeHtml(dateStr)}</div>` : ''}
+                <div class="table-container" style="margin-bottom: 2rem;">
+                    <div class="table-scroll-area">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="resizable-th"><div class="resizable-header" style="width: 140px">Type</div></th>
+                                    <th class="resizable-th"><div class="resizable-header" style="width: 150px">Company</div></th>
+                                    <th class="resizable-th"><div class="resizable-header" style="width: 250px">Job Title</div></th>
+                                    <th class="resizable-th"><div class="resizable-header" style="width: 300px">Detail</div></th>
+                                    <th class="resizable-th"><div class="resizable-header" style="width: 150px">${done ? 'Completed' : 'Created'}</div></th>
+                                    <th class="resizable-th"><div class="resizable-header" style="width: 100px">Status</div></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${itemsList.map(item => {
+                                    const title = item.job.title || '(job no longer in jobs.json)';
+                                    const company = item.job.company || '';
+                                    const type = item.actionItem.type || 'unknown';
+                                    const typeLabel = ACTION_TYPE_LABELS[type] || type;
+                                    const detail = escapeHtml(item.actionItem.detail || '');
+                                    const dateStr = done
+                                        ? (item.actionItem.done_at ? new Date(item.actionItem.done_at).toLocaleString() : '')
+                                        : (item.actionItem.created_at ? new Date(item.actionItem.created_at).toLocaleString() : '');
+                                    const titleHtml = item.job.url
+                                        ? `<a href="${escapeHtml(item.job.url)}" target="_blank" rel="noopener">${escapeHtml(title)}</a>`
+                                        : escapeHtml(title);
+                                    return `
+                                        <tr class="${done ? 'done' : ''}" data-url="${escapeHtml(item.url)}">
+                                            <td><span class="action-type-badge ${escapeHtml(type)}">${escapeHtml(typeLabel)}</span></td>
+                                            <td>${escapeHtml(company)}</td>
+                                            <td>${titleHtml}</td>
+                                            <td><div style="max-height: 80px; overflow-y: auto;">${detail}</div></td>
+                                            <td>${escapeHtml(dateStr)}</td>
+                                            <td>
+                                                <label class="action-check" style="cursor: pointer; display: flex; align-items: center; gap: 0.5rem;">
+                                                    <input type="checkbox" style="width:18px; height:18px; cursor:pointer;" ${done ? 'checked disabled' : ''} ${isAuthorized ? '' : 'disabled'}
+                                                           onchange="toggleActionItemDone('${escapeHtml(item.url)}', this)">
+                                                    Done
+                                                </label>
+                                            </td>
+                                        </tr>
+                                    `;
+                                }).join('')}
+                            </tbody>
+                        </table>
                     </div>
-                    <label class="action-check">
-                        <input type="checkbox" ${done ? 'checked disabled' : ''} ${isAuthorized ? '' : 'disabled'}
-                               onchange="toggleActionItemDone('${escapeHtml(item.url)}', this)">
-                        Done
-                    </label>
                 </div>
             `;
         };
 
         let html = '';
         html += '<div class="section-label">Outstanding</div>';
-        html += outstanding.length
-            ? outstanding.map(i => renderRow(i, false)).join('')
-            : '<div class="empty-state" style="padding:1.5rem;">Nothing outstanding.</div>';
+        html += renderTable(outstanding, false);
         html += '<div class="section-label">Completed</div>';
-        html += completed.length
-            ? completed.map(i => renderRow(i, true)).join('')
-            : '<div class="empty-state" style="padding:1.5rem;">Nothing completed yet.</div>';
+        html += renderTable(completed, true);
 
         container.innerHTML = html;
     }
