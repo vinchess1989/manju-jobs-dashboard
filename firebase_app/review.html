@@ -571,6 +571,7 @@
                     <table>
                         <thead>
                             <tr>
+                                <th class="resizable-th"><div class="resizable-header" style="width: 80px">ID</div></th>
                                 <th class="resizable-th"><div class="resizable-header" style="width: 150px">Company</div></th>
                                 <th class="resizable-th"><div class="resizable-header" style="width: 250px">Job Title</div></th>
                                 <th class="resizable-th"><div class="resizable-header" style="width: 150px">Location</div></th>
@@ -584,6 +585,7 @@
                                 const reason = escapeHtml(job.reason || '');
                                 return `
                                     <tr data-url="${escapeHtml(job.url)}">
+                                        <td style="font-family: monospace;">${escapeHtml(job.id || '')}</td>
                                         <td>${escapeHtml(job.company)}</td>
                                         <td><a href="${escapeHtml(job.url)}" target="_blank" rel="noopener">${escapeHtml(job.title)}</a></td>
                                         <td>${escapeHtml(job.location)}</td>
@@ -673,7 +675,8 @@
                             <thead>
                                 <tr>
                                     <th class="resizable-th"><div class="resizable-header" style="width: 140px">Type</div></th>
-                                    <th class="resizable-th"><div class="resizable-header" style="width: 150px">Company</div></th>
+                                    <th class="resizable-th"><div class="resizable-header" style="width: 80px">ID</div></th>
+                                <th class="resizable-th"><div class="resizable-header" style="width: 150px">Company</div></th>
                                     <th class="resizable-th"><div class="resizable-header" style="width: 250px">Job Title</div></th>
                                     <th class="resizable-th"><div class="resizable-header" style="width: 300px">Detail</div></th>
                                     <th class="resizable-th"><div class="resizable-header" style="width: 120px">Posted Date</div></th>
@@ -698,6 +701,7 @@
                                     return `
                                         <tr class="${done ? 'done' : ''}" data-url="${escapeHtml(item.url)}">
                                             <td><span class="action-type-badge ${escapeHtml(type)}">${escapeHtml(typeLabel)}</span></td>
+                                            <td style="font-family: monospace;">${escapeHtml(item.job.id || '')}</td>
                                             <td>${escapeHtml(company)}</td>
                                             <td>${titleHtml}</td>
                                             <td><div style="max-height: 80px; overflow-y: auto;">${detail}</div></td>
