@@ -344,6 +344,88 @@
     }
 
     // ── Weak Matches tab ──────────────────────────────────────────────
+
+        function setupTableFilters(table) {
+            const thead = table.querySelector('thead');
+            const tbody = table.querySelector('tbody');
+            if (!thead || !tbody) return;
+            const headers = thead.querySelectorAll('tr:first-child th');
+            
+            const filterRow = document.createElement('tr');
+            filterRow.className = 'filter-row';
+            
+            headers.forEach((th, colIndex) => {
+                const fth = document.createElement('th');
+                if (th.textContent.trim() === 'Actions' || th.textContent.trim() === 'Status') {
+                    filterRow.appendChild(fth);
+                    return;
+                }
+                const uniqueVals = new Set();
+                tbody.querySelectorAll('tr').forEach(tr => {
+                    const td = tr.children[colIndex];
+                    if (td) uniqueVals.add(td.textContent.trim());
+                });
+                const sortedVals = Array.from(uniqueVals).sort((a,b)=>a.localeCompare(b));
+                let optionsHtml = `
+                    <div style="position: sticky; top: -8px; background: #1e243b; z-index: 10; padding: 8px 8px 4px 8px; margin: -8px -8px 4px -8px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                        <div style="display: flex; gap: 8px; margin-bottom: 4px;">
+                            <button type="button" onclick="const p=this.closest('.ms-dropdown'); p.querySelectorAll('input[type=checkbox]').forEach(cb=>{cb.checked=true; cb.dispatchEvent(new Event('change'))});" style="background:none; border:none; color:#a78bfa; font-size:0.75rem; cursor:pointer; padding:0;">Select All</button>
+                            <button type="button" onclick="const p=this.closest('.ms-dropdown'); p.querySelectorAll('input[type=checkbox]').forEach(cb=>{cb.checked=false; cb.dispatchEvent(new Event('change'))});" style="background:none; border:none; color:var(--text-secondary); font-size:0.75rem; cursor:pointer; padding:0;">Clear</button>
+                        </div>
+                        <div>
+                            <input type="text" placeholder="Search..." oninput="const val=this.value.toLowerCase(); this.closest('.ms-dropdown').querySelectorAll('.ms-option').forEach(opt => { opt.style.display = opt.textContent.toLowerCase().includes(val) ? '' : 'none'; })" onclick="event.stopPropagation()" style="width: 100%; padding: 4px 8px; border-radius: 4px; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); color: white; font-size: 0.8rem; outline: none; box-sizing: border-box;">
+                        </div>
+                    </div>
+                `;
+                sortedVals.forEach(val => {
+                    optionsHtml += `<label class="ms-option"><input type="checkbox" value="${val.replace(/"/g, '&quot;')}"> ${val}</label>`;
+                });
+                fth.innerHTML = `
+                    <div class="ms-container" style="position:relative;">
+                        <button class="ms-btn" onclick="const d = this.nextElementSibling; const show = d.classList.contains('show'); document.querySelectorAll('.ms-dropdown').forEach(x=>x.classList.remove('show')); if(!show) d.classList.add('show'); event.stopPropagation();">Filter... <span style="font-size:0.7em;">▼</span></button>
+                        <div class="ms-dropdown">
+                            ${optionsHtml}
+                        </div>
+                    </div>
+                `;
+                fth.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+                    cb.addEventListener('change', () => applyTableFilters(table));
+                });
+                filterRow.appendChild(fth);
+            });
+            thead.appendChild(filterRow);
+        }
+
+        function applyTableFilters(table) {
+            const tbody = table.querySelector('tbody');
+            const filterRow = table.querySelector('.filter-row');
+            if (!filterRow) return;
+            const cols = filterRow.children;
+            
+            tbody.querySelectorAll('tr').forEach(tr => {
+                let showRow = true;
+                for (let colIndex = 0; colIndex < cols.length; colIndex++) {
+                    const dropdown = cols[colIndex].querySelector('.ms-dropdown');
+                    if (!dropdown) continue;
+                    
+                    const checkedBoxes = Array.from(dropdown.querySelectorAll('input[type="checkbox"]:checked'));
+                    if (checkedBoxes.length > 0) {
+                        const allowedVals = checkedBoxes.map(cb => cb.value);
+                        const cellVal = tr.children[colIndex] ? tr.children[colIndex].textContent.trim() : '';
+                        if (!allowedVals.includes(cellVal)) {
+                            showRow = false;
+                            break;
+                        }
+                    }
+                }
+                tr.style.display = showRow ? '' : 'none';
+            });
+        }
+        document.addEventListener('click', () => {
+            document.querySelectorAll('.ms-dropdown').forEach(d => d.classList.remove('show'));
+        });
+
+
     function renderWeakMatches() {
         const container = document.getElementById('weak-content');
         const weak = allJobs.filter(job => {
