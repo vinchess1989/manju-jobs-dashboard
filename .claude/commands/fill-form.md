@@ -145,7 +145,7 @@ From `JOBS_JSON`, a candidate satisfies **all** of:
 
 ### -1.A.3 — Sort and batch
 
-Sort the full eligible list by `deadline` ascending: parse `yyyy-MM-dd` entries and sort those first (soonest first); `"Open until filled"`, `"N/A"`, or anything unparseable sorts after all dated entries.
+Sort the full eligible list with **priority jobs first**, then by `deadline` ascending: any candidate with Firestore's `priority_fill_form_at` set (Manju checked "Done" on a `create_login` action item in `firebase_app/review.html`, signaling the login/account blocker is now resolved and this job should be retried before anything else) sorts to the very front, most-recently-flagged first among those. Everything else follows, sorted by `deadline` ascending: parse `yyyy-MM-dd` entries and sort those first (soonest first); `"Open until filled"`, `"N/A"`, or anything unparseable sorts after all dated entries.
 
 Process in batches of 15 in that order: run -1.A.4 on batch 1 (candidates 1–15); only if the *entire* batch produces zero filled forms, move to batch 2 (16–30), and so on until either a form gets filled or the whole list is exhausted. This bounds each cycle's scrape/tailor cost without giving up early just because the first 15 all happened to be action-item cases.
 
@@ -370,15 +370,30 @@ with sync_playwright() as p:
 
 ## Step 6 — Hand off for manual review
 
+Immediately after the fill script completes successfully (both modes) — this is what powers `firebase_app/review.html`'s "Filled Forms" tab, so Manju can find and confirm-submit it later even from a different machine/session than the one that filled it:
+```powershell
+$formFilled = [ordered]@{
+    status = "pending_review"
+    filled_at = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
+    done_at = $null
+} | ConvertTo-Json -Compress
+$tmpFile = "PUBLIC\scratch\form_filled_JOB_ID.json"
+Set-Content -Path $tmpFile -Value $formFilled -Encoding utf8 -NoNewline
+python job_status_store.py set --url "JOB_URL" --field form_filled --json --value-file $tmpFile
+Remove-Item $tmpFile -ErrorAction SilentlyContinue
+```
+(JSON must go through `--value-file`, never an inline `--value` — see the note on this elsewhere in this file.)
+
 Print:
 ```
 JOB_ID (JOB_TITLE @ COMPANY) — form opened and filled at APPLY_URL.
 Resume       : $resumePdf
 Cover letter : $coverPdf
 Review the filled form in the browser window, then click submit yourself — this skill never submits automatically.
+It's now also listed under the "Filled Forms" tab in firebase_app/review.html — checking "Done" there marks it applied with today's date.
 ```
 
-Wait for the user to confirm they've reviewed and submitted (or otherwise closed the browser) before considering the task done. Do not mark the job `applied` anywhere automatically — that's a separate, explicit action the user takes.
+Wait for the user to confirm they've reviewed and submitted (or otherwise closed the browser) before considering the task done. Do not mark the job `applied` anywhere automatically — that's a separate, explicit action the user takes (via review.html's Filled Forms tab, or the dashboard's own Applied toggle).
 
 **In `$AutoMode`**, there's nobody to wait for — after printing the hand-off message above, set `auto_fill_attempted_at` and stop the whole cycle (this job satisfies the "at least one filled form" goal; do not pick another candidate):
 ```powershell

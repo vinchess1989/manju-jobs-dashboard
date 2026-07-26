@@ -218,6 +218,7 @@
 <div class="tabs">
     <button class="tab-btn active" id="tab-btn-weak" onclick="switchTab('weak')">Weak Matches <span class="count" id="weak-count"></span></button>
     <button class="tab-btn" id="tab-btn-actions" onclick="switchTab('actions')">Action Items <span class="count" id="actions-count"></span></button>
+    <button class="tab-btn" id="tab-btn-filled" onclick="switchTab('filled')">Filled Forms <span class="count" id="filled-count"></span></button>
 </div>
 
 <main>
@@ -226,6 +227,9 @@
     </div>
     <div class="panel" id="panel-actions">
         <div id="actions-content" class="spinner-container"><div class="spinner"></div><div>Loading jobs…</div></div>
+    </div>
+    <div class="panel" id="panel-filled">
+        <div id="filled-content" class="spinner-container"><div class="spinner"></div><div>Loading jobs…</div></div>
     </div>
 </main>
 
@@ -269,8 +273,10 @@
     function switchTab(tab) {
         document.getElementById('tab-btn-weak').classList.toggle('active', tab === 'weak');
         document.getElementById('tab-btn-actions').classList.toggle('active', tab === 'actions');
+        document.getElementById('tab-btn-filled').classList.toggle('active', tab === 'filled');
         document.getElementById('panel-weak').classList.toggle('active', tab === 'weak');
         document.getElementById('panel-actions').classList.toggle('active', tab === 'actions');
+        document.getElementById('panel-filled').classList.toggle('active', tab === 'filled');
     }
 
     window.addEventListener('DOMContentLoaded', () => {
@@ -305,6 +311,7 @@
                 if (firestoreUnsubscribe) { firestoreUnsubscribe(); firestoreUnsubscribe = null; }
                 document.getElementById('weak-content').innerHTML = '<div class="empty-state">Please sign in with Google to view the review queue.</div>';
                 document.getElementById('actions-content').innerHTML = '<div class="empty-state">Please sign in with Google to view the review queue.</div>';
+                document.getElementById('filled-content').innerHTML = '<div class="empty-state">Please sign in with Google to view the review queue.</div>';
             }
         });
 
@@ -335,12 +342,14 @@
             console.error('Failed to load jobs data', err);
             document.getElementById('weak-content').innerHTML = '<div class="empty-state">Could not load jobs.json.</div>';
             document.getElementById('actions-content').innerHTML = '<div class="empty-state">Could not load jobs.json.</div>';
+            document.getElementById('filled-content').innerHTML = '<div class="empty-state">Could not load jobs.json.</div>';
         });
     }
 
     function renderAll() {
         renderWeakMatches();
         renderActionItems();
+        renderFilledForms();
     }
 
     // ── Weak Matches tab ──────────────────────────────────────────────
@@ -711,7 +720,7 @@
                                             <td>
                                                 <label class="action-check" style="cursor: pointer; display: flex; align-items: center; gap: 0.5rem;">
                                                     <input type="checkbox" style="width:18px; height:18px; cursor:pointer;" ${done ? 'checked disabled' : ''} ${isAuthorized ? '' : 'disabled'}
-                                                           onchange="toggleActionItemDone('${escapeHtml(item.url)}', this)">
+                                                           onchange="toggleActionItemDone('${escapeHtml(item.url)}', this, '${escapeHtml(type)}')">
                                                     Done
                                                 </label>
                                             </td>
@@ -735,19 +744,137 @@
         container.querySelectorAll('table').forEach(table => setupTableFilters(table));
     }
 
-    async function toggleActionItemDone(url, checkbox) {
+    async function toggleActionItemDone(url, checkbox, actionType) {
         if (!checkbox.checked) return;
         checkbox.disabled = true;
         try {
-            await db.collection('shared_state').doc('job_status').update(
+            const updates = [
                 new firebase.firestore.FieldPath(url, 'action_item', 'status'), 'done',
                 new firebase.firestore.FieldPath(url, 'action_item', 'done_at'), new Date().toISOString()
+            ];
+            if (actionType === 'email_application' || actionType === 'upload_video') {
+                // Emailed applications and video-upload submissions are considered submitted
+                // the moment this is checked.
+                const appliedDate = new Date().toISOString().split('T')[0];
+                updates.push(new firebase.firestore.FieldPath(url, 'applied'), 'yes');
+                updates.push(new firebase.firestore.FieldPath(url, 'applied_date'), appliedDate);
+            } else if (actionType === 'create_login') {
+                // Clear auto_fill_attempted_at so /fill-form auto's candidate filter picks this
+                // job back up now that the login blocker is resolved, and flag it so the next
+                // run's sort puts it ahead of the normal deadline-ascending queue.
+                updates.push(new firebase.firestore.FieldPath(url, 'auto_fill_attempted_at'), firebase.firestore.FieldValue.delete());
+                updates.push(new firebase.firestore.FieldPath(url, 'priority_fill_form_at'), new Date().toISOString());
+            }
+            await db.collection('shared_state').doc('job_status').update(...updates);
+        } catch (e) {
+            console.error(e);
+            alert('Failed to save to cloud database.');
+            checkbox.checked = false;
+            checkbox.disabled = false;
+        }
+    }
+
+    // ── Filled Forms tab ──────────────────────────────────────────────
+    function renderFilledForms() {
+        const container = document.getElementById('filled-content');
+        const filled = [];
+        for (const [url, state] of Object.entries(sharedJobsState)) {
+            if (!state || !state.form_filled || state.form_filled.status !== 'pending_review') continue;
+            if (state.deletion_reason) continue;
+            const appliedVal = state.applied || 'no';
+            if (appliedVal === 'yes') continue;
+            const job = allJobs.find(j => j.url === url) || {};
+            filled.push({ url, job, formFilled: state.form_filled });
+        }
+        filled.sort((a, b) => new Date(b.formFilled.filled_at || 0) - new Date(a.formFilled.filled_at || 0));
+
+        document.getElementById('filled-count').textContent = filled.length ? `(${filled.length})` : '';
+
+        if (filled.length === 0) {
+            container.innerHTML = '<div class="empty-state">No filled forms waiting for review.</div>';
+            return;
+        }
+
+        container.innerHTML = `
+            <div class="table-container">
+                <div class="table-scroll-area">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="resizable-th"><div class="resizable-header" style="width: 80px">ID</div></th>
+                                <th class="resizable-th"><div class="resizable-header" style="width: 150px">Company</div></th>
+                                <th class="resizable-th"><div class="resizable-header" style="width: 250px">Job Title</div></th>
+                                <th class="resizable-th"><div class="resizable-header" style="width: 150px">Location</div></th>
+                                <th class="resizable-th"><div class="resizable-header" style="width: 120px">Deadline</div></th>
+                                <th class="resizable-th"><div class="resizable-header" style="width: 150px">Filled At</div></th>
+                                <th class="resizable-th"><div class="resizable-header" style="width: 220px">Actions</div></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${filled.map(item => {
+                                const title = item.job.title || '(job no longer in jobs.json)';
+                                const titleHtml = item.job.url
+                                    ? `<a href="${escapeHtml(item.job.url)}" target="_blank" rel="noopener">${escapeHtml(title)}</a>`
+                                    : escapeHtml(title);
+                                const filledAtStr = item.formFilled.filled_at ? new Date(item.formFilled.filled_at).toLocaleString() : '';
+                                return `
+                                    <tr data-url="${escapeHtml(item.url)}">
+                                        <td style="font-family: monospace;">${escapeHtml(item.job.id || '')}</td>
+                                        <td>${escapeHtml(item.job.company || '')}</td>
+                                        <td>${titleHtml}</td>
+                                        <td>${escapeHtml(item.job.location || '')}</td>
+                                        <td>${escapeHtml(item.job.deadline || 'N/A')}</td>
+                                        <td>${escapeHtml(filledAtStr)}</td>
+                                        <td>
+                                            <label class="action-check" style="cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; margin-right: 1rem;">
+                                                <input type="checkbox" style="width:18px; height:18px; cursor:pointer;" ${isAuthorized ? '' : 'disabled'}
+                                                       onchange="toggleFormFilledDone('${escapeHtml(item.url)}', this)">
+                                                Done
+                                            </label>
+                                            <button class="btn delete" ${isAuthorized ? '' : 'disabled'} onclick="deleteFilledForm('${escapeHtml(item.url)}', this)"><i class="fas fa-trash"></i> Delete</button>
+                                        </td>
+                                    </tr>
+                                `;
+                            }).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        `;
+        setupTableFilters(container.querySelector('table'));
+    }
+
+    async function toggleFormFilledDone(url, checkbox) {
+        if (!checkbox.checked) return;
+        checkbox.disabled = true;
+        try {
+            const appliedDate = new Date().toISOString().split('T')[0];
+            await db.collection('shared_state').doc('job_status').update(
+                new firebase.firestore.FieldPath(url, 'applied'), 'yes',
+                new firebase.firestore.FieldPath(url, 'applied_date'), appliedDate,
+                new firebase.firestore.FieldPath(url, 'form_filled', 'status'), 'done',
+                new firebase.firestore.FieldPath(url, 'form_filled', 'done_at'), new Date().toISOString()
             );
         } catch (e) {
             console.error(e);
             alert('Failed to save to cloud database.');
             checkbox.checked = false;
             checkbox.disabled = false;
+        }
+    }
+
+    async function deleteFilledForm(url, btn) {
+        const reason = prompt('Reason for deleting this job?', 'No longer accepting applications');
+        if (reason === null) return;
+        btn.disabled = true;
+        try {
+            await db.collection('shared_state').doc('job_status').update(
+                new firebase.firestore.FieldPath(url, 'deletion_reason'), reason.trim() || 'No longer accepting applications'
+            );
+        } catch (e) {
+            console.error(e);
+            alert('Failed to save to cloud database.');
+            btn.disabled = false;
         }
     }
 </script>
