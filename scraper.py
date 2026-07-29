@@ -1570,9 +1570,9 @@ def update_git():
 
             try:
                 print("Pulling remote changes before pushing...")
-                pull_cmd = ["git", "pull", "--rebase"]
+                pull_cmd = ["git", "pull", "--rebase", "--autostash"]
                 if github_token and 'auth_url' in locals():
-                    pull_cmd = ["git", "pull", "--rebase", auth_url]
+                    pull_cmd = ["git", "pull", "--rebase", "--autostash", auth_url]
                 try:
                     subprocess.run(pull_cmd, cwd=repo_dir, check=True, env=env, capture_output=True, text=True, stdin=subprocess.DEVNULL, timeout=120.0)
                 except subprocess.CalledProcessError as e:
