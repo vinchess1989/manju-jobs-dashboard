@@ -1941,16 +1941,6 @@ def poll_firebase_feedback():
             except Exception as e:
                 print(f"Error syncing match updates: {e}")
         
-        # Wipe shared_state since all updates are now safely in jobs.json
-        if locals().get('applied_updates') or user_review_updates or match_updates or locals().get('delete_updates'):
-            try:
-                wipe_url = url.replace('user_feedback', 'shared_state/job_status')
-                requests.delete(wipe_url, timeout=10)
-                print("INFO: Cleared shared_state temporary queue.")
-            except Exception as e:
-                print(f"Error clearing shared_state: {e}")
-
-                
     except Exception as e:
         print(f"Error polling Firebase feedback: {e}")
 
