@@ -618,7 +618,7 @@ def scrape_all_jobs(max_jobs=200):
             target = targets[current_idx]
             print(f"\nNavigating to {target['url']} (Term: {target['term']}, Site: {target['id']}) ...")
             try:
-                page.goto(target['url'], timeout=30000)
+                page.goto(target['url'], timeout=60000)
 
                 # Dismiss GDPR / cookie consent banners (Indeed uses OneTrust)
                 if target['platform'] == 'indeed':
@@ -1268,7 +1268,7 @@ def review_pending_jobs(specific_urls=None):
                 break
             print(f"Reviewing: {job['title']} at {job['url']}")
             try:
-                page.goto(job['url'], timeout=30000)
+                page.goto(job['url'], timeout=60000)
                 
                 # Smart wait: detect DDoS guard / anti-bot pages and retry
                 text = ""
