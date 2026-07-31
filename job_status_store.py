@@ -150,6 +150,8 @@ def main():
         elif args.command == "set":
             raw = args.value
             if args.value_file is not None:
+                # utf-8-sig: PowerShell 5.1's Set-Content -Encoding utf8 always writes a
+                # BOM (no utf8NoBOM option exists pre-Core), which plain utf-8 chokes on.
                 with open(args.value_file, "r", encoding="utf-8-sig") as f:
                     raw = f.read()
             value = json.loads(raw) if args.json else raw

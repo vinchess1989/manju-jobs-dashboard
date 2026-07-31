@@ -63,7 +63,7 @@ function Publish-Project([string]$name, [string]$projectDir) {
     Set-Location $projectDir
     $candidateFiles = @(
         "jobs.json", "seen_urls.json", "checkpoint.json", "job_descriptions",
-        "job_requirements.md", "firebase_app/index.html", "firebase_app/review.html",
+        "job_requirements.md", "CLAUDE.md", "firebase_app/index.html", "firebase_app/review.html",
         "firebase_app/firestore.rules", "scraper.py", "orchestrator.py", "db_utils.py",
         "curate_jobs.py", "evaluate_with_local_llm.py", "tests", "jobs_history.json",
         "deleted.json", "publish_dashboards.ps1", "html_to_pdf.py", "make_resume.py",

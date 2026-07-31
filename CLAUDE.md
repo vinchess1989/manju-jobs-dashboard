@@ -4,7 +4,7 @@ Instructions for any Claude Code session (interactive or via a skill/slash-comma
 
 ## Two machines, one `jobs.json` — read this before touching it
 
-The scraper (`scraper.py`) runs autonomously on one PC, committing and pushing to `origin/main` roughly every **12 minutes**, rewriting `jobs.json` wholesale each time (it's the full scraped job list, ~9,500 entries). Tailoring/apply-link work (`/tailor-resume`, `/tailor-resume-n-fill-form`, `/find-apply-link`, this session) often happens on a **different PC**, hours or days apart from when it last synced.
+The scraper (`scraper.py`) runs autonomously on one PC, committing and pushing to `origin/main` roughly every **12 minutes**, rewriting `jobs.json` wholesale each time (it's the full scraped job list, ~9,500 entries). Tailoring/apply-link work (`/tailor-resume`, `/fill-form`, `/find-apply-link`, this session) often happens on a **different PC**, hours or days apart from when it last synced.
 
 **`jobs.json` is scraper-owned. Treat it as read-only from every other skill/script.** Never add, edit, or patch a field into it directly (`apply_url`, `apply_email`, `tailor_model`, `needs_re_review`, anything) — even via a "small inline Python snippet." Two independent processes writing the same file is what causes merge conflicts; a skill that never writes to it can't conflict on it, no matter how stale the local clone is.
 
@@ -47,4 +47,4 @@ This is a safety net, not the primary fix — the primary fix is the read-only r
 
 ## Writing a new skill that touches this repo
 
-If you're adding or editing a `.claude/commands/*.md` skill that reads or writes job data, follow the two rules above: read `jobs.json` freely, never write to it, put any per-job metadata in Firestore via `job_status_store.py`, and pull-rebase at the start / push-with-retry at the end if the skill commits to `PUBLIC`. `find-apply-link.md` and `tailor-resume-n-fill-form.md` are the reference implementations.
+If you're adding or editing a `.claude/commands/*.md` skill that reads or writes job data, follow the two rules above: read `jobs.json` freely, never write to it, put any per-job metadata in Firestore via `job_status_store.py`, and pull-rebase at the start / push-with-retry at the end if the skill commits to `PUBLIC`. `find-apply-link.md` and `fill-form.md` are the reference implementations.
