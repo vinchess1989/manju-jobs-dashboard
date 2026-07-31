@@ -1833,20 +1833,23 @@
                     filteredRows.push(entry.el);
                     visibleCount++;
                     
+                    const appliedTd = entry.el.querySelector('.col-applied');
+                    const aVal = appliedTd ? (appliedTd.getAttribute('data-value') || '').trim().toLowerCase() : '';
+                    const isApplied = aVal !== 'no' && aVal !== '';
+                    if (isApplied) appliedCount++;
+
                     const matchTd = entry.el.querySelector('.col-matches');
                     const mVal = matchTd ? (matchTd.getAttribute('data-value') || '').trim().toLowerCase() : '';
-                    if (mVal === 'yes') counts.yes++;
-                    else if (mVal === 'maybe') counts.maybe++;
-                    else if (mVal === 'no') counts.no++;
-                    else if (mVal === 'pending') counts.pending++;
-                    
+                    if (!isApplied) {
+                        if (mVal === 'yes') counts.yes++;
+                        else if (mVal === 'maybe') counts.maybe++;
+                        else if (mVal === 'no') counts.no++;
+                        else if (mVal === 'pending') counts.pending++;
+                    }
+
                     const syncTd = entry.el.querySelector('.col-sync');
                     const sVal = syncTd ? (syncTd.getAttribute('data-value') || '').trim().toLowerCase() : '';
                     if (sVal === 'queued') counts.rereview++;
-                    
-                    const appliedTd = entry.el.querySelector('.col-applied');
-                    const aVal = appliedTd ? (appliedTd.getAttribute('data-value') || '').trim().toLowerCase() : '';
-                    if (aVal !== 'no' && aVal !== '') appliedCount++;
                     
                     const reviewTd = entry.el.querySelector('.col-user-review');
                     const rVal = reviewTd ? (reviewTd.getAttribute('data-value') || '').trim().toLowerCase() : '';

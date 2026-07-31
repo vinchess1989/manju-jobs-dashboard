@@ -69,6 +69,7 @@ function Publish-Project([string]$name, [string]$projectDir) {
         "deleted.json", "publish_dashboards.ps1", "html_to_pdf.py", "make_resume.py",
         "upload_resume_links.py", "input.csv", "sync_resume_links.py", "add_job.py",
         "scrape_application.py", "fill_agent.py", "scratch/update_status.py",
+        "job_status_store.py",
         ".claude", ".agents", ".gitignore", ".nojekyll"
     )
     $existing = $candidateFiles | Where-Object { Test-Path (Join-Path $projectDir $_) }

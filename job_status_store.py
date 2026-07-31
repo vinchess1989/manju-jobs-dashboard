@@ -11,6 +11,12 @@ through to persist or read that kind of metadata instead.
 CLI usage:
     python job_status_store.py get --url "<job_url>" [--field apply_url]
     python job_status_store.py set --url "<job_url>" --field apply_url --value "https://..."
+    python job_status_store.py set --url "<job_url>" --field action_item --json --value-file path.json
+
+Note: PowerShell 5.1 silently strips embedded double-quote characters from
+arguments passed to a native exe, so a JSON string passed via --value never
+survives the command line intact -- use --value-file (with --json) instead
+for any nested/dict value.
 """
 
 import argparse
@@ -119,7 +125,16 @@ def main():
     p_set = sub.add_parser("set", help="Write a single field on a job")
     p_set.add_argument("--url", required=True)
     p_set.add_argument("--field", required=True)
-    p_set.add_argument("--value", required=True)
+    value_group = p_set.add_mutually_exclusive_group(required=True)
+    value_group.add_argument("--value", help="Plain string value")
+    value_group.add_argument("--value-file",
+                              help="Path to a file whose contents become the value "
+                                   "(use with --json for nested values like action_item -- "
+                                   "PowerShell 5.1 silently strips embedded double-quote "
+                                   "characters from inline --value arguments passed to a "
+                                   "native exe, so JSON must come from a file, not argv)")
+    p_set.add_argument("--json", action="store_true",
+                        help="Parse the value (from --value or --value-file) as JSON")
 
     args = parser.parse_args()
 
@@ -133,7 +148,12 @@ def main():
             else:
                 print(result)
         elif args.command == "set":
-            set_job_field(args.url, args.field, args.value)
+            raw = args.value
+            if args.value_file is not None:
+                with open(args.value_file, "r", encoding="utf-8-sig") as f:
+                    raw = f.read()
+            value = json.loads(raw) if args.json else raw
+            set_job_field(args.url, args.field, value)
             print(f"OK  set {args.field!r} on {args.url}")
     except Exception as e:
         print(f"ERROR: {e}", file=sys.stderr)
