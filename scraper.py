@@ -905,7 +905,31 @@ def extract_json_from_text(text):
     # Try one more time with the full text, fixing trailing commas
     text = re.sub(r',\s*}', '}', text)
     text = re.sub(r',\s*\]', ']', text)
-    return json.loads(text)
+    try:
+        return json.loads(text)
+    except json.JSONDecodeError:
+        # Last resort fallback: try to extract fields using regex
+        fallback = {}
+        
+        match_search = re.search(r'"match"\s*:\s*"(yes|no|maybe)"', text, re.IGNORECASE)
+        fallback["match"] = match_search.group(1).lower() if match_search else "error"
+        
+        reason_search = re.search(r'"reason"\s*:\s*"([^"]*)"', text, re.IGNORECASE)
+        fallback["reason"] = reason_search.group(1) if reason_search else "Extracted via regex fallback"
+        
+        posted_search = re.search(r'"posted_date"\s*:\s*"([^"]*)"', text, re.IGNORECASE)
+        fallback["posted_date"] = posted_search.group(1) if posted_search else "N/A"
+        
+        deadline_search = re.search(r'"deadline"\s*:\s*"([^"]*)"', text, re.IGNORECASE)
+        fallback["deadline"] = deadline_search.group(1) if deadline_search else "N/A"
+        
+        company_search = re.search(r'"company"\s*:\s*"([^"]*)"', text, re.IGNORECASE)
+        fallback["company"] = company_search.group(1) if company_search else "N/A"
+        
+        loc_search = re.search(r'"location"\s*:\s*"([^"]*)"', text, re.IGNORECASE)
+        fallback["location"] = loc_search.group(1) if loc_search else "N/A"
+        
+        return fallback
 
 def clean_page_text(text):
     """Strip cookie banners, navigation, and footer boilerplate from scraped job page text.
