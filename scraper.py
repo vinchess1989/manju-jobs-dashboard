@@ -740,6 +740,34 @@ def get_file_hash(filepath):
     with open(filepath, 'rb') as f:
         return hashlib.md5(f.read()).hexdigest()
 
+def _load_last_llm_model():
+    """Read the last successfully-detected LLM model identifier from checkpoint.json."""
+    if os.path.exists(CHECKPOINT_FILE):
+        try:
+            with open(CHECKPOINT_FILE, 'r', encoding='utf-8') as f:
+                return json.load(f).get("last_llm_model")
+        except Exception:
+            pass
+    return None
+
+def _save_last_llm_model(model_name):
+    """Persist the last successfully-detected LLM model to checkpoint.json (merge,
+    don't clobber other keys), so there's a real fallback if LM Studio is later
+    unreachable - better than an env var that can point at a model that's been
+    uninstalled or was only ever set once and forgotten."""
+    _checkpoint_data = {}
+    if os.path.exists(CHECKPOINT_FILE):
+        try:
+            with open(CHECKPOINT_FILE, 'r', encoding='utf-8') as f:
+                _checkpoint_data = json.load(f)
+        except Exception:
+            pass
+    if _checkpoint_data.get("last_llm_model") == model_name:
+        return  # Avoid a disk write on every call when nothing has changed
+    _checkpoint_data["last_llm_model"] = model_name
+    with open(CHECKPOINT_FILE, 'w', encoding='utf-8') as f:
+        json.dump(_checkpoint_data, f, indent=2)
+
 def get_active_llm_model(endpoint):
     """Ask LM Studio (via `lms ps`) which chat model is actually loaded right now.
     NOTE: the OpenAI-compatible /v1/models HTTP endpoint is NOT usable for this - it
@@ -747,11 +775,13 @@ def get_active_llm_model(endpoint):
     just what's currently resident in memory, so picking the first entry from it is
     not reliable active-model detection. `lms ps` only ever lists genuinely loaded
     models, so it's the only trustworthy source here.
-    Falls back to the LOCAL_LLM_MODEL env var if lms.exe isn't reachable or nothing is
-    loaded, so a manual model switch in the LM Studio GUI (or via /set_local_llm)
-    takes effect immediately without needing the env var kept in sync - a stale
-    hardcoded model name here is what causes LM Studio to silently swap in a
-    different model mid-request via its just-in-time loading."""
+    A manual model switch in the LM Studio GUI (or via /set_local_llm) takes effect
+    immediately this way - no env var to keep in sync, which is what let LM Studio
+    silently swap in a different model mid-request via its just-in-time loading.
+    If lms.exe is unreachable or nothing is loaded, falls back to whichever model
+    was last successfully detected (persisted in checkpoint.json), and only as a
+    last resort to the LOCAL_LLM_MODEL env var (relevant for a first-ever run with
+    no prior state saved yet)."""
     try:
         lms_exe = os.path.join(os.environ.get("USERPROFILE", ""), ".lmstudio", "bin", "lms.exe")
         result = subprocess.run([lms_exe, "ps", "--json"], capture_output=True, text=True, timeout=10)
@@ -759,10 +789,11 @@ def get_active_llm_model(endpoint):
             models = json.loads(result.stdout)
             chat_models = [m["identifier"] for m in models if m.get("type") == "llm"]
             if chat_models:
+                _save_last_llm_model(chat_models[0])
                 return chat_models[0]
     except Exception:
         pass
-    return os.environ.get("LOCAL_LLM_MODEL")
+    return _load_last_llm_model() or os.environ.get("LOCAL_LLM_MODEL")
 
 def analyze_scrape_run_log(lines: list[str]):
     """Send lines captured during a scrape run to the LLM and print a health report."""
