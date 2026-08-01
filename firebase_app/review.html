@@ -621,9 +621,14 @@
         const finalReason = reason.trim() || 'Promoted from weak match via review dashboard';
         btn.disabled = true;
         try {
+            // priority_fill_form_at pushes this to the front of /fill-form auto's queue so it
+            // gets processed on the very next hourly cycle, before the listing can expire out
+            // from under an unprocessed promotion (same mechanism used for resolved login-wall
+            // action items above).
             await db.collection('shared_state').doc('job_status').update(
                 new firebase.firestore.FieldPath(url, 'matches_requirements'), 'yes',
-                new firebase.firestore.FieldPath(url, 'user_reason'), finalReason
+                new firebase.firestore.FieldPath(url, 'user_reason'), finalReason,
+                new firebase.firestore.FieldPath(url, 'priority_fill_form_at'), new Date().toISOString()
             );
         } catch (e) {
             console.error(e);
