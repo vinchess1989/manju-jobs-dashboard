@@ -612,6 +612,8 @@ def scrape_all_jobs(max_jobs=200):
         )
         context.add_init_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
         page = context.new_page()
+        page.set_default_navigation_timeout(60000)
+        page.set_default_timeout(60000)
         
         current_idx = checkpoint_idx
         while current_idx < len(targets) and len(all_extracted_jobs) < limit:
@@ -1286,6 +1288,8 @@ def review_pending_jobs(specific_urls=None):
         )
         context.add_init_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
         page = context.new_page()
+        page.set_default_navigation_timeout(60000)
+        page.set_default_timeout(60000)
         
         for job in pending_jobs:
             if stop_event.is_set():
