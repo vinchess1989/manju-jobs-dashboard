@@ -720,10 +720,18 @@ def scrape_all_jobs(max_jobs=200):
     with open(SEEN_URLS_FILE, 'w', encoding='utf-8') as f:
         json.dump(list(seen_urls), f)
         
-    # Save checkpoint
+    # Save checkpoint (merge, don't clobber other keys like requirements_hash)
+    _checkpoint_data = {}
+    if os.path.exists(CHECKPOINT_FILE):
+        try:
+            with open(CHECKPOINT_FILE, 'r', encoding='utf-8') as f:
+                _checkpoint_data = json.load(f)
+        except Exception:
+            pass
+    _checkpoint_data["target_index"] = current_idx
     with open(CHECKPOINT_FILE, 'w', encoding='utf-8') as f:
-        json.dump({"target_index": current_idx}, f, indent=2)
-        
+        json.dump(_checkpoint_data, f, indent=2)
+
     return all_extracted_jobs
 
 def get_file_hash(filepath):
