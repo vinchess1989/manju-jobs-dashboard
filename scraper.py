@@ -616,6 +616,8 @@ def scrape_all_jobs(max_jobs=200):
         page = context.new_page()
         page.set_default_navigation_timeout(60000)
         page.set_default_timeout(60000)
+        page.set_default_navigation_timeout(60000)
+        page.set_default_timeout(60000)
         
         current_idx = checkpoint_idx
         while current_idx < len(targets) and len(all_extracted_jobs) < limit:
