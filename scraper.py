@@ -15,6 +15,7 @@ from playwright.sync_api import sync_playwright
 from bs4 import BeautifulSoup
 import requests
 from dotenv import load_dotenv
+from filelock import FileLock, Timeout
 
 # Load environment variables from .env file if it exists
 load_dotenv()
@@ -28,6 +29,7 @@ USER_FEEDBACK_FILE = os.path.join(BASE_DIR, "user_feedback.md")
 DELETED_FILE = os.path.join(BASE_DIR, "deleted.json")
 HISTORY_FILE = os.path.join(BASE_DIR, "jobs_history.json")
 LOGS_DIR = os.path.join(BASE_DIR, "logs")
+SCRAPER_LOCK_FILE = os.path.join(BASE_DIR, "scraper.lock")
 
 
 class TeeLogger:
@@ -2354,8 +2356,19 @@ def main():
             break
 
 if __name__ == "__main__":
+    scraper_lock = FileLock(SCRAPER_LOCK_FILE, timeout=1)
     try:
-        main()
-    except KeyboardInterrupt:
-        print("\nINFO: Scraper stopped by user (Ctrl+C).")
-        stop_event.set()
+        scraper_lock.acquire()
+    except Timeout:
+        print(f"ERROR: Another scraper.py instance already holds {SCRAPER_LOCK_FILE}. "
+              f"Refusing to start a second instance (concurrent runs corrupt jobs_history.json and git state).")
+        sys.exit(1)
+
+    try:
+        try:
+            main()
+        except KeyboardInterrupt:
+            print("\nINFO: Scraper stopped by user (Ctrl+C).")
+            stop_event.set()
+    finally:
+        scraper_lock.release()
