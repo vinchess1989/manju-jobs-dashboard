@@ -99,5 +99,10 @@
     "authenticated": true,
     "auth_notes": "Manju has an Eezy Talents account/profile created and logged in via the Automation Profile Chrome profile (%LOCALAPPDATA%\\Google\\Chrome\\Automation Profile), see .agents/skills/open_visible_browser. Reuse this session (launch_persistent_context with channel='chrome' against that user_data_dir) for all future Eezy jobs instead of a fresh/incognito context.",
     "url_never_changes": true
+  },
+  "dittmarindrenius.teamtailor.com": {
+    "strategy": "direct",
+    "discovered": "2026-08-04",
+    "notes": "Teamtailor-hosted job page renders the application form directly on the job posting page itself (no separate apply-button hop)."
   }
 }
