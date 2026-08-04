@@ -30,6 +30,14 @@ DELETED_FILE = os.path.join(BASE_DIR, "deleted.json")
 HISTORY_FILE = os.path.join(BASE_DIR, "jobs_history.json")
 LOGS_DIR = os.path.join(BASE_DIR, "logs")
 SCRAPER_LOCK_FILE = os.path.join(BASE_DIR, "scraper.lock")
+# Shared across the manju_jobs/vineeth_jobs repos (not per-repo like SCRAPER_LOCK_FILE) so the
+# two dashboards' always-on scraper daemons take turns doing their scrape+review+push cycle
+# instead of both hitting the single-threaded (parallel=1) local LLM server at once.
+PIPELINE_LOCK_FILE = os.path.join(os.environ.get("USERPROFILE", ""), ".claude", "scraper_pipeline.lock")
+# manju_jobs claims this before requesting PIPELINE_LOCK_FILE so vineeth_jobs can defer
+# to it - gives manju_jobs priority on the shared local LLM server. See usage below and
+# in vineeth_jobs/scraper.py.
+MANJU_PRIORITY_LOCK_FILE = os.path.join(os.environ.get("USERPROFILE", ""), ".claude", "scraper_manju_priority.lock")
 
 
 class TeeLogger:
@@ -2345,70 +2353,84 @@ def main():
         except Exception as e:
             print(f"An error occurred checking requirements: {e}")
             
-        # 1. ALWAYS SCRAPE FIRST
-        quota = 50
-        new_jobs = []
-        try:
-            print(f"\nINFO: Scanning for up to {quota} new unseen jobs...")
-            if _tee_logger:
-                _tee_logger.start_capture()
-            new_jobs = scrape_all_jobs(max_jobs=quota)
-            if _tee_logger:
-                _tee_logger.stop_capture()
-                if _checkpoint_reached_end():
-                    analyze_scrape_run_log(_tee_logger.flush_cycle())
-        except Exception as e:
-            if _tee_logger:
-                _tee_logger.stop_capture()
-            print(f"An error occurred during scraping: {e}")
+        # Serialize the actual scrape+review+push work against the sibling dashboard's
+        # scraper (manju_jobs/vineeth_jobs) - both are always-on daemons sharing one
+        # single-threaded local LLM server, so only one side should be mid-cycle at a
+        # time. The poll_* calls above and the wait/sleep below stay outside the lock
+        # so idle time isn't wasted holding it.
+        # manju_jobs gets priority: it claims MANJU_PRIORITY_LOCK_FILE before even
+        # requesting the shared pipeline lock, and vineeth_jobs checks that same lock
+        # and backs off whenever manju_jobs is waiting for or holding it (see
+        # vineeth_jobs/scraper.py). Both locks are real OS-level file locks, so if this
+        # process dies mid-cycle the OS releases them automatically - no stale-flag
+        # cleanup needed.
+        print("INFO: Waiting for pipeline lock (shared with sibling dashboard scraper)...")
+        with FileLock(MANJU_PRIORITY_LOCK_FILE), FileLock(PIPELINE_LOCK_FILE):
+            print("INFO: Acquired pipeline lock - starting scrape+review cycle.")
+            # 1. ALWAYS SCRAPE FIRST
+            quota = 50
+            new_jobs = []
+            try:
+                print(f"\nINFO: Scanning for up to {quota} new unseen jobs...")
+                if _tee_logger:
+                    _tee_logger.start_capture()
+                new_jobs = scrape_all_jobs(max_jobs=quota)
+                if _tee_logger:
+                    _tee_logger.stop_capture()
+                    if _checkpoint_reached_end():
+                        analyze_scrape_run_log(_tee_logger.flush_cycle())
+            except Exception as e:
+                if _tee_logger:
+                    _tee_logger.stop_capture()
+                print(f"An error occurred during scraping: {e}")
 
-        # 2. INTERNAL LOOP TO FLUSH PENDING/RE-REVIEW JOBS
-        while not stop_event.is_set():
-            pending_jobs = []
-            if os.path.exists(JOBS_FILE):
+            # 2. INTERNAL LOOP TO FLUSH PENDING/RE-REVIEW JOBS
+            while not stop_event.is_set():
+                pending_jobs = []
+                if os.path.exists(JOBS_FILE):
+                    try:
+                        jobs_data = db_utils.load_jobs()
+                        if args.skip_re_review:
+                            pending_jobs = [j for j in jobs_data if (j.get('matches_requirements') in ['pending', 'error'] and j.get('applied') != 'yes' and j.get('user_review') != 'done')]
+                        else:
+                            pending_jobs = [j for j in jobs_data if (j.get('matches_requirements') in ['pending', 'error'] and j.get('applied') != 'yes' and j.get('user_review') != 'done') or (j.get('needs_re_review') == True and j.get('user_review') != 'done' and j.get('applied') != 'yes')]
+                    except Exception as e:
+                        print(f"Error reading jobs file: {e}")
+
+                if not pending_jobs:
+                    print("INFO: No pending jobs to review in this iteration.")
+                    # Update Firebase status if it was in progress
+                    try:
+                        poll_re_review_request()
+                    except Exception as e:
+                        pass
+                    break
+
+                batch_to_review = pending_jobs[:100]
+                print(f"\nINFO: Reviewing batch of {len(batch_to_review)} pending/re-review jobs ({len(pending_jobs)} total remaining)...")
+                batch_urls = [j['url'] for j in batch_to_review]
+
                 try:
-                    jobs_data = db_utils.load_jobs()
-                    if args.skip_re_review:
-                        pending_jobs = [j for j in jobs_data if (j.get('matches_requirements') in ['pending', 'error'] and j.get('applied') != 'yes' and j.get('user_review') != 'done')]
-                    else:
-                        pending_jobs = [j for j in jobs_data if (j.get('matches_requirements') in ['pending', 'error'] and j.get('applied') != 'yes' and j.get('user_review') != 'done') or (j.get('needs_re_review') == True and j.get('user_review') != 'done' and j.get('applied') != 'yes')]
+                    review_pending_jobs(specific_urls=set(batch_urls))
                 except Exception as e:
-                    print(f"Error reading jobs file: {e}")
-            
-            if not pending_jobs:
-                print("INFO: No pending jobs to review in this iteration.")
-                # Update Firebase status if it was in progress
+                    print(f"An error occurred during reviewing: {e}")
+
+                try:
+                    moved_count = clean_blocked_jobs()
+                    latest_jobs = db_utils.load_jobs()
+                    save_history_snapshot(latest_jobs, deleted=moved_count)
+                    update_git()
+                except Exception as e:
+                    print(f"An error occurred during Git update: {e}")
+
+                print_job_summary()
+
+                # Optional: poll firebase again to update the "completed" status early if done
                 try:
                     poll_re_review_request()
                 except Exception as e:
                     pass
-                break
-                
-            batch_to_review = pending_jobs[:100]
-            print(f"\nINFO: Reviewing batch of {len(batch_to_review)} pending/re-review jobs ({len(pending_jobs)} total remaining)...")
-            batch_urls = [j['url'] for j in batch_to_review]
-            
-            try:
-                review_pending_jobs(specific_urls=set(batch_urls))
-            except Exception as e:
-                print(f"An error occurred during reviewing: {e}")
-                
-            try:
-                moved_count = clean_blocked_jobs()
-                latest_jobs = db_utils.load_jobs()
-                save_history_snapshot(latest_jobs, deleted=moved_count)
-                update_git()
-            except Exception as e:
-                print(f"An error occurred during Git update: {e}")
-            
-            print_job_summary()
-            
-            # Optional: poll firebase again to update the "completed" status early if done
-            try:
-                poll_re_review_request()
-            except Exception as e:
-                pass
-                
+
         # 3. Determine wait time
         wait_time = 5
         if not new_jobs:
