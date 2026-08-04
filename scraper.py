@@ -1305,6 +1305,28 @@ def extract_company_from_text(text, job_title):
     
     return None
 
+def _post_llm_with_retry(url, headers, payload, timeout=120, retries=2, backoff_seconds=10):
+    """POST to the local LLM, retrying on transient network errors (read timeout,
+    connection reset). Both manju_jobs and vineeth_jobs scrapers share one
+    single-threaded (parallel=1) LM Studio server, so a request can queue behind
+    the other scraper's in-flight generation and blow past a one-shot timeout or
+    get its connection dropped - a short retry lets that queue drain instead of
+    permanently marking the job 'error' for this run."""
+    last_err = None
+    for attempt in range(retries + 1):
+        try:
+            response = requests.post(url, headers=headers, json=payload, timeout=timeout)
+            response.raise_for_status()
+            return response
+        except (requests.exceptions.Timeout, requests.exceptions.ConnectionError) as e:
+            last_err = e
+            if attempt < retries:
+                print(f"  [LLM] {e.__class__.__name__} on attempt {attempt + 1}/{retries + 1}, retrying in {backoff_seconds}s...")
+                time.sleep(backoff_seconds)
+    if last_err is not None:
+        raise last_err
+    raise requests.exceptions.RequestException("LLM request failed with no captured exception")
+
 def review_pending_jobs(specific_urls=None):
     """Visit URLs of pending jobs, extract description, and evaluate using a local LLM."""
     if not os.path.exists(JOBS_FILE):
@@ -1487,9 +1509,8 @@ Do not include any conversational intro/outro or explanations outside the JSON o
                     }
 
                     try:
-                        response = requests.post(llm_endpoint, headers=headers, json=payload, timeout=120)
-                        response.raise_for_status()
-                        
+                        response = _post_llm_with_retry(llm_endpoint, headers, payload, timeout=120)
+
                         response_json = response.json()
                         content = response_json['choices'][0]['message']['content']
                         
