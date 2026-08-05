@@ -1311,6 +1311,33 @@ def extract_company_from_text(text, job_title):
     
     return None
 
+def _wait_for_external_llm_idle(endpoint, poll_interval=2):
+    """Best-effort backoff for consumers of the shared LM Studio server outside
+    our own lock scheme (e.g. OpenClaw, ~/.openclaw - a separate agent framework
+    also configured to use this same server). We can't have it claim a lock file
+    the way manju_jobs/vineeth_jobs do for each other, so instead we poll LM
+    Studio's own reported state via `lms ps --json` (status/queued per model) and
+    wait while anything is actively generating or queued, before starting our own
+    request. This is a courtesy, not a hard guarantee - if `lms.exe` is
+    unreachable or the check fails for any reason, we proceed immediately rather
+    than block the pipeline on a broken diagnostic."""
+    lms_exe = os.path.join(os.environ.get("USERPROFILE", ""), ".lmstudio", "bin", "lms.exe")
+    while not stop_event.is_set():
+        try:
+            result = subprocess.run([lms_exe, "ps", "--json"], capture_output=True, text=True, timeout=10)
+            if result.returncode != 0 or not result.stdout.strip():
+                return
+            models = json.loads(result.stdout)
+            busy = any(
+                m.get("status") not in (None, "idle") or (m.get("queued") or 0) > 0
+                for m in models if m.get("type") == "llm"
+            )
+            if not busy:
+                return
+        except Exception:
+            return
+        time.sleep(poll_interval)
+
 def _post_llm_with_retry(url, headers, payload, timeout=120, retries=2, backoff_seconds=10):
     """POST to the local LLM, retrying on transient network errors (read timeout,
     connection reset). Both manju_jobs and vineeth_jobs scrapers share one
@@ -1319,17 +1346,26 @@ def _post_llm_with_retry(url, headers, payload, timeout=120, retries=2, backoff_
     get its connection dropped - a short retry lets that queue drain instead of
     permanently marking the job 'error' for this run.
 
+    Priority order for this shared LM Studio server: any external consumer
+    (e.g. OpenClaw, ~/.openclaw - a separate agent framework also configured to
+    use it) > manju_jobs > vineeth_jobs. External consumers aren't part of our
+    lock scheme (we don't control their code), so we back off using LM Studio's
+    own reported busy/queued state instead (see _wait_for_external_llm_idle).
+    manju_jobs then gets priority over vineeth_jobs: it claims
+    MANJU_PRIORITY_LOCK_FILE before requesting the pipeline lock, so vineeth_jobs
+    (which checks that same lock before competing for the pipeline lock) backs off
+    whenever manju_jobs wants a turn.
+
     Only the HTTP call itself is serialized against the sibling dashboard's scraper
     (via PIPELINE_LOCK_FILE) - the LLM is only in use for the brief span of this
     call, so scraping/page-extraction elsewhere runs unlocked and both dashboards
-    can browse concurrently. manju_jobs gets priority: it claims
-    MANJU_PRIORITY_LOCK_FILE before requesting the pipeline lock, so vineeth_jobs
-    (which checks that same lock before competing for the pipeline lock) backs off
-    whenever manju_jobs wants a turn. Both are real OS-level file locks, so a
-    crashed process releases them automatically - no stale-flag cleanup needed."""
+    can browse concurrently. Both PIPELINE_LOCK_FILE and MANJU_PRIORITY_LOCK_FILE
+    are real OS-level file locks, so a crashed process releases them automatically
+    - no stale-flag cleanup needed."""
     last_err = None
     for attempt in range(retries + 1):
         try:
+            _wait_for_external_llm_idle(url)
             with FileLock(MANJU_PRIORITY_LOCK_FILE), FileLock(PIPELINE_LOCK_FILE):
                 response = requests.post(url, headers=headers, json=payload, timeout=timeout)
                 response.raise_for_status()
