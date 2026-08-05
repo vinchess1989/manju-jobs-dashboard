@@ -69,7 +69,7 @@ This is the PRIMARY match category. Match if the role is any entry-level or mid-
 
 A role qualifies if it is entry-level or does not list a strict degree requirement beyond a general bachelor's or equivalent.
 
-**Language note:** Manju's Finnish is B2 (Intermediate). Roles requiring fluent Finnish (C1+) as a hard requirement should be marked "no". Roles where Finnish is preferred but not mandatory, or where English is the working language, are fine to match.
+**Language note:** Manju's Finnish is B2 (Intermediate). Roles requiring fluent Finnish (C1+) as a hard requirement should be marked "no". Roles where Finnish is preferred but not mandatory, or where English is the working language, are fine to match. Manju does not speak Swedish at all — any role listing good/fluent Swedish (ruotsi) as a mandatory qualification alongside Finnish/English (common in Helsinki bilingual-service and integration-project postings) is a hard rejection; mark "no" even if the rest of the role otherwise fits a generalist/office profile.
 * **English Expertise:** The candidate is an expert in the English language (highest level/C2) and has won a gold medal in essay competitions. Any roles requiring strong written English, English language expertise, or AI training for English should NOT be rejected based on language.
 
 **3. Application Deadline:**
