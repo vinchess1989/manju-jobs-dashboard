@@ -199649,5 +199649,35 @@
     "deadline": "Open until filled",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'electrician'"
+  },
+  {
+    "title": "Levysepp\u00e4hitsaaja",
+    "company": "Extract via OpenClaw",
+    "location": "Extract via OpenClaw",
+    "url": "https://fi.indeed.com/rc/clk?jk=c561c12eab07ba0e",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The job title 'Levysepp\u00e4hitsaaja' translates to 'Tax Collector' in English, which is a trade/manual-labour role requiring specific vocational training. This is a hard rejection.",
+    "id": "30597012",
+    "source": "indeed_p2",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'hitsaaja'"
+  },
+  {
+    "title": "Compliance Lead",
+    "company": "HW3",
+    "location": "San Francisco, CA",
+    "url": "https://www.linkedin.com/jobs/view/compliance-lead-at-hw3-4450275241",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The job is located in San Francisco, CA and requires US citizenship, making it a hard rejection based on location restrictions.",
+    "id": "357e3ba9",
+    "source": "linkedin_ww_compliance",
+    "posted_date": "2026-08-06",
+    "deadline": "Open until filled",
+    "description_file": null,
+    "deletion_reason": "Title contains seniority keyword 'lead'"
   }
 ]
