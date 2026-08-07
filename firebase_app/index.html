@@ -1777,8 +1777,11 @@
 
             let visibleCount = 0;
             let counts = { yes: 0, maybe: 0, no: 0, pending: 0, rereview: 0 };
+            let totalCounts = { yes: 0, maybe: 0, no: 0, pending: 0, rereview: 0 };
             let appliedCount = 0;
+            let totalAppliedCount = 0;
             let reviewedCount = 0;
+            let totalReviewedCount = 0;
             filteredRows = [];
             const todayMs = today.getTime();
             const DAY_MS = 86400000;
@@ -1829,56 +1832,78 @@
                     }
                 }
 
+                // Derived per-row values are computed unconditionally (not just for visible
+                // rows) so the header stats below can show true totals unaffected by column
+                // filters, alongside the filtered subset counts for the "(N filtered)" note.
+                const appliedTd = entry.el.querySelector('.col-applied');
+                const aVal = appliedTd ? (appliedTd.getAttribute('data-value') || '').trim().toLowerCase() : '';
+                const isApplied = aVal !== 'no' && aVal !== '';
+                if (isApplied) totalAppliedCount++;
+
+                const matchTd = entry.el.querySelector('.col-matches');
+                const mVal = matchTd ? (matchTd.getAttribute('data-value') || '').trim().toLowerCase() : '';
+                if (!isApplied) {
+                    if (mVal === 'yes') totalCounts.yes++;
+                    else if (mVal === 'maybe') totalCounts.maybe++;
+                    else if (mVal === 'no') totalCounts.no++;
+                    else if (mVal === 'pending') totalCounts.pending++;
+                }
+
+                const syncTd = entry.el.querySelector('.col-sync');
+                const sVal = syncTd ? (syncTd.getAttribute('data-value') || '').trim().toLowerCase() : '';
+                if (sVal === 'queued') totalCounts.rereview++;
+
+                const reviewTd = entry.el.querySelector('.col-user-review');
+                const rVal = reviewTd ? (reviewTd.getAttribute('data-value') || '').trim().toLowerCase() : '';
+                if (rVal === 'done') totalReviewedCount++;
+
                 if (show) {
                     filteredRows.push(entry.el);
                     visibleCount++;
-                    
-                    const appliedTd = entry.el.querySelector('.col-applied');
-                    const aVal = appliedTd ? (appliedTd.getAttribute('data-value') || '').trim().toLowerCase() : '';
-                    const isApplied = aVal !== 'no' && aVal !== '';
-                    if (isApplied) appliedCount++;
 
-                    const matchTd = entry.el.querySelector('.col-matches');
-                    const mVal = matchTd ? (matchTd.getAttribute('data-value') || '').trim().toLowerCase() : '';
+                    if (isApplied) appliedCount++;
                     if (!isApplied) {
                         if (mVal === 'yes') counts.yes++;
                         else if (mVal === 'maybe') counts.maybe++;
                         else if (mVal === 'no') counts.no++;
                         else if (mVal === 'pending') counts.pending++;
                     }
-
-                    const syncTd = entry.el.querySelector('.col-sync');
-                    const sVal = syncTd ? (syncTd.getAttribute('data-value') || '').trim().toLowerCase() : '';
                     if (sVal === 'queued') counts.rereview++;
-                    
-                    const reviewTd = entry.el.querySelector('.col-user-review');
-                    const rVal = reviewTd ? (reviewTd.getAttribute('data-value') || '').trim().toLowerCase() : '';
                     if (rVal === 'done') reviewedCount++;
                 }
             }
 
             const activeTotal = _rowCache ? _rowCache.length : allJobs.length;
+            // Every stat below except Total always shows the TRUE total count, unaffected
+            // by column filters - only Total itself reflects the filtered subset as its
+            // primary number. When a filter is active, the others get a "(N filtered)" note
+            // (mirroring Total's "(filtered from X)" note) instead of changing their main value.
+            const filterActive = visibleCount !== activeTotal;
+            const filterNote = (n) => filterActive
+                ? ` <span style="opacity:0.55; font-weight:400;">(${n} filtered)</span>`
+                : '';
 
             const counter = document.getElementById('listings-counter');
             if (counter) {
                 let text = `<strong id="stat-total" style="cursor:help;border-bottom:1px dashed rgba(255,255,255,0.4);">${visibleCount}</strong>`;
-                if (visibleCount !== activeTotal) {
+                if (filterActive) {
                     text += ` (filtered from ${activeTotal})`;
                 }
                 text += ` <span style="margin: 0 10px; opacity: 0.3;">|</span> `;
-                text += `<span id="stat-yes" style="color: var(--color-yes); font-weight: 600; cursor:help; border-bottom:1px dashed rgba(16,185,129,0.5);">Yes: ${counts.yes}</span> &nbsp;&nbsp; `;
-                text += `<span style="color: var(--color-maybe); font-weight: 600;">Maybe: ${counts.maybe}</span> &nbsp;&nbsp; `;
-                text += `<span style="color: var(--color-no); font-weight: 600;">No: ${counts.no}</span> &nbsp;&nbsp; `;
-                text += `<span style="color: var(--color-pending); font-weight: 600;">Pending: ${counts.pending}</span> &nbsp;&nbsp; `;
-                text += `<span style="color: #a78bfa; font-weight: 600;">Re-review: ${counts.rereview}</span>`;
+                text += `<span id="stat-yes" style="color: var(--color-yes); font-weight: 600; cursor:help; border-bottom:1px dashed rgba(16,185,129,0.5);">Yes: ${totalCounts.yes}${filterNote(counts.yes)}</span> &nbsp;&nbsp; `;
+                text += `<span id="stat-maybe" style="color: var(--color-maybe); font-weight: 600; cursor:help; border-bottom:1px dashed rgba(245,158,11,0.5);">Maybe: ${totalCounts.maybe}${filterNote(counts.maybe)}</span> &nbsp;&nbsp; `;
+                text += `<span style="color: var(--color-no); font-weight: 600;">No: ${totalCounts.no}${filterNote(counts.no)}</span> &nbsp;&nbsp; `;
+                text += `<span style="color: var(--color-pending); font-weight: 600;">Pending: ${totalCounts.pending}${filterNote(counts.pending)}</span> &nbsp;&nbsp; `;
+                text += `<span style="color: #a78bfa; font-weight: 600;">Re-review: ${totalCounts.rereview}${filterNote(counts.rereview)}</span>`;
                 counter.innerHTML = text;
                 _attachChartHover(document.getElementById('stat-yes'), 'yes');
+                _attachChartHover(document.getElementById('stat-maybe'), 'maybe');
                 _attachChartHover(document.getElementById('stat-total'), 'total');
             }
 
             const appliedCounter = document.getElementById('applied-counter');
             if (appliedCounter) {
-                appliedCounter.textContent = appliedCount;
+                appliedCounter.innerHTML = `${totalAppliedCount}${filterNote(appliedCount)}`;
                 if (!appliedCounter._chartHoverAttached) {
                     appliedCounter.style.cursor = 'help';
                     appliedCounter.style.borderBottom = '1px dashed rgba(244,114,182,0.5)';
@@ -1888,7 +1913,7 @@
             }
 
             const reviewedCounter = document.getElementById('reviewed-counter');
-            if (reviewedCounter) reviewedCounter.textContent = reviewedCount;
+            if (reviewedCounter) reviewedCounter.innerHTML = `${totalReviewedCount}${filterNote(reviewedCount)}`;
 
             updateDropdownOptions(filters, jobIdList, postedLimit, deadlineLimit, todayMs, DAY_MS);
             renderPage(1);
@@ -2395,7 +2420,7 @@
                 ctx.fillStyle = 'rgba(255,255,255,0.4)'; ctx.font = '11px sans-serif'; ctx.textAlign = 'center';
                 ctx.fillText('Not enough data yet', W / 2, H / 2); return;
             }
-            const _key0 = metric === 'yes' ? 'yes' : metric === 'applied' ? 'applied' : 'total';
+            const _key0 = metric === 'yes' ? 'yes' : metric === 'applied' ? 'applied' : metric === 'maybe' ? 'maybe' : 'total';
             if (data.every(d => (d[_key0] ?? 0) === 0)) {
                 ctx.fillStyle = 'rgba(255,255,255,0.4)'; ctx.font = '11px sans-serif'; ctx.textAlign = 'center';
                 ctx.fillText('No data yet', W / 2, H / 2); return;
@@ -2404,19 +2429,23 @@
                 ? [{ key: 'yes', color: '#10b981', label: 'Yes' }, { key: 'maybe', color: '#f59e0b', label: 'Maybe' }]
                 : metric === 'applied'
                 ? [{ key: 'applied', color: '#f472b6', label: 'Applied' }]
+                : metric === 'maybe'
+                ? [{ key: 'maybe', color: '#f59e0b', label: 'Maybe' }]
                 : [{ key: 'yes', color: '#10b981', label: 'Yes' }];
             const showAdded = true;
-            const CHURN_KEY = metric === 'yes' ? 'yes' : metric === 'applied' ? 'applied' : 'total';
+            // Added/Deleted bars always track net change in the SAME metric the line graph
+            // shows (CHURN_KEY), not overall dataset-wide added/deleted - e.g. on the
+            // "Applied" chart they reflect applied-count churn, not every job added/removed
+            // across the whole board.
+            const CHURN_KEY = metric === 'yes' ? 'yes' : metric === 'applied' ? 'applied' : metric === 'maybe' ? 'maybe' : 'total';
             const ADDED_COLOR = '#94a3b8';
             const DELETED_COLOR = '#f87171';
             const addedVals = data.map((d, i) => {
-                if (d._hasChurn) return d.added ?? 0;
                 if (i === 0) return 0;
                 const net = (d[CHURN_KEY] ?? 0) - (data[i - 1][CHURN_KEY] ?? 0);
                 return net > 0 ? net : 0;
             });
             const deletedVals = data.map((d, i) => {
-                if (d._hasChurn) return d.deleted ?? 0;
                 if (i === 0) return 0;
                 const net = (d[CHURN_KEY] ?? 0) - (data[i - 1][CHURN_KEY] ?? 0);
                 return net < 0 ? -net : 0;
@@ -2578,6 +2607,7 @@
             document.getElementById('chart-tooltip-title').textContent =
                 metric === 'yes' ? 'Yes & Maybe matches over time'
                 : metric === 'applied' ? 'Applied jobs over time'
+                : metric === 'maybe' ? 'Maybe matches over time'
                 : 'Yes matches over time';
             tip.style.display = 'block';
             const rect = el.getBoundingClientRect();
@@ -2601,6 +2631,7 @@
             document.getElementById('chart-modal-title').textContent =
                 metric === 'yes' ? 'Yes & Maybe matches over time'
                 : metric === 'applied' ? 'Applied jobs over time'
+                : metric === 'maybe' ? 'Maybe matches over time'
                 : 'Yes matches over time';
             modal.style.display = 'flex';
             _chartModalData = await _loadChartHistory();
