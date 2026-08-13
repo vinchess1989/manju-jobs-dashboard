@@ -1,4 +1,9 @@
 {
+  "suomentulkkauspalvelu.fi": {
+    "strategy": "direct",
+    "discovered": "2026-08-13",
+    "notes": "Small employer (interpretation services, Tuusula). Job postings on aggregators (duunitori.fi) point to a dedicated apply page on this domain (e.g. /koordinaattori/), which itself is email-only — no fillable form, just a mailto contact (info@suomentulkkauspalvelu.fi)."
+  },
   "jmo.fi": {
     "strategy": "webfetch_hops",
     "discovered": "2026-08-01",
@@ -78,7 +83,8 @@
     "notes": "companyApplyUrl only appears in voyager/graphql XHR responses, never in rendered HTML or WebFetch markdown. extract_company_apply_url.py's saved session file (C:\\Users\\vinee\\Manju_jobs_private\\sessions\\linkedin_session.json) does not exist on this machine as of 2026-07-28 -- prefer the dom_href fallback below over launching a fresh headless browser with that path.",
     "intercept_hint": "See extract_company_apply_url.py: launch Playwright with the saved LinkedIn session, listen for responses whose URL contains 'voyager' or 'graphql', regex the body for \"companyApplyUrl\":\"([^\"]+)\".",
     "dom_href_fallback": "Cheaper and doesn't need a session file: connect_over_cdp to the already-open Automation Profile Chrome (port 9222, already logged into LinkedIn), goto the job URL, evaluate JS to find the <a> or <button> whose trimmed textContent is exactly 'Apply' (not 'Easy Apply' -- that one is LinkedIn-native, no external form), and read its href directly. The href is a linkedin.com/safety/go/?url=<urlencoded target> wrapper -- urllib.parse.unquote the url= query param to get the real external ATS URL. Confirmed working 2026-07-28 for a talentadore.com job with zero companyApplyUrl hits in voyager/graphql.",
-    "easy_apply_only": "Confirmed 2026-08-02: when the dom_href_fallback scan finds only an 'Easy Apply' button (no plain 'Apply' with an external href), there is no external ATS -- the application form is a LinkedIn-native modal opened by clicking 'Easy Apply' on the job page itself. In this case set apply_url = the job's own LinkedIn URL (not a redirect target), and fill_form's Step 5 script must click the 'Easy Apply' button first to open the modal before locating form fields."
+    "easy_apply_only": "Confirmed 2026-08-02: when the dom_href_fallback scan finds only an 'Easy Apply' button (no plain 'Apply' with an external href), there is no external ATS -- the application form is a LinkedIn-native modal opened by clicking 'Easy Apply' on the job page itself. In this case set apply_url = the job's own LinkedIn URL (not a redirect target), and fill_form's Step 5 script must click the 'Easy Apply' button first to open the modal before locating form fields.",
+    "share_profile_interstitial": "Confirmed 2026-08-13 (job 86019248, SemiQon): sometimes the plain 'Apply' button has no direct external href to read -- clicking it opens a 'Share your profile?' interstitial modal first (a toggle + 'Continue' button, unrelated to Easy Apply). Clicking 'Continue' is what actually triggers the external navigation (opens a new tab). Use context.expect_page() around the 'Continue' click to catch it, rather than assuming the href is present on the initial 'Apply' element."
   },
   "valtiolle.fi": {
     "strategy": "api",
