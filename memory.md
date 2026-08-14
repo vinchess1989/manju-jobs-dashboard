@@ -112,9 +112,20 @@ branch / root).
 
 ## Open/unresolved
 
-- `jobs_history.json.corrupt-20260813_150257` exists in the repo root as of 2026-08-14 — some
-  past corruption event left a backup copy under this name. Not yet investigated; worth checking
-  whether `jobs_history.json` itself is currently healthy.
+- `jobs_history.json.corrupt-20260813_150257`: partially investigated (2026-08-14). The file
+  itself isn't present in a fresh clone/this machine — it's a local, untracked artifact on
+  whichever machine wrote it (not committed, not gitignored, just never `git add`ed), so it can
+  only be inspected from that machine directly. What *is* confirmed: the live `jobs_history.json`
+  in the repo is currently healthy (valid JSON, 2092 entries) and its timeline is continuous
+  across that window — a manual jobs.json-merge-driver rebase conflict in this same file was
+  resolved by hand around 2026-08-13 14:42 (two divergent snapshot entries unioned back in,
+  chronological order preserved), and the scraper's own entries resume cleanly right after that
+  (14:42:25 → next entries start 2026-08-14 08:07, matching a ~17.5h scraper outage window that
+  night, not a data problem). Best guess: the `.corrupt-*` file is the scraper's own self-healing
+  logic backing up a copy it couldn't parse *at that specific moment* (mid-rebase, when the file
+  briefly had `<<<<<<<`/`=======`/`>>>>>>>` conflict markers in it) before either retrying or
+  regenerating — i.e. a symptom of the conflict, already resolved, not a separate ongoing issue.
+  Not fully confirmed since the actual `.corrupt-*` file content hasn't been read.
 
 ---
 Last updated: 2026-08-14
