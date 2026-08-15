@@ -110,6 +110,22 @@ branch / root).
   `vals[i]` column access where manju uses `.col-*` CSS classes + `data-value` attributes. Check
   the actual code before assuming symmetry between the two.
 
+## CDP Chrome connection flakiness (observed 2026-08-15)
+
+During an unattended `/fill-form auto` cycle, `playwright.chromium.connect_over_cdp("http://127.0.0.1:9222")`
+repeatedly hung for the full timeout (180s for the actual API handshake, despite the raw TCP port and
+`GET /json/version` HTTP endpoint both responding fine) or, once, connected then was refused moments later
+(`ECONNREFUSED`) — with no code change and the same relaunch sequence each time. `Test-NetConnection`/TCP-level
+checks are **not sufficient** to confirm CDP is actually usable; only a real `connect_over_cdp` call (with a
+short wrapper timeout, since the library's own default is very long) proves it. `Stop-Process -Force` /
+`taskkill /F` often report success while a `chrome.exe` PID lingers — this is normal Chrome multi-process
+behavior (renderer/GPU/utility processes all show as `chrome.exe`), not evidence of a stuck relaunch; the
+process **count** (10-30+) is not itself a useful signal, only whether a fresh `connect_over_cdp` succeeds.
+Root cause not identified (not reproduced outside this one session as of writing) — full kill + relaunch
+sometimes fixed it, sometimes didn't on the next attempt. If this recurs, treat it like the documented
+locked-PC case: skip the cycle cleanly, don't set `auto_fill_attempted_at` on whatever candidate was being
+attempted, so it retries next hour rather than blocking or attempting a fill against a half-connected browser.
+
 ## Open/unresolved
 
 - `jobs_history.json.corrupt-20260813_150257`: partially investigated (2026-08-14). The file
