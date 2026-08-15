@@ -134,7 +134,8 @@ def main():
                                    "characters from inline --value arguments passed to a "
                                    "native exe, so JSON must come from a file, not argv)")
     p_set.add_argument("--json", action="store_true",
-                        help="Parse the value (from --value or --value-file) as JSON")
+                        help="Parse the value (from --value or --value-file) as JSON instead "
+                             "of a plain string (needed for nested values like action_item)")
 
     args = parser.parse_args()
 

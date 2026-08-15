@@ -563,6 +563,7 @@
         const weak = allJobs.filter(job => {
             const state = sharedJobsState[job.url] || {};
             if (state.deletion_reason) return false;
+            if (state.applied === 'yes' || job.applied === 'yes') return false;
             const matchVal = state.matches_requirements || job.matches_requirements || 'pending';
             return matchVal === 'maybe';
         });
@@ -628,7 +629,8 @@
             await db.collection('shared_state').doc('job_status').update(
                 new firebase.firestore.FieldPath(url, 'matches_requirements'), 'yes',
                 new firebase.firestore.FieldPath(url, 'user_reason'), finalReason,
-                new firebase.firestore.FieldPath(url, 'priority_fill_form_at'), new Date().toISOString()
+                new firebase.firestore.FieldPath(url, 'priority_fill_form_at'), new Date().toISOString(),
+                new firebase.firestore.FieldPath(url, 'user_review'), 'done'
             );
         } catch (e) {
             console.error(e);

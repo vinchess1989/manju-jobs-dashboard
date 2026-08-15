@@ -7,8 +7,6 @@ import os
 import sys
 from unittest.mock import patch, MagicMock
 
-import pytest
-
 # Allow importing scraper without triggering load_dotenv side-effects
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 import scraper
@@ -63,9 +61,9 @@ class TestExtractJsonFromText:
         result = scraper.extract_json_from_text(text)
         assert result["match"] == "maybe"
 
-    def test_raises_on_invalid(self):
-        with pytest.raises(Exception):
-            scraper.extract_json_from_text("no json here at all")
+    def test_falls_back_to_regex_extraction_on_invalid(self):
+        result = scraper.extract_json_from_text("no json here at all")
+        assert result["match"] == "error"
 
 
 # ---------------------------------------------------------------------------

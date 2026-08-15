@@ -22,5 +22,10 @@ service cloud.firestore {
       allow read, update: if true;
       allow create, delete: if isAuthorized();
     }
+
+    match /application_answers/{docId} {
+      allow read, create, update: if true;
+      allow delete: if isAuthorized();
+    }
   }
 }
