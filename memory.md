@@ -110,21 +110,32 @@ branch / root).
   `vals[i]` column access where manju uses `.col-*` CSS classes + `data-value` attributes. Check
   the actual code before assuming symmetry between the two.
 
-## CDP Chrome connection flakiness (observed 2026-08-15)
+## CDP Chrome connection flakiness (recurring — first seen 2026-08-15, confirmed again same day)
 
-During an unattended `/fill-form auto` cycle, `playwright.chromium.connect_over_cdp("http://127.0.0.1:9222")`
-repeatedly hung for the full timeout (180s for the actual API handshake, despite the raw TCP port and
-`GET /json/version` HTTP endpoint both responding fine) or, once, connected then was refused moments later
-(`ECONNREFUSED`) — with no code change and the same relaunch sequence each time. `Test-NetConnection`/TCP-level
-checks are **not sufficient** to confirm CDP is actually usable; only a real `connect_over_cdp` call (with a
-short wrapper timeout, since the library's own default is very long) proves it. `Stop-Process -Force` /
-`taskkill /F` often report success while a `chrome.exe` PID lingers — this is normal Chrome multi-process
-behavior (renderer/GPU/utility processes all show as `chrome.exe`), not evidence of a stuck relaunch; the
-process **count** (10-30+) is not itself a useful signal, only whether a fresh `connect_over_cdp` succeeds.
-Root cause not identified (not reproduced outside this one session as of writing) — full kill + relaunch
-sometimes fixed it, sometimes didn't on the next attempt. If this recurs, treat it like the documented
-locked-PC case: skip the cycle cleanly, don't set `auto_fill_attempted_at` on whatever candidate was being
-attempted, so it retries next hour rather than blocking or attempting a fill against a half-connected browser.
+During unattended `/fill-form auto` cycles, `playwright.chromium.connect_over_cdp("http://127.0.0.1:9222")`
+repeatedly hangs for the full timeout (180s for the actual API handshake, despite the raw TCP port and
+`GET /json/version` HTTP endpoint both responding fine) or connects then gets refused/closed moments later
+(`ECONNREFUSED` / "Connection closed while reading from the driver") — with no code change, same relaunch
+sequence each time. **Confirmed recurring across two separate cycles the same day**, including immediately
+after a full `taskkill`+relaunch with the port freshly verified open — so "just restart Chrome" is not a
+reliable fix, only sometimes helps. Pattern observed: the very first `connect_over_cdp` call after a fresh
+launch has better (not perfect) odds of succeeding; a second script run moments later against the same
+still-running browser frequently fails even though nothing else changed. `Test-NetConnection`/TCP-level
+checks and `/json/version` are **not sufficient** to confirm CDP is actually usable — only a real
+`connect_over_cdp` call (with a short wrapper timeout; the library's own default is very long) proves it, and
+even that can succeed once and fail the very next attempt seconds later. `Stop-Process -Force`/`taskkill /F`
+often report success while a `chrome.exe` PID lingers — normal Chrome multi-process behavior (renderer/GPU/
+utility processes all show as `chrome.exe`), not evidence of a stuck relaunch; process **count** (10-30+) is
+not a useful signal by itself.
+
+Root cause still not identified. Not yet tried: `launch_persistent_context` instead of `connect_over_cdp`
+(avoids the separate CDP handshake entirely); checking Windows Defender/firewall for per-connection
+inspection latency on repeated localhost socket opens; whether an idle keep-alive ping between script
+invocations prevents the browser from letting the DevTools connection go stale. Worth investigating properly
+in a future session if it keeps costing cycles — for now, treat it like the documented locked-PC case: after
+one or two restart+retry attempts, stop and skip the cycle cleanly rather than burning many minutes on
+repeated reconnects. Don't set `auto_fill_attempted_at` on whatever candidate was being attempted so it
+retries next hour instead of getting stuck or silently half-filled.
 
 ## Open/unresolved
 
