@@ -137,6 +137,26 @@ one or two restart+retry attempts, stop and skip the cycle cleanly rather than b
 repeated reconnects. Don't set `auto_fill_attempted_at` on whatever candidate was being attempted so it
 retries next hour instead of getting stuck or silently half-filled.
 
+## `scrape_application.py` cannot handle LinkedIn without credentials — and crashes ungracefully in `--non-interactive`
+
+Discovered 2026-08-18 running `/fill-form auto` against jobs Manju had clicked Apply on in
+`review.html`. `scrape_application.py --job-url <linkedin.com/...> --non-interactive` detects
+`platform: linkedin`, then tries its own first-time-setup credential prompt (`input()` for email/
+password to save into `PRIVATE\.env`) — it does **not** reuse the CDP browser's already-logged-in
+LinkedIn session (the Automation Profile). In `--non-interactive` mode there's nobody to answer the
+prompt, so it crashes with an unhandled `EOFError` at `ensure_credentials()` instead of writing a
+`login_wall: true` questions.json like every other unsupported-ATS case does. No `PRIVATE\.env`
+currently has LinkedIn credentials set, so **every LinkedIn job is currently a hard block** in
+auto-mode, not just a soft "ambiguous ATS" case — WebFetch on `www.linkedin.com` job URLs also
+reliably returns a generic logged-out search-results shell (no job content, no apply button) rather
+than the real listing, so there's currently no way (WebFetch or the automation script) to resolve a
+LinkedIn application's actual form/questions without a human doing it by hand in the browser. `fi.
+linkedin.com` URLs are the one exception — WebFetch renders those fine (real job content, correct
+open/closed status) even logged out; only `www.`/country-subdomain LinkedIn URLs hit the wall.
+If LinkedIn volume ever justifies fixing this: either add LinkedIn credentials to `PRIVATE\.env` (a
+real risk — LinkedIn is known to flag/lock automated-login accounts) or teach `scrape_application.py`
+to catch `EOFError` in `--non-interactive` and fall back to `login_wall: true` like it should.
+
 ## Open/unresolved
 
 - `jobs_history.json.corrupt-20260813_150257`: partially investigated (2026-08-14). The file
@@ -155,4 +175,4 @@ retries next hour instead of getting stuck or silently half-filled.
   Not fully confirmed since the actual `.corrupt-*` file content hasn't been read.
 
 ---
-Last updated: 2026-08-14
+Last updated: 2026-08-18
