@@ -157,6 +157,41 @@ If LinkedIn volume ever justifies fixing this: either add LinkedIn credentials t
 real risk — LinkedIn is known to flag/lock automated-login accounts) or teach `scrape_application.py`
 to catch `EOFError` in `--non-interactive` and fall back to `login_wall: true` like it should.
 
+## `job_status_store.py set` does a full-document read-modify-write — races with review.html and can silently revert Manju's clicks
+
+Discovered 2026-08-18, second `/fill-form auto` cycle same day. `set_job_field()` calls
+`get_job_status()` (full GET of the whole `shared_state/job_status` doc), mutates one field in
+memory, then `patch_job_status()` (full PATCH overwrite of the whole doc back). `review.html`, by
+contrast, writes via the Firestore JS SDK's `update()` with individual `FieldPath`s — a real partial
+update. If a `review.html` write (e.g. `applyWeakMatch`'s atomic `matches_requirements` + `user_review:
+'done'` + `priority_fill_form_at` update, or `toggleActionItemDone`'s `create_login` branch) lands in
+the window between this script's GET and PATCH, the script's stale full-doc snapshot silently
+clobbers it on write — no error, no conflict, the field just reverts.
+
+Caught in the act: a job had `matches_requirements: yes` (reason "Promoted from weak match via
+review dashboard" — `applyWeakMatch`'s literal fallback string) and a same-day `priority_fill_form_at`
+timestamp, but `user_review` read back as unset instead of `'done'` — the only two code paths that set
+`priority_fill_form_at` are `applyWeakMatch` (which sets `user_review: 'done'` in the *same* atomic
+call) and the `create_login` action-item "Done" checkbox (which requires an existing `action_item`,
+and this job had none). The only coherent explanation is a genuine `applyWeakMatch` click whose
+`user_review` write got raced away by a concurrent `job_status_store.py set` — almost certainly this
+skill's own high-frequency calls during a `/fill-form auto` cycle (dozens of sequential `set` calls in
+a short window while Manju may have had `review.html` open at the same time).
+
+**Practical fallout:** don't trust `user_review == 'done'` in isolation as "no Apply click happened" —
+cross-check `matches_requirements`, `user_reason` (the `applyWeakMatch` fallback string is a strong
+tell), and `priority_fill_form_at` together before concluding a "yes" match wasn't an explicit pick.
+When in doubt, the safer read is that a `matches_requirements: yes` + that reason string *is* an
+explicit Apply click, full stop — same as [[respect weak-match Apply clicks]] already establishes for
+jobs where `user_review` **is** intact.
+
+**Real fix, not yet done:** switch `set_job_field`/`patch_job_status` to a targeted Firestore REST PATCH
+with an `updateMask` query param scoped to the single field being written, instead of GET-modify-PATCH
+of the entire document — that closes the race entirely instead of just working around it. Until that
+lands, minimize back-to-back `job_status_store.py set` calls in any one script run (batch reads, but
+each write still reopens the race window) and treat this as a live risk any time review.html might be
+in concurrent use.
+
 ## Open/unresolved
 
 - `jobs_history.json.corrupt-20260813_150257`: partially investigated (2026-08-14). The file
