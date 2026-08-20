@@ -245505,5 +245505,53 @@
     "eval_model": "local/hermes-3-llama-3.1-8b",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'manager'"
+  },
+  {
+    "title": "Administrative Assistant 3 (Technologies)",
+    "company": "Tennessee Board of Regents (TBR)",
+    "location": "Memphis, TN",
+    "url": "https://www.linkedin.com/jobs/view/administrative-assistant-3-technologies-at-tennessee-board-of-regents-tbr-4447071583",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The job is located in Memphis, Tennessee, United States, which does not match Finland.",
+    "id": "843f0abd",
+    "source": "linkedin_ww_office_secretary",
+    "posted_date": "2026-08-06",
+    "deadline": "2023-06-30",
+    "eval_model": "local/hermes-3-llama-3.1-8b",
+    "description_file": null,
+    "deletion_reason": "Deadline (2023-06-30) passed by more than 2 days and unreviewed"
+  },
+  {
+    "title": "Administrative Assistant",
+    "company": "Modern Woodmen of America",
+    "location": "Louisburg, KS",
+    "url": "https://www.linkedin.com/jobs/view/administrative-assistant-at-modern-woodmen-of-america-4359031917",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The job requires US residency, which Manju does not have.",
+    "id": "eca4c377",
+    "source": "linkedin_ww_office_secretary",
+    "posted_date": "2026-08-06",
+    "deadline": "N/A",
+    "eval_model": "local/hermes-3-llama-3.1-8b",
+    "description_file": null,
+    "deletion_reason": "Requires US residency"
+  },
+  {
+    "title": "Administrative Assistant",
+    "company": "Ascension",
+    "location": "Nashville, TN",
+    "url": "https://www.linkedin.com/jobs/view/administrative-assistant-at-ascension-4454434248",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The job is located in Nashville, TN, USA, which does not match the Oulu Region, Finland target.",
+    "id": "bf92c62e",
+    "source": "linkedin_ww_office_secretary",
+    "posted_date": "2026-08-18",
+    "deadline": "2023-06-30",
+    "eval_model": "local/hermes-3-llama-3.1-8b",
+    "description_file": null,
+    "deletion_reason": "Deadline (2023-06-30) passed by more than 2 days and unreviewed"
   }
 ]
