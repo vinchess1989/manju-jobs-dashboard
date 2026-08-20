@@ -236917,16 +236917,17 @@
   {
     "title": "Ty\u00f6harjoittelu - Varsinais-Suomen alue",
     "company": "Extract via OpenClaw",
-    "location": "Extract via OpenClaw",
+    "location": "Varsinais-Suomi Region, Finland",
     "url": "https://fi.indeed.com/rc/clk?jk=34f8383a42d1508d",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Could not extract text from page (anti-bot protection or empty page).",
+    "matches_requirements": "maybe",
+    "reason": "The role is a generalist office position, but it's unclear if it requires specific technical law expertise beyond Manju's qualifications.",
     "id": "c9aeb802",
     "source": "indeed_p2",
     "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null
+    "deadline": "Open until filled",
+    "description_file": "job_descriptions/extract_via_openclaw_ty_harjoittelu___varsinais_suo_c9aeb802.txt",
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Cleaner",
