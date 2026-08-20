@@ -245409,5 +245409,37 @@
     "eval_model": "local/hermes-3-llama-3.1-8b",
     "description_file": "job_descriptions/ahjo_communications__viestinn_n_harjoittelija_9dc9d58e.txt",
     "deletion_reason": "Deadline (2023-08-23) passed by more than 2 days and unreviewed"
+  },
+  {
+    "title": "Sales Lead Coordinator",
+    "company": "American Residential Services",
+    "location": "Itasca, IL",
+    "url": "https://www.linkedin.com/jobs/view/sales-lead-coordinator-at-american-residential-services-4450590140",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The role requires prior dispatch, customer services (inbound/outbound) or sales coordinator experience which Manju does not have.",
+    "id": "d6f42efc",
+    "source": "linkedin_ww_coordinator",
+    "posted_date": "2026-08-13",
+    "deadline": "N/A",
+    "eval_model": "local/hermes-3-llama-3.1-8b",
+    "description_file": null,
+    "deletion_reason": "Title contains seniority keyword 'lead'"
+  },
+  {
+    "title": "Virtual Design & Construction (VDC) Coordinator",
+    "company": "Martin-Harris Construction LLC",
+    "location": "Reno, NV",
+    "url": "https://www.linkedin.com/jobs/view/virtual-design-construction-vdc-coordinator-at-martin-harris-construction-llc-4426499264",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The job requires a specific technical degree (engineering) as a hard requirement, which disqualifies it.",
+    "id": "fcb10b9e",
+    "source": "linkedin_ww_coordinator",
+    "posted_date": "2026-08-20",
+    "deadline": "N/A",
+    "eval_model": "local/hermes-3-llama-3.1-8b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'construction'"
   }
 ]
