@@ -1371,36 +1371,57 @@ def _post_llm_with_retry(url, headers, payload, timeout=120, retries=2, backoff_
     raise requests.exceptions.RequestException("LLM request failed with no captured exception")
 
 GROQ_ENDPOINT = "https://api.groq.com/openai/v1/chat/completions"
+# Ordered by preference (quality first). Each Groq model has its OWN separate free-tier
+# rate-limit quota, so rotating through them on failure meaningfully increases total
+# throughput before giving up and falling back to local - a 429 on one model doesn't mean
+# the others are limited too. Overridable via GROQ_MODELS (comma-separated). Deliberately
+# excludes: qwen/qwen3.6-27b (leaks its <think> reasoning directly into `content` instead
+# of a separate field like the gpt-oss models - risks eating the whole max_tokens budget
+# and truncating before the actual JSON answer ever appears - untested how often this
+# actually bites in practice, revisit if more Groq throughput is needed later), the
+# groq/compound(-mini) agentic meta-models (untested for this single-shot extraction use
+# case), and allam-2-7b/*-safeguard-* (not general-purpose / not suited to this task).
+GROQ_MODELS = [m.strip() for m in os.environ.get("GROQ_MODELS", "openai/gpt-oss-120b,openai/gpt-oss-20b").split(",") if m.strip()]
 
-def _call_llm_with_fallback(messages, llm_endpoint, llm_model, temperature=0.1, max_tokens=500, timeout_local=120, timeout_groq=60):
-    """Try Groq first (free-tier cloud inference, no local contention), falling
-    back to the local LM Studio server on any failure - missing GROQ_API_KEY,
-    network error, rate limit, bad response, anything. Groq gets a single
-    attempt with no retry loop of its own: a failure there just means "not
-    available right now", and the local fallback (which already retries/waits
-    its turn - see _post_llm_with_retry) is a better use of that time than
-    retrying against what might be a persistent rate limit.
-
-    Returns (response_json, provider_label) so callers can log/record which
-    LLM actually produced the result - provider_label is e.g.
-    'groq/openai/gpt-oss-120b' or 'local/<model>'. GROQ_MODEL overrides the
-    default Groq model if set."""
-    groq_api_key = os.environ.get("GROQ_API_KEY")
-    if groq_api_key:
-        groq_model = os.environ.get("GROQ_MODEL", "openai/gpt-oss-120b")
+def _try_cloud_provider(messages, endpoint, api_key, models, temperature, max_tokens, timeout, label):
+    """Try each model in `models` against `endpoint` in order, stopping at the first
+    success (single attempt per model, no retry loop - see _call_llm_with_fallback for
+    why). Returns (response_json, provider_label) on success, or None if every model
+    failed, so the caller can move on to the next provider/the local fallback."""
+    for model in models:
         try:
-            groq_payload = {
-                "model": groq_model,
+            payload = {
+                "model": model,
                 "messages": messages,
                 "temperature": temperature,
                 "max_tokens": max_tokens,
             }
-            groq_headers = {"Content-Type": "application/json", "Authorization": f"Bearer {groq_api_key}"}
-            response = requests.post(GROQ_ENDPOINT, headers=groq_headers, json=groq_payload, timeout=timeout_groq)
+            headers = {"Content-Type": "application/json", "Authorization": f"Bearer {api_key}"}
+            response = requests.post(endpoint, headers=headers, json=payload, timeout=timeout)
             response.raise_for_status()
-            return response.json(), f"groq/{groq_model}"
+            return response.json(), f"{label}/{model}"
         except Exception as e:
-            print(f"  [LLM] Groq call failed ({e}), falling back to local LLM...")
+            print(f"  [LLM] {label} model '{model}' failed ({e}), trying next...")
+    return None
+
+def _call_llm_with_fallback(messages, llm_endpoint, llm_model, temperature=0.1, max_tokens=500, timeout_local=120, timeout_groq=60):
+    """Try Groq first (free-tier cloud inference, no local contention), rotating through
+    GROQ_MODELS in order until one succeeds, falling back to the local LM Studio server
+    only once every Groq model has failed - missing GROQ_API_KEY, network error, rate
+    limit, bad response, anything. Each attempt is a single shot with no retry loop of its
+    own: a failure there just means "not available right now", and moving on (to the next
+    model, then to local - which already retries/waits its turn, see _post_llm_with_retry)
+    is a better use of that time than retrying against what might be a persistent rate
+    limit.
+
+    Returns (response_json, provider_label) so callers can log/record which LLM actually
+    produced the result - provider_label is e.g. 'groq/openai/gpt-oss-120b' or
+    'local/<model>'."""
+    groq_api_key = os.environ.get("GROQ_API_KEY")
+    if groq_api_key:
+        result = _try_cloud_provider(messages, GROQ_ENDPOINT, groq_api_key, GROQ_MODELS, temperature, max_tokens, timeout_groq, "groq")
+        if result:
+            return result
 
     headers = {"Content-Type": "application/json"}
     llm_api_key = os.environ.get("LOCAL_LLM_API_KEY")
