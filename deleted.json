@@ -245185,5 +245185,37 @@
     "eval_model": "local/hermes-3-llama-3.1-8b",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'p\u00e4\u00e4llikk\u00f6'"
+  },
+  {
+    "title": "Tapahtumap\u00e4\u00e4llikk\u00f6",
+    "company": "Kajaanin kaupunki",
+    "location": "Kajaani, Finland",
+    "url": "https://fi.indeed.com/rc/clk?jk=504e293be5aaef7e",
+    "visited": "yes",
+    "matches_requirements": "maybe",
+    "reason": "The role is a generalist office position, but requires fluency in Finnish which Manju does not yet have.",
+    "id": "d1a5df6e",
+    "source": "indeed_event_coordinator_p3",
+    "posted_date": "17.8.2026 klo 09:00",
+    "deadline": "2026-09-04",
+    "eval_model": "local/hermes-3-llama-3.1-8b",
+    "description_file": "job_descriptions/kajaanin_kaupunki_tapahtumap__llikk__d1a5df6e.txt",
+    "deletion_reason": "Title contains hard-rejection keyword 'p\u00e4\u00e4llikk\u00f6'"
+  },
+  {
+    "title": "Sales Team Lead, Eventilla Oy, Oulu",
+    "company": "Nordrec Henkil\u00f6st\u00f6palvelut Oy",
+    "location": "Oulu Region, Finland",
+    "url": "https://fi.linkedin.com/jobs/view/sales-team-lead-eventilla-oy-oulu-at-nordrec-henkil%C3%B6st%C3%B6palvelut-oy-4455251537",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The role is a Sales Team Lead for Eventilla Oy, which does not match the target criteria of generalist office/service roles. Manju's IHO event coordination experience would otherwise support more generic 'event coordinator' or 'community manager' postings.",
+    "id": "7b9c6573",
+    "source": "linkedin_fi_event",
+    "posted_date": "2026-08-17",
+    "deadline": "N/A",
+    "eval_model": "local/hermes-3-llama-3.1-8b",
+    "description_file": null,
+    "deletion_reason": "Title contains seniority keyword 'lead'"
   }
 ]
