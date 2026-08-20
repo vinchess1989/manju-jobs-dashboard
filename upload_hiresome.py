@@ -16,6 +16,8 @@ def apply():
             browser = p.chromium.launch(headless=False, slow_mo=50)
             context = browser.new_context()
             page = context.new_page()
+            page.set_default_navigation_timeout(60000)
+            page.set_default_timeout(60000)
             
             log(f"Navigating to {url}...")
             page.goto(url)

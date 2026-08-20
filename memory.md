@@ -222,6 +222,50 @@ lands, minimize back-to-back `job_status_store.py set` calls in any one script r
 each write still reopens the race window) and treat this as a live risk any time review.html might be
 in concurrent use.
 
+## Duplicate process-launch chain via LM Studio's bundled Python (observed 2026-08-20)
+
+Every time `orchestrator.py` gets launched (scheduled task or `schtasks /run`), the resulting
+process tree is **three deep**, not two: `orchestrator.py` (correct `manju_jobs\venv` python) →
+an *intermediate* copy of `orchestrator.py` running under
+`C:\Users\vinee\.lmstudio\extensions\backends\vendor\_amphibian\cpython3.11-win-x86@6\python.exe`
+→ `scraper.py` (correct `manju_jobs\venv` python again, as the intermediate's child). Confirmed
+this is **not specific to this project** - a totally unrelated app (`screen translator`,
+`translator_app.py`) showed the identical pattern the same day. Likely some machine-wide
+process-launch proxy/monitor (possibly related to LM Studio's own extension backend tooling)
+that reflects every `python.exe` subprocess launch through its bundled interpreter before the
+real target ends up running correctly - not a bug in `orchestrator.py`'s own code, which only
+ever does one hardcoded, absolute-path `subprocess.Popen` call to launch `scraper.py` (verified by
+reading the source - no code path spawns another copy of `orchestrator.py`).
+
+**Don't kill the intermediate process** if you see this chain and it looks like a stray duplicate -
+tested this directly: killing the intermediate LM-Studio-python `orchestrator.py` copy cascaded
+and killed the legitimate `scraper.py` child hanging off it too, even though the *real*
+`orchestrator.py` (the direct child of the scheduled task) kept running with no scraper.py of its
+own anymore. Root cause of the cascade not fully understood (possibly a Windows job-object
+relationship, given how Task Scheduler often launches through broker/host processes) - if this
+needs fixing, investigate why the intermediate hop exists at all before touching it again, rather
+than assuming it's safe to prune.
+
+## Concurrent git operations on this repo are a real, recurring hazard
+
+Confirmed 2026-08-20: while doing a multi-file commit+push here, hit a stuck interactive rebase,
+a real content conflict in `memory.md` (another session/machine had concurrently added several
+new sections to the same file - see git log for commits like "Document job_status_store.py race
+condition..." and "Update CDP flakiness note..."), and repeated non-fast-forward push rejections -
+consistent with **another machine actively running this same scraper and pushing independently**
+at the same time (this project's own `CLAUDE.md` already documents that tailoring/apply-link work
+happens on a different PC from the scraper's home machine; this suggests the scraper itself may
+also run on more than one machine, or another session was mid-work concurrently). `git rebase
+--continue` also intermittently failed with a misleading "You must edit all merge conflicts" error
+even when `git write-tree`/`git ls-files -u` confirmed the index was genuinely clean - root cause
+not identified (possibly related to running several rapid `git pull --rebase --autostash` attempts
+in quick succession against a repo under concurrent modification); resolved by `git rebase --abort`
+and retrying cleanly rather than fighting the stuck state. **Practical lesson:** when doing manual
+git surgery here (not just the routine scraper-driven pull/rebase/push), expect concurrent writers,
+resolve `memory.md`-specific conflicts by keeping both sides' content (never discard the other
+session's additions), and don't hesitate to abort-and-retry a rebase that's behaving inconsistently
+rather than pushing through a confusing error.
+
 ## Open/unresolved
 
 - `jobs_history.json.corrupt-20260813_150257`: partially investigated (2026-08-14). The file

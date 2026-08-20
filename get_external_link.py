@@ -7,6 +7,8 @@ def get_external_link(job_url):
         browser = p.chromium.launch(headless=True)
         context = browser.new_context(storage_state=r'C:\Users\vinee\Manju_jobs_private\sessions\linkedin_session.json')
         page = context.new_page()
+        page.set_default_navigation_timeout(60000)
+        page.set_default_timeout(60000)
         page.goto(job_url)
         time.sleep(3)
         

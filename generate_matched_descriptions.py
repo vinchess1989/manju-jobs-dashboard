@@ -47,6 +47,8 @@ def main():
             user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
         )
         page = context.new_page()
+        page.set_default_navigation_timeout(60000)
+        page.set_default_timeout(60000)
 
         for idx, job in enumerate(matched_jobs):
             print(f"[{idx+1}/{len(matched_jobs)}] Fetching description for: {job['title']} at {job['company']}")
