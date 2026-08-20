@@ -55,7 +55,7 @@ The main job-review call and the scrape health-report call (`analyze_scrape_run_
 through `_call_llm_with_fallback(messages, llm_endpoint, llm_model, ...)`, defined next to
 `_post_llm_with_retry` in each `scraper.py`. It tries **Groq first** (`GROQ_ENDPOINT =
 https://api.groq.com/openai/v1/chat/completions`, model from `GROQ_MODEL` env var, default
-`llama-3.3-70b-versatile`) if `GROQ_API_KEY` is set, with a single attempt and no retry loop of
+`openai/gpt-oss-120b`) if `GROQ_API_KEY` is set, with a single attempt and no retry loop of
 its own — any failure (missing key, network error, 429 rate limit, bad response) falls straight
 through to the existing local-LLM path (`_post_llm_with_retry`, which still does its own
 retry/priority-lock/backoff dance). This was a deliberate choice: retrying against what might be
@@ -65,14 +65,26 @@ a persistent Groq rate limit wastes time the local fallback could use instead.
   fires only when `job_requirements.md` is hand-edited, rare enough that moving it wasn't worth
   the churn.
 - Every review now records which LLM actually produced the result: `job['eval_model']` gets set
-  to e.g. `'groq/llama-3.3-70b-versatile'` or `'local/hermes-3-llama-3.1-8b'` (the dashboard
+  to e.g. `'groq/openai/gpt-oss-120b'` or `'local/hermes-3-llama-3.1-8b'` (the dashboard
   already had a `job.eval_model`-based filter/label in `firebase_app/index.html` — previously
   unpopulated by `scraper.py`, now wired up), and the per-job console line in `orchestrator.log`
   ends with `, LLM: <provider>/<model>`.
-- No `GROQ_API_KEY` is set as of this writing — behavior is 100% local-only until one is added
-  (`setx GROQ_API_KEY <key>` at the User scope, matching how `LOCAL_LLM_MODEL` etc. are set).
-  Verified this degrades cleanly with no key present (2026-08-20): no errors, `LLM:
-  local/hermes-3-llama-3.1-8b` in the log as expected.
+- **`GROQ_MODEL` default had to be corrected 2026-08-20**: originally defaulted to
+  `llama-3.3-70b-versatile`, which turned out to be retired from Groq's lineup entirely (404
+  `model_not_found`) - Groq's currently-served models don't include ANY Llama family model
+  anymore (confirmed via `GET /openai/v1/models`; current text-capable options were
+  `openai/gpt-oss-120b`, `openai/gpt-oss-20b`, `qwen/qwen3.6-27b`, plus `groq/compound(-mini)`
+  agentic meta-models and a few narrow/non-English models). Switched the default to
+  `openai/gpt-oss-120b` - verified directly via a raw API call that it's a reasoning model like
+  gemma-4-12b-qat locally, but keeps the final answer cleanly separated in `message.content` (a
+  distinct `message.reasoning` field holds the chain-of-thought), so no extraction-code changes
+  were needed. **Because Groq can retire/rename models at any time, if Groq calls start silently
+  falling back to local again, check `GET https://api.groq.com/openai/v1/models` with the current
+  `GROQ_API_KEY` before assuming it's a code or contention problem.**
+- `GROQ_API_KEY` was set 2026-08-20 (User env var, matching how `LOCAL_LLM_MODEL` etc. are set) -
+  confirmed working end-to-end in production: `LLM: groq/openai/gpt-oss-120b` in vineeth_jobs's
+  orchestrator.log, with a 429 mid-batch correctly falling back to `local/hermes-3-llama-3.1-8b`
+  on the very next job, no interruption to the pipeline.
 - Privacy tradeoff accepted knowingly here: job descriptions (public postings) and the
   candidate-requirements text (`job_requirements.md` — contains Manju's personal
   background/credentials) get sent to Groq's servers for any call that uses it. Free-tier usage

@@ -1383,11 +1383,11 @@ def _call_llm_with_fallback(messages, llm_endpoint, llm_model, temperature=0.1, 
 
     Returns (response_json, provider_label) so callers can log/record which
     LLM actually produced the result - provider_label is e.g.
-    'groq/llama-3.3-70b-versatile' or 'local/<model>'. GROQ_MODEL overrides the
+    'groq/openai/gpt-oss-120b' or 'local/<model>'. GROQ_MODEL overrides the
     default Groq model if set."""
     groq_api_key = os.environ.get("GROQ_API_KEY")
     if groq_api_key:
-        groq_model = os.environ.get("GROQ_MODEL", "llama-3.3-70b-versatile")
+        groq_model = os.environ.get("GROQ_MODEL", "openai/gpt-oss-120b")
         try:
             groq_payload = {
                 "model": groq_model,
