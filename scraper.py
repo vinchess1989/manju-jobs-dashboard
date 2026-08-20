@@ -833,23 +833,14 @@ def analyze_scrape_run_log(lines: list[str]):
         f"Log:\n{log_text}"
     )
 
-    headers = {"Content-Type": "application/json"}
-    llm_api_key = os.environ.get("LOCAL_LLM_API_KEY")
-    if llm_api_key:
-        headers["Authorization"] = f"Bearer {llm_api_key}"
-
-    payload = {
-        "model": llm_model,
-        "messages": [{"role": "user", "content": prompt}],
-        "temperature": 0.2,
-        "max_tokens": 600,
-    }
-
     try:
-        resp = _post_llm_with_retry(llm_endpoint, headers, payload, timeout=60)
-        report = resp.json()['choices'][0]['message']['content'].strip()
+        resp_json, llm_used = _call_llm_with_fallback(
+            [{"role": "user", "content": prompt}],
+            llm_endpoint, llm_model, temperature=0.2, max_tokens=600, timeout_local=60,
+        )
+        report = resp_json['choices'][0]['message']['content'].strip()
         print(f"\n{'='*50}")
-        print("SCRAPE HEALTH REPORT (LLM)")
+        print(f"SCRAPE HEALTH REPORT (LLM: {llm_used})")
         print('='*50)
         print(report)
         print('='*50)
@@ -1379,6 +1370,51 @@ def _post_llm_with_retry(url, headers, payload, timeout=120, retries=2, backoff_
         raise last_err
     raise requests.exceptions.RequestException("LLM request failed with no captured exception")
 
+GROQ_ENDPOINT = "https://api.groq.com/openai/v1/chat/completions"
+
+def _call_llm_with_fallback(messages, llm_endpoint, llm_model, temperature=0.1, max_tokens=500, timeout_local=120, timeout_groq=60):
+    """Try Groq first (free-tier cloud inference, no local contention), falling
+    back to the local LM Studio server on any failure - missing GROQ_API_KEY,
+    network error, rate limit, bad response, anything. Groq gets a single
+    attempt with no retry loop of its own: a failure there just means "not
+    available right now", and the local fallback (which already retries/waits
+    its turn - see _post_llm_with_retry) is a better use of that time than
+    retrying against what might be a persistent rate limit.
+
+    Returns (response_json, provider_label) so callers can log/record which
+    LLM actually produced the result - provider_label is e.g.
+    'groq/llama-3.3-70b-versatile' or 'local/<model>'. GROQ_MODEL overrides the
+    default Groq model if set."""
+    groq_api_key = os.environ.get("GROQ_API_KEY")
+    if groq_api_key:
+        groq_model = os.environ.get("GROQ_MODEL", "llama-3.3-70b-versatile")
+        try:
+            groq_payload = {
+                "model": groq_model,
+                "messages": messages,
+                "temperature": temperature,
+                "max_tokens": max_tokens,
+            }
+            groq_headers = {"Content-Type": "application/json", "Authorization": f"Bearer {groq_api_key}"}
+            response = requests.post(GROQ_ENDPOINT, headers=groq_headers, json=groq_payload, timeout=timeout_groq)
+            response.raise_for_status()
+            return response.json(), f"groq/{groq_model}"
+        except Exception as e:
+            print(f"  [LLM] Groq call failed ({e}), falling back to local LLM...")
+
+    headers = {"Content-Type": "application/json"}
+    llm_api_key = os.environ.get("LOCAL_LLM_API_KEY")
+    if llm_api_key:
+        headers["Authorization"] = f"Bearer {llm_api_key}"
+    local_payload = {
+        "model": llm_model,
+        "messages": messages,
+        "temperature": temperature,
+        "max_tokens": max_tokens,
+    }
+    response = _post_llm_with_retry(llm_endpoint, headers, local_payload, timeout=timeout_local)
+    return response.json(), f"local/{llm_model}"
+
 def review_pending_jobs(specific_urls=None):
     """Visit URLs of pending jobs, extract description, and evaluate using a local LLM."""
     if not os.path.exists(JOBS_FILE):
@@ -1497,6 +1533,7 @@ def review_pending_jobs(specific_urls=None):
                     db_utils.save_jobs(jobs)
                     continue
 
+                llm_used = None
                 if not text.strip() or is_ddos_page:
                     match, reason = "error", "Could not extract text from page (anti-bot protection or empty page)."
                 else:
@@ -1548,22 +1585,11 @@ Return a JSON object with exactly six keys:
 IMPORTANT: Extract company and location ONLY from information explicitly stated in the job description text. Do NOT guess or hallucinate values.
 Do not include any conversational intro/outro or explanations outside the JSON object.
 """
-                    headers = {"Content-Type": "application/json"}
-                    llm_api_key = os.environ.get("LOCAL_LLM_API_KEY")
-                    if llm_api_key:
-                        headers["Authorization"] = f"Bearer {llm_api_key}"
-
-                    payload = {
-                        "model": llm_model,
-                        "messages": [{"role": "user", "content": prompt}],
-                        "temperature": 0.1,
-                        "max_tokens": 500
-                    }
-
                     try:
-                        response = _post_llm_with_retry(llm_endpoint, headers, payload, timeout=120)
-
-                        response_json = response.json()
+                        response_json, llm_used = _call_llm_with_fallback(
+                            [{"role": "user", "content": prompt}],
+                            llm_endpoint, llm_model, temperature=0.1, max_tokens=500, timeout_local=120,
+                        )
                         content = response_json['choices'][0]['message']['content']
                         
                         # Use robust JSON extraction
@@ -1617,7 +1643,7 @@ Do not include any conversational intro/outro or explanations outside the JSON o
                             match = "no"
                     except (requests.exceptions.RequestException, json.JSONDecodeError, KeyError, IndexError) as llm_err:
                         match = "error"
-                        reason = f"Failed to get or parse local LLM response: {llm_err}"
+                        reason = f"Failed to get or parse LLM response: {llm_err}"
 
                 # Update job dictionary in-place
                 job['visited'] = "yes"
@@ -1626,6 +1652,8 @@ Do not include any conversational intro/outro or explanations outside the JSON o
                 job['posted_date'] = posted_date
                 job['deadline'] = deadline
                 job.pop('needs_re_review', None)
+                if llm_used:
+                    job['eval_model'] = llm_used
                 
                 # If a posting matches requirements, save job description text to a file inside job_descriptions/
                 if match in ['yes', 'maybe']:
@@ -1658,7 +1686,7 @@ Do not include any conversational intro/outro or explanations outside the JSON o
                 else:
                     job['description_file'] = None
 
-                print(f" -> {match.upper()}: {reason} (Posted: {posted_date}, Deadline: {deadline}, Company: {job['company']}, Location: {job['location']})")
+                print(f" -> {match.upper()}: {reason} (Posted: {posted_date}, Deadline: {deadline}, Company: {job['company']}, Location: {job['location']}, LLM: {llm_used or 'N/A'})")
                 
             except Exception as e:
                 print(f" -> ERROR: Failed to evaluate ({e})")

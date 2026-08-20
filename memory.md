@@ -49,6 +49,36 @@ One LM Studio server at `http://127.0.0.1:1234`, shared by both scrapers **and**
     backoff) before giving up and marking a job `'error'` — which both scrapers' pending-job
     filters already pick up and retry on the next cycle regardless.
 
+## Groq cloud fallback (added 2026-08-20)
+
+The main job-review call and the scrape health-report call (`analyze_scrape_run_log`) now go
+through `_call_llm_with_fallback(messages, llm_endpoint, llm_model, ...)`, defined next to
+`_post_llm_with_retry` in each `scraper.py`. It tries **Groq first** (`GROQ_ENDPOINT =
+https://api.groq.com/openai/v1/chat/completions`, model from `GROQ_MODEL` env var, default
+`llama-3.3-70b-versatile`) if `GROQ_API_KEY` is set, with a single attempt and no retry loop of
+its own — any failure (missing key, network error, 429 rate limit, bad response) falls straight
+through to the existing local-LLM path (`_post_llm_with_retry`, which still does its own
+retry/priority-lock/backoff dance). This was a deliberate choice: retrying against what might be
+a persistent Groq rate limit wastes time the local fallback could use instead.
+
+- `classify_requirements_change` (manju_jobs only) was deliberately **left on local-only** — it
+  fires only when `job_requirements.md` is hand-edited, rare enough that moving it wasn't worth
+  the churn.
+- Every review now records which LLM actually produced the result: `job['eval_model']` gets set
+  to e.g. `'groq/llama-3.3-70b-versatile'` or `'local/hermes-3-llama-3.1-8b'` (the dashboard
+  already had a `job.eval_model`-based filter/label in `firebase_app/index.html` — previously
+  unpopulated by `scraper.py`, now wired up), and the per-job console line in `orchestrator.log`
+  ends with `, LLM: <provider>/<model>`.
+- No `GROQ_API_KEY` is set as of this writing — behavior is 100% local-only until one is added
+  (`setx GROQ_API_KEY <key>` at the User scope, matching how `LOCAL_LLM_MODEL` etc. are set).
+  Verified this degrades cleanly with no key present (2026-08-20): no errors, `LLM:
+  local/hermes-3-llama-3.1-8b` in the log as expected.
+- Privacy tradeoff accepted knowingly here: job descriptions (public postings) and the
+  candidate-requirements text (`job_requirements.md` — contains Manju's personal
+  background/credentials) get sent to Groq's servers for any call that uses it. Free-tier usage
+  may also be used for training unless opted out — wasn't independently verified, worth checking
+  Groq's current data-use terms if this becomes a concern.
+
 ## GitHub Pages — load-bearing, do NOT disable
 
 `firebase_app/index.html` does **not** read job data from Firebase — it fetches raw
@@ -210,4 +240,4 @@ in concurrent use.
   Not fully confirmed since the actual `.corrupt-*` file content hasn't been read.
 
 ---
-Last updated: 2026-08-18
+Last updated: 2026-08-20
