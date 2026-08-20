@@ -251416,5 +251416,37 @@
     "description_file": null,
     "needs_re_review": true,
     "deletion_reason": "Expired job listing (page shows expired notice)"
+  },
+  {
+    "title": "Junior Data Analyst",
+    "company": "Helic & Co",
+    "location": "United States",
+    "url": "https://www.linkedin.com/jobs/view/junior-data-analyst-at-helic-co-4430751797",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Requires US residency, which Manju does not have.",
+    "id": "b1e3cba3",
+    "source": "linkedin_ww",
+    "posted_date": "2026-06-19",
+    "deadline": "Open until filled",
+    "description_file": null,
+    "eval_model": "local/hermes-3-llama-3.1-8b",
+    "deletion_reason": "Requires US residency"
+  },
+  {
+    "title": "Growth Specialist, Preferred",
+    "company": "Zillow",
+    "location": "United States",
+    "url": "https://www.linkedin.com/jobs/view/growth-specialist-preferred-at-zillow-4429600730",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The role requires US residency, which disqualifies this candidate.",
+    "id": "0f75c5ca",
+    "source": "linkedin_ww",
+    "posted_date": "2026-07-01",
+    "deadline": "N/A",
+    "description_file": null,
+    "eval_model": "local/hermes-3-llama-3.1-8b",
+    "deletion_reason": "Requires US residency"
   }
 ]
