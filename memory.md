@@ -308,6 +308,20 @@ resolve `memory.md`-specific conflicts by keeping both sides' content (never dis
 session's additions), and don't hesitate to abort-and-retry a rebase that's behaving inconsistently
 rather than pushing through a confusing error.
 
+## Deleted jobs can silently reappear — the scraper doesn't check `deleted.json` before re-adding a URL
+
+Confirmed 2026-08-21: flagged 4 job URLs for deletion via `job_status_store.py`'s `deletion_reason`
+field (expired deadlines / not-a-real-posting cases). `poll_manual_deletions()` in `scraper.py`
+correctly moved them to `deleted.json` and cleared the Firestore flag on its next cycle — but on a
+*later* scrape pass, all 4 same URLs turned up back in `jobs.json` with a fresh `matches_requirements:
+"yes"`, since the scraper re-evaluates its source lists each run and has no check against
+`deleted.json` before writing a URL back into `jobs.json`. From `/fill-form auto`'s perspective this
+means a deletion isn't necessarily permanent — a job flagged and removed one cycle can legitimately
+need re-flagging in a later cycle if it resurfaces. Not something to "fix" by retrying harder; just
+treat every `/fill-form auto` candidate on its own merits each cycle rather than assuming a job seen
+before is already handled, and re-set `deletion_reason` (or re-demote) if a previously-actioned URL
+reappears as an eligible candidate.
+
 ## Open/unresolved
 
 - `jobs_history.json.corrupt-20260813_150257`: partially investigated (2026-08-14). The file
@@ -326,4 +340,4 @@ rather than pushing through a confusing error.
   Not fully confirmed since the actual `.corrupt-*` file content hasn't been read.
 
 ---
-Last updated: 2026-08-20
+Last updated: 2026-08-21
