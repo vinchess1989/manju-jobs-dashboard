@@ -251529,5 +251529,38 @@
     "description_file": null,
     "eval_model": "local/hermes-3-llama-3.1-8b",
     "deletion_reason": "Requires US residency"
+  },
+  {
+    "title": "Document Controller",
+    "company": "Winthrop Technologies",
+    "location": "Helsinki Region, Finland",
+    "url": "https://fi.linkedin.com/jobs/view/document-controller-at-winthrop-technologies-4324599864",
+    "visited": "yes",
+    "matches_requirements": "yes",
+    "reason": "The role is an office-based document management position, matching Manju's skills and experience.",
+    "id": "2317ae00",
+    "source": "linkedin_fi_compliance_p2",
+    "posted_date": "2023-06-01",
+    "deadline": "2023-06-30",
+    "description_file": "job_descriptions/winthrop_technologie_document_controller_2317ae00.txt",
+    "tailor_model": "Local LLM",
+    "eval_model": "local/hermes-3-llama-3.1-8b",
+    "deletion_reason": "Deadline (2023-06-30) passed by more than 2 days and unreviewed"
+  },
+  {
+    "title": "Auditor/Investigator I",
+    "company": "Qlarant",
+    "location": "United States",
+    "url": "https://www.linkedin.com/jobs/view/auditor-investigator-i-at-qlarant-4428741097",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The job is located in Columbia, South Carolina, United States and requires US residency.",
+    "id": "95ee491c",
+    "source": "linkedin_ww_compliance",
+    "posted_date": "2026-06-12",
+    "deadline": "Open until filled",
+    "description_file": null,
+    "eval_model": "local/hermes-3-llama-3.1-8b",
+    "deletion_reason": "Requires US residency"
   }
 ]
