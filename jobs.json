@@ -46906,13 +46906,13 @@
     "url": "https://fi.indeed.com/rc/clk?jk=97e75a263eeb5482",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role requires specific vocational training for construction equipment operator, which Manju does not have.",
+    "reason": "The role is a trade/manual-labour gig work (tapahtumarakentaja) requiring booth/exhibition builder skills with tools, not an office-based event coordination role.",
     "id": "93a34bed",
     "source": "indeed",
     "posted_date": "N/A",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Law Clerk",
@@ -46920,14 +46920,14 @@
     "location": "San Diego, CA",
     "url": "https://www.linkedin.com/jobs/view/law-clerk-at-law-offices-of-anna-r-yum-inc-4424609095",
     "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "This legal assistant role is based in San Diego, CA and does not match Manju's Finnish-based job search criteria.",
+    "matches_requirements": "maybe",
+    "reason": "The role is a Law Clerk, which fits Manju's background and experience. However, it is located in San Diego, CA, USA, which does not match her Finnish job search.",
     "id": "5e51da22",
     "source": "linkedin_ww_legal_trainee",
     "posted_date": "2026-06-28",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": "job_descriptions/law_offices_of_anna__law_clerk_5e51da22.txt",
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Attorney",
@@ -46936,13 +46936,13 @@
     "url": "https://www.linkedin.com/jobs/view/attorney-at-united-states-marine-corps-4427645740",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The job is for a U.S. military position located in Minneapolis, MN, which does not match Manju's criteria of seeking employment in Finland.",
+    "reason": "The job is located in Minneapolis, MN, USA, which does not match Manju's Finland-only location criteria.",
     "id": "94529ad9",
     "source": "linkedin_ww_legal_trainee",
     "posted_date": "2026-07-02",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Corporate Clerk",
@@ -46951,13 +46951,13 @@
     "url": "https://www.linkedin.com/jobs/view/corporate-clerk-at-gunderson-dettmer-4416436969",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires a BS/BA degree, which is a specific technical degree hard rejection.",
+    "reason": "This US-based job is located in Ann Arbor, MI, not Finland.",
     "id": "c5039458",
     "source": "linkedin_ww_legal_trainee",
     "posted_date": "2026-06-04",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Compliance and Licensing Specialist",
@@ -46966,13 +46966,13 @@
     "url": "https://www.linkedin.com/jobs/view/compliance-and-licensing-specialist-at-bering-straits-native-corporation-bsnc-4432053614",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role requires specific Alaska Native Corporation experience which Manju does not have.",
+    "reason": "The job requires a Bachelor's degree in Business, Accounting, Legal Studies, or related field and at least 5 years of experience in legal, administrative, or professional services with responsibility for document preparation, recordkeeping, and deadline management. Manju does not meet these educational/experience requirements.",
     "id": "00deddcf",
     "source": "linkedin_ww_compliance",
     "posted_date": "2026-07-01",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Events Specialist",
@@ -46981,14 +46981,14 @@
     "url": "https://www.linkedin.com/jobs/view/events-specialist-at-3play-media-4427071848",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role requires experience with marketing and event platforms, including HubSpot and Zoom, which Manju does not have.",
+    "reason": "The job is located in the United States, which does not match Manju's Finland-only location criteria.",
     "id": "bb877fa8",
     "source": "linkedin_ww_event",
     "posted_date": "2026-06-02",
     "deadline": "Open until filled",
     "description_file": null,
     "tailor_model": "Local LLM",
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Executive Assistant",
@@ -46997,13 +46997,13 @@
     "url": "https://www.linkedin.com/jobs/view/executive-assistant-at-sca-health-4432061437",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The job is located in Arlington, VA, which does not match Manju's criteria of being in Finland.",
+    "reason": "The job is located in the United States, which does not match Manju's target criteria of being open to remote work anywhere in Finland.",
     "id": "27584bdd",
     "source": "linkedin_ww",
     "posted_date": "2023-07-01",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Junior Data Analys",
@@ -47012,13 +47012,13 @@
     "url": "https://www.linkedin.com/jobs/view/junior-data-analys-at-escola-t%C3%A9cnica-estadual-visconde-de-mau%C3%A1-4432063358",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role requires a Bachelor's degree in technical or related field, which is an advanced technical degree hard rejection.",
+    "reason": "The job is located in the United States, not Finland.",
     "id": "cb63f582",
     "source": "linkedin_ww",
     "posted_date": "2026-07-18",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Asistente de Reclutamiento y Selecci\u00f3n Free Lance",
@@ -47027,14 +47027,14 @@
     "url": "https://pe.linkedin.com/jobs/view/asistente-de-reclutamiento-y-selecci%C3%B3n-free-lance-at-sodexo-4432074328",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role requires residing in the northern zone of Peru (Huaraz, Barranca, Huarmey, Huacho), which does not match Manju's location in Oulu, Finland.",
+    "reason": "The role requires residing in the northern Peru region (Huaraz, Barranca, Huarmey, Huacho), which Manju does not meet.",
     "id": "396b2b54",
     "source": "linkedin_ww",
     "posted_date": "2023-06-01",
     "deadline": "Open until filled",
     "description_file": null,
     "tailor_model": "Local LLM",
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Trabaja desde Casa / Toma de Pedidos",
@@ -47043,13 +47043,13 @@
     "url": "https://pe.linkedin.com/jobs/view/trabaja-desde-casa-toma-de-pedidos-at-gea-per%C3%BA-4431694758",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The job is located in Lima, Peru, which does not match Manju's target criteria of being in Finland.",
+    "reason": "The job is located in Lima, Peru, which does not match the candidate's location of Oulu, Finland.",
     "id": "08d769c3",
     "source": "linkedin_ww",
     "posted_date": "2026-07-02",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Organizing Strategist",
@@ -47058,13 +47058,13 @@
     "url": "https://www.linkedin.com/jobs/view/organizing-strategist-at-murmuration-4432012861",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role requires a Bachelor's degree in Business Administration, Marketing, Communications, or related field which Manju does not have.",
+    "reason": "The job is located in the United States, not Finland.",
     "id": "19ef2930",
     "source": "linkedin_ww_communications",
     "posted_date": "2025-07-01",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Remote | Medical Administrative Support Consultant \u2014 $50\u2013$70/hour",
@@ -47073,13 +47073,13 @@
     "url": "https://www.linkedin.com/jobs/view/remote-medical-administrative-support-consultant-%E2%80%94-%2450%E2%80%93%2470-hour-at-24-mag-4430866307",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The job is a Senior-level Executive Staff Assistant position, which Manju does not have enough experience for.",
+    "reason": "The job is located in New York, NY, USA, which does not match the target criteria of Finland.",
     "id": "fc68dfbf",
     "source": "linkedin_ww_office_secretary",
     "posted_date": "2026-07-01",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Patient Scheduler (Remote)",
@@ -47088,13 +47088,13 @@
     "url": "https://www.linkedin.com/jobs/view/patient-scheduler-remote-at-pinnacle-method-consulting-4430870166",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The job is a Residence Hall Director position at a university, which does not match Manju's profile.",
+    "reason": "The job is located in the United States, which does not match Manju's target criteria of Finland.",
     "id": "25f93004",
     "source": "linkedin_ww",
     "posted_date": "2026-06-27",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Executive Assistant",
@@ -47103,13 +47103,13 @@
     "url": "https://www.linkedin.com/jobs/view/executive-assistant-at-home-health-focus-ai-4430854281",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The job is located in Arlington, VA, USA, which does not match Manju's Finnish location.",
+    "reason": "The job is located in the United States, which does not match Manju's location criteria of being open to Finland only.",
     "id": "3d99e96a",
     "source": "linkedin_ww",
     "posted_date": "2026-07-03",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Remote | Biology Research Expert \u2014 $65\u2013$95/hour",
@@ -47118,13 +47118,13 @@
     "url": "https://www.linkedin.com/jobs/view/remote-biology-research-expert-%E2%80%94-%2465%E2%80%93%2495-hour-at-24-mag-4430862326",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role requires a PhD in Biology, which is beyond Manju's current qualifications.",
+    "reason": "The role requires a specific technical degree (biology) as a hard requirement, which Manju does not have.",
     "id": "72671e9e",
     "source": "linkedin_ww",
     "posted_date": "N/A",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Kojeistoasentajia ja -testaajia The Switchille",
@@ -47133,13 +47133,13 @@
     "url": "https://www.jobly.fi/tyopaikka/kojeistoasentajia-ja-testaajia-switchille-2702788",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role is a metalworker position requiring specific vocational training, which Manju does not have.",
+    "reason": "The role requires specific vocational training (mechanic) and experience with electrical equipment, which Manju does not have.",
     "id": "d1fd2b5c",
     "source": "jobly_coordinator",
     "posted_date": "2026-06-30",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Administrative Assistant (AA3)",
@@ -47148,13 +47148,13 @@
     "url": "https://www.linkedin.com/jobs/view/administrative-assistant-aa3-at-orchestrate-consulting-group-4430869156",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role is a RN Provider Appeals Coordinator, which requires clinical nursing experience and an active Michigan RN license. Manju's background is in business and corporate law with no healthcare experience.",
+    "reason": "The job is located in the United States, which does not match Manju's criteria for Finland-only roles.",
     "id": "1f118c3b",
     "source": "linkedin_ww_office_secretary",
     "posted_date": "2026-06-12",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Administrative Assistant",
@@ -47163,13 +47163,13 @@
     "url": "https://www.linkedin.com/jobs/view/administrative-assistant-at-remoting-work-4430873229",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role is remote and based in a US time zone, which does not match the candidate's Finnish work permit status.",
+    "reason": "The job is located in Sub-Saharan Africa, not Finland.",
     "id": "abdf79aa",
     "source": "linkedin_ww",
     "posted_date": "2023-07-02",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "PRACTICANTE PRE-PROFESIONAL DE RECURSOS HUMANOS",
@@ -47178,13 +47178,13 @@
     "url": "https://pe.linkedin.com/jobs/view/practicante-pre-profesional-de-recursos-humanos-at-universia-per%C3%BA-4430842745",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "This is a practicum position for human resources, which requires specific vocational training and is not suitable for Manju's qualifications.",
+    "reason": "The role requires prior experience in a specific unrelated industry (Higher Education) as a mandatory qualification, which Manju does not have.",
     "id": "16bf3a90",
     "source": "linkedin_ww",
     "posted_date": "2026-06-27",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Environmental Advisor",
@@ -47193,13 +47193,13 @@
     "url": "https://fi.indeed.com/rc/clk?jk=88e0e828aece338f",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role is for a senior Environmental Advisor position, which Manju does not have enough experience for.",
+    "reason": "The role requires a specific technical degree (environmental science) as a hard requirement, which the candidate does not have.",
     "id": "a935e066",
     "source": "indeed",
     "posted_date": "N/A",
-    "deadline": "N/A",
+    "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Freelance Website Copywriter / Content Strategist",
@@ -47208,13 +47208,13 @@
     "url": "https://www.linkedin.com/jobs/view/freelance-website-copywriter-content-strategist-at-n4-studio%C2%AE-4432069876",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The job is located in Pennsylvania, USA, which does not match Manju's Finnish location.",
+    "reason": "The job is located in San Francisco, CA, USA, which does not match Finland.",
     "id": "13260a94",
     "source": "linkedin_ww",
     "posted_date": "2023-07-01",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Online Chat Support Representative",
@@ -47223,13 +47223,13 @@
     "url": "https://ca.linkedin.com/jobs/view/online-chat-support-representative-at-the-seed-school-of-maryland-4432087123",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The job requires a specific technical degree (architecture, science) as a hard requirement.",
+    "reason": "The job is located in Canada, not Finland.",
     "id": "249cc777",
     "source": "linkedin_ww",
     "posted_date": "N/A",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Customer Success Specialist",
@@ -47238,13 +47238,13 @@
     "url": "https://www.linkedin.com/jobs/view/customer-success-specialist-at-the-seed-school-of-maryland-4432078389",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The job is located in Maryland, USA which does not match Manju's Finnish location preference.",
+    "reason": "The job is located in the United States, which does not match Manju's Finland-only location criteria.",
     "id": "b2975b2f",
     "source": "linkedin_ww",
     "posted_date": "N/A",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Laitoshuoltaja",
@@ -47253,13 +47253,13 @@
     "url": "https://www.jobly.fi/tyopaikka/laitoshuoltaja-2698808",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role is for a laitoshuoltaja (ward attendant) at HUS hospital in Espoo, which requires specific healthcare training and experience. Manju's background is in law.",
+    "reason": "The role requires specific cleaning experience and is a gig work role at an event, not office-based event coordination.",
     "id": "2a092bca",
     "source": "jobly",
     "posted_date": "2026-07-01",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Mekaaninen asentaja W\u00e4rtsil\u00e4\u00e4n",
@@ -47268,13 +47268,13 @@
     "url": "https://www.jobly.fi/tyopaikka/mekaaninen-asentaja-wartsilaan-2702786",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role is for a mechanical assembler at W\u00e4rtsil\u00e4's Vaasa factory, requiring specific vocational training in mechanical assembly. This does not match Manju's profile.",
+    "reason": "The role requires mechanical assembly and is a trade position, which does not match the candidate's background in law.",
     "id": "2f3763b2",
     "source": "jobly",
-    "posted_date": "N/A",
+    "posted_date": "2026-07-07",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Kokoonpanijoita Danfossille",
@@ -47283,13 +47283,13 @@
     "url": "https://www.jobly.fi/tyopaikka/kokoonpanijoita-danfossille-2702789",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "This role is for assembly work on frequency converters, which does not match Manju's office/service background.",
+    "reason": "The role is for a mechanical assembler, requiring specific trade/vocational training in carpentry and metalwork/fabrication. Manju does not have this background; she has law degrees and event coordination experience.",
     "id": "7b5d0757",
     "source": "jobly",
     "posted_date": "2026-07-07",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Field Operations Coordinator",
@@ -47298,13 +47298,13 @@
     "url": "https://www.linkedin.com/jobs/view/field-operations-coordinator-at-rcx-sports-4430110640",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The job is located in Roswell, GA, which does not match Manju's requirement for jobs in Oulu Region, Finland.",
+    "reason": "The job is located in Roswell, GA, USA, which does not match Finland.",
     "id": "6affbacf",
     "source": "linkedin_ww_event",
     "posted_date": "2023-06-01",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "HR Assistant (m/f/x)",
@@ -47313,14 +47313,14 @@
     "url": "https://fi.linkedin.com/jobs/view/hr-assistant-m-f-x-at-skeleton-technologies-4413470888",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires HR Studies, which Manju does not have.",
+    "reason": "The role requires Finnish citizenship as a prerequisite, which Manju does not have.",
     "id": "a1c30f1a",
     "source": "linkedin_fi_coordinator",
     "posted_date": "2026-06-10",
     "deadline": "Open until filled",
     "description_file": null,
     "tailor_model": "Local LLM",
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "People & Culture Business Partner",
@@ -47329,13 +47329,13 @@
     "url": "https://www.linkedin.com/jobs/view/people-culture-business-partner-at-stio%C2%AE-4432095299",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role requires a Master's degree in Human Resources, which Manju does not have.",
+    "reason": "The job is located in the United States, which does not match Manju's Finland-only location criteria.",
     "id": "39c39006",
     "source": "linkedin_ww",
     "posted_date": "N/A",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Remote | Public Health Communications Evaluation Consultant \u2014 $70\u2013$110/hour",
@@ -47344,13 +47344,13 @@
     "url": "https://www.linkedin.com/jobs/view/remote-public-health-communications-evaluation-consultant-%E2%80%94-%2470%E2%80%93%24110-hour-at-24-mag-4430858360",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The job is located in New York, NY, USA, which does not match Manju's target criteria of being in Finland.",
+    "reason": "The role requires a specialized technical degree (IT, engineering) as hard requirement, which the candidate does not have.",
     "id": "319048a3",
     "source": "linkedin_ww",
     "posted_date": "N/A",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "S\u00e4hk\u00f6asentajia, Tievalaistus ja Telematiikka, PK-seutu",
@@ -47359,13 +47359,13 @@
     "url": "https://www.jobly.fi/tyopaikka/sahkoasentajia-tievalaistus-ja-telematiikka-pk-seutu-2693945",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role requires specific electrical and infrastructure maintenance skills, not applicable to Manju's legal background.",
+    "reason": "The role requires specific technical electrical work experience, not generalist office/event coordination.",
     "id": "49d0cb2f",
     "source": "jobly",
     "posted_date": "2026-06-30",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "People & Culture Business Partner",
@@ -47374,13 +47374,13 @@
     "url": "https://www.linkedin.com/jobs/view/people-culture-business-partner-at-stio%C2%AE-4432083477",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role is a Senior People & Culture Business Partner, which requires more experience than Manju currently has.",
+    "reason": "The job is located in Denver, CO, USA, which does not match the candidate's location preference for Finland.",
     "id": "8754cd45",
     "source": "linkedin_ww_communications",
     "posted_date": "2026-07-01",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Hankety\u00f6ntekij\u00e4, Tulevaisuuden Ty\u00f6kioski-hanke",
@@ -47388,15 +47388,15 @@
     "location": "Helsinki Region, Finland",
     "url": "https://fi.indeed.com/rc/clk?jk=bf515fd1feef2722",
     "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "The job is for a Hankety\u00f6ntekij\u00e4 (Hiring Coordinator) role which requires at least a bachelor's degree in business, administration, law, social sciences or equivalent. Manju does not have this specific degree requirement.",
+    "matches_requirements": "yes",
+    "reason": "Generalist office role with no seniority, technical degree, or location restrictions that disqualify Manju based on her profile.",
     "id": "7ba5c0b7",
     "source": "indeed_communications",
     "posted_date": "N/A",
     "deadline": "Open until filled",
-    "description_file": null,
+    "description_file": "job_descriptions/vantaan_kaupunki_hankety_ntekij___tulevaisuuden_7ba5c0b7.txt",
     "tailor_model": "Local LLM",
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Osastonhoitaja, perusterveydenhuollon osasto 3, Rovaniemi",
@@ -47405,13 +47405,13 @@
     "url": "https://fi.indeed.com/rc/clk?jk=4280dbb8b0fc1700",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role requires specific healthcare training for a medical support position, which Manju does not have.",
+    "reason": "The role requires a specific vocational degree (hospital/institutional cleaning and support) as hard requirement, which Manju does not have.",
     "id": "544b9373",
     "source": "indeed_communications",
     "posted_date": "N/A",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Kunnossapitoasentaja",
@@ -47420,13 +47420,13 @@
     "url": "https://fi.indeed.com/rc/clk?jk=654d1a08ebab77be",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role is a maintenance technician position, which requires specific vocational training in electrical and mechanical systems. Manju does not have this background.",
+    "reason": "The role requires specific trade/vocational training (electrician) as a hard requirement, which Manju does not have.",
     "id": "22e3dfc3",
     "source": "indeed_communications",
     "posted_date": "N/A",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Helsinki Cabin Crew Opportunities (Dubai Based, Relocation Provided)",
@@ -47435,13 +47435,13 @@
     "url": "https://fi.linkedin.com/jobs/view/helsinki-cabin-crew-opportunities-dubai-based-relocation-provided-at-emirates-4429468006",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role is for cabin crew based in Helsinki, but working for Dubai-based Emirates. This does not match the criteria of seeking employment in Finland.",
+    "reason": "The role requires being based in Dubai, not Finland.",
     "id": "76eeeac4",
     "source": "linkedin_fin",
     "posted_date": "2026-06-27",
-    "deadline": "N/A",
+    "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Freelance Website Copywriter / Content Strategist",
@@ -47450,13 +47450,13 @@
     "url": "https://au.linkedin.com/jobs/view/freelance-website-copywriter-content-strategist-at-n4-studio%C2%AE-4432062956",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role is a Senior Copywriter position, which requires strong writing and commercial sense for creating content that ranks and converts. Manju's skills are more generalist office/service/legal roles.",
+    "reason": "The job is located in Sydney, Australia, which does not match Manju's target Finland location.",
     "id": "34913b23",
     "source": "linkedin_ww",
     "posted_date": "2026-06-27",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Harjoittelija (HR, ty\u00f6hyvinvointi)",
@@ -47464,14 +47464,14 @@
     "location": "Helsinki Region, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/ddcf0f33-09df-4c92-8ddb-5ce86878c73c/fi",
     "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "The role requires specific HR expertise, which Manju does not have.",
+    "matches_requirements": "yes",
+    "reason": "The role is a generalist office/administration position that fits Manju's IHO event coordination and Poise Legal contract management experience.",
     "id": "32eb5705",
     "source": "tyomarkkinatori",
     "posted_date": "2026-06-23",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": "job_descriptions/h_t_keskuslaitos_harjoittelija__hr__ty_hyvinvoi_32eb5705.txt",
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Myyj\u00e4 (30h/vko) K-Supermarket Linkki, Yl\u00f6j\u00e4rvi",
@@ -47480,13 +47480,13 @@
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/deb33828-82e1-40bf-9548-6c3bfc2280ea/fi",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role is a full-time supermarket sales position, which does not match Manju's legal background and experience.",
+    "reason": "The role requires prior experience in retail sales at a supermarket, which Manju does not have.",
     "id": "2e8ee05d",
     "source": "tyomarkkinatori",
     "posted_date": "2026-06-23",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Due Diligence Analyst",
@@ -47495,13 +47495,13 @@
     "url": "https://www.linkedin.com/jobs/view/due-diligence-analyst-at-alpaca-4432086368",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role is a Senior position, which Manju does not have enough experience for.",
+    "reason": "The job is located in New York, NY, USA, which does not match Manju's target criteria of Finland.",
     "id": "f4daedce",
     "source": "linkedin_ww_compliance",
     "posted_date": "2026-07-02",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Administrative Assistant",
@@ -47510,13 +47510,13 @@
     "url": "https://www.linkedin.com/jobs/view/administrative-assistant-at-more-recruits-4429435955",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The job is located in Lansing, MI which does not match Manju's criteria of being in Finland.",
+    "reason": "The job is located in the United States, which does not match Manju's target criteria of anywhere in Finland.",
     "id": "3dff8ec1",
     "source": "linkedin_ww_office_secretary",
     "posted_date": "2026-07-02",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Auxiliar de Beneficios (perfil junior) para AFP",
@@ -47525,13 +47525,13 @@
     "url": "https://do.linkedin.com/jobs/view/auxiliar-de-beneficios-perfil-junior-para-afp-at-tu-empleo-rd-4432068986",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role requires specific accounting expertise, which Manju does not have.",
+    "reason": "The role requires specific accounting expertise (estudiante universitario de Administraci\u00f3n de Empresas o Contabilidad) as a hard requirement, which does not match Manju's background.",
     "id": "5165a629",
     "source": "linkedin_ww",
     "posted_date": "2026-07-02",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Executive Assistant",
@@ -47540,13 +47540,13 @@
     "url": "https://www.linkedin.com/jobs/view/executive-assistant-at-ai-engineer-4432084724",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The job is located in Lebanon, NH, USA, which does not match Manju's Finnish location criteria.",
+    "reason": "The job is located in the United States, which does not match Manju's target criteria of being open to remote work anywhere in Finland.",
     "id": "6636c2a1",
     "source": "linkedin_ww",
     "posted_date": "2026-06-27",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Myyj\u00e4, Nilsi\u00e4 Nilsi\u00e4ntie 73",
@@ -47555,13 +47555,13 @@
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/da30ad1a-3b1e-4c5c-84f1-929c376af1ff/fi",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role is a retail sales position at an R-kiosk, which does not match the candidate's legal and office service background.",
+    "reason": "The job requires a valid Hygieniapassi (Hygiene pass) as an eligibility prerequisite, which Manju does not have.",
     "id": "42b71e8e",
     "source": "tyomarkkinatori",
     "posted_date": "2023-06-23",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Yhdistelm\u00e4ajoneuvonkuljettaja, Oulu",
@@ -47570,13 +47570,13 @@
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/b0d81bea-2df6-4ce9-b865-e5f0f074dd6d/fi",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role is for a B-link and full truck driver, which requires specific technical driving qualifications that Manju does not have.",
+    "reason": "The role requires a CE-ajokortti (C category driving license) and Finnish C1 language level for safety communication, which Manju does not meet.",
     "id": "8067baf4",
     "source": "tyomarkkinatori",
     "posted_date": "2026-06-23",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Car Mechanic / Vehicle Service Technician",
@@ -47591,7 +47591,7 @@
     "posted_date": "2026-06-23",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Oikeustulkki (burma)",
@@ -47600,13 +47600,13 @@
     "url": "https://www.jobly.fi/tyopaikka/oikeustulkki-burma-2702806",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role is specifically for a Burmese language legal interpreter, which Manju does not have experience with.",
+    "reason": "The role requires fluency in Burmese as a hard requirement, which Manju does not have.",
     "id": "b1caab0c",
     "source": "jobly",
     "posted_date": "2023-06-23",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Accountant, Vantaa",
@@ -47615,13 +47615,13 @@
     "url": "https://www.jobly.fi/tyopaikka/accountant-vantaa-2698817",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires specific accounting knowledge and experience, which Manju does not have yet.",
+    "reason": "The role requires a specific accounting degree (educational background in accounting) as hard requirement, which Manju does not have.",
     "id": "830b0eca",
     "source": "jobly",
     "posted_date": "2026-06-26",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Testausinsin\u00f6\u00f6ri (diplomity\u00f6), T-Drill Oy, Laihia",
@@ -47630,13 +47630,13 @@
     "url": "https://www.jobly.fi/tyopaikka/testausinsinoori-diplomityo-t-drill-oy-laihia-2698818",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires specific technical degree (mechanical engineering) as hard requirement.",
+    "reason": "The role is a test engineering position requiring specific technical skills (test design, validation, and reporting for pipe connection products) which Manju does not have. It's not an office/administrative/event coordination role.",
     "id": "cb62b019",
     "source": "jobly",
     "posted_date": "2026-07-01",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Attorney",
@@ -47645,13 +47645,13 @@
     "url": "https://www.linkedin.com/jobs/view/attorney-at-burnett-specialists-staffing-recruiting-4417953867",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The job is located in McAllen, TX, which does not match Manju's criteria for Finland-based roles.",
+    "reason": "The job is located in McAllen, TX, which is in the United States, not Finland.",
     "id": "d905baa5",
     "source": "linkedin_ww_lawyer",
     "posted_date": "2026-07-01",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "SUPERVISING SECURITIES EXAMINER - DOWNTOWN, OAHU",
@@ -47660,13 +47660,13 @@
     "url": "https://www.linkedin.com/jobs/view/supervising-securities-examiner-downtown-oahu-at-state-of-hawai%CA%BBi-4421564099",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires a bachelor's degree in accounting and/or auditing, which Manju does not have.",
+    "reason": "Requires a bachelor's degree with specific accounting/auditing credits, and 3.5 years of progressively responsible business analysis, management, or auditing experience in securities laws/regulations \u00e2\u20ac\u201d Manju has an LL.M. but no relevant accounting/finance degree or 3.5 years of qualifying experience.",
     "id": "bd61e454",
     "source": "linkedin_ww_compliance",
     "posted_date": "2026-06-04",
-    "deadline": "N/A",
+    "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Tapahtumatuottaja Inderes Femme",
@@ -47674,14 +47674,14 @@
     "location": "Helsinki Region, Finland",
     "url": "https://fi.linkedin.com/jobs/view/tapahtumatuottaja-inderes-femme-at-inderes-4429458168",
     "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "The role requires fluency in Finnish, which Manju does not have at a C1 level.",
+    "matches_requirements": "maybe",
+    "reason": "The role is a generalist office position coordinating events and community building, which fits Manju's IHO event coordination experience. However, it requires ~15-22.5 hours/week on top of other work or studies, so the time commitment is borderline for her current situation.",
     "id": "a9584ed4",
     "source": "linkedin_fi_event_coordinator",
     "posted_date": "2026-06-18",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": "job_descriptions/inderes_tapahtumatuottaja_inderes_femm_a9584ed4.txt",
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Conference and Events Planner II",
@@ -47690,14 +47690,14 @@
     "url": "https://www.linkedin.com/jobs/view/conference-and-events-planner-ii-at-university-of-arizona-4425580463",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role requires a Bachelor's degree, which is more senior than Manju's current qualifications.",
+    "reason": "The job is located in Tucson, AZ, USA, which does not match Finland.",
     "id": "dd980b73",
     "source": "linkedin_ww_event_coordinator",
     "posted_date": "2026-05-24",
     "deadline": "Open until filled",
     "description_file": null,
     "tailor_model": "Local LLM",
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Event Coordinator",
@@ -47705,14 +47705,14 @@
     "location": "New York City Metropolitan Area",
     "url": "https://www.linkedin.com/jobs/view/event-coordinator-at-hampton-4429720045",
     "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "The job is located in Portland, Oregon, not Finland.",
+    "matches_requirements": "maybe",
+    "reason": "The job title matches a generalist office role, but it's located in New York City which is not Manju's target location.",
     "id": "96825247",
     "source": "linkedin_ww_event_coordinator",
     "posted_date": "2026-06-20",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": "job_descriptions/hampton_event_coordinator_96825247.txt",
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Event Coordinator",
@@ -47720,14 +47720,14 @@
     "location": "Lake Oswego, OR",
     "url": "https://www.linkedin.com/jobs/view/event-coordinator-at-hoffman-construction-company-4418528594",
     "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "The job is located in Lake Oswego, Oregon, which does not match Manju's Finnish location criteria.",
+    "matches_requirements": "maybe",
+    "reason": "The role is a strong match for Manju's event coordination experience, but requires English fluency as a hard requirement. Her Finnish B2 level does not satisfy this.",
     "id": "77bd4a25",
     "source": "linkedin_ww_event_coordinator",
     "posted_date": "2026-06-04",
     "deadline": "Open until filled",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": "job_descriptions/hoffman_construction_event_coordinator_77bd4a25.txt",
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Events Specialist",
@@ -47736,13 +47736,13 @@
     "url": "https://www.linkedin.com/jobs/view/events-specialist-at-marriott-international-4432043629",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The job is located in Lahaina, HI which does not match Manju's criteria for Finland-based roles.",
+    "reason": "The job is located in Lahaina, HI, which is a specific non-Finland location.",
     "id": "c1fb8c99",
     "source": "linkedin_ww_event_coordinator",
     "posted_date": "2023-06-27",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Myyntihenkinen Some-velho Kuntosalille",
@@ -47751,13 +47751,13 @@
     "url": "https://www.jobly.fi/tyopaikka/myyntihenkinen-some-velho-kuntosalille-2702819",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role is a sales and social media position for a gym, which does not match legal roles.",
+    "reason": "The role is an outbound telesales position for a gym, requiring active selling and some Finnish language ability \u00e2\u20ac\u201d this is sales work, not office/administrative event coordination.",
     "id": "b6a3e3e9",
     "source": "jobly_communications",
     "posted_date": "2026-06-30",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Canva Design Specialist \u2013 Real Estate (US-Based)",
@@ -47766,13 +47766,13 @@
     "url": "https://www.linkedin.com/jobs/view/canva-design-specialist-%E2%80%93-real-estate-us-based-at-stratifyiq-4432201373",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role is a specialized Canva design position for real estate, which does not match Manju's legal background and skills.",
+    "reason": "The job is based in the United States, not Finland.",
     "id": "211ca14d",
     "source": "linkedin_ww",
     "posted_date": "2026-07-01",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Aulapalveluvastaava",
@@ -47798,13 +47798,13 @@
     "url": "https://www.jobly.fi/tyopaikka/kirvesmiehia-2660094",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires specific carpentry skills (puurakenne timpuri) and physical labor, not an office role.",
+    "reason": "The role is for a skilled trade (muotti) position, not an office/administration role.",
     "id": "d06137e7",
     "source": "jobly",
     "posted_date": "2026-06-27",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Kaivinkonekuljettajia Vantaalle",
@@ -47813,13 +47813,13 @@
     "url": "https://www.jobly.fi/tyopaikka/kaivinkonekuljettajia-2661700",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "This is a construction role requiring specific vocational training for heavy equipment operation, which Manju does not have.",
+    "reason": "The role requires over five years of experience as a concrete pump operator, which Manju does not have.",
     "id": "12805297",
     "source": "jobly",
     "posted_date": "2026-06-25",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Maarakentaja Porvooseen",
@@ -47828,13 +47828,13 @@
     "url": "https://www.jobly.fi/tyopaikka/maarakentaja-porvooseen-2662581",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires specific construction expertise (kaivinkone per\u00e4mies) and is located in Porvoo, which falls under Helsinki Region.",
+    "reason": "The role requires specific construction trade experience (kaivinkone per\u00e4mies) and is located in Porvoo, Helsinki Region. Manju's background is in law and event coordination, not construction.",
     "id": "fe3b31ce",
     "source": "jobly",
     "posted_date": "2026-06-29",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Kaivinkoneenkuljettaja Lahteen",
@@ -47843,13 +47843,13 @@
     "url": "https://www.jobly.fi/tyopaikka/kaivinkoneenkuljettaja-lahteen-2667946",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires specific vocational training for heavy equipment operation, which Manju does not have.",
+    "reason": "The role requires a specific vocational construction degree (rakennusmestari) as hard requirement, which Manju does not have. This is manual-labour trade work, not an office/administrative job.",
     "id": "4a43ff5d",
     "source": "jobly",
     "posted_date": "2026-06-25",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Maarakentaja Tuusulaan",
@@ -47858,13 +47858,13 @@
     "url": "https://www.jobly.fi/tyopaikka/maarakentaja-tuusulaan-2667636",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires specific construction expertise (over 3 years experience) and technical training, not a generalist office role.",
+    "reason": "The role requires specific trade/vocational training (maarakentaja) as a hard requirement, which Manju does not have.",
     "id": "ea573344",
     "source": "jobly",
     "posted_date": "2026-06-25",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Hitsaustaitoinen maarakentaja Yl\u00f6j\u00e4rvelle",
@@ -47873,13 +47873,13 @@
     "url": "https://www.jobly.fi/tyopaikka/hitsaustaitoinen-maarakentaja-ylojarvelle-2672058",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role is for a construction worker, requiring specific vocational training in road construction.",
+    "reason": "The role requires specific construction experience (muovihitsaus) that Manju does not have.",
     "id": "2f28d4c3",
     "source": "jobly",
     "posted_date": "2026-06-25",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Kylm\u00e4asentaja Uudellemaalle",
@@ -47888,13 +47888,13 @@
     "url": "https://www.jobly.fi/tyopaikka/kylmaasentaja-uudellemaalle-2677044",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "This HVAC technician role requires specific technical training, which is a hard rejection based on Manju's profile.",
+    "reason": "The role is a manual-labor gig work (kylm\u00e4asentaja) requiring hands-on physical installation and maintenance of refrigeration equipment, not an office-based generalist event/coordination position. Manju's IHO experience organizing community events does not qualify for this specific trade-skills role.",
     "id": "852d1064",
     "source": "jobly",
     "posted_date": "2026-06-25",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Raudoittaja Turun seudulle",
@@ -47903,13 +47903,13 @@
     "url": "https://www.jobly.fi/tyopaikka/betoniraudoittaja-turun-seudulle-2694106",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role is for a construction site reinforcing ironworker, which requires specific vocational training and experience Manju does not have.",
+    "reason": "The role requires specific vocational training as a carpenter and concrete work experience, which Manju does not have.",
     "id": "82150b4a",
     "source": "jobly",
     "posted_date": "2026-06-25",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Kaivinkonekuski Lohjalle / Siuntioon",
@@ -47918,13 +47918,13 @@
     "url": "https://www.jobly.fi/tyopaikka/kaivinkonekuski-lohjalle-siuntioon-2694484",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires specific vocational training for heavy equipment operation, which is a hard rejection based on the job requirements.",
+    "reason": "The role requires specific trade/vocational training as a hard requirement, which Manju does not have.",
     "id": "9fce0e1d",
     "source": "jobly",
     "posted_date": "2026-06-25",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Ty\u00f6maainsin\u00f6\u00f6ri m\u00e4\u00e4r\u00e4aikaiseen teht\u00e4v\u00e4\u00e4n",
@@ -47933,13 +47933,13 @@
     "url": "https://www.jobly.fi/tyopaikka/tyomaainsinoori-maaraaikaiseen-tehtavaan-2694876",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role is for a construction site engineer, which requires specific vocational training and is not an office/service role.",
+    "reason": "The role is a construction field engineer position requiring specific vocational training and experience, not an office/administrative job.",
     "id": "52726d03",
     "source": "jobly",
     "posted_date": "2026-06-25",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Maarakentaja M\u00e4nts\u00e4l\u00e4n ja Pukkilan ty\u00f6maille",
@@ -47948,13 +47948,13 @@
     "url": "https://www.jobly.fi/tyopaikka/maarakentaja-mantsalan-ja-pukkilan-tyomaille-2698165",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires specific construction experience and Finnish residency, does not match Manju's profile.",
+    "reason": "The role is a construction field worker position requiring hands-on physical labor with heavy equipment, not an office-based generalist job.",
     "id": "e1a1e872",
     "source": "jobly",
     "posted_date": "2026-06-29",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Employee Relations Specialist",
@@ -47963,13 +47963,13 @@
     "url": "https://www.linkedin.com/jobs/view/employee-relations-specialist-at-one-inc-4429433616",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role requires significant experience handling a wide range of workplace investigations and employee relations challenges, which Manju does not have yet.",
+    "reason": "The job is located in the United States, not Finland.",
     "id": "943e8b43",
     "source": "linkedin_ww_compliance",
     "posted_date": "2026-07-02",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Destination Wedding Specialist (Virtual)",
@@ -47978,13 +47978,13 @@
     "url": "https://www.linkedin.com/jobs/view/destination-wedding-specialist-virtual-at-destination-careers-4429454230",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The job is a Director of Operations role for Ascend Wellness Holdings, which requires specific technical degrees (architecture, science) as a hard requirement.",
+    "reason": "The job is located in Texas, United States, which does not match Manju's criteria of being open to relocating anywhere within Finland.",
     "id": "02d8be09",
     "source": "linkedin_ww_event_coordinator",
     "posted_date": "2026-07-02",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "MEX Cajero Dual",
@@ -47993,13 +47993,13 @@
     "url": "https://mx.linkedin.com/jobs/view/mex-cajero-dual-at-universia-m%C3%A9xico-4430889353",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role is a banking cashier position requiring cash handling and client service, which does not match Manju's profile.",
+    "reason": "The role requires fluency in Spanish, which Manju does not have.",
     "id": "85930e9a",
     "source": "linkedin_ww",
     "posted_date": "2026-07-01",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "CREATIVE PRODUCER, FREELANCE",
@@ -48008,13 +48008,13 @@
     "url": "https://fr.linkedin.com/jobs/view/creative-producer-freelance-at-fred-farid-4431766419",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role is a 'Directeur de production' which translates to Production Director, well above Manju's experience level.",
+    "reason": "The role requires a specific technical degree (engineering) as a hard requirement.",
     "id": "492b4416",
     "source": "linkedin_ww",
     "posted_date": "2026-07-01",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Freelance Website Copywriter / Content Strategist",
@@ -48023,13 +48023,13 @@
     "url": "https://nz.linkedin.com/jobs/view/freelance-website-copywriter-content-strategist-at-n4-studio%C2%AE-4432078158",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role is a freelance position, specifically for a Freelance Website Copywriter / Content Strategist.",
+    "reason": "The role requires specific experience with Webflow design, development and growth which Manju does not have.",
     "id": "ce87dd33",
     "source": "linkedin_ww",
     "posted_date": "2026-07-01",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Executive Assistant",
@@ -48038,13 +48038,13 @@
     "url": "https://pt.linkedin.com/jobs/view/executive-assistant-at-kraymer-art-4431782904",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The job is located in Portugal, which does not match Manju's target of Finland.",
+    "reason": "The job is located in Portugal, not Finland.",
     "id": "0d695b03",
     "source": "linkedin_ww",
     "posted_date": "2026-07-01",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "C-kortillisia monitoimitekij\u00f6it\u00e4",
@@ -48053,13 +48053,13 @@
     "url": "https://www.jobly.fi/tyopaikka/c-kortillisia-monitoimitekijoita-2702915",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role requires a C-licence and work is mostly physical, making it unsuitable for an office/service role.",
+    "reason": "The role requires a C-ajokortti and ty\u00f6turvallisuuskortti, indicating manual labor rather than office work.",
     "id": "21c361aa",
     "source": "jobly",
     "posted_date": "2026-06-30",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Business Controller",
@@ -48068,13 +48068,13 @@
     "url": "https://www.jobly.fi/tyopaikka/business-controller-2698876",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Requires a degree in Finance or Business Administration, which is a hard rejection based on Manju's LL.M. and LL.B.",
+    "reason": "Requires a degree in Finance or Business Administration, which Manju does not have.",
     "id": "5229350f",
     "source": "jobly",
     "posted_date": "2026-06-30",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Mekaanisia asentajia Heinolaan",
@@ -48083,13 +48083,13 @@
     "url": "https://www.jobly.fi/tyopaikka/mekaanisia-asentajia-heinolaan-2671311",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The job requires specific technical skills (mechanical assembly, welding) and experience that Manju does not have.",
+    "reason": "Requires specific mechanical assembly experience, Finnish language fluency, and safety certifications that Manju does not have.",
     "id": "4633f385",
     "source": "jobly",
     "posted_date": "2026-06-30",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Rakennussiivooja, Turku",
@@ -48098,13 +48098,13 @@
     "url": "https://www.jobly.fi/tyopaikka/rakennussiivooja-turku-2698868",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role is a construction cleaner, requiring specific vocational training that Manju does not have.",
+    "reason": "The role is an in-store retail sales position at a shop, supermarket, or kiosk (e.g. S-ryhm\u00e4/SOK co-op stores like Sale, Prisma, S-market, K-ryhm\u00e4 stores). This is floor/counter retail work, not office/administrative work, even when the scraper frames it as 'generalist office/service work.'",
     "id": "d4195652",
     "source": "jobly",
     "posted_date": "2026-06-23",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Avustava kattoty\u00f6ntekij\u00e4, Turku",
@@ -48113,13 +48113,13 @@
     "url": "https://www.jobly.fi/tyopaikka/avustava-kattotyontekija-turku-2698869",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role is for a general construction assistant, which does not match Manju's legal background and experience.",
+    "reason": "The role is an on-site construction assistant position requiring only a basic education, not an office/administrative job.",
     "id": "0e21f5b7",
     "source": "jobly",
     "posted_date": "2026-06-28",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Simulaattori-insin\u00f6\u00f6ri, koulutussimulaattorit (OTS)",
@@ -48128,13 +48128,13 @@
     "url": "https://www.jobly.fi/tyopaikka/simulaattori-insinoori-koulutussimulaattorit-ots-2694017",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role is for a Simulation Engineer focused on training simulators, which requires specific technical degrees in chemistry or process engineering. Manju does not have this background.",
+    "reason": "Requires specific chemical engineering or process technology education as hard requirement, which Manju does not have.",
     "id": "28c7c438",
     "source": "jobly",
     "posted_date": "2026-06-30",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Remote | Compliance & Risk Expert \u2014 $75\u2013$105/hour",
@@ -48143,13 +48143,13 @@
     "url": "https://www.linkedin.com/jobs/view/remote-compliance-risk-expert-%E2%80%94-%2475%E2%80%93%24105-hour-at-24-mag-4430852459",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role requires a specialized accounting expertise which is a hard rejection based on the job requirements.",
+    "reason": "The role requires specialized accounting expertise, which Manju does not have.",
     "id": "613a0e2d",
     "source": "linkedin_ww_compliance",
     "posted_date": "N/A",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Laatuinsin\u00f6\u00f6ri",
@@ -48158,13 +48158,13 @@
     "url": "https://www.jobly.fi/tyopaikka/laatuinsinoori-2702912",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role is a technical engineering position requiring specific manufacturing and quality control expertise, which Manju does not have.",
+    "reason": "The role requires a specific technical degree (engineering) as hard requirement, which Manju does not have.",
     "id": "68bc62c4",
     "source": "jobly_coordinator",
-    "posted_date": "N/A",
+    "posted_date": "2026-07-13",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Rakennustarkastaja",
@@ -48179,7 +48179,7 @@
     "posted_date": "2026-06-18",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "VARHAISKASVATUKSEN SIJAISUUDET VUONNA 2026 INARIN KUNNASSA",
@@ -48188,13 +48188,13 @@
     "url": "https://fi.indeed.com/rc/clk?jk=8cdd9cf50cd685ef",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role is for early childhood education, specifically daycare (varhaiskasvatus), which requires specific Finnish pedagogical degrees and qualifications. Manju's background does not meet this requirement.",
+    "reason": "This is a specific early childhood education role requiring Finnish pedagogical degrees, not a generalist office position.",
     "id": "07af7bd8",
     "source": "indeed_office_secretary",
     "posted_date": "2026-06-12",
     "deadline": "2026-08-31",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Lyhytaikaiset koulunk\u00e4ynninohjaajan sijaisuudet",
@@ -48203,13 +48203,13 @@
     "url": "https://fi.indeed.com/rc/clk?jk=acab58f387d74c6d",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The job is for a temporary school substitute teacher role, which requires specific education and training in Finland's school system that Manju does not have.",
+    "reason": "The role is for a school teaching assistant (koulunk\u00e4ynninohjaaja) directly supporting classroom lessons with children, which requires specific Finnish pedagogical degrees and qualifications that Manju does not yet hold. This is hands-on direct classroom support work, not office/administrative event coordination.",
     "id": "87382997",
     "source": "indeed_office_secretary",
     "posted_date": "2026-01-07",
     "deadline": "2027-12-31",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Technical Support Analyst",
@@ -48218,13 +48218,13 @@
     "url": "https://www.linkedin.com/jobs/view/technical-support-analyst-at-laguna-health-4430887261",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The job requires an MSc or PhD in technical areas (e.g. electrical, telecommunications, IT, engineering) \u00e2\u20ac\u201d unless the posting explicitly says the degree requirement can be waived with experience.",
+    "reason": "The job is located in Niagara Falls, NY, which is in the United States, not Finland.",
     "id": "ab4d30d1",
     "source": "linkedin_ww",
     "posted_date": "2026-06-27",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Puhtauden tekij\u00e4 vakituiseen ty\u00f6suhteeseen",
@@ -48233,13 +48233,13 @@
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/12a23947-5f99-4177-8a37-ec2727dc2406/fi",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "This is a cleaning assistant role, which requires specific vocational training and does not match Manju's background.",
+    "reason": "The role is an entry-level cleaning gig, not a generalist office/service position Manju's law degree and IHO event coordination experience would otherwise support.",
     "id": "3dac3510",
     "source": "tyomarkkinatori",
     "posted_date": "2026-06-23",
     "deadline": "2026-08-30",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Kokki, Lapland Hotels Saaga, Yll\u00e4s",
@@ -48248,13 +48248,13 @@
     "url": "https://www.jobly.fi/tyopaikka/kokki-lapland-hotels-saaga-yllas-2685837",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role is a trade position requiring specific culinary training and experience.",
+    "reason": "The role is for a cook at a ski resort hotel, which requires manual labor and culinary skills rather than general office work.",
     "id": "3b7efd2e",
     "source": "jobly",
     "posted_date": "2026-06-23",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Ravintolaty\u00f6ntekij\u00e4 tai kokki, Kuopion Vankila, Leijona Catering",
@@ -48263,13 +48263,13 @@
     "url": "https://www.jobly.fi/tyopaikka/ravintolatyontekija-tai-kokki-kuopion-vankila-leijona-catering-2688330",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role is for a cook/chef working in a prison kitchen, which does not match generalist office/service roles.",
+    "reason": "The role requires specific culinary training and experience, which Manju does not have.",
     "id": "50ce0e95",
     "source": "jobly",
     "posted_date": "2026-07-01",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Ravintolaty\u00f6ntekij\u00e4, Leijona Catering, Kajaani",
@@ -48278,13 +48278,13 @@
     "url": "https://www.jobly.fi/tyopaikka/ravintolatyontekija-leijona-catering-kajaani-2686717",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "This is a catering role, not an office/service position.",
+    "reason": "The role is an in-store retail sales position (myyj\u00e4, kassa/cashier) at a shop, supermarket, or kiosk \u00e2\u20ac\u201d floor/counter retail work, not office/administrative event coordination.",
     "id": "8d47cbf5",
     "source": "jobly",
     "posted_date": "2026-07-01",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Astiahuoltaja, Rinneravintola Y1, Yll\u00e4s",
@@ -48293,13 +48293,13 @@
     "url": "https://www.jobly.fi/tyopaikka/astiahuoltaja-rinneravintola-y1-yllas-2685812",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role is a seasonal dishwashing position at a specific Lapland Hotels restaurant, which does not match Manju's legal background and experience.",
+    "reason": "The role is for a physical restaurant dishwashing assistant, not an office-based administrative position.",
     "id": "44533064",
     "source": "jobly",
     "posted_date": "2023-06-23",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Suurtalouskokki, Leijona Catering, Kajaani",
@@ -48308,13 +48308,13 @@
     "url": "https://www.jobly.fi/tyopaikka/suurtalouskokki-leijona-catering-kajaani-2685462",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "This is a catering role for military base food service, not an office/administration position.",
+    "reason": "The role is a large-scale cooking position for military and defense personnel, requiring prior experience in similar roles. Manju's background is in law and event coordination, not culinary work.",
     "id": "a0f1250f",
     "source": "jobly",
     "posted_date": "2026-06-01",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Kokki, Holiday Club Katinkulta, Vuokatti",
@@ -48323,13 +48323,13 @@
     "url": "https://www.jobly.fi/tyopaikka/kokki-holiday-club-katinkulta-vuokatti-2686179",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role is for a cook (kokki) at a holiday club resort, which requires specific culinary training and experience. Manju's legal background does not qualify.",
+    "reason": "The job is for a cook (kokki) position at a Holiday Club resort, which requires hands-on physical cooking and kitchen work. Manju's background in law and event coordination does not qualify her for this specific culinary role.",
     "id": "7879e7fc",
     "source": "jobly",
     "posted_date": "2026-06-26",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Timpuri Vihdin ty\u00f6maalle",
@@ -48338,13 +48338,13 @@
     "url": "https://www.jobly.fi/tyopaikka/turvatimpuri-vihtiin-2700353",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role is a construction timbering position, which requires specific vocational training and is unrelated to office work.",
+    "reason": "This is a construction site temporary role requiring LVI measurement and pipefitting, not an office/administration position.",
     "id": "c92eef15",
     "source": "jobly",
     "posted_date": "2026-07-01",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Tarjoilija Classic Pizza Ratina Tampere, Restel",
@@ -48353,13 +48353,13 @@
     "url": "https://www.jobly.fi/tyopaikka/tarjoilija-classic-pizza-ratina-tampere-restel-2702990",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The job is for a restaurant waiter position, which does not match Manju's office/service/legal background.",
+    "reason": "This is a restaurant serving position requiring specific culinary skills and experience, not an office/administrative role.",
     "id": "5ec11e39",
     "source": "jobly",
     "posted_date": "2026-07-01",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Osa-aikaisia Siivoojia (Imatra)",
@@ -48368,13 +48368,13 @@
     "url": "https://www.jobly.fi/tyopaikka/osa-aikaisia-siivoojia-imatra-2698916",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role is a cleaning position, which requires specific vocational training and is therefore a hard rejection.",
+    "reason": "The role is for a cleaning gig, not office/admin work.",
     "id": "e08eb35d",
     "source": "jobly",
     "posted_date": "2026-06-30",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Puhtauden tekij\u00e4 vakituiseen ty\u00f6suhteeseen",
@@ -48383,13 +48383,13 @@
     "url": "https://www.jobly.fi/tyopaikka/puhtauden-tekija-vakituiseen-tyosuhteeseen-2702942",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role is for a cleaning assistant specifically at Leenan Puhdistuspalvelu Oy in Kajaani, which requires specific vocational training in cleaning. Manju does not have this background.",
+    "reason": "The role is a personal/home-care assistant (henkil\u00f6kohtainen avustaja) providing hands-on daily-living assistance, which requires specific training and manual labor, not office/administrative work.",
     "id": "06ea0124",
     "source": "jobly",
     "posted_date": "2023-06-23",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Kaivinkoneenkuljettaja pitk\u00e4aikaiseen ty\u00f6suhteeseen!",
@@ -48398,13 +48398,13 @@
     "url": "https://www.jobly.fi/tyopaikka/kaivinkoneenkuljettaja-pitkaaikaiseen-tyosuhteeseen-2702989",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role is a trade position requiring specific vocational training in construction equipment operation, which is a hard rejection based on the job requirements.",
+    "reason": "The role requires specific trade/vocational training (ruiskumaalari, muurari) as hard requirements, which Manju does not have. It is a manual-labor construction gig role, not an office job.",
     "id": "83ab2a88",
     "source": "jobly",
     "posted_date": "2026-06-30",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Avoin hakemus \u2013 Tule RTK:laiseksi!",
@@ -48413,13 +48413,13 @@
     "url": "https://fi.linkedin.com/jobs/view/avoin-hakemus-%E2%80%93-tule-rtk-laiseksi%21-at-rtk-palvelu-oy-4432057680",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "The role is for a generalist office assistant, but requires specific GIS and spatial data expertise that Manju does not have.",
+    "reason": "The role is an administrative assistant position requiring fluency in Finnish and Swedish, which Manju does not have.",
     "id": "7ef43704",
     "source": "linkedin_fin",
     "posted_date": "2026-06-27",
     "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Sosiaalisen median asiantuntija",
