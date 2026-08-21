@@ -322,6 +322,22 @@ treat every `/fill-form auto` candidate on its own merits each cycle rather than
 before is already handled, and re-set `deletion_reason` (or re-demote) if a previously-actioned URL
 reappears as an eligible candidate.
 
+## LinkedIn's own "Application submitted" banner can catch applies that jobs.json/Firestore missed
+
+Confirmed 2026-08-21 during `/fill-form auto`: candidate d95abc9e (Winthrop Technologies, Document
+Controller, Vaasa) passed every `applied != "yes"` check in both `jobs.json` and Firestore, got a
+fresh Claude-tailored resume generated, but when the LinkedIn job page opened in Step 2 (find the
+apply link) it showed **"Application submitted · 6 months ago"** directly under the job title — she'd
+already applied to this exact role a while back, and the listing had simply been reposted by the
+employer under a fresh LinkedIn job ID, which the scraper picked up as if it were new. Neither
+`jobs.json`'s cached `applied` field nor Firestore's ever saw that application, since it didn't go
+through this skill's own hand-off flow. **Lesson: when a LinkedIn job page is already open in Step 2
+of `/fill-form`, glance at the page below the title for an "Application submitted" status block
+before proceeding to find the Apply link** — it's a stronger signal than either tracked `applied`
+field and costs nothing extra to check since the page is already loaded. If seen, set
+`applied = "yes"` in Firestore immediately and move on to the next candidate rather than filling a
+duplicate form.
+
 ## Open/unresolved
 
 - `jobs_history.json.corrupt-20260813_150257`: partially investigated (2026-08-14). The file
