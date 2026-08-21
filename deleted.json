@@ -252427,5 +252427,37 @@
     "description_file": null,
     "eval_model": "local/hermes-3-llama-3.1-8b",
     "deletion_reason": "Requires US residency"
+  },
+  {
+    "title": "Liikenteenohjaaja",
+    "company": "Lokki Henkil\u00f6st\u00f6palvelut Oy",
+    "location": "Oulu Region, Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/ac2e1936-ea54-47bd-9289-e59db6653886/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Requires a valid ty\u00f6turvallisuus- ja tieturvakortti (work safety and data processing card) as a hard requirement, which Manju does not have.",
+    "id": "1b224a38",
+    "source": "tyomarkkinatori",
+    "posted_date": "2026-07-05",
+    "deadline": "2026-07-20",
+    "description_file": null,
+    "eval_model": "local/hermes-3-llama-3.1-8b",
+    "deletion_reason": "Deadline (2026-07-20) passed by more than 2 days and unreviewed"
+  },
+  {
+    "title": "Legal Counsel",
+    "company": "Avery Dennison",
+    "location": "Mentor, OH",
+    "url": "https://www.linkedin.com/jobs/view/legal-counsel-at-avery-dennison-4435253927",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The role requires US residency, which Manju does not have.",
+    "id": "6b332df3",
+    "source": "linkedin_ww_legal_counsel",
+    "posted_date": "2026-07-03",
+    "deadline": "Open until filled",
+    "description_file": null,
+    "eval_model": "local/hermes-3-llama-3.1-8b",
+    "deletion_reason": "Requires US residency"
   }
 ]
