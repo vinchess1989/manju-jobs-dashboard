@@ -338,6 +338,20 @@ field and costs nothing extra to check since the page is already loaded. If seen
 `applied = "yes"` in Firestore immediately and move on to the next candidate rather than filling a
 duplicate form.
 
+## The same real job can be scraped twice under different URLs from different sources — check title+company before tailoring
+
+Confirmed 2026-08-21, twice in one day: a job already tailored/filled earlier in the session (Mercury
+"Site Administrator", Helsinki — job `db76fcd6`, scraped via LinkedIn) resurfaced hours later as a
+brand-new `/fill-form auto` candidate (`171e7528`) with the same title/company/location but scraped
+via Indeed instead — a completely different URL, so none of the `applied`/`auto_fill_attempted_at`
+dedup checks (which are all keyed by URL) caught it. Same thing happened earlier the same day with two
+separate Winthrop Technologies roles that turned out to already have LinkedIn "Application submitted"
+history. **Lesson: before tailoring a resume for a new candidate, it's worth a quick mental (or grep)
+check of whether the same title+company already has a `PRIVATE\Resumes\<other-id>\` folder** —
+company-run ATSs and recruiters commonly repost/re-list the same opening across multiple job boards
+(LinkedIn, Indeed, company career site) as fresh postings with fresh IDs, and the scraper has no
+cross-source dedup, so this is expected to recur, not a one-off glitch.
+
 ## Open/unresolved
 
 - `jobs_history.json.corrupt-20260813_150257`: partially investigated (2026-08-14). The file
