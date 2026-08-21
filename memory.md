@@ -53,13 +53,43 @@ One LM Studio server at `http://127.0.0.1:1234`, shared by both scrapers **and**
 
 The main job-review call and the scrape health-report call (`analyze_scrape_run_log`) now go
 through `_call_llm_with_fallback(messages, llm_endpoint, llm_model, ...)`, defined next to
-`_post_llm_with_retry` in each `scraper.py`. It tries **Groq first** (`GROQ_ENDPOINT =
-https://api.groq.com/openai/v1/chat/completions`, model from `GROQ_MODEL` env var, default
-`openai/gpt-oss-120b`) if `GROQ_API_KEY` is set, with a single attempt and no retry loop of
-its own — any failure (missing key, network error, 429 rate limit, bad response) falls straight
-through to the existing local-LLM path (`_post_llm_with_retry`, which still does its own
-retry/priority-lock/backoff dance). This was a deliberate choice: retrying against what might be
-a persistent Groq rate limit wastes time the local fallback could use instead.
+`_post_llm_with_retry` in each `scraper.py`. It tries **Groq first**, rotating through
+`GROQ_MODELS` (`GROQ_ENDPOINT = https://api.groq.com/openai/v1/chat/completions`, comma-separated
+list from the `GROQ_MODELS` env var, default
+`openai/gpt-oss-120b,openai/gpt-oss-20b,openai/gpt-oss-safeguard-20b,qwen/qwen3.6-27b`) in order
+until one succeeds, if `GROQ_API_KEY` is set - only falling back to local once every Groq model in
+the list has failed. Each attempt (per model, and the eventual local one) is a single shot with no
+retry loop of its own - any failure (missing key, network error, 429 rate limit, bad response)
+just moves on to the next model, then to the existing local-LLM path (`_post_llm_with_retry`,
+which still does its own retry/priority-lock/backoff dance). This was a deliberate choice:
+retrying against what might be a persistent Groq rate limit wastes time better spent trying a
+different model (each Groq model has its own separate free-tier quota) or falling back to local.
+
+**Rotation added 2026-08-20, expanded 2026-08-21** to increase total Groq throughput before
+hitting local. `openai/gpt-oss-safeguard-20b` was validated 2026-08-21 with a realistic
+job-matching prompt (not just a trivial "say OK" test) - clean `content`/`reasoning` field
+separation like the other gpt-oss models, correct match/reason judgment, no unwanted refusals on
+normal job-posting text, so it's trusted as a peer of the other gpt-oss models. `qwen/qwen3.6-27b`
+leaks its `<think>...</think>` reasoning directly into `message.content` instead of a separate
+field - confirmed 2026-08-21 that `extract_json_from_text`'s find-first-`{`/last-`}` approach
+tolerates the leading `<think>` block fine, but a long enough thinking chain could still eat the
+whole `max_tokens` budget before the actual JSON ever appears and truncate the response (untested
+how often this actually bites) - kept, but deliberately placed **last** in the list for that
+reason. Deliberately still excluded: `groq/compound(-mini)` (agentic meta-models with tool-use,
+untested for this single-shot extraction use case), `allam-2-7b` (Arabic-specialized, poor fit for
+English/Finnish job text), and `meta-llama/llama-prompt-guard-2-*` - confirmed 2026-08-21 via
+direct API test that these return a raw injection-likelihood probability score (e.g.
+`"0.0013618835946545005"`) instead of text - they're jailbreak-detection classifiers, not chat
+models at all, and would fail every single call. Revisit `GROQ_MODELS` if more throughput is
+needed - check `GET /openai/v1/models` for what's current first, see below.
+
+**Gemini as an additional cloud tier**: discussed 2026-08-20 but not implemented - no
+`GEMINI_API_KEY` has been provided/set. Google does offer an OpenAI-compatible endpoint
+(`https://generativelanguage.googleapis.com/v1beta/openai/chat/completions`, same request/response
+shape, Bearer auth) which would let it slot into `_call_llm_with_fallback` the same way Groq does
+via `_try_cloud_provider` - but this hasn't been tested against a real key yet, so don't assume the
+exact endpoint/model-name details are correct without verifying first, the way the Groq model list
+was verified via direct API calls before being trusted.
 
 - `classify_requirements_change` (manju_jobs only) was deliberately **left on local-only** — it
   fires only when `job_requirements.md` is hand-edited, rare enough that moving it wasn't worth

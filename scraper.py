@@ -1374,14 +1374,20 @@ GROQ_ENDPOINT = "https://api.groq.com/openai/v1/chat/completions"
 # Ordered by preference (quality first). Each Groq model has its OWN separate free-tier
 # rate-limit quota, so rotating through them on failure meaningfully increases total
 # throughput before giving up and falling back to local - a 429 on one model doesn't mean
-# the others are limited too. Overridable via GROQ_MODELS (comma-separated). Deliberately
-# excludes: qwen/qwen3.6-27b (leaks its <think> reasoning directly into `content` instead
-# of a separate field like the gpt-oss models - risks eating the whole max_tokens budget
-# and truncating before the actual JSON answer ever appears - untested how often this
-# actually bites in practice, revisit if more Groq throughput is needed later), the
-# groq/compound(-mini) agentic meta-models (untested for this single-shot extraction use
-# case), and allam-2-7b/*-safeguard-* (not general-purpose / not suited to this task).
-GROQ_MODELS = [m.strip() for m in os.environ.get("GROQ_MODELS", "openai/gpt-oss-120b,openai/gpt-oss-20b").split(",") if m.strip()]
+# the others are limited too. Overridable via GROQ_MODELS (comma-separated). qwen/qwen3.6-27b
+# leaks its <think>...</think> reasoning directly into `content` instead of a separate field
+# like the gpt-oss models do - validated 2026-08-21 that extract_json_from_text's
+# find-first-'{'/last-'}' approach tolerates this fine, but a long enough thinking chain
+# could still eat the whole max_tokens budget before the actual JSON appears, truncating the
+# response; kept last in the list for that reason. openai/gpt-oss-safeguard-20b (moderation-
+# tuned) validated 2026-08-21 against a real job-matching prompt - clean content/reasoning
+# separation like the other gpt-oss models, correct judgment, no unwanted refusals on normal
+# job-posting text. Deliberately still excludes: groq/compound(-mini) (agentic meta-models
+# with tool-use, untested for this single-shot extraction use case), allam-2-7b (Arabic-
+# specialized, poor fit for English/Finnish text), and meta-llama/llama-prompt-guard-2-*
+# (confirmed 2026-08-21 via direct API test to return a raw injection-likelihood probability
+# score instead of text - not a chat model at all, would fail every single call).
+GROQ_MODELS = [m.strip() for m in os.environ.get("GROQ_MODELS", "openai/gpt-oss-120b,openai/gpt-oss-20b,openai/gpt-oss-safeguard-20b,qwen/qwen3.6-27b").split(",") if m.strip()]
 
 def _try_cloud_provider(messages, endpoint, api_key, models, temperature, max_tokens, timeout, label):
     """Try each model in `models` against `endpoint` in order, stopping at the first
