@@ -161256,18 +161256,18 @@
   },
   {
     "title": "Hitsaajia Yl\u00e4-Savoon",
-    "company": "Extract via OpenClaw",
+    "company": "Tehoa Henkil\u00f6st\u00f6palvelut Oy",
     "location": "Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/6519f1e5-1fbc-46c3-af92-4a3958ef3dbe/fi",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The role is for a metalworking tradesperson (hitsaaja) and requires relevant education/experience, which does not match Manju's office/event coordination background.",
     "id": "8f42547d",
     "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
+    "posted_date": "2026-08-03",
+    "deadline": "2026-08-23",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Koneistajia Yl\u00e4-Savoon",
@@ -161276,13 +161276,13 @@
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/c2dc85c9-ad4f-444f-8b6d-9c458e42c4d3/fi",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The role requires CNC machine operation, which Manju does not have experience with.",
     "id": "480936fe",
     "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
+    "posted_date": "2026-08-03",
+    "deadline": "2026-08-23",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "LVI-asentajia Yl\u00e4-Savoon",
@@ -161291,13 +161291,13 @@
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/481b2b67-434a-412e-9487-be0c5bc09824/fi",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The role requires specific vocational training (HVU) and Finnish citizenship, which Manju does not have.",
     "id": "5049ba07",
     "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
+    "posted_date": "2026-08-03",
+    "deadline": "2026-08-23",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Ravintolaty\u00f6ntekij\u00f6it\u00e4 Yl\u00e4-Savoon",
@@ -161306,13 +161306,13 @@
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/babd3c89-318d-4013-a197-08cd789e388c/fi",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job is for a restaurant server position, which requires prior experience as specified in the hard rejection rules.",
     "id": "742a6579",
     "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
+    "posted_date": "2026-08-03",
+    "deadline": "2026-08-23",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Rakennusalan tekij\u00e4t Yl\u00e4-Savoon",
@@ -161321,13 +161321,13 @@
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/6dc05ea9-f6e7-458e-9eaa-bf385a05c35f/fi",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job is construction field work, not office/administrative.",
     "id": "cbd6f683",
     "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
+    "posted_date": "2026-08-03",
+    "deadline": "2026-08-23",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Erityisasiantuntija / Grant Writer, kansainv\u00e4linen TKI-hankevalmistelu",
@@ -161335,14 +161335,14 @@
     "location": "Tampere Region, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/7c68924e-3f5e-4de7-a323-c31ebac7004a/fi",
     "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "matches_requirements": "maybe",
+    "reason": "The role is a generalist office position, but requires fluently spoken Finnish as a hard requirement which Manju does not have at B2 level.",
     "id": "6b4189da",
     "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "posted_date": "2026-08-03",
+    "deadline": "2026-08-24",
+    "description_file": "job_descriptions/erityisasiantuntija__erityisasiantuntija___grant_wr_6b4189da.txt",
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "J\u00e4rjestyksenvalvojia Yl\u00e4-Savoon",
@@ -161351,13 +161351,13 @@
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/665aa9b5-ae2a-45b9-ad2a-dd20ad0787ac/fi",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The role requires a valid j\u00e4rjestyksenvalvojakortti (event security license) which Manju does not have yet.",
     "id": "8b55c55e",
     "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
+    "posted_date": "3.8.2026, 7.15",
+    "deadline": "23.08.2026, 23.59",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Avoin hakemus",
@@ -161365,29 +161365,14 @@
     "location": "Kuopio, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/8a4435d5-daa6-4ff4-92ef-f0bb5ba09018/fi",
     "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "matches_requirements": "maybe",
+    "reason": "The job is an open application, so it's too broad to match based on title and description alone.",
     "id": "ff52094e",
     "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
-  },
-  {
-    "title": "Asentajia Yl\u00e4-Savoon",
-    "company": "Asentajia Yl\u00e4-Savoon",
-    "location": "Iisalmi, Finland",
-    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/51dbc45e-d90f-4860-9a3a-ed7edf208609/fi",
-    "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
-    "id": "172289d4",
-    "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "posted_date": "2026-08-03",
+    "deadline": "2026-08-23",
+    "description_file": "job_descriptions/avoin_hakemus_avoin_hakemus_ff52094e.txt",
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Sosiaality\u00f6ntekij\u00e4 vammaisten sosiaality\u00f6 Kajaani",
@@ -161396,13 +161381,13 @@
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/7b45fda4-9e6b-43b0-923f-3ce73f5d2b98/fi",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The role requires a specific social work degree as per Finnish law, which Manju does not have.",
     "id": "68b3e48a",
     "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
+    "posted_date": "2026-08-03",
+    "deadline": "2026-08-31",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Nuoriso-ohjaaja",
@@ -161410,14 +161395,14 @@
     "location": "Hausj\u00e4rvi, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/dbc481b4-928c-46f9-a130-ac8c8c2d95de/fi",
     "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "matches_requirements": "maybe",
+    "reason": "The role is a generalist office position that fits Manju's background, but requires Finnish citizenship as a hard requirement which she does not have.",
     "id": "bc9b671d",
     "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "posted_date": "2026-08-03",
+    "deadline": "2026-08-30",
+    "description_file": "job_descriptions/nuoriso_ohjaaja_nuoriso_ohjaaja_bc9b671d.txt",
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Kuorma-autonkuljettaja Muuttoajoon",
@@ -161426,43 +161411,13 @@
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/86c88666-e59a-4122-ac44-c14d945a8043/fi",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The role is a manual labor truck driving position, not an office/administrative event coordination role.",
     "id": "72379cce",
     "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
+    "posted_date": "2026-08-03",
+    "deadline": "2026-09-02",
     "description_file": null,
-    "needs_re_review": true
-  },
-  {
-    "title": "CNC-sorvaaja",
-    "company": "CNC-sorvaaja",
-    "location": "Turku Region, Finland",
-    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/d331680e-07d6-40e3-93e3-87ceabcf1ce3/fi",
-    "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
-    "id": "54ace11e",
-    "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
-  },
-  {
-    "title": "CNC-koneistaja",
-    "company": "CNC-koneistaja",
-    "location": "Turku Region, Finland",
-    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/ce92d43b-d8dd-4ba6-96ca-2f8d235cfa4b/fi",
-    "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
-    "id": "a0d7cd02",
-    "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Keitti\u00f6mestari Espooseen",
@@ -161471,28 +161426,13 @@
     "url": "https://www.jobly.fi/tyopaikka/keittiomestari-espooseen-2721062",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "Requires specific culinary education (kokki, keitti\u00f6mestari) as hard requirement, not a generalist office role.",
     "id": "00b04928",
     "source": "jobly",
-    "posted_date": "N/A",
-    "deadline": "N/A",
+    "posted_date": "2026-08-06",
+    "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
-  },
-  {
-    "title": "Ty\u00f6vaatteiden ja suojainten myynnin ammattilainen, Onninen, Pohjois-Suomi",
-    "company": "Hae paikkaa",
-    "location": "Turku Region, Finland",
-    "url": "https://www.jobly.fi/tyopaikka/tyovaatteiden-ja-suojainten-myynnin-ammattilainen-onninen-pohjois-suomi-2724973",
-    "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
-    "id": "1d7b8f36",
-    "source": "jobly",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Klinikkael\u00e4nhoitaja Yliopistolliseen el\u00e4insairaalaan",
@@ -161501,13 +161441,13 @@
     "url": "https://www.jobly.fi/tyopaikka/klinikkaelanhoitaja-yliopistolliseen-elainsairaalaan-2724957",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "Requires a completed klinikkael\u00e4inhoitajan tutkinto, which is a distinct stricter bar than Manju's LL.M. + ongoing Finnish supplementary law studies.",
     "id": "0eb9ba11",
     "source": "jobly",
-    "posted_date": "N/A",
-    "deadline": "N/A",
+    "posted_date": "2026-08-03",
+    "deadline": "2026-08-23",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Vakuutus (7)",
@@ -161516,13 +161456,13 @@
     "url": "https://www.jobly.fi/tyopaikat/vakuutus",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The role is a commission-based sales representative position requiring a credit check and willingness to operate as an independent contractor, not standard employment.",
     "id": "b9dda09e",
     "source": "jobly",
-    "posted_date": "N/A",
-    "deadline": "N/A",
+    "posted_date": "2026-08-17",
+    "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "General Counsel - Remote",
@@ -161531,13 +161471,13 @@
     "url": "https://www.linkedin.com/jobs/view/general-counsel-remote-at-yo-it-consulting-4443881306",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The role requires a strong focus on contract negotiation playbooks and commercial agreements, which is beyond Manju's current experience level. She has excellent legal research and drafting skills but no prior experience with playbook development or corporate counsel-level contract management.",
     "id": "28f456c7",
     "source": "linkedin_ww_legal_counsel",
-    "posted_date": "N/A",
+    "posted_date": "2026-07-25",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "M&A Counsel",
@@ -161546,13 +161486,13 @@
     "url": "https://www.linkedin.com/jobs/view/m-a-counsel-at-avalara-4446145605",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The role requires a J.D. degree and active bar membership in at least one U.S. jurisdiction, which is a hard rejection for this candidate.",
     "id": "858448b7",
     "source": "linkedin_ww_legal_counsel",
-    "posted_date": "N/A",
+    "posted_date": "2026-08-19",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Corporate Counsel",
@@ -161561,13 +161501,13 @@
     "url": "https://www.linkedin.com/jobs/view/corporate-counsel-at-dosespot-4426513358",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job is located in Boston, MA, USA, which does not match Manju's target of anywhere in Finland.",
     "id": "42f07a3f",
     "source": "linkedin_ww_legal_counsel",
-    "posted_date": "N/A",
+    "posted_date": "2026-08-08",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Commercial Counsel \u2013 Contracts & Strategic Agreements",
@@ -161576,28 +161516,13 @@
     "url": "https://www.linkedin.com/jobs/view/commercial-counsel-%E2%80%93-contracts-strategic-agreements-at-neovolta-4445242639",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job is located in the United States, not Finland.",
     "id": "c0874639",
     "source": "linkedin_ww_legal_counsel",
-    "posted_date": "N/A",
+    "posted_date": "2026-08-22",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
-  },
-  {
-    "title": "Product Counsel",
-    "company": "Stripe",
-    "location": "United States",
-    "url": "https://www.linkedin.com/jobs/view/product-counsel-at-stripe-4446181384",
-    "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
-    "id": "0ee011af",
-    "source": "linkedin_ww_legal_counsel",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Legal Paid Consultant - IP Intake, Clearance, Filing & Prosecution",
@@ -161606,43 +161531,13 @@
     "url": "https://www.linkedin.com/jobs/view/legal-paid-consultant-ip-intake-clearance-filing-prosecution-at-linkedin-4431028932",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The role requires a specific technical degree (IT, engineering, science) as a hard requirement.",
     "id": "56b6b4c9",
     "source": "linkedin_ww_legal_counsel",
-    "posted_date": "N/A",
+    "posted_date": "2026-07-23",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
-  },
-  {
-    "title": "Regional Counsel",
-    "company": "Garrison",
-    "location": "Reston, VA",
-    "url": "https://www.linkedin.com/jobs/view/regional-counsel-at-garrison-4446370087",
-    "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
-    "id": "46aa39fa",
-    "source": "linkedin_ww_legal_counsel",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
-  },
-  {
-    "title": "Commercial Counsel",
-    "company": "LaunchDarkly",
-    "location": "United States",
-    "url": "https://www.linkedin.com/jobs/view/commercial-counsel-at-launchdarkly-4408744064",
-    "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
-    "id": "08d44a5a",
-    "source": "linkedin_ww_legal_counsel",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Deputy General Counsel @ AI Defense Startup",
@@ -161651,13 +161546,13 @@
     "url": "https://www.linkedin.com/jobs/view/deputy-general-counsel-%40-ai-defense-startup-at-whistler-partners-4443554309",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The role requires a J.D. degree and active bar admission, which Manju does not have yet.",
     "id": "50b74eb9",
     "source": "linkedin_ww_legal_counsel",
-    "posted_date": "N/A",
-    "deadline": "N/A",
+    "posted_date": "2026-07-23",
+    "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Corporate Legal Advisor",
@@ -161666,28 +161561,13 @@
     "url": "https://www.linkedin.com/jobs/view/corporate-legal-advisor-at-crossing-hurdles-4443140504",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job is located in the United States, which does not match Manju's target criteria of being anywhere within Finland.",
     "id": "9bc00a2b",
     "source": "linkedin_ww_legal_counsel",
-    "posted_date": "N/A",
+    "posted_date": "2026-08-15",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
-  },
-  {
-    "title": "Counsel",
-    "company": "Rocket Software",
-    "location": "United States",
-    "url": "https://www.linkedin.com/jobs/view/counsel-at-rocket-software-4445245390",
-    "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
-    "id": "d1d677eb",
-    "source": "linkedin_ww_legal_counsel",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Remote Counsel \u2013 Employment Law | $135K\u2013$170K + Bonus | No BD | 1,500 Hours | Fully Remote",
@@ -161696,13 +161576,13 @@
     "url": "https://www.linkedin.com/jobs/view/remote-counsel-%E2%80%93-employment-law-%24135k%E2%80%93%24170k-%2B-bonus-no-bd-1-500-hours-fully-remote-at-elite-talent-consulting-4443603404",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "This remote counsel role requires a JD degree from an ABA-accredited law school, which Manju does not have. It is also based in the United States, not Finland.",
     "id": "6df4d933",
     "source": "linkedin_ww_lawyer",
-    "posted_date": "N/A",
-    "deadline": "N/A",
+    "posted_date": "2026-07-23",
+    "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Associate Commercial Counsel",
@@ -161711,28 +161591,13 @@
     "url": "https://www.linkedin.com/jobs/view/associate-commercial-counsel-at-harvey-4353997278",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job is located in the United States, which does not match Manju's target criteria of being open to remote work anywhere in Finland.",
     "id": "a4cb5d7f",
     "source": "linkedin_ww_lawyer",
-    "posted_date": "N/A",
+    "posted_date": "2026-08-08",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
-  },
-  {
-    "title": "Corporate Lawyer (Funds)",
-    "company": "Crossing Hurdles",
-    "location": "United States",
-    "url": "https://www.linkedin.com/jobs/view/corporate-lawyer-funds-at-crossing-hurdles-4442685073",
-    "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
-    "id": "18ce6a95",
-    "source": "linkedin_ww_lawyer",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Real Estate Counsel - Remote",
@@ -161741,13 +161606,13 @@
     "url": "https://www.linkedin.com/jobs/view/real-estate-counsel-remote-at-lateral-link-4447628512",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "This is a US remote job, not a Finnish one.",
     "id": "59fa9c09",
     "source": "linkedin_ww_lawyer",
-    "posted_date": "N/A",
+    "posted_date": "2026-07-23",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Attorney/Lawyer",
@@ -161756,13 +161621,13 @@
     "url": "https://www.linkedin.com/jobs/view/attorney-lawyer-at-robert-half-4446179991",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job is located in Roseville, CA, which is in the United States - not Finland.",
     "id": "fdcb764f",
     "source": "linkedin_ww_lawyer",
-    "posted_date": "N/A",
+    "posted_date": "2026-08-19",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Energy Regulatory Lawyer | Remote",
@@ -161771,73 +161636,13 @@
     "url": "https://www.linkedin.com/jobs/view/energy-regulatory-lawyer-remote-at-crossing-hurdles-4446037429",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The role requires specific experience with PJM Interconnection processes and FERC regulations, which Manju does not have.",
     "id": "5cd20052",
     "source": "linkedin_ww_lawyer",
-    "posted_date": "N/A",
+    "posted_date": "2026-08-19",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
-  },
-  {
-    "title": "English Contract Attorney",
-    "company": "CGS Federal (Contact Government Services)",
-    "location": "United States",
-    "url": "https://www.linkedin.com/jobs/view/english-contract-attorney-at-cgs-federal-contact-government-services-4407427878",
-    "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
-    "id": "3318cc6e",
-    "source": "linkedin_ww_lawyer",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
-  },
-  {
-    "title": "Civil Litigation Trial Attorney - Remote",
-    "company": "Stealth Law Firm",
-    "location": "California, United States",
-    "url": "https://www.linkedin.com/jobs/view/civil-litigation-trial-attorney-remote-at-stealth-law-firm-4445748652",
-    "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
-    "id": "d3fc725c",
-    "source": "linkedin_ww_lawyer",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
-  },
-  {
-    "title": "US Lawyer (AI Legal Research & Evaluation)",
-    "company": "Gramian Consulting",
-    "location": "United States",
-    "url": "https://www.linkedin.com/jobs/view/us-lawyer-ai-legal-research-evaluation-at-gramian-consulting-4447834219",
-    "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
-    "id": "e1c1d10b",
-    "source": "linkedin_ww_lawyer",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
-  },
-  {
-    "title": "Attorney",
-    "company": "Swiss Finance",
-    "location": "New York, United States",
-    "url": "https://www.linkedin.com/jobs/view/attorney-at-swiss-finance-4440201321",
-    "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
-    "id": "32dd573e",
-    "source": "linkedin_ww_lawyer",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Lawyer",
@@ -161846,13 +161651,13 @@
     "url": "https://www.linkedin.com/jobs/view/lawyer-at-the-killino-firm-p-c-4416325069",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The role requires a minimum of 5 years personal injury litigation experience, which Manju does not have.",
     "id": "0559ffed",
     "source": "linkedin_ww_lawyer",
-    "posted_date": "N/A",
-    "deadline": "N/A",
+    "posted_date": "2026-07-23",
+    "deadline": "no longer accepting applications",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Lawyer",
@@ -161861,28 +161666,13 @@
     "url": "https://www.linkedin.com/jobs/view/lawyer-at-mogi-i-o-ott-podcast-short-video-apps-for-you-4447787031",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job is located in Austin, TX, USA, not Finland.",
     "id": "0bb9abee",
     "source": "linkedin_ww_lawyer",
-    "posted_date": "N/A",
+    "posted_date": "2026-07-23",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
-  },
-  {
-    "title": "English Contract Attorney",
-    "company": "CGS Federal (Contact Government Services)",
-    "location": "Los Angeles, CA",
-    "url": "https://www.linkedin.com/jobs/view/english-contract-attorney-at-cgs-federal-contact-government-services-4407436764",
-    "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
-    "id": "d1392b57",
-    "source": "linkedin_ww_lawyer",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Litigation Counsel - AI (Remote)",
@@ -161891,13 +161681,13 @@
     "url": "https://www.linkedin.com/jobs/view/litigation-counsel-ai-remote-at-raydar-4447597219",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The role requires a technical background with AI, which Manju does not have.",
     "id": "1592630f",
     "source": "linkedin_ww_lawyer",
-    "posted_date": "N/A",
+    "posted_date": "2026-08-01",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Law and Motion Attorney",
@@ -161906,13 +161696,13 @@
     "url": "https://www.linkedin.com/jobs/view/law-and-motion-attorney-at-jobot-4445490377",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "Job is located in Phoenix, AZ (USA), not Finland.",
     "id": "85ecacfb",
     "source": "linkedin_ww_lawyer",
     "posted_date": "N/A",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "groq/openai/gpt-oss-120b"
   },
   {
     "title": "Attorney",
@@ -161921,28 +161711,13 @@
     "url": "https://www.linkedin.com/jobs/view/attorney-at-the-lipp-law-firm-pc-4445736064",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job is located in Virginia, United States, which does not match Manju's Finnish job search criteria.",
     "id": "76c81fe5",
     "source": "linkedin_ww_lawyer",
-    "posted_date": "N/A",
-    "deadline": "N/A",
+    "posted_date": "2026-08-15",
+    "deadline": "no longer accepting applications",
     "description_file": null,
-    "needs_re_review": true
-  },
-  {
-    "title": "Compliance Counsel",
-    "company": "hackajob",
-    "location": "United States",
-    "url": "https://www.linkedin.com/jobs/view/compliance-counsel-at-hackajob-4444068490",
-    "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
-    "id": "6bf7bb32",
-    "source": "linkedin_ww_lawyer",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Law & Motion Attorney",
@@ -161951,43 +161726,13 @@
     "url": "https://www.linkedin.com/jobs/view/law-motion-attorney-at-law-firms-4445762035",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job is located in Los Angeles County, CA, USA, which is a non-Finland country-specific posting. It does not match Manju's criteria for Finnish jobs.",
     "id": "b0640ccc",
     "source": "linkedin_ww_lawyer",
-    "posted_date": "N/A",
+    "posted_date": "2026-08-15",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
-  },
-  {
-    "title": "Hankintajuristi, Yle Lakiasiat",
-    "company": "Yle - Helsinki",
-    "location": "Etsi, Finland",
-    "url": "https://duunitori.fi/tyopaikat/tyo/hankintajuristi-yle-lakiasiat-sysle-20459215",
-    "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
-    "id": "82fbc2ab",
-    "source": "duunitori_lawyer",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
-  },
-  {
-    "title": "Tax & Legal Trainee",
-    "company": "KPMG Finland",
-    "location": "Helsinki Region, Finland",
-    "url": "https://fi.linkedin.com/jobs/view/tax-legal-trainee-at-kpmg-finland-4445873480",
-    "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
-    "id": "d54a97a3",
-    "source": "linkedin_fi_legal_trainee",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Suomea puhuva Customer Service Agent iGaming-alalla - Malta",
@@ -161996,13 +161741,13 @@
     "url": "https://fi.linkedin.com/jobs/view/suomea-puhuva-customer-service-agent-igaming-alalla-malta-at-next-job-abroad-4448109415",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The role is a commission-based sales agent position, not an office/administrative job.",
     "id": "bdf8a4ab",
     "source": "linkedin_fi_compliance",
-    "posted_date": "N/A",
-    "deadline": "N/A",
+    "posted_date": "2026-08-08",
+    "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Record / Document Management Specialist",
@@ -162010,14 +161755,14 @@
     "location": "Rovaniemi Region, Finland",
     "url": "https://fi.linkedin.com/jobs/view/record-document-management-specialist-at-anglo-american-4442864869",
     "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "matches_requirements": "maybe",
+    "reason": "The role is a generalist office position, but requires specific technical knowledge of document management systems and processes that Manju does not have.",
     "id": "cc1ee889",
     "source": "linkedin_fi_compliance",
-    "posted_date": "N/A",
+    "posted_date": "2026-08-19",
     "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": "job_descriptions/anglo_american_record___document_management_s_cc1ee889.txt",
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Suomea puhuva Customer Service Agent iGaming-alalla - Malta",
@@ -162026,13 +161771,13 @@
     "url": "https://fi.linkedin.com/jobs/view/suomea-puhuva-customer-service-agent-igaming-alalla-malta-at-next-job-abroad-4448111351",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job requires Finnish citizenship for the role, which the candidate does not have.",
     "id": "669dfc52",
     "source": "linkedin_fi_compliance",
-    "posted_date": "N/A",
+    "posted_date": "2026-08-08",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Financial Controller",
@@ -162041,13 +161786,13 @@
     "url": "https://fi.linkedin.com/jobs/view/financial-controller-at-neural-dsp-4436839615",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The role requires fluency in Finnish, which Manju does not have at B2 level.",
     "id": "9bb697fa",
     "source": "linkedin_fi_compliance",
-    "posted_date": "N/A",
+    "posted_date": "2026-07-23",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Product Growth Specialist",
@@ -162056,13 +161801,13 @@
     "url": "https://fi.linkedin.com/jobs/view/product-growth-specialist-at-air-apps-4405171217",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The role requires approximately 4+ years of experience in mobile app monetization, which Manju does not have.",
     "id": "7607a75e",
     "source": "linkedin_fi_compliance",
-    "posted_date": "N/A",
+    "posted_date": "2026-05-24",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Suomea puhuva Customer Service Agent iGaming-alalla - Malta",
@@ -162071,13 +161816,13 @@
     "url": "https://fi.linkedin.com/jobs/view/suomea-puhuva-customer-service-agent-igaming-alalla-malta-at-next-job-abroad-4448112358",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job requires strong Finnish language skills as a hard requirement, which Manju does not have.",
     "id": "e7b5aad7",
     "source": "linkedin_fi_compliance",
-    "posted_date": "N/A",
+    "posted_date": "2026-08-08",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Suomea puhuva Customer Service Agent iGaming-alalla - Malta",
@@ -162086,13 +161831,13 @@
     "url": "https://fi.linkedin.com/jobs/view/suomea-puhuva-customer-service-agent-igaming-alalla-malta-at-next-job-abroad-4448107446",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job requires Finnish citizenship as a prerequisite, which Manju does not have.",
     "id": "22e035b7",
     "source": "linkedin_fi_compliance",
-    "posted_date": "N/A",
-    "deadline": "N/A",
+    "posted_date": "2026-08-08",
+    "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Supplier Quality Engineer (Mechanical)",
@@ -162101,13 +161846,13 @@
     "url": "https://fi.linkedin.com/jobs/view/supplier-quality-engineer-mechanical-at-iceye-4433300050",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The role requires a degree in Mechanical, Mechatronics, Aerospace Engineering or related field and minimum 3 years of experience in Supplier Quality, Manufacturing Quality or similar roles. Manju's background is in Law (LL.M., LL.B.) and her current supplementary Finnish law studies do not match the technical mechanical engineering requirements for this role.",
     "id": "35b6c4a1",
     "source": "linkedin_fi_compliance",
-    "posted_date": "N/A",
+    "posted_date": "2026-08-08",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Human Resources Services Specialist (Finnish speaker)",
@@ -162122,7 +161867,7 @@
     "posted_date": "N/A",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "groq/qwen/qwen3.6-27b"
   },
   {
     "title": "People Partner - Community & employee experience",
@@ -162130,14 +161875,14 @@
     "location": "Helsinki Region, Finland",
     "url": "https://fi.indeed.com/rc/clk?jk=f44f725f37243019",
     "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "matches_requirements": "maybe",
+    "reason": "The role is a generalist office position, but requires fluent Finnish which Manju does not have at that level.",
     "id": "00417ed2",
     "source": "indeed_compliance_p2",
     "posted_date": "N/A",
     "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": "job_descriptions/apply_for_this_job_people_partner___community___e_00417ed2.txt",
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Veterinarian, Animal Welfare Officer",
@@ -162146,28 +161891,13 @@
     "url": "https://fi.indeed.com/rc/clk?jk=046731cf9d4aff7d",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The role requires a specific veterinary degree as hard requirement, which Manju does not have.",
     "id": "5958590b",
     "source": "indeed_compliance_p2",
     "posted_date": "N/A",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
-  },
-  {
-    "title": "Tapahtumaty\u00f6ntekij\u00e4, palkka 12,21-15,04\u20ac / MARAVA tes",
-    "company": "Hae paikkaa",
-    "location": "Oulu Region, Finland",
-    "url": "https://www.jobly.fi/tyopaikka/tapahtumatyontekija-palkka-1221-1504eu-marava-tes-2725148",
-    "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
-    "id": "7e5cf757",
-    "source": "jobly_event",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Tutkija - Matkailun kehitt\u00e4miskeskus, Welcome to Volunteer",
@@ -162176,13 +161906,13 @@
     "url": "https://www.jobly.fi/tyopaikka/tutkija-matkailun-kehittamiskeskus-welcome-volunteer-2725177",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The role requires Finnish citizenship as a prerequisite, which Manju does not have.",
     "id": "ce166c67",
     "source": "jobly_event",
-    "posted_date": "N/A",
+    "posted_date": "2026-08-10",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Content Writer",
@@ -162191,13 +161921,13 @@
     "url": "https://www.linkedin.com/jobs/view/content-writer-at-jobgether-4447695619",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The role requires a bachelor's degree, which is a specific technical degree hard rejection.",
     "id": "09a6830f",
     "source": "linkedin_ww_communications",
-    "posted_date": "N/A",
+    "posted_date": "2026-08-01",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Digitaalisen viestinn\u00e4n tuottaja",
@@ -162205,14 +161935,14 @@
     "location": "Rovaniemi Region, Finland",
     "url": "https://duunitori.fi/tyopaikat/tyo/digitaalisen-viestinnan-tuottaja-sksun-20459518",
     "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "matches_requirements": "yes",
+    "reason": "The role is a generalist office position that fits Manju's event coordination and legal contract management experience.",
     "id": "5349c8d9",
     "source": "duunitori_communications",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "posted_date": "2026-08-03",
+    "deadline": "2026-08-24",
+    "description_file": "job_descriptions/rovaniemen_kaupunki__digitaalisen_viestinn_n_tuotta_5349c8d9.txt",
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Hullut P\u00e4iv\u00e4t kausity\u00f6ntekij\u00e4, Stockmann Tampere",
@@ -162221,28 +161951,13 @@
     "url": "https://www.jobly.fi/tyopaikka/hullut-paivat-kausityontekija-stockmann-tampere-2725167",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The role is a retail sales position at an actual store, not an office/administrative job.",
     "id": "1b1e203e",
     "source": "jobly_communications",
     "posted_date": "N/A",
-    "deadline": "N/A",
+    "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
-  },
-  {
-    "title": "Viestinn\u00e4n asiantuntija",
-    "company": "Hae paikkaa",
-    "location": "Helsinki Region, Finland",
-    "url": "https://www.jobly.fi/tyopaikka/viestinnan-asiantuntija-2724960",
-    "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
-    "id": "7c321dee",
-    "source": "jobly_communications",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Recruiting Coordinator",
@@ -162251,13 +161966,13 @@
     "url": "https://www.linkedin.com/jobs/view/recruiting-coordinator-at-jobgether-4447903224",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job is located in Alpharetta, GA, United States, which does not match the target criteria of Finland.",
     "id": "d5e9ceff",
     "source": "linkedin_ww_coordinator",
-    "posted_date": "N/A",
+    "posted_date": "2026-07-23",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Erityisasiantuntija / Grant Writer, kansainv\u00e4linen TKI-hankevalmistelu",
@@ -162265,14 +161980,14 @@
     "location": "Helsinki Region, Finland",
     "url": "https://www.jobly.fi/tyopaikka/erityisasiantuntija-grant-writer-kansainvalinen-tki-hankevalmistelu-2725146",
     "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "matches_requirements": "maybe",
+    "reason": "The role involves grant writing for international R&D projects, which fits Manju's legal research and contract drafting background. However, it requires a higher-level degree than she currently has (a master's in Finnish law) and strong Finnish language skills (C1+). She is still completing her supplementary Finnish bar studies and has only B2 Finnish.",
     "id": "9c638ab4",
     "source": "jobly_coordinator",
     "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "deadline": "2026-08-24",
+    "description_file": "job_descriptions/hae_paikkaa_erityisasiantuntija___grant_wr_9c638ab4.txt",
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Receptionist / Front Desk Coordinator",
@@ -162281,13 +161996,13 @@
     "url": "https://www.linkedin.com/jobs/view/receptionist-front-desk-coordinator-at-caring-inc-4447691869",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job requires a specific technical degree (IT, engineering, science) as a hard requirement.",
     "id": "7b20a1bb",
     "source": "linkedin_ww_office_secretary",
     "posted_date": "N/A",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Medical Receptionist (Virtual)",
@@ -162296,43 +162011,13 @@
     "url": "https://www.linkedin.com/jobs/view/medical-receptionist-virtual-at-caring-inc-4447696782",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job requires fluency in English, which Manju does not have.",
     "id": "399cea08",
     "source": "linkedin_ww",
     "posted_date": "N/A",
-    "deadline": "N/A",
+    "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
-  },
-  {
-    "title": "Data Entry Specialist",
-    "company": "Caring INC",
-    "location": "United States",
-    "url": "https://www.linkedin.com/jobs/view/data-entry-specialist-at-caring-inc-4447689883",
-    "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
-    "id": "3b2a8b93",
-    "source": "linkedin_ww",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
-  },
-  {
-    "title": "Office Administrator",
-    "company": "Caring INC",
-    "location": "United States",
-    "url": "https://www.linkedin.com/jobs/view/office-administrator-at-caring-inc-4447690858",
-    "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
-    "id": "a8b2415a",
-    "source": "linkedin_ww",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Entry-Level Virtual Data Entry Clerk (Remote)",
@@ -162341,13 +162026,13 @@
     "url": "https://www.linkedin.com/jobs/view/entry-level-virtual-data-entry-clerk-remote-at-codevertex-talent-4445824890",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job is located in the United States, not Finland.",
     "id": "3db93c5b",
     "source": "linkedin_ww",
-    "posted_date": "N/A",
+    "posted_date": "2026-08-08",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Data Entry Admin Specialist (Remote)",
@@ -162356,58 +162041,13 @@
     "url": "https://ae.linkedin.com/jobs/view/data-entry-admin-specialist-remote-at-re-lytics-hires-4448133999",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job is located in Abu Dhabi, UAE, which does not match the candidate's requirement for a position in Finland.",
     "id": "48f967ad",
     "source": "linkedin_ww",
     "posted_date": "N/A",
-    "deadline": "N/A",
+    "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
-  },
-  {
-    "title": "Entry-level Virtual Data Entry Clerk (Remote)",
-    "company": "CodeVertex System",
-    "location": "United States",
-    "url": "https://www.linkedin.com/jobs/view/entry-level-virtual-data-entry-clerk-remote-at-codevertex-system-4445822915",
-    "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
-    "id": "0b62fc89",
-    "source": "linkedin_ww",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
-  },
-  {
-    "title": "Entry-Level Virtual Data Entry Clerk (Remote)",
-    "company": "CodeVertex System",
-    "location": "United States",
-    "url": "https://www.linkedin.com/jobs/view/entry-level-virtual-data-entry-clerk-remote-at-codevertex-system-4445819942",
-    "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
-    "id": "83b08545",
-    "source": "linkedin_ww",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
-  },
-  {
-    "title": "Entry-Level Virtual Data Entry Clerk (Remote)",
-    "company": "CodeVertex Careers",
-    "location": "United States",
-    "url": "https://www.linkedin.com/jobs/view/entry-level-virtual-data-entry-clerk-remote-at-codevertex-careers-4445828897",
-    "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
-    "id": "fa3f9665",
-    "source": "linkedin_ww",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Virtual Data Entry Clerk - Full Time (100% Remote)",
@@ -162416,13 +162056,13 @@
     "url": "https://www.linkedin.com/jobs/view/virtual-data-entry-clerk-full-time-100%25-remote-at-codevertex-system-4445833840",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job is located in the United States, which does not match Manju's target criteria of being open to remote work anywhere in Finland.",
     "id": "5fa3ca3c",
     "source": "linkedin_ww",
-    "posted_date": "N/A",
+    "posted_date": "2026-08-08",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Virtual Data Entry Clerk - Full Time (100% Remote)",
@@ -162431,28 +162071,13 @@
     "url": "https://www.linkedin.com/jobs/view/virtual-data-entry-clerk-full-time-100%25-remote-at-codevertex-careers-4445826902",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job is located in the United States, which is a hard rejection based on location.",
     "id": "f765cf5f",
     "source": "linkedin_ww",
-    "posted_date": "N/A",
+    "posted_date": "2026-08-08",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
-  },
-  {
-    "title": "Data Entry Operator Needed - Work From Home",
-    "company": "CodeVertex Careers",
-    "location": "United States",
-    "url": "https://www.linkedin.com/jobs/view/data-entry-operator-needed-work-from-home-at-codevertex-careers-4445819945",
-    "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
-    "id": "4f7171f1",
-    "source": "linkedin_ww",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Tuotannon toimihenkil\u00f6it\u00e4, useita rooleja",
@@ -162461,13 +162086,13 @@
     "url": "https://duunitori.fi/tyopaikat/tyo/tuotannon-toimihenkiloita-useita-rooleja-stsyo-20439242",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The role requires specific technical construction/engineering degrees (RKM, RI, DI) and experience in large public sector building projects. Manju's background is in law, not construction engineering.",
     "id": "765e5fb1",
     "source": "duunitori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
+    "posted_date": "2026-08-03",
+    "deadline": "2026-08-31",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Myyj\u00e4, Lahjamaa Koskikeskus Tampere",
@@ -162476,13 +162101,13 @@
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/e23284cb-9dea-4fee-9cb8-61b73b9b34ac/fi",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "This is a retail sales role at a shop, supermarket, or kiosk (myyj\u00c3\u00a4, kassa/cashier, myym\u00c3\u00a4l\u00c3\u00a4p\u00c3\u00a4\u00c3\u00a4llikk\u00c3\u00b6-assistentti) at a specific store location in Tampere. This is floor/counter retail work, not office/administrative work, even though the job description includes generic-sounding 'event coordinator' and 'social media assistant' keywords that might otherwise match Manju's IHO event-coordination experience. But this role is an in-store sales position at a specific store location (Koskikeskus Tampere), not an office-based event coordination or generalist administrative support job.",
     "id": "95139f9f",
     "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
+    "posted_date": "2026-08-03",
+    "deadline": "2026-08-30",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Kaivinkoneenkuljettaja, Turku",
@@ -162491,58 +162116,13 @@
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/75bb9e4c-04f0-4c3c-9821-1fdcd0a706d6/fi",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "Requires prior experience with excavator operation, which Manju does not have.",
     "id": "cc0f4cdc",
     "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
+    "posted_date": "2026-08-03",
+    "deadline": "2026-08-31",
     "description_file": null,
-    "needs_re_review": true
-  },
-  {
-    "title": "Taksinkuljettaja",
-    "company": "Taksinkuljettaja",
-    "location": "Sein\u00e4joki, Finland",
-    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/95019ad5-87b7-409c-87e4-54c5655d2d1c/fi",
-    "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
-    "id": "ad5f28c2",
-    "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
-  },
-  {
-    "title": "Putkiasentajia Keski-Suomeen",
-    "company": "Putkiasentajia Keski-Suomeen",
-    "location": "Keski, Finland",
-    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/1730405c-0511-42b1-a501-242ff968adbd/fi",
-    "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
-    "id": "efb5bd9d",
-    "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
-  },
-  {
-    "title": "Kokoonpanija, Pirkkala",
-    "company": "Kokoonpanija, Pirkkala",
-    "location": "Finland",
-    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/dd99b562-4eff-42ac-bc4f-af815e344e63/fi",
-    "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
-    "id": "15d080f0",
-    "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Autonasentaja",
@@ -162551,13 +162131,13 @@
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/9a10d5ba-5fd8-4b54-8287-19eaaad4a861/fi",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "Requires prior automotive technician experience, not a generalist office role.",
     "id": "3db07b42",
     "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
+    "posted_date": "3.8.2026, 11.20",
+    "deadline": "31.10.2026, 23.59",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Yritt\u00e4j\u00e4ksi R-kioskille Helsinkiin - Huippupaikat haussa!",
@@ -162566,13 +162146,13 @@
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/60c84719-d3b6-4b07-9624-396b875ad68e/fi",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The role is an R-kiosk franchise owner position, which requires specific retail and business ownership experience that Manju does not have. It is a commission-based entrepreneurial agent role, not generalist office work.",
     "id": "ee58e9da",
     "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
+    "posted_date": "2026-08-03",
+    "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Hyvinvointiagentti osa-aikainen (koulutamme teht\u00e4v\u00e4\u00e4n)",
@@ -162581,13 +162161,13 @@
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/2317661b-0be0-432d-be41-9b3eaec09fea/fi",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The role is for a part-time marketing and sales agent, which requires active enrollment and study towards a degree in an unrelated field (marketing & sales) as a hard requirement. The candidate already holds completed law degrees and is not currently enrolled in any other studies.",
     "id": "e334dcf0",
     "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
+    "posted_date": "2026-08-03",
+    "deadline": "2026-08-31",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Henkil\u00f6kohtainen avustaja",
@@ -162596,13 +162176,13 @@
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/53a25676-9d29-47f9-8491-a037be30d69b/fi",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "This is a personal home-care assistant role, not an office/administrative position.",
     "id": "a12bbfe5",
     "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
+    "posted_date": "2026-08-03",
+    "deadline": "2026-08-31",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Yritt\u00e4j\u00e4 Kajaani Soidinkadun R-kioskille!",
@@ -162611,13 +162191,13 @@
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/c6c023b5-c74e-4a96-a9c6-0d1b97e64314/fi",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The role is a retail sales position at an R-kiosk, which is floor/counter retail work, not office-based event coordination. Manju's IHO experience does not support this.",
     "id": "95499502",
     "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
+    "posted_date": "2026-08-03",
+    "deadline": "2026-09-06",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Hyvinvointiagentti (koulutamme teht\u00e4v\u00e4\u00e4n)",
@@ -162625,14 +162205,14 @@
     "location": "Kuopio, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/7e009ce3-d69d-4da7-abd9-8087c3d99c19/fi",
     "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "matches_requirements": "maybe",
+    "reason": "The role is a generalist office position that matches Manju's event coordination and customer service experience, but requires fluent Finnish which she does not have at C1 level. The job description also mentions 'koulutamme teht\u00e4v\u00e4\u00e4n' (we train for the job), suggesting some on-the-job training to reach proficiency.",
     "id": "200f5796",
     "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "posted_date": "2026-08-01",
+    "deadline": "Open until filled",
+    "description_file": "job_descriptions/hyvinvointiagentti___hyvinvointiagentti__koulutamme_200f5796.txt",
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Omamekaanikko Volvo korjaamolle",
@@ -162641,13 +162221,13 @@
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/fb89d006-8d6e-441b-9f2e-362f2f2f4cdb/fi",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The role requires specific auto repair experience, which Manju does not have.",
     "id": "093711c6",
     "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
+    "posted_date": "2026-08-03",
+    "deadline": "2026-09-30",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Henkil\u00f6kohtainen avustaja",
@@ -162656,13 +162236,13 @@
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/b7b1d3d5-16ad-455f-84fe-46ce35bcdcf8/fi",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "This is a personal home-care assistant role, not an office/administrative position.",
     "id": "f3f1b1a6",
     "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
+    "posted_date": "2026-08-03",
+    "deadline": "2026-08-31",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Buukkiagentti (koulutamme teht\u00e4v\u00e4\u00e4n)",
@@ -162670,14 +162250,14 @@
     "location": "Kuopio, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/4e646068-1f00-45b6-a38f-ec7b3e7232a1/fi",
     "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "matches_requirements": "maybe",
+    "reason": "The role is a generalist office position that fits Manju's background, but it requires fluent Finnish which she only has at B2/Intermediate level.",
     "id": "8b63ab49",
     "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "posted_date": "2026-08-03",
+    "deadline": "2026-08-31",
+    "description_file": "job_descriptions/buukkiagentti__koulu_buukkiagentti__koulutamme_teht_8b63ab49.txt",
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Yritt\u00e4j\u00e4 Espoo Kauklahti aseman R-kioskille!",
@@ -162686,13 +162266,13 @@
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/dfa11e5e-a295-40a1-ae74-c058f92d7cca/fi",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The role requires specific retail sales experience at a shop, supermarket, or kiosk (myyj\u00e4, kassa/cashier, myym\u00e4l\u00e4p\u00e4\u00e4llikk\u00f6-assistentti) \u00e2\u20ac\u201d this is floor/counter retail work, not office-based event coordination.",
     "id": "c4e601c3",
     "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
+    "posted_date": "2026-08-03",
+    "deadline": "2026-09-06",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Buukkiagentti osa-aikainen (koulutamme teht\u00e4v\u00e4\u00e4n)",
@@ -162700,14 +162280,14 @@
     "location": "Kuopio, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/7f37ed01-d9cf-4eeb-9915-ccc3685bc141/fi",
     "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "matches_requirements": "maybe",
+    "reason": "The role is a generalist office position that fits Manju's background, but it requires fluent Finnish which she does not have yet.",
     "id": "4803c420",
     "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "posted_date": "2026-08-03",
+    "deadline": "2026-08-31",
+    "description_file": "job_descriptions/buukkiagentti_osa_ai_buukkiagentti_osa_aikainen__ko_4803c420.txt",
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Rakennusty\u00f6ntekij\u00f6it\u00e4 Aurinkorannikolle",
@@ -162716,13 +162296,13 @@
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/5c2d87e7-df06-488b-8490-6344c94b36f3/fi",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job is for construction work, not office/administration.",
     "id": "51653a3f",
     "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
+    "posted_date": "2026-08-03",
+    "deadline": "2026-08-31",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Yritt\u00e4j\u00e4 Karkkilan Linja-autoaseman R-kioskille!",
@@ -162731,13 +162311,13 @@
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/d993b0b2-b2be-48f8-9035-5c45a26e876f/fi",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The role is an independent franchise owner position for a retail kiosk, requiring significant capital investment and business ownership experience. Manju does not have prior retail/food service ownership experience.",
     "id": "0a35d232",
     "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
+    "posted_date": "2026-08-03",
+    "deadline": "2026-09-06",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Myyntiagentti osa-aikainen (koulutamme teht\u00e4v\u00e4\u00e4n)",
@@ -162746,13 +162326,13 @@
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/e6d7daf0-281f-43a2-b5c1-2289e8011568/fi",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The role requires specific sales agent experience, not Manju's general office and event coordination background.",
     "id": "462090b8",
     "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
+    "posted_date": "2026-08-03",
+    "deadline": "2026-08-31",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Yritt\u00e4j\u00e4 Kirkkonummi Kirkkotallintien ja Aseman R-kioskeille!",
