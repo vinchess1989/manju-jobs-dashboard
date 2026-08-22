@@ -259083,5 +259083,53 @@
     "description_file": null,
     "eval_model": "local/hermes-3-llama-3.1-8b",
     "deletion_reason": "Requires US residency"
+  },
+  {
+    "title": "Corporate Recruiter",
+    "company": "Dexian",
+    "location": "United States",
+    "url": "https://www.linkedin.com/jobs/view/corporate-recruiter-at-dexian-4446435681",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "This role is based in Dallas, TX, USA and requires US residency, which does not match Manju's location.",
+    "id": "bbcc4f99",
+    "source": "linkedin_ww",
+    "posted_date": "2026-08-15",
+    "deadline": "Open until filled",
+    "description_file": null,
+    "eval_model": "local/hermes-3-llama-3.1-8b",
+    "deletion_reason": "Requires US residency"
+  },
+  {
+    "title": "Toimintaterapeutti",
+    "company": "Kainuun hyvinvointialue",
+    "location": "Oulu Region, Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/4ca1ce95-5d11-4591-bb61-4eb4e52f737e/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Requires a licensed toimintaterapeutti, which Manju does not have.",
+    "id": "a5fc0064",
+    "source": "tyomarkkinatori",
+    "posted_date": "2026-07-30",
+    "deadline": "2026-08-14",
+    "description_file": null,
+    "eval_model": "local/hermes-3-llama-3.1-8b",
+    "deletion_reason": "Deadline (2026-08-14) passed by more than 2 days and unreviewed"
+  },
+  {
+    "title": "Office Assistant",
+    "company": "USI Insurance Services",
+    "location": "Newark, NJ",
+    "url": "https://www.linkedin.com/jobs/view/office-assistant-at-usi-insurance-services-4369959674",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The role requires US residency, which Manju does not have.",
+    "id": "e93c4b6d",
+    "source": "linkedin_ww_office_secretary",
+    "posted_date": "2026-07-29",
+    "deadline": "N/A",
+    "description_file": null,
+    "eval_model": "local/hermes-3-llama-3.1-8b",
+    "deletion_reason": "Requires US residency"
   }
 ]
