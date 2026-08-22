@@ -158966,13 +158966,13 @@
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/e2f9c1e7-bde1-45c5-9b8f-0fa171ec0e3c/fi",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "This is a delivery driver position requiring a valid driver's license and experience driving in urban areas, which Manju does not have.",
     "id": "2c5bc714",
     "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
+    "posted_date": "2026-08-02",
+    "deadline": "2026-08-31",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Administrative Assistant",
@@ -158981,28 +158981,13 @@
     "url": "https://www.linkedin.com/jobs/view/administrative-assistant-at-sundayy-4447896161",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job is located in the United States, which does not match Manju's target of anywhere in Finland.",
     "id": "eb73f4d0",
     "source": "linkedin_ww_office_secretary",
-    "posted_date": "N/A",
-    "deadline": "N/A",
+    "posted_date": "2026-07-23",
+    "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
-  },
-  {
-    "title": "Data Entry Clerk / Typing - Remote Work From Home",
-    "company": "CodeVertex Talent",
-    "location": "United States",
-    "url": "https://www.linkedin.com/jobs/view/data-entry-clerk-typing-remote-work-from-home-at-codevertex-talent-4445839113",
-    "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
-    "id": "7cb1b0f1",
-    "source": "linkedin_ww",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Data Entry Clerk - Typing - Work From Home",
@@ -159011,13 +158996,13 @@
     "url": "https://www.linkedin.com/jobs/view/data-entry-clerk-typing-work-from-home-at-codevertex-careers-4445839114",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job is located in the United States, which does not match Manju's target criteria of being in Finland.",
     "id": "9aa65536",
     "source": "linkedin_ww",
-    "posted_date": "N/A",
+    "posted_date": "2026-08-15",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Data Entry Clerk - Part Time Typing",
@@ -159026,28 +159011,13 @@
     "url": "https://www.linkedin.com/jobs/view/data-entry-clerk-part-time-typing-at-codevertex-careers-4445819949",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The role requires specific technical degree expertise (data entry, typing) as a hard requirement.",
     "id": "ebefdbc6",
     "source": "linkedin_ww",
-    "posted_date": "N/A",
+    "posted_date": "2026-08-15",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
-  },
-  {
-    "title": "Data Entry Clerk - Part Time Typing",
-    "company": "CodeVertex Talent",
-    "location": "United States",
-    "url": "https://www.linkedin.com/jobs/view/data-entry-clerk-part-time-typing-at-codevertex-talent-4445831818",
-    "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
-    "id": "32106206",
-    "source": "linkedin_ww",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Data Entry Clerk - Typing - Work From Home",
@@ -159056,28 +159026,13 @@
     "url": "https://www.linkedin.com/jobs/view/data-entry-clerk-typing-work-from-home-at-codevertex-talent-4445835738",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The role requires specific technical degree (IT) experience as a hard requirement, which the candidate does not have.",
     "id": "5fb85b4d",
     "source": "linkedin_ww",
-    "posted_date": "N/A",
+    "posted_date": "2026-08-15",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
-  },
-  {
-    "title": "Data Entry Clerk / Typing - Work From Home",
-    "company": "CodeVertex System",
-    "location": "United States",
-    "url": "https://www.linkedin.com/jobs/view/data-entry-clerk-typing-work-from-home-at-codevertex-system-4445825917",
-    "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
-    "id": "ca3cb8f9",
-    "source": "linkedin_ww",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Data Entry Clerk - Typist / Full-time (Remote)",
@@ -159086,28 +159041,13 @@
     "url": "https://www.linkedin.com/jobs/view/data-entry-clerk-typist-full-time-remote-at-codevertex-careers-4445830891",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job requires a specific technical degree (IT, engineering) as a hard requirement.",
     "id": "4f147176",
     "source": "linkedin_ww",
     "posted_date": "N/A",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
-  },
-  {
-    "title": "Data Entry Clerk - Typing",
-    "company": "CodeVertex Talent",
-    "location": "United States",
-    "url": "https://www.linkedin.com/jobs/view/data-entry-clerk-typing-at-codevertex-talent-4445830893",
-    "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
-    "id": "477a8d9c",
-    "source": "linkedin_ww",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Data Entry - Typist Part-Time - Work",
@@ -159116,13 +159056,13 @@
     "url": "https://www.linkedin.com/jobs/view/data-entry-typist-part-time-work-at-codevertex-operations-4445821933",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job is located in the United States, which does not match Manju's target criteria of working anywhere within Finland.",
     "id": "50ad031a",
     "source": "linkedin_ww",
     "posted_date": "N/A",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Entry-Level Data Entry Clerk Admin (Fully Remote)",
@@ -159131,13 +159071,13 @@
     "url": "https://www.linkedin.com/jobs/view/entry-level-data-entry-clerk-admin-fully-remote-at-codevertex-operations-4445827869",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job is located in Fishers, Indiana, USA, which does not match Manju's target of anywhere in Finland.",
     "id": "77c53a8a",
     "source": "linkedin_ww",
-    "posted_date": "N/A",
+    "posted_date": "2026-08-15",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Virtual Data Entry Clerk Full Time (100% Remote)",
@@ -159145,29 +159085,14 @@
     "location": "United States",
     "url": "https://www.linkedin.com/jobs/view/virtual-data-entry-clerk-full-time-100%25-remote-at-codevertex-operations-4445839115",
     "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "matches_requirements": "yes",
+    "reason": "This remote data entry clerk role fits Manju's generalist office and coordination skills, including her experience with digital service deployment.",
     "id": "b3ed8ddc",
     "source": "linkedin_ww_p4",
     "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
-  },
-  {
-    "title": "Data Entry Clerk - Typing - Work From Home",
-    "company": "CodeVertex Operations",
-    "location": "United States",
-    "url": "https://www.linkedin.com/jobs/view/data-entry-clerk-typing-work-from-home-at-codevertex-operations-4445830890",
-    "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
-    "id": "58bb2c1c",
-    "source": "linkedin_ww",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "deadline": "Open until filled",
+    "description_file": "job_descriptions/codevertex_operation_virtual_data_entry_clerk_full__b3ed8ddc.txt",
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Virtual Data Entry Clerk Full Time (100% Remote)",
@@ -159176,28 +159101,28 @@
     "url": "https://www.linkedin.com/jobs/view/virtual-data-entry-clerk-full-time-100%25-remote-at-codevertex-system-4445840008",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job is located in the United States, which is a hard rejection based on location.",
     "id": "b01cd79b",
     "source": "linkedin_ww",
-    "posted_date": "N/A",
+    "posted_date": "2026-08-15",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Rakennusalan ammattilainen listoitust\u00f6ihin",
     "company": "Extract via OpenClaw",
-    "location": "Extract via OpenClaw",
+    "location": "Oulu Region, Finland",
     "url": "https://fi.indeed.com/rc/clk?jk=de9cdb4942b2000d",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The role requires specific construction industry experience as a hard requirement, which Manju does not have.",
     "id": "3c9ddb31",
     "source": "indeed_p2",
     "posted_date": "N/A",
-    "deadline": "N/A",
+    "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Ohjaaja, vammaisten palvelut, Rovaniemi",
@@ -159206,13 +159131,13 @@
     "url": "https://fi.indeed.com/rc/clk?jk=2d6fb7aded280b0c",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "This role requires a specific vocational degree (henkil\u00f6kohtainen avustaja) for hands-on daily-living assistance with hygiene, mobility, cooking, cleaning and errands for disabled/elderly individuals. Manju's background is in law and event coordination, not personal/home-care assistance.",
     "id": "f4f22a69",
     "source": "indeed_p2",
     "posted_date": "N/A",
-    "deadline": "N/A",
+    "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Ty\u00f6llisyysasiantuntija, aikuisten palvelut, 3 paikkaa",
@@ -159221,13 +159146,13 @@
     "url": "https://fi.indeed.com/rc/clk?jk=8f76acbdc6d1c412",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The role requires Finnish citizenship as a prerequisite, which Manju does not have.",
     "id": "b0464a6e",
     "source": "indeed_p2",
     "posted_date": "N/A",
-    "deadline": "N/A",
+    "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Henkil\u00f6kohtainen avustaja",
@@ -159236,13 +159161,13 @@
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/dfdadaa7-8cd0-42de-aa75-4d5334847404/fi",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "This is a personal caregiver role requiring hands-on daily living assistance, not office/administrative work.",
     "id": "e9264b04",
     "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
+    "posted_date": "2026-08-02",
+    "deadline": "2026-08-21",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Koulutettu hieroja, Fysiomekka Oy, Kuntokeskus Fit Skatta, Helsinki",
@@ -159251,13 +159176,13 @@
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/63d126c4-dff4-4d32-acf9-773d71f72ba0/fi",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The role is for a trained massage therapist, not an office-based generalist administrative position.",
     "id": "17c804a6",
     "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
+    "posted_date": "2.8.2026, 15.48",
+    "deadline": "31.8.2026, 23.59",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Koulutettu hieroja, Fysiomekka Oy, Fit Porttipuisto, Vantaa",
@@ -159266,13 +159191,13 @@
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/158eb4c7-404f-41c6-9b04-3b065149e70c/fi",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "This is a physical therapy gig role, not an office/administrative position.",
     "id": "19973f06",
     "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
+    "posted_date": "2026-08-02",
+    "deadline": "2026-08-31",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Koulutettu hieroja, Fysiomekka Oy, Vanha Linjuri, Kuopio",
@@ -159281,13 +159206,13 @@
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/2325bd58-810a-48be-9365-90ff59f55d28/fi",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The role requires a qualified massage therapist, which Manju does not have.",
     "id": "986f606d",
     "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
+    "posted_date": "2026-08-02",
+    "deadline": "2026-08-31",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Interim, Specialist, Regulatory",
@@ -159296,13 +159221,13 @@
     "url": "https://www.linkedin.com/jobs/view/interim-specialist-regulatory-at-e-l-f-beauty-4446398040",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job is located in New York, NY, USA, which does not match Manju's target criteria of Finland-only roles.",
     "id": "1f3d0e69",
     "source": "linkedin_ww_compliance",
-    "posted_date": "N/A",
+    "posted_date": "2026-08-19",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Executive Project Assistant",
@@ -159311,13 +159236,13 @@
     "url": "https://www.linkedin.com/jobs/view/executive-project-assistant-at-dallas-bull-inc-4447893235",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job is located in Florida, United States, which does not match Manju's Finnish job search criteria.",
     "id": "9939a02f",
     "source": "linkedin_ww_communications",
     "posted_date": "N/A",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Scrum Master",
@@ -159326,13 +159251,13 @@
     "url": "https://www.linkedin.com/jobs/view/scrum-master-at-haystack-4445817402",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job is located in the United States, not Finland.",
     "id": "0b72083e",
     "source": "linkedin_ww",
-    "posted_date": "N/A",
+    "posted_date": "2026-08-15",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Data Entry - Typist Part-Time - Work",
@@ -159341,13 +159266,13 @@
     "url": "https://www.linkedin.com/jobs/view/data-entry-typist-part-time-work-at-codevertex-talent-4445826906",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job is located in the United States, which does not match Manju's target of anywhere in Finland.",
     "id": "1a3586c1",
     "source": "linkedin_ww",
     "posted_date": "N/A",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Data Entry Clerk / Typing - Work From Home",
@@ -159356,13 +159281,13 @@
     "url": "https://www.linkedin.com/jobs/view/data-entry-clerk-typing-work-from-home-at-codevertex-talent-4445819946",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job is located in the United States, which does not match Manju's target Finland-only location.",
     "id": "c1c86543",
     "source": "linkedin_ww",
     "posted_date": "N/A",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Junior Designer",
@@ -159371,13 +159296,13 @@
     "url": "https://www.linkedin.com/jobs/view/junior-designer-at-haystack-4445827259",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job is located in Miami, FL, which is in the United States, not Finland.",
     "id": "446b23e6",
     "source": "linkedin_ww",
-    "posted_date": "N/A",
+    "posted_date": "2026-08-15",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Data Entry - Typist Part-Time - Remote",
@@ -159386,13 +159311,13 @@
     "url": "https://www.linkedin.com/jobs/view/data-entry-typist-part-time-remote-at-codevertex-operations-4445839106",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job requires a specific technical degree (IT) as a hard requirement, which is not allowed per the job requirements.",
     "id": "c371fa78",
     "source": "linkedin_ww",
     "posted_date": "N/A",
-    "deadline": "N/A",
+    "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Data Entry Clerk - Typing - Work From Home",
@@ -159401,13 +159326,13 @@
     "url": "https://www.linkedin.com/jobs/view/data-entry-clerk-typing-work-from-home-at-codevertex-system-4445835730",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job is located in the United States, which is a hard rejection based on location.",
     "id": "22216957",
     "source": "linkedin_ww",
-    "posted_date": "N/A",
+    "posted_date": "2026-08-15",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Entry Level Data Entry Clerk (100% Remote)",
@@ -159416,13 +159341,13 @@
     "url": "https://www.linkedin.com/jobs/view/entry-level-data-entry-clerk-100%25-remote-at-codevertex-operations-4445832824",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job requires strong English language expertise, which is a good match for Manju's background.",
     "id": "bdc77d7f",
     "source": "linkedin_ww",
     "posted_date": "N/A",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Data Entry - Entry Level",
@@ -159431,13 +159356,13 @@
     "url": "https://www.linkedin.com/jobs/view/data-entry-entry-level-at-codevertex-careers-4445826907",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job requires a specific technical degree (IT) as a hard requirement, which is not allowed per the requirements.",
     "id": "68c450e2",
     "source": "linkedin_ww",
     "posted_date": "N/A",
-    "deadline": "N/A",
+    "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Data Entry Clerk - Typist / Full-time (Remote)",
@@ -159446,13 +159371,13 @@
     "url": "https://www.linkedin.com/jobs/view/data-entry-clerk-typist-full-time-remote-at-codevertex-talent-4445839119",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job requires a specific technical degree (IT, engineering, science) as a hard requirement.",
     "id": "81f2d4d8",
     "source": "linkedin_ww",
     "posted_date": "N/A",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Data Entry Clerk / Typing - Work From Home",
@@ -159461,13 +159386,13 @@
     "url": "https://www.linkedin.com/jobs/view/data-entry-clerk-typing-work-from-home-at-codevertex-operations-4445830892",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job is a US-based data entry clerk role, requiring work from home in the United States. Manju Krishna Haridas is open to relocating anywhere within Finland for employment, but this remote US position does not match her relocation criteria.",
     "id": "231507b4",
     "source": "linkedin_ww",
-    "posted_date": "N/A",
-    "deadline": "N/A",
+    "posted_date": "2026-08-15",
+    "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Data Entry Clerk - Typist / Full-time (Remote)",
@@ -159476,13 +159401,13 @@
     "url": "https://www.linkedin.com/jobs/view/data-entry-clerk-typist-full-time-remote-at-codevertex-system-4445840016",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job is located in the United States, not Finland.",
     "id": "1b95e9f1",
     "source": "linkedin_ww",
-    "posted_date": "N/A",
+    "posted_date": "2026-08-15",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Data Entry Clerk - Typing",
@@ -159491,13 +159416,13 @@
     "url": "https://www.linkedin.com/jobs/view/data-entry-clerk-typing-at-codevertex-system-4445826908",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job is located in the United States, which is a hard rejection based on location.",
     "id": "3c30c851",
     "source": "linkedin_ww",
-    "posted_date": "N/A",
+    "posted_date": "2026-08-15",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Data Entry Clerk - Typing - Part Time Entry Level",
@@ -159506,13 +159431,13 @@
     "url": "https://www.linkedin.com/jobs/view/data-entry-clerk-typing-part-time-entry-level-at-codevertex-careers-4445838099",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job requires a specific technical degree (IT, engineering) as a hard requirement.",
     "id": "66259312",
     "source": "linkedin_ww",
     "posted_date": "N/A",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Data Entry Clerk - Typist / Full-time (Remote)",
@@ -159521,13 +159446,13 @@
     "url": "https://www.linkedin.com/jobs/view/data-entry-clerk-typist-full-time-remote-at-codevertex-operations-4445822922",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job requires strong English language expertise, which Manju already possesses at an expert level (C2). The role does not match her Finnish-only B2 intermediate proficiency.",
     "id": "d3ef0b9c",
     "source": "linkedin_ww",
     "posted_date": "N/A",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Data Entry Assistant (100% Remote)",
@@ -159536,28 +159461,13 @@
     "url": "https://www.linkedin.com/jobs/view/data-entry-assistant-100%25-remote-at-codevertex-talent-4445827865",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job requires a specific technical degree (computer science) as a hard requirement, which is not met by Manju's background.",
     "id": "263497a3",
     "source": "linkedin_ww",
     "posted_date": "N/A",
-    "deadline": "N/A",
+    "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
-  },
-  {
-    "title": "Data Entry Clerk - Typist - Work From Home",
-    "company": "CodeVertex Operations",
-    "location": "United States",
-    "url": "https://www.linkedin.com/jobs/view/data-entry-clerk-typist-work-from-home-at-codevertex-operations-4445839107",
-    "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
-    "id": "db9321db",
-    "source": "linkedin_ww",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Virtual Data Entry (100% Remote)",
@@ -159566,13 +159476,13 @@
     "url": "https://www.linkedin.com/jobs/view/virtual-data-entry-100%25-remote-at-codevertex-system-4445828892",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job is located in the United States, which is a non-Finland country-specific posting.",
     "id": "0143cf50",
     "source": "linkedin_ww",
-    "posted_date": "N/A",
+    "posted_date": "2026-08-22",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Virtual Data Entry (100% Remote)",
@@ -159581,13 +159491,13 @@
     "url": "https://www.linkedin.com/jobs/view/virtual-data-entry-100%25-remote-at-codevertex-careers-4445829832",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job is located in the United States, which does not match Manju's target criteria of anywhere within Finland.",
     "id": "77b67366",
     "source": "linkedin_ww",
     "posted_date": "N/A",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Data Entry Clerk - Part Time Typing",
@@ -159596,13 +159506,13 @@
     "url": "https://www.linkedin.com/jobs/view/data-entry-clerk-part-time-typing-at-codevertex-operations-4445824892",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job requires a specific technical degree (computer science) as a hard requirement, which is not matched by the candidate's background.",
     "id": "6994929a",
     "source": "linkedin_ww_p2",
     "posted_date": "N/A",
-    "deadline": "N/A",
+    "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Data Entry Clerk - Typing - Part Time Entry Level",
@@ -159611,13 +159521,13 @@
     "url": "https://www.linkedin.com/jobs/view/data-entry-clerk-typing-part-time-entry-level-at-codevertex-operations-4445839118",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The role requires a specific technical degree (IT, engineering, science) as a hard requirement.",
     "id": "83a233d1",
     "source": "linkedin_ww_p3",
     "posted_date": "N/A",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Personlig assistent f\u00f6r inhopp och extraarbete",
@@ -159626,103 +159536,13 @@
     "url": "https://fi.indeed.com/rc/clk?jk=d1c84267f20b865b",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "This is a personal home-care assistant role, which requires hands-on daily-living assistance with hygiene, mobility, cooking, cleaning and errands for disabled/elderly individuals in their homes. Manju's event coordination experience does not qualify her for this type of direct physical care work.",
     "id": "4a53f139",
     "source": "indeed_p2",
     "posted_date": "N/A",
-    "deadline": "N/A",
+    "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
-  },
-  {
-    "title": "Yritt\u00e4j\u00e4n\u00e4 oman ty\u00f6n ohella \u2013 Lis\u00e4tuloja sinun aikataulullasi | Siivous-, piha- ja kotipalvelut",
-    "company": "Sevalia Oy",
-    "location": "Helsinki Region, Finland",
-    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/a66621ef-3df2-40bd-9b3f-17613c405db5/fi",
-    "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
-    "id": "7df8368d",
-    "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
-  },
-  {
-    "title": "Yritt\u00e4j\u00e4n\u00e4 oman ty\u00f6n ohella \u2013 Lis\u00e4tuloja sinun aikataulullasi | Siivous-, piha- ja kotipalvelut",
-    "company": "Sevalia Oy",
-    "location": "Helsinki Region, Finland",
-    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/5cbe6e3a-1370-4e30-b71e-16fe4922993c/fi",
-    "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
-    "id": "00d44411",
-    "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
-  },
-  {
-    "title": "Yritt\u00e4j\u00e4n\u00e4 oman ty\u00f6n ohella \u2013 Lis\u00e4tuloja sinun aikataulullasi | Siivous-, piha- ja kotipalvelut",
-    "company": "Sevalia Oy",
-    "location": "Helsinki Region, Finland",
-    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/62804268-3125-44e5-bce5-f264e3effce3/fi",
-    "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
-    "id": "17654790",
-    "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
-  },
-  {
-    "title": "Yritt\u00e4j\u00e4n\u00e4 oman ty\u00f6n ohella \u2013 Lis\u00e4tuloja sinun aikataulullasi | Siivous-, piha- ja kotipalvelut",
-    "company": "Sevalia Oy",
-    "location": "Helsinki Region, Finland",
-    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/eec418bf-47fd-4006-b13e-075dd091d7e0/fi",
-    "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
-    "id": "83f12383",
-    "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
-  },
-  {
-    "title": "Yritt\u00e4j\u00e4n\u00e4 oman ty\u00f6n ohella \u2013 Lis\u00e4tuloja sinun aikataulullasi | Siivous-, piha- ja kotipalvelut",
-    "company": "Sevalia Oy",
-    "location": "Helsinki Region, Finland",
-    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/a48fcc48-7173-404f-a37d-3489d37414d6/fi",
-    "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
-    "id": "22921eb8",
-    "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
-  },
-  {
-    "title": "Yritt\u00e4j\u00e4n\u00e4 oman ty\u00f6n ohella \u2013 Lis\u00e4tuloja sinun aikataulullasi | Siivous-, piha- ja kotipalvelut",
-    "company": "Sevalia Oy",
-    "location": "Helsinki Region, Finland",
-    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/fdb5907d-5eb1-4270-812b-d60a3950733e/fi",
-    "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
-    "id": "e3c4c22a",
-    "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "DESIGNER \u2022 FUTURE NEED",
@@ -159731,13 +159551,13 @@
     "url": "https://www.linkedin.com/jobs/view/designer-%E2%80%A2-future-need-at-favorite-records-4448106018",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job is located in Indiana, United States, which does not match the candidate's requirement for a Finland-based position.",
     "id": "e3a9b22c",
     "source": "linkedin_ww",
     "posted_date": "N/A",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Data Entry Clerk - Typing",
@@ -159746,13 +159566,13 @@
     "url": "https://www.linkedin.com/jobs/view/data-entry-clerk-typing-at-codevertex-careers-4445829829",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job requires a specific technical degree (IT) as a hard requirement, which is not met by the candidate's background.",
     "id": "5d89f58e",
     "source": "linkedin_ww",
     "posted_date": "N/A",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Data Entry - Entry Level",
@@ -159761,13 +159581,13 @@
     "url": "https://www.linkedin.com/jobs/view/data-entry-entry-level-at-codevertex-talent-4445820901",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job requires a specific technical degree (IT, engineering) as a hard requirement.",
     "id": "a258adcd",
     "source": "linkedin_ww",
     "posted_date": "N/A",
-    "deadline": "N/A",
+    "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Entry Level Data Entry (Fully Remote)",
@@ -159776,13 +159596,13 @@
     "url": "https://www.linkedin.com/jobs/view/entry-level-data-entry-fully-remote-at-codevertex-system-4445827870",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job is located in the United States, which does not match Manju's target of anywhere in Finland.",
     "id": "f0d3eb59",
     "source": "linkedin_ww",
     "posted_date": "N/A",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Entry Level Data Entry (Fully Remote)",
@@ -159791,13 +159611,13 @@
     "url": "https://www.linkedin.com/jobs/view/entry-level-data-entry-fully-remote-at-codevertex-careers-4445822918",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job requires a specific technical degree (IT, engineering, science) as a hard requirement.",
     "id": "314c3982",
     "source": "linkedin_ww",
     "posted_date": "N/A",
-    "deadline": "N/A",
+    "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Work From Home Data Entry Clerk / Typing",
@@ -159806,13 +159626,13 @@
     "url": "https://www.linkedin.com/jobs/view/work-from-home-data-entry-clerk-typing-at-codevertex-talent-4445822917",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job requires specific technical degree experience (IT, engineering) as a hard requirement.",
     "id": "2548dfcc",
     "source": "linkedin_ww",
-    "posted_date": "N/A",
+    "posted_date": "2026-08-15",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Data Entry Clerk - Typist - Work From Home",
@@ -159821,13 +159641,13 @@
     "url": "https://www.linkedin.com/jobs/view/data-entry-clerk-typist-work-from-home-at-codevertex-talent-4445818985",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job is located in the United States, which does not match Manju's target criteria of working in Finland.",
     "id": "4d9ed5d8",
     "source": "linkedin_ww",
-    "posted_date": "N/A",
+    "posted_date": "2026-08-15",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Data Entry Clerk - Typist - Work From Home",
@@ -159836,13 +159656,13 @@
     "url": "https://www.linkedin.com/jobs/view/data-entry-clerk-typist-work-from-home-at-codevertex-system-4445826899",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job is located in the United States, which is a hard rejection based on location.",
     "id": "d5822755",
     "source": "linkedin_ww",
-    "posted_date": "N/A",
+    "posted_date": "2026-08-15",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Data Entry Clerk - Typist - Work From Home",
@@ -159851,13 +159671,13 @@
     "url": "https://www.linkedin.com/jobs/view/data-entry-clerk-typist-work-from-home-at-codevertex-careers-4445822919",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job is located in the United States, which does not match Manju's target of anywhere in Finland.",
     "id": "a58bd695",
     "source": "linkedin_ww",
-    "posted_date": "N/A",
+    "posted_date": "2026-08-15",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Data Entry Clerk - Part Time Typing",
@@ -159866,13 +159686,13 @@
     "url": "https://www.linkedin.com/jobs/view/data-entry-clerk-part-time-typing-at-codevertex-system-4445840002",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job requires specific technical skills (typing speed of 80 WPM) and is located in the United States, not Finland.",
     "id": "7b2d3838",
     "source": "linkedin_ww",
     "posted_date": "N/A",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Data Entry - Entry Level",
@@ -159881,13 +159701,13 @@
     "url": "https://www.linkedin.com/jobs/view/data-entry-entry-level-at-codevertex-system-4445820906",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job requires a specific technical degree (IT, computer science) as a hard requirement.",
     "id": "e0b0a1fa",
     "source": "linkedin_ww",
     "posted_date": "N/A",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Virtual Assistant - Data Entry Jr (Part Time)",
@@ -159896,13 +159716,13 @@
     "url": "https://www.linkedin.com/jobs/view/virtual-assistant-data-entry-jr-part-time-at-codevertex-talent-4445835739",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job is located in Green Bay, Wisconsin, USA, not Finland.",
     "id": "8ab5618a",
     "source": "linkedin_ww",
-    "posted_date": "N/A",
+    "posted_date": "2026-08-18",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Entry Level Data Entry Clerk (100% Remote)",
@@ -159911,13 +159731,13 @@
     "url": "https://www.linkedin.com/jobs/view/entry-level-data-entry-clerk-100%25-remote-at-codevertex-talent-4445816997",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job is located in the United States, not Finland.",
     "id": "59ace280",
     "source": "linkedin_ww",
-    "posted_date": "N/A",
-    "deadline": "N/A",
+    "posted_date": "2026-08-15",
+    "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Entry Level Data Entry (Fully Remote)",
@@ -159926,13 +159746,13 @@
     "url": "https://www.linkedin.com/jobs/view/entry-level-data-entry-fully-remote-at-codevertex-operations-4445828894",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job requires a specific technical degree (data entry clerk) as a hard requirement, which does not match Manju's profile.",
     "id": "b87a9b59",
     "source": "linkedin_ww",
     "posted_date": "N/A",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Data Entry Clerk (100% Remote) - Entry Level",
@@ -159941,58 +159761,28 @@
     "url": "https://www.linkedin.com/jobs/view/data-entry-clerk-100%25-remote-entry-level-at-codevertex-system-4445827871",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The role requires strong English language expertise, which is a match for this candidate's skills.",
     "id": "fc36d0fa",
     "source": "linkedin_ww_p2",
     "posted_date": "N/A",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Logistiikkaty\u00f6ntekij\u00e4 Tuusula, Hyryl\u00e4",
     "company": "Extract via OpenClaw",
-    "location": "Extract via OpenClaw",
+    "location": "Helsinki Region, Finland",
     "url": "https://fi.indeed.com/rc/clk?jk=050684329793bc72",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The role is a logistics worker position requiring warehouse and forklift experience, not an office/administrative job.",
     "id": "ba3f07cc",
     "source": "indeed_p2",
     "posted_date": "N/A",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
-  },
-  {
-    "title": "Osa-aikainen puhelinmyyj\u00e4 | Iltavuorot | 15\u201325 h / viikko",
-    "company": "Osa-aikainen puhelinmyyj\u00e4 | Iltavuorot | 15\u201325 h / viikko",
-    "location": "Helsinki Region, Finland",
-    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/84760b16-4a44-4000-b685-edadaff306e3/fi",
-    "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
-    "id": "23fb9bd9",
-    "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
-  },
-  {
-    "title": "Asiakastapaamisten sopija / buukkari (osa-aikainen) | 15\u201325 h / viikko",
-    "company": "Asiakastapaamisten sopija / buukkari (osa-aikainen) | 15\u201325 h / viikko",
-    "location": "Helsinki Region, Finland",
-    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/365c392a-1d57-491a-ab9f-9d20c52970c0/fi",
-    "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
-    "id": "254370e4",
-    "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Asiakastapaamisten sopija / buukkari (osa-aikainen) | 15\u201325 h / viikko",
@@ -160001,13 +159791,13 @@
     "url": "https://www.jobly.fi/tyopaikka/asiakastapaamisten-sopija-buukkari-osa-aikainen-15-25-h-viikko-2724827",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The role is commission-based telesales for security systems, requiring active cold-calling to sell products/services by phone. This is outbound telemarketing/cold-calling sales work, not office/administrative event coordination.",
     "id": "97f034a4",
     "source": "jobly",
-    "posted_date": "N/A",
-    "deadline": "N/A",
+    "posted_date": "2026-08-16",
+    "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Osa-aikainen puhelinmyyj\u00e4 | Iltavuorot | 15\u201325 h / viikko",
@@ -160016,13 +159806,13 @@
     "url": "https://www.jobly.fi/tyopaikka/osa-aikainen-puhelinmyyja-iltavuorot-15-25-h-viikko-2724826",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The role is outbound telesales, not a generalist office/service role.",
     "id": "e9e207ce",
     "source": "jobly",
-    "posted_date": "N/A",
-    "deadline": "N/A",
+    "posted_date": "2026-08-16",
+    "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Event Planner (Remote)",
@@ -160031,13 +159821,13 @@
     "url": "https://www.linkedin.com/jobs/view/event-planner-remote-at-jobs-ai-4447879758",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job is located in the United States, not Finland.",
     "id": "a3e2c520",
     "source": "linkedin_ww_event_coordinator",
-    "posted_date": "N/A",
+    "posted_date": "2026-08-19",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "FREELANCERS",
@@ -160046,13 +159836,13 @@
     "url": "https://www.linkedin.com/jobs/view/freelancers-at-next-reels-4448102207",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The role requires specific technical skills in sound grading, editing, and other areas that Manju does not have.",
     "id": "e33a6662",
     "source": "linkedin_ww",
-    "posted_date": "N/A",
+    "posted_date": "2026-08-08",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Data Entry Clerk / Typing - Remote Work From Home",
@@ -160060,29 +159850,14 @@
     "location": "United States",
     "url": "https://www.linkedin.com/jobs/view/data-entry-clerk-typing-remote-work-from-home-at-codevertex-careers-4445830897",
     "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "matches_requirements": "yes",
+    "reason": "The role is a generalist office position requiring data entry and typing skills, which fits Manju's background.",
     "id": "ce2a8a0e",
     "source": "linkedin_ww",
-    "posted_date": "N/A",
+    "posted_date": "2026-08-15",
     "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
-  },
-  {
-    "title": "Entry Level Data Entry (Fully Remote)",
-    "company": "CodeVertex Talent",
-    "location": "United States",
-    "url": "https://www.linkedin.com/jobs/view/entry-level-data-entry-fully-remote-at-codevertex-talent-4445821940",
-    "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
-    "id": "b01c5bb1",
-    "source": "linkedin_ww",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "description_file": "job_descriptions/codevertex_careers_data_entry_clerk___typing___re_ce2a8a0e.txt",
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Work From Home Online Typist",
@@ -160091,13 +159866,13 @@
     "url": "https://www.linkedin.com/jobs/view/work-from-home-online-typist-at-codevertex-system-4445823920",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job requires a specific technical degree (computer science) as a hard requirement, which is not met by the candidate's background.",
     "id": "d8287719",
     "source": "linkedin_ww",
     "posted_date": "N/A",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Data Entry - Typist Part-Time - Remote",
@@ -160106,13 +159881,13 @@
     "url": "https://www.linkedin.com/jobs/view/data-entry-typist-part-time-remote-at-codevertex-system-4445821939",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job requires a specific technical degree (computer science) as a hard requirement, which is not matched by Manju's background.",
     "id": "229175c7",
     "source": "linkedin_ww",
     "posted_date": "N/A",
-    "deadline": "N/A",
+    "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "QA/QC Engineer",
@@ -160121,13 +159896,13 @@
     "url": "https://fi.linkedin.com/jobs/view/qa-qc-engineer-at-whitewater-group-4446741238",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The role requires a Level 7/8 degree in Mechanical, Chemical, or Process Engineering, or equivalent experience. Manju does not have this specific technical engineering background.",
     "id": "a9ff0479",
     "source": "linkedin_fi_compliance",
-    "posted_date": "N/A",
+    "posted_date": "2026-08-01",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Full Stack Software Engineer",
@@ -160136,13 +159911,13 @@
     "url": "https://fi.linkedin.com/jobs/view/full-stack-software-engineer-at-trimble-inc-4436764303",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The role requires a specific technical degree (software development, C#, .NET, modern web frameworks) as a hard requirement.",
     "id": "968337fe",
     "source": "linkedin_fin",
-    "posted_date": "N/A",
+    "posted_date": "2026-07-25",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Full Stack Software Engineer",
@@ -160151,13 +159926,13 @@
     "url": "https://fi.linkedin.com/jobs/view/full-stack-software-engineer-at-trimble-inc-4436764304",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The role requires specific technical degrees (C#, .NET, WPF) as hard requirements.",
     "id": "0a34b70d",
     "source": "linkedin_fin",
-    "posted_date": "N/A",
+    "posted_date": "2026-07-25",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "grouter",
@@ -160166,13 +159941,13 @@
     "url": "https://ca.linkedin.com/jobs/view/grouter-at-integrity-shoring-and-civil-4400976022",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "This grouting role requires physical labor, handling heavy loads and working outdoors. Manju's background is in law, event coordination and office administration; she does not have construction experience.",
     "id": "5d442093",
     "source": "linkedin_ww",
-    "posted_date": "N/A",
+    "posted_date": "2026-04-24",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Recruiter (Night Shift)",
@@ -160181,13 +159956,13 @@
     "url": "https://in.linkedin.com/jobs/view/recruiter-night-shift-at-clickforge-4442065664",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job is located in Jaipur, Rajasthan, India, which does not match Manju's requirement for Finland.",
     "id": "c65539f7",
     "source": "linkedin_ww",
-    "posted_date": "N/A",
-    "deadline": "N/A",
+    "posted_date": "2026-07-23",
+    "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "\u9762\u8bd5\u901a\u8fc7 \u5c31\u5165\u804c 13\u85aa \u7532\u65b9\u5185\u50ac \u5747\u85aa9000+",
@@ -160196,28 +159971,13 @@
     "url": "https://cn.linkedin.com/jobs/view/%E9%9D%A2%E8%AF%95%E9%80%9A%E8%BF%87-%E5%B0%B1%E5%85%A5%E8%81%8C-13%E8%96%AA-%E7%94%B2%E6%96%B9%E5%86%85%E5%82%AC-%E5%9D%87%E8%96%AA9000%2B-at-%E7%8F%A0%E6%B5%B7%E4%BF%A1%E7%9B%9F%E7%A7%91%E6%8A%80%E5%8F%91%E5%B1%95%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8-4424333682",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job requires strong Mandarin Chinese language skills, which Manju does not have.",
     "id": "32894b42",
     "source": "linkedin_ww",
-    "posted_date": "N/A",
+    "posted_date": "2026-06-23",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
-  },
-  {
-    "title": "Field / Recovery Officers (10 Positions)",
-    "company": "Bills Micro Credit",
-    "location": "Ghana",
-    "url": "https://gh.linkedin.com/jobs/view/field-recovery-officers-10-positions-at-bills-micro-credit-4168523559",
-    "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
-    "id": "c3bee75d",
-    "source": "linkedin_ww",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "\u62db\u4e24\u4e2a\u996d\u642d\u5b50 7200",
@@ -160226,13 +159986,13 @@
     "url": "https://cn.linkedin.com/jobs/view/%E6%8B%9B%E4%B8%A4%E4%B8%AA%E9%A5%AD%E6%90%AD%E5%AD%90-7200-at-%E5%8C%97%E4%BA%AC%E4%BF%A1%E6%9C%8D%E7%A7%91%E6%8A%80%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8-4423456089",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The role is for cafeteria food runners, which is manual labor and not an office/administrative position.",
     "id": "4aeb17ec",
     "source": "linkedin_ww",
-    "posted_date": "N/A",
+    "posted_date": "2026-06-23",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Entry Level Winnipeg Shop Roles - Future Opportunities",
@@ -160241,13 +160001,13 @@
     "url": "https://ca.linkedin.com/jobs/view/entry-level-winnipeg-shop-roles-future-opportunities-at-bison-transport-inc-4382285126",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job is located in Winnipeg, Manitoba, Canada, which does not match the target criteria of Finland.",
     "id": "451ace17",
     "source": "linkedin_ww",
-    "posted_date": "N/A",
-    "deadline": "N/A",
+    "posted_date": "2026-03-25",
+    "deadline": "Open until filled",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "bricklayer",
@@ -160256,88 +160016,13 @@
     "url": "https://ca.linkedin.com/jobs/view/bricklayer-at-limen-4445611900",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job requires on-site work in Vaughan, Ontario, Canada, which is outside Finland and does not match Manju's target criteria.",
     "id": "e5effd50",
     "source": "linkedin_ww",
-    "posted_date": "N/A",
+    "posted_date": "2026-08-01",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
-  },
-  {
-    "title": "Henkil\u00f6kohtainen avustaja",
-    "company": "Henkil\u00f6kohtainen avustaja",
-    "location": "Finland",
-    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/2d57f21f-5e81-48a0-a9c9-12961d29e996/fi",
-    "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
-    "id": "89c8f4e7",
-    "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
-  },
-  {
-    "title": "Kahvilaty\u00f6ntekij\u00e4, Neidon Syd\u00e4n Oy, Neidon Syd\u00e4n Oy, cafe & wine, Pelkosenniemi",
-    "company": "Kahvilaty\u00f6ntekij\u00e4, Neidon Syd\u00e4n Oy, Neidon Syd\u00e4n Oy, cafe & wine, Pelkosenniemi",
-    "location": "Finland",
-    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/ae90e0d2-3dea-4152-97ab-c2249794f355/fi",
-    "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
-    "id": "19776bcf",
-    "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
-  },
-  {
-    "title": "Palveluvastaava kotihoidon yritykseen",
-    "company": "Palveluvastaava kotihoidon yritykseen",
-    "location": "Helsinki Region, Finland",
-    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/74c6381f-36c4-4341-8976-5e2b183e9d84/fi",
-    "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
-    "id": "f6a67e83",
-    "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
-  },
-  {
-    "title": "Vuorovastaava T\u00e4htitornin Kahvilaan ja Kes\u00e4kirjakauppaan",
-    "company": "Vuorovastaava T\u00e4htitornin Kahvilaan ja Kes\u00e4kirjakauppaan",
-    "location": "Oulu Region, Finland",
-    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/3e71d46e-74ff-4277-a1b8-10d6287e6ee0/fi",
-    "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
-    "id": "b83c3723",
-    "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
-  },
-  {
-    "title": "Palveluvastaava kotihoidon yritykseen",
-    "company": "Palveluvastaava kotihoidon yritykseen",
-    "location": "Helsinki Region, Finland",
-    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/a97bae31-fa5a-4868-83d0-c7f77c253349/fi",
-    "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
-    "id": "c2e2a099",
-    "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Myym\u00e4l\u00e4siivooja PIELAVEDELLE",
@@ -160346,13 +160031,13 @@
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/c75ca78b-5df5-450f-b452-1ba123035d3c/fi",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The job is for a retail sales floor cleaner, not an office/administrative role.",
     "id": "8de4ec3f",
     "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
+    "posted_date": "2026-08-02",
+    "deadline": "2026-08-31",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Siivooja",
@@ -160361,13 +160046,13 @@
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/1e12db30-eb13-4ad2-a110-32c56f7a2abf/fi",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The role is an entry-level cleaning position, which requires specific vocational training (siivooja) and does not match Manju's legal background and experience.",
     "id": "9455114e",
     "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
+    "posted_date": "2026-08-02",
+    "deadline": "2026-08-31",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Founding Software Engineer",
@@ -160376,13 +160061,13 @@
     "url": "https://fi.linkedin.com/jobs/view/founding-software-engineer-at-the-flex-4429163720",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The role requires a specific technical degree (software engineering) as a hard requirement.",
     "id": "002ab335",
     "source": "linkedin_fi_legal_counsel",
-    "posted_date": "N/A",
+    "posted_date": "2026-06-23",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "AI/ML Engineer",
@@ -160391,13 +160076,13 @@
     "url": "https://fi.linkedin.com/jobs/view/ai-ml-engineer-at-recordly-4431065707",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "This AI/ML Engineer role requires strong Python skills, hands-on experience with generative AI and ML solutions in production, and fluency in Finnish. The candidate's background is in law (LL.M., LL.B.) and event coordination, not software engineering or AI/ML.",
     "id": "afedcc5f",
     "source": "linkedin_fi_legal_counsel",
-    "posted_date": "N/A",
+    "posted_date": "2026-08-01",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Software Engineer",
@@ -160406,28 +160091,13 @@
     "url": "https://fi.linkedin.com/jobs/view/software-engineer-at-craci-4444286903",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The role requires a specific technical degree (Go) as a hard requirement, which disqualifies it.",
     "id": "25edf3be",
     "source": "linkedin_fi_legal_counsel",
-    "posted_date": "N/A",
+    "posted_date": "2026-07-23",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
-  },
-  {
-    "title": "Mechanical Design Engineer",
-    "company": "Clevry",
-    "location": "Helsinki Region, Finland",
-    "url": "https://fi.linkedin.com/jobs/view/mechanical-design-engineer-at-clevry-4437736777",
-    "visited": "yes",
-    "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
-    "id": "08ca2719",
-    "source": "linkedin_fi_legal_counsel",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Sales Executive - New Business",
@@ -160436,13 +160106,13 @@
     "url": "https://fi.linkedin.com/jobs/view/sales-executive-new-business-at-glueckkanja-ag-4438255441",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The role requires native Norwegian, which Manju does not have.",
     "id": "4efbab5c",
     "source": "linkedin_fi_legal_counsel",
-    "posted_date": "N/A",
+    "posted_date": "2026-07-23",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Staff Product Designer",
@@ -160451,13 +160121,13 @@
     "url": "https://fi.linkedin.com/jobs/view/staff-product-designer-at-iceye-4407835185",
     "visited": "yes",
     "matches_requirements": "no",
-    "reason": "Extracted via regex fallback",
+    "reason": "The role requires a specific technical degree (engineering) as a hard requirement.",
     "id": "36842177",
     "source": "linkedin_fi_legal_counsel",
-    "posted_date": "N/A",
+    "posted_date": "2026-08-15",
     "deadline": "N/A",
     "description_file": null,
-    "needs_re_review": true
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "Project Controller, Site Sein\u00e4joki",
