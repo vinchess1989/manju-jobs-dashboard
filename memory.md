@@ -83,6 +83,31 @@ direct API test that these return a raw injection-likelihood probability score (
 models at all, and would fail every single call. Revisit `GROQ_MODELS` if more throughput is
 needed - check `GET /openai/v1/models` for what's current first, see below.
 
+**Groq's free-tier daily quota gets saturated fast under this workload (hit 2026-08-22)**: all
+four rotation models started failing with 429 on every single job, flooding `orchestrator.log`.
+Checked directly via the API - it's a **tokens-per-day (TPD) limit**, e.g. `openai/gpt-oss-120b`'s
+free tier is 200000 tokens/day, and it was sitting at ~199,990/200,000 used. Confirmed this is a
+**rolling** window, not a hard reset-at-midnight cap (Groq's own `retry-after` hints were short -
+11-31s - and the other 3 models recovered within minutes of 120b maxing out), so short cooldowns
+genuinely help rather than being pointless. Root cause of hitting it this fast: **both
+manju_jobs and vineeth_jobs share the same `GROQ_API_KEY`**, so their combined request volume
+counts against the same per-model daily budgets - four models' free quotas (theoretical combined
+~800k tokens/day) sound like a lot until you account for two continuously-running scrapers each
+processing batches of dozens of jobs, with every job's prompt (full job description +
+requirements text) plus the model's own reasoning tokens counting against it.
+
+**Fix**: `_try_cloud_provider` now tracks a per-model in-memory cooldown (`_cloud_model_cooldown_until`,
+keyed by `"label/model"`) - on a 429, it reads Groq's `retry-after` header (falls back to 60s if
+absent) and skips that specific model without even attempting it again until the cooldown elapses,
+instead of blindly re-trying (and re-logging) a model already known to be exhausted on every
+subsequent job. This cuts both the wasted requests and the log spam, while still recovering
+automatically once capacity actually frees up. Not shared between the two scrapers' processes (each
+tracks its own view in memory, reset on restart) - a reasonable approximation, not a real fix for
+the underlying shared-quota constraint. If this keeps being a problem, the real fix is either a
+separate `GROQ_API_KEY` per dashboard (doubles the effective combined budget) or accepting that
+local LLM will carry most of the volume once Groq's daily budget is spent, which the pipeline
+already does gracefully.
+
 **Gemini as an additional cloud tier**: discussed 2026-08-20 but not implemented - no
 `GEMINI_API_KEY` has been provided/set. Google does offer an OpenAI-compatible endpoint
 (`https://generativelanguage.googleapis.com/v1beta/openai/chat/completions`, same request/response

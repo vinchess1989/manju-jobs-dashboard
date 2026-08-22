@@ -1389,12 +1389,27 @@ GROQ_ENDPOINT = "https://api.groq.com/openai/v1/chat/completions"
 # score instead of text - not a chat model at all, would fail every single call).
 GROQ_MODELS = [m.strip() for m in os.environ.get("GROQ_MODELS", "openai/gpt-oss-120b,openai/gpt-oss-20b,openai/gpt-oss-safeguard-20b,qwen/qwen3.6-27b").split(",") if m.strip()]
 
+_cloud_model_cooldown_until = {}  # "label/model" -> epoch seconds; see _try_cloud_provider
+
 def _try_cloud_provider(messages, endpoint, api_key, models, temperature, max_tokens, timeout, label):
     """Try each model in `models` against `endpoint` in order, stopping at the first
     success (single attempt per model, no retry loop - see _call_llm_with_fallback for
     why). Returns (response_json, provider_label) on success, or None if every model
-    failed, so the caller can move on to the next provider/the local fallback."""
+    failed, so the caller can move on to the next provider/the local fallback.
+
+    Models that just returned 429 are skipped (not re-attempted) until the cooldown
+    Groq's own `retry-after` header names has elapsed - Groq's per-model daily token quota
+    (e.g. 200000 TPD on the free tier) is a rolling window, not a hard reset-at-midnight
+    cap, so brief retries genuinely can succeed again soon; but under sustained heavy load
+    (two scrapers sharing one Groq account) blindly re-trying an already-exhausted model on
+    every single job wastes a request and floods the log with a failure we already know is
+    coming. Tracked in-memory per process (not shared between manju_jobs/vineeth_jobs, and
+    reset on restart) - a reasonable approximation given they can't easily share state."""
     for model in models:
+        key = f"{label}/{model}"
+        cooldown_until = _cloud_model_cooldown_until.get(key, 0)
+        if time.time() < cooldown_until:
+            continue
         try:
             payload = {
                 "model": model,
@@ -1404,6 +1419,15 @@ def _try_cloud_provider(messages, endpoint, api_key, models, temperature, max_to
             }
             headers = {"Content-Type": "application/json", "Authorization": f"Bearer {api_key}"}
             response = requests.post(endpoint, headers=headers, json=payload, timeout=timeout)
+            if response.status_code == 429:
+                retry_after = response.headers.get("retry-after")
+                try:
+                    cooldown_seconds = float(retry_after)
+                except (TypeError, ValueError):
+                    cooldown_seconds = 60
+                _cloud_model_cooldown_until[key] = time.time() + cooldown_seconds
+                print(f"  [LLM] {label} model '{model}' rate-limited, cooling down {cooldown_seconds:.0f}s, trying next...")
+                continue
             response.raise_for_status()
             return response.json(), f"{label}/{model}"
         except Exception as e:
