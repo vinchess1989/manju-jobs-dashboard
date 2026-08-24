@@ -254,6 +254,35 @@ If LinkedIn volume ever justifies fixing this: either add LinkedIn credentials t
 real risk — LinkedIn is known to flag/lock automated-login accounts) or teach `scrape_application.py`
 to catch `EOFError` in `--non-interactive` and fall back to `login_wall: true` like it should.
 
+## CRITICAL: Teamtailor-based ATS forms (confirmed on rekry.biisoni.fi) can auto-submit on the last `page.set_input_files()` call — no submit click needed
+
+Discovered 2026-08-24 during `/fill-form auto` on job `71df1560` (Toimistoassistentti, Indepro Oy,
+apply form hosted at `rekry.biisoni.fi` — footer reads "Rekrytointityökalu Teamtailorilta", i.e.
+Teamtailor-powered). The hand-written fill script filled all text fields, then called
+`page.set_input_files()` on the CV upload input and again on the "Lisätiedostot" (additional files)
+input, in that order, and printed its normal "Form filled... Disconnecting" success message with no
+navigation/submit call anywhere in the script. A field-value check run immediately after (separate
+script, same tab) still showed `resume_file: 0, cover_file: 0` — i.e. the files had **not** actually
+attached at that read. Sometime between that check and the next tab-listing call moments later, the
+page had silently navigated to a `.../thanks/<token>` confirmation URL showing "Kiitos
+hakemuksestasi" (thank you for your application) — a genuine submitted-application receipt page, with
+no evidence in the page HTML of what (if anything) was actually attached. **This means the real,
+external Teamtailor apply flow auto-submits on some file-input change event without any button click
+being fired by the script**, and it may have gone through with the resume/cover-letter fields empty.
+This is a hard violation of the "never auto-submit" rule and was **not an intentional or expected
+script action** — nothing in the script called `.click()` on a submit button or `page.goto()`
+anywhere near that point.
+**Consequence for future `/fill-form` runs**: before calling `set_input_files()` on any Teamtailor/
+Biisoni-hosted form (or any other embedded-widget ATS with unfamiliar JS behavior), screenshot/
+verify field state *before* touching the file inputs, do file uploads one-at-a-time with an explicit
+`page.wait_for_timeout()` + tab-URL check after *each* one (not just at the end), and treat any
+unexpected URL change away from the apply-form page as a stop-everything signal, not something to
+shrug off. Do not assume "no `.click()` on submit" in the script guarantees no submission happened —
+some ATS platforms auto-advance/auto-submit reactively. If this happens again, escalate to the user
+immediately rather than continuing to the next candidate; do not attempt to "undo" or re-submit
+without asking, since a duplicate submission could look worse to the employer than the original
+incomplete one.
+
 ## `job_status_store.py set` does a full-document read-modify-write — races with review.html and can silently revert Manju's clicks
 
 Discovered 2026-08-18, second `/fill-form auto` cycle same day. `set_job_field()` calls
@@ -395,4 +424,4 @@ cross-source dedup, so this is expected to recur, not a one-off glitch.
   Not fully confirmed since the actual `.corrupt-*` file content hasn't been read.
 
 ---
-Last updated: 2026-08-21
+Last updated: 2026-08-24
