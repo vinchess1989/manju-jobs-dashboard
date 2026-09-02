@@ -307146,5 +307146,37 @@
     "eval_model": "local/hermes-3-llama-3.1-8b",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'vice president'"
+  },
+  {
+    "title": "Manager, Licensing",
+    "company": "Nokia",
+    "location": "Helsinki Region, Finland",
+    "url": "https://fi.linkedin.com/jobs/view/manager-licensing-at-nokia-4459990799",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Job requires senior-level experience (Manager with 6+ years) which the candidate does not have.",
+    "id": "888644e3",
+    "source": "linkedin_fi_legal_trainee",
+    "posted_date": "2026-09-03",
+    "deadline": "N/A",
+    "eval_model": "groq/openai/gpt-oss-20b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'manager'"
+  },
+  {
+    "title": "Event Manager",
+    "company": "Events DC",
+    "location": "Washington, DC",
+    "url": "https://www.linkedin.com/jobs/view/event-manager-at-events-dc-4462491088",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The job is located in Washington, DC, USA, which does not match Manju's target criteria of being in Finland.",
+    "id": "e54be5fb",
+    "source": "linkedin_ww_event",
+    "posted_date": "2026-09-03",
+    "deadline": "N/A",
+    "eval_model": "local/hermes-3-llama-3.1-8b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'manager'"
   }
 ]
