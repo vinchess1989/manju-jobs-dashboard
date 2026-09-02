@@ -300439,5 +300439,38 @@
     "description_file": null,
     "eval_model": "local/hermes-3-llama-3.1-8b",
     "deletion_reason": "Requires US residency"
+  },
+  {
+    "title": "Business Developer",
+    "company": "Extract via OpenClaw",
+    "location": "Oulu Region, Finland",
+    "url": "https://fi.indeed.com/rc/clk?jk=49d689960e64b163",
+    "visited": "yes",
+    "matches_requirements": "maybe",
+    "reason": "The role is a generalist office position, but it's unclear if business development roles in Finland typically require fluent Finnish as Manju's B2 level might not suffice.",
+    "id": "21611287",
+    "source": "indeed",
+    "posted_date": "N/A",
+    "deadline": "Open until filled",
+    "description_file": "job_descriptions/extract_via_openclaw_business_developer_21611287.txt",
+    "eval_model": "local/hermes-3-llama-3.1-8b",
+    "needs_re_review": true,
+    "deletion_reason": "Expired job listing (page shows expired notice)"
+  },
+  {
+    "title": "Erityisasiantuntija, sopimuksellinen varautuminen, Espoo",
+    "company": "L\u00e4nsi-Uudenmaan hyvinvointialue",
+    "location": "Helsinki Region, Finland",
+    "url": "https://fi.linkedin.com/jobs/view/erityisasiantuntija-sopimuksellinen-varautuminen-espoo-at-l%C3%A4nsi-uudenmaan-hyvinvointialue-4450987851",
+    "visited": "yes",
+    "matches_requirements": "maybe",
+    "reason": "The role involves coordination with material and service providers, but it's unclear if this is an office-based generalist position or a more specialized procurement/supply chain role requiring specific technical skills.",
+    "id": "2386f02e",
+    "source": "linkedin_fi_legal_counsel",
+    "posted_date": "2026-08-11",
+    "deadline": "2026-06-30",
+    "description_file": "job_descriptions/l_nsi_uudenmaan_hyvi_erityisasiantuntija__sopimukse_2386f02e.txt",
+    "eval_model": "local/hermes-3-llama-3.1-8b",
+    "deletion_reason": "Deadline (2026-06-30) passed by more than 2 days and unreviewed"
   }
 ]
