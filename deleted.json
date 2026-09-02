@@ -303962,5 +303962,37 @@
     "eval_model": "local/hermes-3-llama-3.1-8b",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'johtaja'"
+  },
+  {
+    "title": "L\u00e4hihoitajan sijaisuus, Linnainmaan kotihoito, Tampere",
+    "company": "Extract via OpenClaw",
+    "location": "Tampere Region, Finland",
+    "url": "https://fi.indeed.com/rc/clk?jk=b63dccb0c450fa93",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The role is for a personal assistant providing hands-on daily living support (hygiene, mobility, cooking, cleaning) to elderly individuals in their home. This is physical home-care work, not office/administrative or event coordination.",
+    "id": "0b1c9b77",
+    "source": "indeed_p2",
+    "posted_date": "N/A",
+    "deadline": "Open until filled",
+    "eval_model": "local/hermes-3-llama-3.1-8b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'l\u00e4hihoitaja'"
+  },
+  {
+    "title": "Product Marketing Manager",
+    "company": "Holvi",
+    "location": "Helsinki Region, Finland",
+    "url": "https://fi.linkedin.com/jobs/view/product-marketing-manager-at-holvi-4461305395",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The role requires 4+ years of experience within product marketing, which Manju does not have.",
+    "id": "cb9c65b7",
+    "source": "linkedin_fi_communications",
+    "posted_date": "2026-09-02",
+    "deadline": "2026-09-20",
+    "eval_model": "local/hermes-3-llama-3.1-8b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'manager'"
   }
 ]
