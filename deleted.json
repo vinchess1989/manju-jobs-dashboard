@@ -302602,5 +302602,21 @@
     "eval_model": "local/hermes-3-llama-3.1-8b",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'manager'"
+  },
+  {
+    "title": "Toimistosihteeri (40.06)",
+    "company": "Helsingin poliisilaitos - Helsinki",
+    "location": "Helsinki Region, Finland",
+    "url": "https://duunitori.fi/tyopaikat/tyo/toimistosihteeri-4006-svsal-20506008",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The role is a specific administrative assistant position at Helsinki Police Department, requiring Finnish language and citizenship as hard requirements which Manju does not meet.",
+    "id": "11533749",
+    "source": "duunitori_office_secretary",
+    "posted_date": "2026-08-21",
+    "deadline": "2026-08-26",
+    "eval_model": "local/hermes-3-llama-3.1-8b",
+    "description_file": null,
+    "deletion_reason": "Deadline (2026-08-26) passed by more than 2 days and unreviewed"
   }
 ]
