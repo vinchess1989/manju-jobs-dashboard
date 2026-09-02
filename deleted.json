@@ -300327,5 +300327,51 @@
     "eval_model": "local/hermes-3-llama-3.1-8b",
     "description_file": null,
     "deletion_reason": "Requires US residency"
+  },
+  {
+    "title": "Paralegal",
+    "company": "Indeed",
+    "location": "Oulu Region, Finland",
+    "url": "https://fi.indeed.com/rc/clk?jk=1891eabfbde59206&bb=zF8USowqIVp3mPwhc3tWbwuGjBnIRNu3YQ-p_2OksFlHPWhGn1nA8NZ3fWuOuIUKzW866U3TPOmiGg40slyARGDArYHtRA8FQV-E4W3mHXzrbEwzr7Yiq2AH2kTjsFLY&xkcb=SoA267M3ilak8azCax0GbzkdCdPP&fccid=8403e73cff5bbae0&vjs=3",
+    "visited": "yes",
+    "matches_requirements": "maybe",
+    "reason": "The role is a Paralegal, which fits a generalist office/service profile and does not require a specific technical degree. However, it's located in Oulu Region, Finland, so Manju would need to relocate.",
+    "posted_date": "N/A",
+    "deadline": "Open until filled",
+    "source": "indeed",
+    "id": "b14bf74a",
+    "description_file": "job_descriptions/indeed_paralegal_b14bf74a.txt",
+    "tailor_model": "Local LLM",
+    "eval_model": "local/hermes-3-llama-3.1-8b",
+    "needs_re_review": true,
+    "deletion_reason": "Expired job listing (page shows expired notice)"
+  },
+  {
+    "title": "Asiakaspalvelukoordinaattori",
+    "company": "ImpressPoint Oy",
+    "location": "Helsinki Region, Finland",
+    "url": "https://fi.linkedin.com/jobs/view/asiakaspalvelukoordinaattori-at-impresspoint-oy-4431055673",
+    "visited": "yes",
+    "matches_requirements": "maybe",
+    "reason": "The role is a generalist office position that fits Manju's background and skills, but it requires fluent Finnish which she does not have.",
+    "id": "dd28c413",
+    "source": "linkedin_fi_coordinator_p2",
+    "posted_date": "2026-07-04",
+    "deadline": "2026-07-31",
+    "description_file": "job_descriptions/impresspoint_oy_asiakaspalvelukoordinaattori_dd28c413.txt",
+    "eval_model": "local/hermes-3-llama-3.1-8b",
+    "deletion_reason": "Deadline (2026-07-31) passed by more than 2 days and unreviewed"
+  },
+  {
+    "title": "Head of Legal, Neste Marketing & Services",
+    "company": "Extract via OpenClaw",
+    "location": "Extract via OpenClaw",
+    "url": "https://www.jobly.fi/tyopaikka/head-legal-neste-marketing-services-2740105",
+    "visited": "no",
+    "matches_requirements": "pending",
+    "reason": "",
+    "id": "7ba77b17",
+    "source": "jobly_legal_counsel",
+    "deletion_reason": "Title contains hard-rejection keyword 'head of'"
   }
 ]
