@@ -307098,5 +307098,53 @@
     "eval_model": "local/hermes-3-llama-3.1-8b",
     "description_file": null,
     "deletion_reason": "Requires US residency"
+  },
+  {
+    "title": "Head of Compliance \u2013 Payments / MSB / Money Transmission / BSA-AML / FinCEN",
+    "company": "KORE1",
+    "location": "Irvine, CA",
+    "url": "https://www.linkedin.com/jobs/view/head-of-compliance-%E2%80%93-payments-msb-money-transmission-bsa-aml-fincen-at-kore1-4457621963",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Senior leadership role located in Irvine, CA (US) violates location and seniority hard-rejection rules.",
+    "id": "395a787d",
+    "source": "linkedin_ww_compliance",
+    "posted_date": "2026-08-27",
+    "deadline": "N/A",
+    "eval_model": "groq/openai/gpt-oss-120b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'head of'"
+  },
+  {
+    "title": "Vice President, Corporate Events",
+    "company": "Versant Media",
+    "location": "Orlando, FL",
+    "url": "https://www.linkedin.com/jobs/view/vice-president-corporate-events-at-versant-media-4461326882",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The job is located in Orlando, FL, USA, which does not match the candidate's requirement for Finland-based roles.",
+    "id": "9f9a9c08",
+    "source": "linkedin_ww_event",
+    "posted_date": "2026-09-03",
+    "deadline": "N/A",
+    "eval_model": "local/hermes-3-llama-3.1-8b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'vice president'"
+  },
+  {
+    "title": "Vice President, Corporate Events",
+    "company": "Versant Media",
+    "location": "New York, NY",
+    "url": "https://www.linkedin.com/jobs/view/vice-president-corporate-events-at-versant-media-4461325878",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The role requires specific experience in media, entertainment, sports, news, golf, hospitality, or another fast-moving consumer-facing industry which Manju does not have.",
+    "id": "e7d9c86b",
+    "source": "linkedin_ww_event",
+    "posted_date": "2026-09-03",
+    "deadline": "N/A",
+    "eval_model": "local/hermes-3-llama-3.1-8b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'vice president'"
   }
 ]
