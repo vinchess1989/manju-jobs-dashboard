@@ -217007,5 +217007,50 @@
     "deadline": "N/A",
     "eval_model": "local/hermes-3-llama-3.1-8b",
     "description_file": null
+  },
+  {
+    "title": "Safety Coordinator",
+    "company": "Parkview Health",
+    "location": "Greater Fort Wayne",
+    "url": "https://www.linkedin.com/jobs/view/safety-coordinator-at-parkview-health-4462462412",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "abb9a552",
+    "source": "linkedin_ww_coordinator",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "groq/openai/gpt-oss-120b",
+    "description_file": null
+  },
+  {
+    "title": "Service Coordinator",
+    "company": "Pipp Mobile | IRSG",
+    "location": "Grand Rapids, MI",
+    "url": "https://www.linkedin.com/jobs/view/service-coordinator-at-pipp-mobile-irsg-4461323041",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The job is located in Grand Rapids, MI, USA, which does not match Finland.",
+    "id": "43830314",
+    "source": "linkedin_ww_coordinator",
+    "posted_date": "2026-09-02",
+    "deadline": "N/A",
+    "eval_model": "local/hermes-3-llama-3.1-8b",
+    "description_file": null
+  },
+  {
+    "title": "Personal Assistant",
+    "company": "NHS Ayrshire & Arran",
+    "location": "Craigs, NY",
+    "url": "https://www.linkedin.com/jobs/view/personal-assistant-at-nhs-ayrshire-arran-4459999063",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "This role is located in Craigs, NY, which is in the United States, not Finland.",
+    "id": "aacdf03d",
+    "source": "linkedin_ww_office_secretary",
+    "posted_date": "2026-09-02",
+    "deadline": "N/A",
+    "eval_model": "local/hermes-3-llama-3.1-8b",
+    "description_file": null
   }
 ]
