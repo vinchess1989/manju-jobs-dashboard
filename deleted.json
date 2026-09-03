@@ -307194,5 +307194,21 @@
     "eval_model": "groq/openai/gpt-oss-120b",
     "description_file": null,
     "deletion_reason": "Title contains seniority keyword 'lead'"
+  },
+  {
+    "title": "Sairaanhoitaja, Nummelan osasto, Vihti",
+    "company": "L\u00e4nsi-Uudenmaan hyvinvointialue",
+    "location": "Helsinki Region, Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/6472ce46-76a7-4748-8bc8-212638b176ca/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The role is for a nurse (sairaanhoitaja) at a hospital ward, requiring specific nursing qualifications and experience. Manju's background in law and event coordination does not qualify her.",
+    "id": "a07d714a",
+    "source": "tyomarkkinatori",
+    "posted_date": "2026-09-03",
+    "deadline": "2026-09-17",
+    "eval_model": "local/hermes-3-llama-3.1-8b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'sairaanhoitaja'"
   }
 ]

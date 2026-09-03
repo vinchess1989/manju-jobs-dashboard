@@ -217742,5 +217742,20 @@
     "deadline": "Open until filled",
     "eval_model": "local/hermes-3-llama-3.1-8b",
     "description_file": null
+  },
+  {
+    "title": "Maintenance Coordinator",
+    "company": "Monarch Landing",
+    "location": "Naperville, IL",
+    "url": "https://www.linkedin.com/jobs/view/maintenance-coordinator-at-monarch-landing-4454677635",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "fe9d2524",
+    "source": "linkedin_ww_coordinator",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "groq/openai/gpt-oss-120b",
+    "description_file": null
   }
 ]
