@@ -307178,5 +307178,21 @@
     "eval_model": "local/hermes-3-llama-3.1-8b",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'manager'"
+  },
+  {
+    "title": "Simulation Chapter Lead",
+    "company": "Extract via OpenClaw",
+    "location": "Extract via OpenClaw",
+    "url": "https://fi.indeed.com/rc/clk?jk=ecf82bf4662afb95",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Job title contains 'Lead', which is a senior-level role and triggers a hard rejection.",
+    "id": "42f95a57",
+    "source": "indeed_p2",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "groq/openai/gpt-oss-120b",
+    "description_file": null,
+    "deletion_reason": "Title contains seniority keyword 'lead'"
   }
 ]
