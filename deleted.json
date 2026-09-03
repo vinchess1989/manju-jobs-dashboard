@@ -308538,5 +308538,53 @@
     "eval_model": "local/hermes-3-llama-3.1-8b",
     "description_file": "job_descriptions/invaliidiliitto_ry_johtaja___viestint___markkinoi_542ca6b2.txt",
     "deletion_reason": "Title contains hard-rejection keyword 'johtaja'"
+  },
+  {
+    "title": "3 yliopistonlehtoria / yliopistonopettajaa, ohjelmistotekniikka ja datatiede",
+    "company": "Extract via OpenClaw",
+    "location": "Extract via OpenClaw",
+    "url": "https://fi.indeed.com/rc/clk?jk=ddf9ced744b5436b",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "63e0b915",
+    "source": "indeed_p2",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "groq/qwen/qwen3.6-27b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'opettaja'"
+  },
+  {
+    "title": "L\u00e4hihoitaja, ik\u00e4ihmisten asumisen palveluiden varahenkil\u00f6st\u00f6, Valkeakoski",
+    "company": "Pirkanmaan hyvinvointialue",
+    "location": "Tampere Region, Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/98c46ea8-63ca-46b7-aff0-fce3d2f174a9/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "This is a specific healthcare role requiring a licensed nurse (l\u00e4hihoitaja) with a valid B driver's license, hygiene pass, and LOVe online course completion. Manju has law degrees but not nursing qualifications.",
+    "id": "bb172962",
+    "source": "tyomarkkinatori",
+    "posted_date": "2026-09-03",
+    "deadline": "2026-09-13",
+    "eval_model": "local/hermes-3-llama-3.1-8b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'l\u00e4hihoitaja'"
+  },
+  {
+    "title": "Ty\u00f6njohtaja (maanrakennus)",
+    "company": "Lokki Henkil\u00f6st\u00f6palvelut Oy",
+    "location": "Helsinki Region, Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/2e9163f1-1725-4a31-8c93-20adc8cb46a5/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The role requires construction project management experience, which Manju does not have.",
+    "id": "a00d79d6",
+    "source": "tyomarkkinatori",
+    "posted_date": "2026-09-03",
+    "deadline": "2026-09-20",
+    "eval_model": "local/hermes-3-llama-3.1-8b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'johtaja'"
   }
 ]
