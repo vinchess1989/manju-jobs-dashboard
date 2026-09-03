@@ -310810,5 +310810,37 @@
     "eval_model": "local/hermes-3-llama-3.1-8b",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'p\u00e4\u00e4llikk\u00f6'"
+  },
+  {
+    "title": "Rekrytointikonsultti / Consultant Manager - Tampere",
+    "company": "Academic Work",
+    "location": "Tampere Region, Finland",
+    "url": "https://fi.indeed.com/rc/clk?jk=2cc2cc07519ed1f8",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The role requires specific prior experience in recruitment (rekrytointi) and/or demanding client work, which Manju does not have. Her IHO event coordination and Poise Legal contract management do not satisfy this bar.",
+    "id": "5678ce48",
+    "source": "indeed_p2",
+    "posted_date": "N/A",
+    "deadline": "Open until filled",
+    "eval_model": "local/hermes-3-llama-3.1-8b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'manager'"
+  },
+  {
+    "title": "Analyst-Compliance",
+    "company": "American Express",
+    "location": "Sandy, UT",
+    "url": "https://www.linkedin.com/jobs/view/analyst-compliance-at-american-express-4461690300",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Job is located in the United States and requires US work eligibility, which disqualifies the candidate.",
+    "id": "a6628404",
+    "source": "linkedin_ww_compliance",
+    "posted_date": "2026-09-03",
+    "deadline": "N/A",
+    "eval_model": "groq/openai/gpt-oss-safeguard-20b",
+    "description_file": null,
+    "deletion_reason": "Requires US residency"
   }
 ]
