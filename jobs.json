@@ -226952,5 +226952,35 @@
     "deadline": "Open until filled",
     "eval_model": "local/hermes-3-llama-3.1-8b",
     "description_file": null
+  },
+  {
+    "title": "Event Coordinator",
+    "company": "Dave & Buster's Inc.",
+    "location": "Pittsburgh, PA",
+    "url": "https://www.linkedin.com/jobs/view/event-coordinator-at-dave-buster-s-inc-4461685028",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "b999cdf4",
+    "source": "linkedin_ww_event_coordinator",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "groq/openai/gpt-oss-120b",
+    "description_file": null
+  },
+  {
+    "title": "Public Information Officer",
+    "company": "Town of Collierville",
+    "location": "Collierville, TN",
+    "url": "https://www.linkedin.com/jobs/view/public-information-officer-at-town-of-collierville-4462868322",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "a43bd63c",
+    "source": "linkedin_ww_communications",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "groq/openai/gpt-oss-20b",
+    "description_file": null
   }
 ]
