@@ -310746,5 +310746,37 @@
     "eval_model": "local/hermes-3-llama-3.1-8b",
     "description_file": null,
     "deletion_reason": "Requires US residency"
+  },
+  {
+    "title": "S\u00e4hk\u00f6asentaja",
+    "company": "S\u00e4hk\u00f6-Sulo Oy",
+    "location": "Varsinais-Suomi, Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/8e332046-8742-4887-a4b4-8b624e18b6b2/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The role requires specific electrical installation training, not a general office/service position.",
+    "id": "5815c93c",
+    "source": "tyomarkkinatori",
+    "posted_date": "2026-09-03",
+    "deadline": "2026-10-31",
+    "eval_model": "local/hermes-3-llama-3.1-8b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 's\u00e4hk\u00f6asentaja'"
+  },
+  {
+    "title": "Tuotanto-operaattori / Produktionsoperat\u00f6r",
+    "company": "FORCIT",
+    "location": "Hanko, Finland",
+    "url": "https://www.jobly.fi/tyopaikka/tuotanto-operaattori-produktionsoperator-2750498",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "This role requires specific technical/vocational training (explosives & defense production) and hands-on physical labor, not generalist office/service work.",
+    "id": "8322d6cb",
+    "source": "jobly",
+    "posted_date": "2026-09-03",
+    "deadline": "2026-08-30",
+    "eval_model": "local/hermes-3-llama-3.1-8b",
+    "description_file": null,
+    "deletion_reason": "Deadline (2026-08-30) passed by more than 2 days and unreviewed"
   }
 ]
