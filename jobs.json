@@ -227402,5 +227402,35 @@
     "deadline": "N/A",
     "eval_model": "local/hermes-3-llama-3.1-8b",
     "description_file": null
+  },
+  {
+    "title": "Yksityispankkiiri H\u00e4meenlinna",
+    "company": "Extract via OpenClaw",
+    "location": "Extract via OpenClaw",
+    "url": "https://fi.indeed.com/rc/clk?jk=625dd0e921143230",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "e2de514f",
+    "source": "indeed_p2",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "groq/openai/gpt-oss-safeguard-20b",
+    "description_file": null
+  },
+  {
+    "title": "Counsel, Corporate Legal Affairs",
+    "company": "NBCUniversal",
+    "location": "New York, NY",
+    "url": "https://www.linkedin.com/jobs/view/counsel-corporate-legal-affairs-at-nbcuniversal-4462881753",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "5f94685d",
+    "source": "linkedin_ww_legal_counsel",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "groq/qwen/qwen3.6-27b",
+    "description_file": null
   }
 ]
