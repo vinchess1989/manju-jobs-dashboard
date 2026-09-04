@@ -312938,5 +312938,37 @@
     "eval_model": "groq/openai/gpt-oss-20b",
     "description_file": null,
     "deletion_reason": "Title contains seniority keyword 'lead'"
+  },
+  {
+    "title": "Sairaanhoitaja Medisiininen osasto",
+    "company": "HUS Helsingin yliopistollinen sairaala",
+    "location": "Helsinki Region, Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/e6c5dad7-b2f1-4dae-ae5d-457f72032db1/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The role requires a specific medical degree (sairaanhoitaja) as a hard requirement, which Manju does not have.",
+    "id": "fe0a78a2",
+    "source": "tyomarkkinatori",
+    "posted_date": "2026-09-04",
+    "deadline": "2026-09-18",
+    "eval_model": "local/hermes-3-llama-3.1-8b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'sairaanhoitaja'"
+  },
+  {
+    "title": "Multiple Series Trusts Chief Compliance Officer",
+    "company": "U.S. Bank",
+    "location": "Boston, MA",
+    "url": "https://www.linkedin.com/jobs/view/multiple-series-trusts-chief-compliance-officer-at-u-s-bank-4463159530",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "ccb2639e",
+    "source": "linkedin_ww_compliance",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "groq/openai/gpt-oss-safeguard-20b",
+    "description_file": null,
+    "deletion_reason": "Title contains seniority keyword 'chief'"
   }
 ]
