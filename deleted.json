@@ -312922,5 +312922,21 @@
     "eval_model": "local/hermes-3-llama-3.1-8b",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'director'"
+  },
+  {
+    "title": "Stakeholder & Communications Lead",
+    "company": "Bechtel Corporation",
+    "location": "Millersport, OH",
+    "url": "https://www.linkedin.com/jobs/view/stakeholder-communications-lead-at-bechtel-corporation-4463179160",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "efa9d009",
+    "source": "linkedin_ww_communications",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "groq/openai/gpt-oss-20b",
+    "description_file": null,
+    "deletion_reason": "Title contains seniority keyword 'lead'"
   }
 ]
