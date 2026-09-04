@@ -235382,5 +235382,50 @@
     "deadline": "Open until filled",
     "eval_model": "local/hermes-3-llama-3.1-8b",
     "description_file": null
+  },
+  {
+    "title": "Producer",
+    "company": "InTime",
+    "location": "Helsinki Region, Finland",
+    "url": "https://fi.linkedin.com/jobs/view/producer-at-intime-4461161570",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "ca2efeb4",
+    "source": "linkedin_fi_event_coordinator",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "groq/openai/gpt-oss-safeguard-20b",
+    "description_file": null
+  },
+  {
+    "title": "Video- ja somesis\u00e4ll\u00f6ntuottaja (m\u00e4\u00e4r\u00e4aikainen), Yle Viestint\u00e4, br\u00e4ndi ja markkinointi",
+    "company": "Yle",
+    "location": "Helsinki Region, Finland",
+    "url": "https://fi.linkedin.com/jobs/view/video-ja-somesis%C3%A4ll%C3%B6ntuottaja-m%C3%A4%C3%A4r%C3%A4aikainen-yle-viestint%C3%A4-br%C3%A4ndi-ja-markkinointi-at-yle-4463349237",
+    "visited": "yes",
+    "matches_requirements": "maybe",
+    "reason": "The role involves creating video and social media content, which fits Manju's event coordination experience at IHO. However, it requires fluency in Finnish as a hard requirement, which she does not yet have.",
+    "id": "ef3230c6",
+    "source": "linkedin_fi_event",
+    "posted_date": "2026-09-04",
+    "deadline": "N/A",
+    "eval_model": "local/hermes-3-llama-3.1-8b",
+    "description_file": "job_descriptions/yle_video__ja_somesis_ll_ntuottaja_ef3230c6.txt"
+  },
+  {
+    "title": "Toimistosihteeri",
+    "company": "Hae paikkaa",
+    "location": "Helsinki Region, Finland",
+    "url": "https://www.jobly.fi/tyopaikka/toimistosihteeri-2751299",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "cf3f184f",
+    "source": "jobly_office_secretary",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "groq/qwen/qwen3.6-27b",
+    "description_file": null
   }
 ]

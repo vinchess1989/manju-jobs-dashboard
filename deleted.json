@@ -314906,5 +314906,53 @@
     "eval_model": "groq/openai/gpt-oss-120b",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'putkiasentaja'"
+  },
+  {
+    "title": "Event Manager",
+    "company": "Marcus Hotels & Resorts",
+    "location": "Milwaukee, WI",
+    "url": "https://www.linkedin.com/jobs/view/event-manager-at-marcus-hotels-resorts-4461949572",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The job is located in Milwaukee, Wisconsin, United States, which does not match Manju's target criteria of being anywhere in Finland.",
+    "id": "69ebc126",
+    "source": "linkedin_ww_event",
+    "posted_date": "2026-09-04",
+    "deadline": "Open until filled",
+    "eval_model": "local/hermes-3-llama-3.1-8b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'manager'"
+  },
+  {
+    "title": "Social Media Consultant",
+    "company": "Kumpulan toimisto",
+    "location": "Helsinki Region, Finland",
+    "url": "https://fi.linkedin.com/jobs/view/social-media-consultant-at-kumpulan-toimisto-4461158462",
+    "visited": "yes",
+    "matches_requirements": "maybe",
+    "reason": "The role is a good fit for Manju's generalist office and event coordination experience, but requires fluent Finnish which she does not have.",
+    "id": "be31ebbb",
+    "source": "linkedin_fi_communications",
+    "posted_date": "2026-09-04",
+    "deadline": "2023-09-25",
+    "eval_model": "local/hermes-3-llama-3.1-8b",
+    "description_file": "job_descriptions/kumpulan_toimisto_social_media_consultant_be31ebbb.txt",
+    "deletion_reason": "Deadline (2023-09-25) passed by more than 2 days and unreviewed"
+  },
+  {
+    "title": "Laatup\u00e4\u00e4llikk\u00f6",
+    "company": "Hae paikkaa",
+    "location": "Vahto, Finland",
+    "url": "https://www.jobly.fi/tyopaikka/laatupaallikko-2745965",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "fbe09a14",
+    "source": "jobly_coordinator",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "groq/openai/gpt-oss-safeguard-20b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'p\u00e4\u00e4llikk\u00f6'"
   }
 ]
