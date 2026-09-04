@@ -234257,5 +234257,35 @@
     "deadline": "Open until filled",
     "eval_model": "local/hermes-3-llama-3.1-8b",
     "description_file": null
+  },
+  {
+    "title": "HR- ja palkkahallinnon asiantuntija",
+    "company": "Koneen S\u00e4\u00e4ti\u00f6 | Kone Foundation",
+    "location": "Helsinki Region, Finland",
+    "url": "https://fi.linkedin.com/jobs/view/hr-ja-palkkahallinnon-asiantuntija-at-koneen-s%C3%A4%C3%A4ti%C3%B6-kone-foundation-4461162029",
+    "visited": "yes",
+    "matches_requirements": "maybe",
+    "reason": "The role is a generalist HR position, but requires over 2 years of experience which Manju does not have.",
+    "id": "347c6d92",
+    "source": "linkedin_fi_legal_trainee",
+    "posted_date": "2026-09-04",
+    "deadline": "2026-09-18",
+    "eval_model": "local/hermes-3-llama-3.1-8b",
+    "description_file": "job_descriptions/koneen_s__ti____kone_hr__ja_palkkahallinnon_asiantu_347c6d92.txt"
+  },
+  {
+    "title": "Soldering skilled production worker, Bluefors Oy",
+    "company": "Hae paikkaa",
+    "location": "Helsinki Region, Finland",
+    "url": "https://www.jobly.fi/tyopaikka/soldering-skilled-production-worker-bluefors-oy-2739281",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "6730d118",
+    "source": "jobly_coordinator",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "groq/qwen/qwen3.6-27b",
+    "description_file": null
   }
 ]
