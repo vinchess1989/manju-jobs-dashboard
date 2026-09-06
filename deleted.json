@@ -319274,5 +319274,21 @@
     "eval_model": "local/hermes-3-llama-3.1-8b",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'parturi'"
+  },
+  {
+    "title": "Sairaankuljettaja, l\u00e4hihoitaja",
+    "company": "VN Terveyspalvelut Oy",
+    "location": "Helsinki Region, Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/75a76982-1851-4538-8aab-6dcdc71c0027/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The role requires a nursing qualification (l\u00e4hihoitaja) and is a medical/social welfare position, which is a hard rejection.",
+    "id": "8845800a",
+    "source": "tyomarkkinatori",
+    "posted_date": "6.9.2026, 14.29",
+    "deadline": "2026-09-13",
+    "eval_model": "groq/openai/gpt-oss-120b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'l\u00e4hihoitaja'"
   }
 ]
