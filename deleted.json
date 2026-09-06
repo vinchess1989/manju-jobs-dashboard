@@ -319466,5 +319466,37 @@
     "eval_model": "groq/openai/gpt-oss-120b",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'sairaanhoitaja'"
+  },
+  {
+    "title": "Sales Manager Finland",
+    "company": "Extract via OpenClaw",
+    "location": "Extract via OpenClaw",
+    "url": "https://fi.indeed.com/rc/clk?jk=4c87cd09b81dfc02",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The role is a senior-level Sales Manager position, which exceeds the candidate's experience level.",
+    "id": "d2fb70c3",
+    "source": "indeed_p2",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "groq/openai/gpt-oss-120b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'manager'"
+  },
+  {
+    "title": "Lead Game Developer, Angry Birds Friends",
+    "company": "Rovio",
+    "location": "Helsinki Region, Finland",
+    "url": "https://fi.indeed.com/rc/clk?jk=03258c3baec080a2",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The role requires deep programming expertise with C# and Unity, which is a technical degree-level requirement beyond generalist office work.",
+    "id": "fbf96be7",
+    "source": "indeed_p2",
+    "posted_date": "N/A",
+    "deadline": "Open until filled",
+    "eval_model": "local/hermes-3-llama-3.1-8b",
+    "description_file": null,
+    "deletion_reason": "Title contains seniority keyword 'lead'"
   }
 ]
