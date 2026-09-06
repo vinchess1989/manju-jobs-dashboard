@@ -239477,5 +239477,20 @@
     "deadline": "Open until filled",
     "eval_model": "local/hermes-3-llama-3.1-8b",
     "description_file": null
+  },
+  {
+    "title": "Social Services Program Coordinator II",
+    "company": "City of Santa Fe Springs",
+    "location": "Jackson, MS",
+    "url": "https://www.linkedin.com/jobs/view/social-services-program-coordinator-ii-at-city-of-santa-fe-springs-4456597177",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "c87499a5",
+    "source": "linkedin_ww_coordinator",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "groq/openai/gpt-oss-safeguard-20b",
+    "description_file": null
   }
 ]
