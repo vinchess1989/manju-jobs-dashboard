@@ -319434,5 +319434,21 @@
     "eval_model": "local/hermes-3-llama-3.1-8b",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'director'"
+  },
+  {
+    "title": "M\u00e4\u00e4r\u00e4aikainen p\u00e4\u00e4toiminen tuntiopettaja (\u00e4idinkieli ja kirjallisuus), Joensuun lyseon lukio",
+    "company": "Extract via OpenClaw",
+    "location": "Extract via OpenClaw",
+    "url": "https://fi.indeed.com/rc/clk?jk=b26c9d823142abe5",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "69059991",
+    "source": "indeed_p2",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "groq/openai/gpt-oss-120b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'opettaja'"
   }
 ]
