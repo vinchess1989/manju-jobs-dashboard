@@ -242634,27 +242634,29 @@
     "location": "Extract via OpenClaw",
     "url": "https://fi.indeed.com/rc/clk?jk=05cffc1d7f6f69fd",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Page load or parsing error.",
+    "matches_requirements": "no",
+    "reason": "The role is a housekeeper/cleaner position, which is manual labour and excluded by the hard\u2011rejection criteria.",
     "id": "d2051fc9",
     "source": "indeed_p2",
     "posted_date": "N/A",
     "deadline": "N/A",
-    "description_file": null
+    "description_file": null,
+    "eval_model": "groq/openai/gpt-oss-120b"
   },
   {
     "title": "Software Engineer",
-    "company": "Extract via OpenClaw",
-    "location": "Extract via OpenClaw",
+    "company": "Wolt",
+    "location": "Helsinki Region, Finland",
     "url": "https://fi.indeed.com/rc/clk?jk=26a10f154c298bed",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Page load or parsing error.",
+    "matches_requirements": "no",
+    "reason": "The role requires strong backend development skills in Python or Go, which Manju does not have.",
     "id": "532a55a8",
     "source": "indeed_p2",
     "posted_date": "N/A",
-    "deadline": "N/A",
-    "description_file": null
+    "deadline": "Open until filled",
+    "description_file": null,
+    "eval_model": "local/hermes-3-llama-3.1-8b"
   },
   {
     "title": "DevOps & AI Engineer",
