@@ -321830,5 +321830,37 @@
     "eval_model": "local/hermes-3-llama-3.1-8b",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'p\u00e4\u00e4llikk\u00f6'"
+  },
+  {
+    "title": "F&B Duty Manager, Hilton Helsinki Kalastajatorppa",
+    "company": "Extract via OpenClaw",
+    "location": "Extract via OpenClaw",
+    "url": "https://fi.indeed.com/rc/clk?jk=871cc623aaf9e496",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "f2173056",
+    "source": "indeed_event_p2",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "groq/openai/gpt-oss-120b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'manager'"
+  },
+  {
+    "title": "Kokous- ja tilausravintolan palvelup\u00e4\u00e4llikk\u00f6, Original Sokos Hotel Tripla",
+    "company": "S-ryhm\u00e4 (S Group)",
+    "location": "Helsinki Region, Finland",
+    "url": "https://fi.indeed.com/rc/clk?jk=bd0bbdfb85a4070e",
+    "visited": "yes",
+    "matches_requirements": "maybe",
+    "reason": "The role is a generalist office position with event coordination experience, but requires fluent Finnish which Manju does not have.",
+    "id": "54d06ad3",
+    "source": "indeed_event_p2",
+    "posted_date": "N/A",
+    "deadline": "Open until filled",
+    "eval_model": "local/hermes-3-llama-3.1-8b",
+    "description_file": "job_descriptions/s_ryhm___s_group__kokous__ja_tilausravintolan_pa_54d06ad3.txt",
+    "deletion_reason": "Title contains hard-rejection keyword 'p\u00e4\u00e4llikk\u00f6'"
   }
 ]
