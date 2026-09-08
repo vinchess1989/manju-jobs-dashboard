@@ -325254,5 +325254,53 @@
     "eval_model": "local/hermes-3-llama-3.1-8b",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'sairaanhoitaja'"
+  },
+  {
+    "title": "Infraputkiasentaja, Mikkeli (Reissuty\u00f6)",
+    "company": "Infraputkiasentaja, Mikkeli (Reissuty\u00f6)",
+    "location": "Helsinki Region, Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/cda91015-fc94-4edf-8739-208b8dfc6d8b/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "0a7b1937",
+    "source": "tyomarkkinatori",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "groq/openai/gpt-oss-safeguard-20b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'putkiasentaja'"
+  },
+  {
+    "title": "Infraputkiasentaja, Mikkeli (Reissuty\u00f6)",
+    "company": "Barona Rakennus Oy",
+    "location": "Mikkeli, Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/319031a6-ad73-4ab1-a338-d2ef5e64837a/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The role requires specific technical construction experience (infratechnology, water and sewer installation) that Manju does not have. It is a manual-labor trade role requiring specific vocational training, not an office or generalist service/coordination job.",
+    "id": "81ab3be6",
+    "source": "tyomarkkinatori",
+    "posted_date": "2026-09-08",
+    "deadline": "2026-09-26",
+    "eval_model": "local/hermes-3-llama-3.1-8b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'putkiasentaja'"
+  },
+  {
+    "title": "Sales Operations Executive, SOE",
+    "company": "TD SYNNEX Nordics",
+    "location": "Uusimaa, Finland",
+    "url": "https://fi.linkedin.com/jobs/view/sales-operations-executive-soe-at-td-synnex-nordics-4459540637",
+    "visited": "yes",
+    "matches_requirements": "maybe",
+    "reason": "The role is a generalist office position that fits Manju's background, but requires fluent Finnish which she does not have at B2.",
+    "id": "630ab768",
+    "source": "linkedin_fi_office_secretary",
+    "posted_date": "2026-09-02",
+    "deadline": "2023-09-11",
+    "eval_model": "local/hermes-3-llama-3.1-8b",
+    "description_file": "job_descriptions/td_synnex_nordics_sales_operations_executive__so_630ab768.txt",
+    "deletion_reason": "Deadline (2023-09-11) passed by more than 2 days and unreviewed"
   }
 ]
