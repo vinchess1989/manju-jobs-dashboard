@@ -251147,5 +251147,50 @@
     "deadline": "N/A",
     "eval_model": "groq/openai/gpt-oss-120b",
     "description_file": null
+  },
+  {
+    "title": "Sairaalasolubiologi Diagnostiikkakeskus Patologia",
+    "company": "HUS Helsingin yliopistollinen sairaala",
+    "location": "Helsinki Region, Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/40188068-7c51-475f-bb9f-d21667a63bba/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The position is a specialized medical laboratory role requiring a protected health professional qualification, which does not match the candidate's legal/office background.",
+    "id": "6beb3d29",
+    "source": "tyomarkkinatori",
+    "posted_date": "8.9.2026, 5.08",
+    "deadline": "2026-09-22",
+    "eval_model": "groq/openai/gpt-oss-120b",
+    "description_file": null
+  },
+  {
+    "title": "IT-palvelusuunnittelija Tietohallinto",
+    "company": "HUS Helsingin yliopistollinen sairaala",
+    "location": "Helsinki Region, Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/c22074aa-6d06-4a2e-9ce5-2bdf6b51451a/fi",
+    "visited": "yes",
+    "matches_requirements": "maybe",
+    "reason": "The role is an IT services coordination position within a large healthcare organization, which fits Manju's background in event management and legal document drafting. However, it requires strong Finnish language skills (B2+) as a hard requirement, which she does not have.",
+    "id": "4abe41db",
+    "source": "tyomarkkinatori",
+    "posted_date": "2026-09-08",
+    "deadline": "2026-09-22",
+    "eval_model": "local/hermes-3-llama-3.1-8b",
+    "description_file": "job_descriptions/hus_helsingin_yliopi_it_palvelusuunnittelija_tietoh_4abe41db.txt"
+  },
+  {
+    "title": "Juristi-trainee, OP Uusimaa",
+    "company": "OP Pohjola",
+    "location": "Helsinki Region, Finland",
+    "url": "https://fi.linkedin.com/jobs/view/juristi-trainee-op-uusimaa-at-op-pohjola-4464430265",
+    "visited": "yes",
+    "matches_requirements": "yes",
+    "reason": "The role is a generalist office/service position (juristi-trainee) that does not require a specific technical degree. It fits Manju's legal background and ongoing Finnish bar path.",
+    "id": "f8881c71",
+    "source": "linkedin_fi_legal_trainee",
+    "posted_date": "N/A",
+    "deadline": "2026-09-27",
+    "eval_model": "local/hermes-3-llama-3.1-8b",
+    "description_file": "job_descriptions/op_pohjola_juristi_trainee__op_uusimaa_f8881c71.txt"
   }
 ]
