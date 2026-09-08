@@ -251132,5 +251132,20 @@
     "deadline": "Open until filled",
     "eval_model": "local/hermes-3-llama-3.1-8b",
     "description_file": null
+  },
+  {
+    "title": "Banquet Staff",
+    "company": "Guru Hospitality",
+    "location": "Rochester, NY",
+    "url": "https://www.linkedin.com/jobs/view/banquet-staff-at-guru-hospitality-4462999489",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Job is located in the United States, not Finland, violating the location requirement.",
+    "id": "e5a040f9",
+    "source": "linkedin_ww_event",
+    "posted_date": "2026-09-08",
+    "deadline": "N/A",
+    "eval_model": "groq/openai/gpt-oss-120b",
+    "description_file": null
   }
 ]
