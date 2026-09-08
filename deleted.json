@@ -327605,5 +327605,53 @@
     "eval_model": "local/hermes-3-llama-3.1-8b",
     "description_file": "job_descriptions/rantalainen_oy_viestint_p__llikk__4826b04f.txt",
     "deletion_reason": "Title contains hard-rejection keyword 'p\u00e4\u00e4llikk\u00f6'"
+  },
+  {
+    "title": "L\u00e4hihoitaja kotihoitoon H\u00e4meenlinnaan",
+    "company": "Extract via OpenClaw",
+    "location": "H\u00e4meenlinna, Finland",
+    "url": "https://fi.indeed.com/rc/clk?jk=39f638e31f1a89d5",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The role is for a personal assistant providing hands-on daily living support to disabled individuals (henkil\u00f6kohtainen avustaja) in their home. This is physical home-care work, not office or event coordination.",
+    "id": "c529559d",
+    "source": "indeed_p2",
+    "posted_date": "N/A",
+    "deadline": "Open until filled",
+    "eval_model": "local/hermes-3-llama-3.1-8b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'l\u00e4hihoitaja'"
+  },
+  {
+    "title": "Terveyskeskusl\u00e4\u00e4k\u00e4ri, Kauhajoen sosiaali- ja terveyskeskus",
+    "company": "Etel\u00e4-Pohjanmaan hyvinvointialue",
+    "location": "Kauhajoki, Finland",
+    "url": "https://fi.indeed.com/rc/clk?jk=445673b879232ac6",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Requires Finnish citizenship as a hard prerequisite, which Manju does not have.",
+    "id": "9994f6d4",
+    "source": "indeed_p2",
+    "posted_date": "8.9.2026 klo 08:00",
+    "deadline": "2026-09-22",
+    "eval_model": "local/hermes-3-llama-3.1-8b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'l\u00e4\u00e4k\u00e4ri'"
+  },
+  {
+    "title": "Erityisluokanopettaja",
+    "company": "Sein\u00e4joen kaupunki",
+    "location": "Sein\u00e4joki, Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/e2cdf910-bd95-47a8-ae0a-11e2174745dc/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The role is for a specialized teaching position requiring specific pedagogical qualifications, not a generalist office/service job.",
+    "id": "bbaad853",
+    "source": "tyomarkkinatori",
+    "posted_date": "2026-09-08",
+    "deadline": "2026-09-21",
+    "eval_model": "local/hermes-3-llama-3.1-8b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'opettaja'"
   }
 ]
