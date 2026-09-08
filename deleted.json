@@ -325414,5 +325414,53 @@
     "eval_model": "local/hermes-3-llama-3.1-8b",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'sairaanhoitaja'"
+  },
+  {
+    "title": "S\u00e4hk\u00f6asentaja, Turku",
+    "company": "Caverion Suomi Oy",
+    "location": "Turku Region, Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/64926a6e-8a62-4849-a578-8841de003644/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The role is for a trade worker (s\u00e4hk\u00f6asentaja) requiring specific vocational training in electrical work, not an office/administration position.",
+    "id": "8984f20a",
+    "source": "tyomarkkinatori",
+    "posted_date": "2026-09-08",
+    "deadline": "2026-09-27",
+    "eval_model": "local/hermes-3-llama-3.1-8b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 's\u00e4hk\u00f6asentaja'"
+  },
+  {
+    "title": "Varhaiskasvatuksen opettaja, Silkkiniityn p\u00e4iv\u00e4koti",
+    "company": "Espoon kaupunki",
+    "location": "Helsinki Region, Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/878a8d0e-a280-4ca9-86aa-d5b11876dc80/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Requires a Varhaiskasvatuslain (540/2018) mukainen kelpoisuus, which Manju does not have.",
+    "id": "b0e6c039",
+    "source": "tyomarkkinatori",
+    "posted_date": "2026-09-08",
+    "deadline": "2026-09-22",
+    "eval_model": "local/hermes-3-llama-3.1-8b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'opettaja'"
+  },
+  {
+    "title": "EHS Lead, Pyh\u00e4joki",
+    "company": "Destia Oy",
+    "location": "Pyh\u00e4joki, Finland",
+    "url": "https://www.jobly.fi/tyopaikka/ehs-lead-pyhajoki-2742544",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The role requires specific technical expertise in EHS for data center and energy infrastructure projects, which Manju does not have.",
+    "id": "e0bb1e43",
+    "source": "jobly",
+    "posted_date": "2026-08-24",
+    "deadline": "2026-09-27",
+    "eval_model": "local/hermes-3-llama-3.1-8b",
+    "description_file": null,
+    "deletion_reason": "Title contains seniority keyword 'lead'"
   }
 ]
