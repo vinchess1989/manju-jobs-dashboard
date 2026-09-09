@@ -44,7 +44,7 @@ Examples:
 
 **`JOBS_JSON`** = `PUBLIC\jobs.json` — read-only lookup only.
 
-**`AUTOMATION_PROFILE`** = `$env:LOCALAPPDATA\Google\Chrome\Automation Profile` — the persistent Chrome profile with Manju's saved logins (LinkedIn, Eezy Talents, etc.). Always launch against this profile, never a fresh/incognito context, so platforms she's already authenticated on don't hit a login wall. See `.agents\skills\open_visible_browser\SKILL.md` and the `talent.core.eezy.fi` entry in `site_patterns.json` for the working reference pattern.
+**`AUTOMATION_PROFILE`** = `$env:LOCALAPPDATA\Google\Chrome\Manju Automation Profile` — the persistent Chrome profile with Manju's saved logins (LinkedIn, Eezy Talents, etc.). Always launch against this profile, never a fresh/incognito context, so platforms she's already authenticated on don't hit a login wall. **Do not use the old shared `Automation Profile` directory (no "Manju" prefix)** — that one's Chrome Sync account is Vineeth's, not Manju's (confirmed 2026-09-09); it's still used by other projects on this machine but must not be reused here. See `.agents\skills\open_visible_browser\SKILL.md` and the `talent.core.eezy.fi` entry in `site_patterns.json` for the working reference pattern.
 
 ---
 
@@ -122,7 +122,7 @@ if (-not $port_open.TcpTestSucceeded) {
     Stop-Process -Name chrome -Force -ErrorAction SilentlyContinue
     taskkill /F /IM chrome.exe /T
     $batPath = "PUBLIC\scratch\launch_cdp_chrome.bat"
-    Set-Content -Path $batPath -Value "@echo off`n`"C:\Program Files\Google\Chrome\Application\chrome.exe`" --remote-debugging-port=9222 --user-data-dir=`"$env:LOCALAPPDATA\Google\Chrome\Automation Profile`""
+    Set-Content -Path $batPath -Value "@echo off`n`"C:\Program Files\Google\Chrome\Application\chrome.exe`" --remote-debugging-port=9222 --user-data-dir=`"$env:LOCALAPPDATA\Google\Chrome\Manju Automation Profile`""
     cmd /c "schtasks /delete /tn `"AntigravityVisibleBrowser`" /f & schtasks /create /tn `"AntigravityVisibleBrowser`" /tr `"\`"$batPath\`"`" /sc once /st 00:00 /ru vinee /it /f & schtasks /run /tn `"AntigravityVisibleBrowser`""
     Start-Sleep -Seconds 4
     $port_open = Test-NetConnection -ComputerName 127.0.0.1 -Port 9222 -WarningAction SilentlyContinue
@@ -220,7 +220,7 @@ Priority order, stopping at the first hit:
    - `RESULT_TYPE: email` → email-only, see below.
    - `RESULT_TYPE: not_found` → fall back to `JOB_URL` itself, and warn the user this may just be the listing page rather than the real form.
 
-**Email-only jobs:** if the resolved result is an email address, there is no form to fill. Print `JOB_ID applies via email only (ADDRESS) — no form to fill.`, list the exact `$resumePdf` / `$coverPdf` paths from Step 1 so Manju can attach them herself.
+**Email-only jobs:** if the resolved result is an email address, there is no form to fill. Print `JOB_ID applies via email only (ADDRESS) — no form to fill. Run /email-apply JOB_ID to draft it in Gmail.`, list the exact `$resumePdf` / `$coverPdf` paths from Step 1. The **email-apply** skill (`.claude/commands/email-apply.md`) drafts the actual email (correct recipient, tailored PDFs attached, right language) and leaves it in Manju's Gmail Drafts for her to review and send — not run automatically here, since `$AutoMode` already stops at the action item below; a human (or a separate `/email-apply` / `/email-apply auto` pass) decides when to draft it.
 
 Before stopping, make sure this is on the Action Items checklist (`firebase_app/review.html`) — a fresh `find-apply-link` run already writes this itself (its own Step 5), but a Firestore-cache hit above short-circuits before that ever runs, so backfill it here in that case. Skip if an `action_item` is already recorded `"done"` (don't reopen something already handled):
 ```powershell
@@ -308,7 +308,7 @@ if (-not $port_open.TcpTestSucceeded) {
     Stop-Process -Name chrome -Force -ErrorAction SilentlyContinue
     taskkill /F /IM chrome.exe /T
     $batPath = "PUBLIC\scratch\launch_cdp_chrome.bat"
-    Set-Content -Path $batPath -Value "@echo off`n`"C:\Program Files\Google\Chrome\Application\chrome.exe`" --remote-debugging-port=9222 --user-data-dir=`"$env:LOCALAPPDATA\Google\Chrome\Automation Profile`""
+    Set-Content -Path $batPath -Value "@echo off`n`"C:\Program Files\Google\Chrome\Application\chrome.exe`" --remote-debugging-port=9222 --user-data-dir=`"$env:LOCALAPPDATA\Google\Chrome\Manju Automation Profile`""
     cmd /c "schtasks /delete /tn `"AntigravityVisibleBrowser`" /f & schtasks /create /tn `"AntigravityVisibleBrowser`" /tr `"\`"$batPath\`"`" /sc once /st 00:00 /ru vinee /it /f & schtasks /run /tn `"AntigravityVisibleBrowser`""
     Start-Sleep -Seconds 4
 }
@@ -370,9 +370,40 @@ with sync_playwright() as p:
 
 ---
 
+## Step 5.5 — Check for an unintended auto-submission
+
+Some ATS platforms (confirmed on a Teamtailor-hosted form, see `memory.md`'s "CRITICAL: Teamtailor-based ATS forms..." entry) auto-submit reactively on a field-input event — e.g. the moment a file upload's `set_input_files()` fires — with no submit click ever made by the fill script. Never assume "the script never called `.click()` on Submit" guarantees nothing was submitted.
+
+Immediately after the fill script prints "Form filled. Disconnecting...", re-check the tab (a fresh `connect_over_cdp` + read `page.url` / `page.content()` is fine even after the script's own browser handle disconnected): if the URL has navigated away from `APPLY_URL` to something that reads as a confirmation/receipt page (a `/thanks/`, `/thank-you/`, `/confirmation/` path, or visible text like "thank you for your application" / "kiitos hakemuksestasi" / "hakemuksesi on vastaanotettu"), treat this as a genuine, unintended submission — not a stop-everything failure, but not the normal pending-review outcome either:
+
+- Skip Step 6's normal `pending_review` write entirely; instead write directly:
+  ```powershell
+  $autoSubmitted = [ordered]@{
+      status = "auto_submitted"
+      filled_at = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
+      auto_submitted = $true
+      auto_submitted_at = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
+      done_at = $null
+  } | ConvertTo-Json -Compress
+  $tmpFile = "PUBLIC\scratch\form_filled_JOB_ID.json"
+  Set-Content -Path $tmpFile -Value $autoSubmitted -Encoding utf8 -NoNewline
+  python job_status_store.py set --url "JOB_URL" --field form_filled --json --value-file $tmpFile
+  Remove-Item $tmpFile -ErrorAction SilentlyContinue
+  python job_status_store.py set --url "JOB_URL" --field applied --value "yes"
+  python job_status_store.py set --url "JOB_URL" --field applied_date --value (Get-Date).ToString("yyyy-MM-dd")
+  ```
+  This is what powers `firebase_app/review.html`'s "Auto-Submitted Forms in Review" tab — Manju couldn't confirm this one before it went out, so she reviews it *after the fact* there instead of in the "Filled Forms" tab (which is only for forms genuinely still waiting on her click).
+- Print a clear warning naming the job and the confirmation URL/text seen, so this doesn't get buried in normal step-by-step output.
+- **Not `$AutoMode`:** stop and tell the user directly what happened before doing anything else with this job (don't attempt to "undo" or re-submit).
+- **`$AutoMode`:** don't block — set `auto_fill_attempted_at` same as any other completed candidate and continue per Step -1.A.5's normal end-of-cycle reporting, but make sure the auto-submission is called out by name in the cycle summary, not folded silently into "1 form filled."
+
+If no such navigation/confirmation is detected, proceed to Step 6 exactly as before — this is the normal, expected outcome for the large majority of forms.
+
+---
+
 ## Step 6 — Hand off for manual review
 
-Immediately after the fill script completes successfully (both modes) — this is what powers `firebase_app/review.html`'s "Filled Forms" tab, so Manju can find and confirm-submit it later even from a different machine/session than the one that filled it:
+Immediately after the fill script completes successfully (both modes) **and Step 5.5 found no auto-submission** — this is what powers `firebase_app/review.html`'s "Filled Forms" tab, so Manju can find and confirm-submit it later even from a different machine/session than the one that filled it:
 ```powershell
 $formFilled = [ordered]@{
     status = "pending_review"
