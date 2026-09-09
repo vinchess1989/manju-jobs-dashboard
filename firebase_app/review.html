@@ -56,7 +56,7 @@
         #login-btn { background: #6366f1; }
         #logout-btn { background: #ef4444; display: none; }
 
-        .tabs { display: flex; gap: 0.5rem; padding: 1.5rem 2rem 0; }
+        .tabs { display: flex; gap: 0.5rem; padding: 1.5rem 2rem 0; flex-wrap: wrap; }
         .tab-btn {
             background: none; border: 1px solid var(--border-color); color: var(--text-secondary);
             padding: 0.6rem 1.25rem; border-radius: 0.75rem 0.75rem 0 0; cursor: pointer;
@@ -136,7 +136,7 @@
         th.resizable-th {
             padding: 0;
         }
-        
+
         .action-type-badge {
             display: inline-block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase;
             padding: 0.25rem 0.65rem; border-radius: 1rem; color: white; white-space: nowrap;
@@ -144,9 +144,9 @@
         .action-type-badge.create_login { background: var(--color-pending); }
         .action-type-badge.upload_video { background: var(--color-maybe); }
         .action-type-badge.email_application { background: #8b5cf6; }
-        
+
         tr.done td { opacity: 0.6; }
-        
+
         .btn {
             border: none; border-radius: 0.6rem; padding: 0.55rem 1rem; cursor: pointer;
             font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 0.85rem; color: white;
@@ -161,10 +161,28 @@
             letter-spacing: 0.04em; color: var(--text-primary); margin: 1.75rem 0 1rem; padding-left: 0.5rem;
         }
         .section-label:first-child { margin-top: 0; }
-        
+
         a { color: #60a5fa; text-decoration: none; }
         a:hover { text-decoration: underline; }
         .action-check input { width: 18px; height: 18px; cursor: pointer; }
+
+        .chart-container {
+            background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 1.25rem;
+            padding: 1.5rem; margin-top: 1.5rem; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4); backdrop-filter: blur(12px);
+            overflow-x: auto;
+        }
+        .chart-title {
+            font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1rem; margin-bottom: 1rem;
+        }
+        .bar-chart-svg text { fill: var(--text-secondary); font-size: 0.7rem; font-family: 'Plus Jakarta Sans', sans-serif; }
+        .bar-chart-bar { fill: var(--color-pending); transition: fill 0.15s; }
+        .bar-chart-bar:hover { fill: #fbbf24; }
+        .bar-chart-gridline { stroke: rgba(255, 255, 255, 0.08); stroke-width: 1; }
+        .bar-chart-tooltip {
+            position: fixed; background: #1e243b; border: 1px solid var(--border-color); border-radius: 0.5rem;
+            padding: 0.5rem 0.75rem; font-size: 0.8rem; color: var(--text-primary); pointer-events: none;
+            z-index: 1000; display: none; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); white-space: nowrap;
+        }
 
         .spinner-container { text-align: center; padding: 4rem 1rem; color: var(--text-secondary); }
         .spinner {
@@ -172,7 +190,7 @@
             border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 1rem;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
-    
+
         .filter-row th { position: relative; overflow: visible; padding: 0; }
         .ms-btn {
             width: 100%; padding: 0.5rem; background: rgba(255, 255, 255, 0.05);
@@ -219,6 +237,7 @@
     <button class="tab-btn active" id="tab-btn-weak" onclick="switchTab('weak')">Weak Matches <span class="count" id="weak-count"></span></button>
     <button class="tab-btn" id="tab-btn-actions" onclick="switchTab('actions')">Action Items <span class="count" id="actions-count"></span></button>
     <button class="tab-btn" id="tab-btn-filled" onclick="switchTab('filled')">Filled Forms <span class="count" id="filled-count"></span></button>
+    <button class="tab-btn" id="tab-btn-autosubmitted" onclick="switchTab('autosubmitted')">Auto-Submitted Forms in Review <span class="count" id="autosubmitted-count"></span></button>
 </div>
 
 <main>
@@ -230,6 +249,9 @@
     </div>
     <div class="panel" id="panel-filled">
         <div id="filled-content" class="spinner-container"><div class="spinner"></div><div>Loading jobs…</div></div>
+    </div>
+    <div class="panel" id="panel-autosubmitted">
+        <div id="autosubmitted-content" class="spinner-container"><div class="spinner"></div><div>Loading jobs…</div></div>
     </div>
 </main>
 
@@ -274,9 +296,11 @@
         document.getElementById('tab-btn-weak').classList.toggle('active', tab === 'weak');
         document.getElementById('tab-btn-actions').classList.toggle('active', tab === 'actions');
         document.getElementById('tab-btn-filled').classList.toggle('active', tab === 'filled');
+        document.getElementById('tab-btn-autosubmitted').classList.toggle('active', tab === 'autosubmitted');
         document.getElementById('panel-weak').classList.toggle('active', tab === 'weak');
         document.getElementById('panel-actions').classList.toggle('active', tab === 'actions');
         document.getElementById('panel-filled').classList.toggle('active', tab === 'filled');
+        document.getElementById('panel-autosubmitted').classList.toggle('active', tab === 'autosubmitted');
     }
 
     window.addEventListener('DOMContentLoaded', () => {
@@ -312,6 +336,7 @@
                 document.getElementById('weak-content').innerHTML = '<div class="empty-state">Please sign in with Google to view the review queue.</div>';
                 document.getElementById('actions-content').innerHTML = '<div class="empty-state">Please sign in with Google to view the review queue.</div>';
                 document.getElementById('filled-content').innerHTML = '<div class="empty-state">Please sign in with Google to view the review queue.</div>';
+                document.getElementById('autosubmitted-content').innerHTML = '<div class="empty-state">Please sign in with Google to view the review queue.</div>';
             }
         });
 
@@ -343,6 +368,7 @@
             document.getElementById('weak-content').innerHTML = '<div class="empty-state">Could not load jobs.json.</div>';
             document.getElementById('actions-content').innerHTML = '<div class="empty-state">Could not load jobs.json.</div>';
             document.getElementById('filled-content').innerHTML = '<div class="empty-state">Could not load jobs.json.</div>';
+            document.getElementById('autosubmitted-content').innerHTML = '<div class="empty-state">Could not load jobs.json.</div>';
         });
     }
 
@@ -350,14 +376,15 @@
         renderWeakMatches();
         renderActionItems();
         renderFilledForms();
+        renderAutoSubmitted();
     }
 
     // ── Weak Matches tab ──────────────────────────────────────────────
 
-        
+
         // Global storage for filters
         if (!window._tableFilters) window._tableFilters = new Map();
-        
+
         function clearAllFilters() {
             document.querySelectorAll('.ms-dropdown input[type="checkbox"]').forEach(cb => {
                 cb.checked = false;
@@ -377,7 +404,7 @@
             const tbody = table.querySelector('tbody');
             if (!thead || !tbody) return;
             const headers = thead.querySelectorAll('tr:first-child th');
-            
+
             // Add Clear All Filters button if not exists
             if (!document.getElementById('clear-filters-btn')) {
                 const tabsDiv = document.querySelector('.tabs');
@@ -391,26 +418,26 @@
                     tabsDiv.appendChild(clearBtn);
                 }
             }
-            
+
             const filterRow = document.createElement('tr');
             filterRow.className = 'filter-row';
-            
+
             headers.forEach((th, colIndex) => {
                 const fth = document.createElement('th');
                 const headerText = th.textContent.trim();
-                
+
                 if (headerText === 'Actions' || headerText === 'Status') {
                     filterRow.appendChild(fth);
                     return;
                 }
-                
+
                 const uniqueVals = new Set();
                 tbody.querySelectorAll('tr').forEach(tr => {
                     const td = tr.children[colIndex];
                     if (td) uniqueVals.add(td.textContent.trim());
                 });
                 const sortedVals = Array.from(uniqueVals).sort((a,b)=>a.localeCompare(b));
-                
+
                 let extraFilterHtml = '';
                 if (headerText === 'Deadline' || headerText === 'Created' || headerText === 'Completed' || headerText === 'Posted Date') {
                     extraFilterHtml = `
@@ -436,7 +463,7 @@
                 sortedVals.forEach(val => {
                     optionsHtml += `<label class="ms-option"><input type="checkbox" value="${val.replace(/"/g, '&quot;')}"> ${val}</label>`;
                 });
-                
+
                 // Create the dropdown and append to body
                 const dropdownId = 'filter-col-' + Math.random().toString(36).substr(2, 9);
                 const dropdown = document.createElement('div');
@@ -444,7 +471,7 @@
                 dropdown.id = dropdownId;
                 dropdown.innerHTML = optionsHtml;
                 document.body.appendChild(dropdown);
-                
+
                 window._tableFilters.set(colIndex, dropdown);
 
                 fth.innerHTML = `
@@ -496,21 +523,21 @@
             const tbody = table.querySelector('tbody');
             const thead = table.querySelector('thead');
             if (!thead || !tbody) return;
-            
+
             const filterRow = thead.querySelector('.filter-row');
             if (!filterRow) return;
             const cols = filterRow.children;
             const today = new Date();
             today.setHours(0,0,0,0);
-            
+
             tbody.querySelectorAll('tr').forEach(tr => {
                 let showRow = true;
                 for (let colIndex = 0; colIndex < cols.length; colIndex++) {
                     const dropdown = window._tableFilters.get(colIndex);
                     if (!dropdown) continue;
-                    
+
                     const cellVal = tr.children[colIndex] ? tr.children[colIndex].textContent.trim() : '';
-                    
+
                     // Days filter
                     const daysInput = dropdown.querySelector('.days-filter');
                     if (daysInput && daysInput.value) {
@@ -536,7 +563,7 @@
                             }
                         }
                     }
-                    
+
                     const checkedBoxes = Array.from(dropdown.querySelectorAll('input[type="checkbox"]:checked'));
                     if (checkedBoxes.length > 0) {
                         const allowedVals = checkedBoxes.map(cb => cb.value);
@@ -549,7 +576,7 @@
                 tr.style.display = showRow ? '' : 'none';
             });
         }
-        
+
         document.addEventListener('click', (e) => {
             if (!e.target.closest('.ms-dropdown') && !e.target.closest('.ms-btn')) {
                 document.querySelectorAll('.ms-dropdown').forEach(d => d.classList.remove('show'));
@@ -883,6 +910,147 @@
             alert('Failed to save to cloud database.');
             btn.disabled = false;
         }
+    }
+
+    // ── Auto-Submitted Forms in Review tab ──────────────────────────────
+    // Forms that a third-party ATS submitted on its own (e.g. reactively on a file
+    // upload) before /fill-form's "never click submit" step ever got a chance to
+    // hand the form to Manju for review — see fill-form.md Step 5.5 and memory.md's
+    // Teamtailor auto-submit incident. Tracked via form_filled.auto_submitted.
+    function renderAutoSubmitted() {
+        const container = document.getElementById('autosubmitted-content');
+        const items = [];
+        for (const [url, state] of Object.entries(sharedJobsState)) {
+            if (!state || !state.form_filled || !state.form_filled.auto_submitted) continue;
+            const job = allJobs.find(j => j.url === url) || deletedJobsData.find(j => j.url === url) || {};
+            items.push({ url, job, formFilled: state.form_filled });
+        }
+        items.sort((a, b) => {
+            const tsA = a.formFilled.auto_submitted_at || a.formFilled.filled_at || 0;
+            const tsB = b.formFilled.auto_submitted_at || b.formFilled.filled_at || 0;
+            return new Date(tsB) - new Date(tsA); // latest first
+        });
+
+        document.getElementById('autosubmitted-count').textContent = items.length ? `(${items.length})` : '';
+
+        if (items.length === 0) {
+            container.innerHTML = '<div class="empty-state">No auto-submitted forms — every filled form so far went through manual confirmation.</div>';
+            return;
+        }
+
+        const dailyCounts = new Map();
+        items.forEach(item => {
+            const ts = item.formFilled.auto_submitted_at || item.formFilled.filled_at;
+            if (!ts) return;
+            const day = ts.split('T')[0];
+            dailyCounts.set(day, (dailyCounts.get(day) || 0) + 1);
+        });
+        const chartData = Array.from(dailyCounts.keys()).sort().map(day => ({ date: day, count: dailyCounts.get(day) }));
+
+        container.innerHTML = `
+            <div class="chart-container">
+                <div class="chart-title">Auto-Submitted Forms Per Day</div>
+                <div id="autosubmitted-chart"></div>
+            </div>
+            <div class="table-container">
+                <div class="table-scroll-area">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="resizable-th"><div class="resizable-header" style="width: 80px">ID</div></th>
+                                <th class="resizable-th"><div class="resizable-header" style="width: 150px">Company</div></th>
+                                <th class="resizable-th"><div class="resizable-header" style="width: 250px">Job Title</div></th>
+                                <th class="resizable-th"><div class="resizable-header" style="width: 150px">Location</div></th>
+                                <th class="resizable-th"><div class="resizable-header" style="width: 180px">Submitted At</div></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${items.map(item => {
+                                const title = item.job.title || '(job no longer in jobs.json)';
+                                const titleHtml = item.job.url
+                                    ? `<a href="${escapeHtml(item.job.url)}" target="_blank" rel="noopener">${escapeHtml(title)}</a>`
+                                    : escapeHtml(title);
+                                const ts = item.formFilled.auto_submitted_at || item.formFilled.filled_at;
+                                const submittedStr = ts ? new Date(ts).toLocaleString() : '';
+                                return `
+                                    <tr data-url="${escapeHtml(item.url)}">
+                                        <td style="font-family: monospace;">${escapeHtml(item.job.id || '')}</td>
+                                        <td>${escapeHtml(item.job.company || '')}</td>
+                                        <td>${titleHtml}</td>
+                                        <td>${escapeHtml(item.job.location || '')}</td>
+                                        <td>${escapeHtml(submittedStr)}</td>
+                                    </tr>
+                                `;
+                            }).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        `;
+        renderDailyBarChart(document.getElementById('autosubmitted-chart'), chartData);
+        setupTableFilters(container.querySelector('table'));
+    }
+
+    function renderDailyBarChart(el, data) {
+        if (!el || data.length === 0) return;
+        const width = Math.max(el.clientWidth || 600, data.length * 36 + 60);
+        const height = 220;
+        const padding = { top: 10, right: 20, bottom: 40, left: 36 };
+        const plotW = width - padding.left - padding.right;
+        const plotH = height - padding.top - padding.bottom;
+        const maxCount = Math.max(...data.map(d => d.count), 1);
+        const barGap = 8;
+        const slot = plotW / data.length;
+        const barWidth = Math.max(slot - barGap, 4);
+
+        const yTicks = 4;
+        let gridlines = '';
+        let yLabels = '';
+        for (let i = 0; i <= yTicks; i++) {
+            const val = Math.round((maxCount / yTicks) * i);
+            const y = padding.top + plotH - (val / maxCount) * plotH;
+            gridlines += `<line class="bar-chart-gridline" x1="${padding.left}" y1="${y}" x2="${width - padding.right}" y2="${y}" />`;
+            yLabels += `<text x="${padding.left - 8}" y="${y + 4}" text-anchor="end">${val}</text>`;
+        }
+
+        let bars = '';
+        let xLabels = '';
+        data.forEach((d, i) => {
+            const x = padding.left + i * slot + (slot - barWidth) / 2;
+            const barH = Math.max((d.count / maxCount) * plotH, 2);
+            const y = padding.top + plotH - barH;
+            const labelDate = new Date(d.date + 'T00:00:00');
+            const shortLabel = labelDate.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+            const fullLabel = labelDate.toLocaleDateString();
+            bars += `<rect class="bar-chart-bar" x="${x}" y="${y}" width="${barWidth}" height="${barH}" rx="3"
+                        onmousemove="showBarTooltip(event, '${escapeHtml(fullLabel)}', ${d.count})"
+                        onmouseleave="hideBarTooltip()" />`;
+            xLabels += `<text x="${x + barWidth / 2}" y="${height - padding.bottom + 16}" text-anchor="middle">${escapeHtml(shortLabel)}</text>`;
+        });
+
+        el.innerHTML = `
+            <svg class="bar-chart-svg" width="100%" height="${height}" viewBox="0 0 ${width} ${height}" preserveAspectRatio="xMinYMin meet" style="overflow: visible; min-width: ${width}px; display: block;">
+                ${gridlines}
+                ${yLabels}
+                ${bars}
+                ${xLabels}
+            </svg>
+            <div id="bar-chart-tooltip" class="bar-chart-tooltip"></div>
+        `;
+    }
+
+    function showBarTooltip(evt, dateLabel, count) {
+        const tip = document.getElementById('bar-chart-tooltip');
+        if (!tip) return;
+        tip.textContent = `${dateLabel}: ${count} auto-submitted`;
+        tip.style.left = (evt.clientX + 14) + 'px';
+        tip.style.top = (evt.clientY - 10) + 'px';
+        tip.style.display = 'block';
+    }
+
+    function hideBarTooltip() {
+        const tip = document.getElementById('bar-chart-tooltip');
+        if (tip) tip.style.display = 'none';
     }
 </script>
 </body>
