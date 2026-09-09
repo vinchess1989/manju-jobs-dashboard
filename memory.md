@@ -406,6 +406,72 @@ company-run ATSs and recruiters commonly repost/re-list the same opening across 
 (LinkedIn, Indeed, company career site) as fresh postings with fresh IDs, and the scraper has no
 cross-source dedup, so this is expected to recur, not a one-off glitch.
 
+## Gmail MCP + `/email-apply` (added 2026-09-09)
+
+The `claude.ai Gmail` MCP connector available in Claude Code sessions on this machine is
+confirmed connected to **Manju's own mailbox**, `munchnambiar@gmail.com` ("Manju Krishna
+Haridas") — verified by `search_threads(query: "in:sent")` and checking the returned message's
+`sender`. `.claude/commands/email-apply.md` drafts (never sends) job-application emails for jobs
+whose only application path is an email address (`RESULT_TYPE: email` from `find-apply-link` /
+`apply_email` in Firestore), attaching the Claude-tailored resume + cover letter PDFs. Drafts are
+staged in Gmail only — Manju still reviews and sends them herself, same trust boundary as
+`fill-form`'s "never click submit."
+
+**PDF attachments go through Chrome/Playwright automation, not the Gmail MCP's `create_draft`
+attachments param — this was tried first and doesn't scale.** That tool takes attachment content
+as inline base64 in the request. A real resume PDF (~250KB, larger because of the embedded photo
+`make_resume.py` renders in) becomes ~334,000 base64 characters, and reading/emitting base64 text
+through the model's own context costs roughly **3 tokens per character** here (measured directly
+2026-09-09: a 70,364-char cover-letter base64 blob cost 67,022 tokens for just the first third,
+via the Read tool's own reported truncation stats) — nothing like the ~4-chars-per-token ratio
+normal text gets, because base64 of binary data has none of the structure a BPE tokenizer's
+vocabulary was trained on. A full resume attachment this way would run close to a million tokens
+as a single tool-call argument, with no guarantee a single response can emit that much without
+silent truncation — which would mean a corrupted PDF sitting in a real, undetectable draft. Ruled
+out as unsafe, not just expensive.
+
+**Working approach**: `email-apply.md` Step 4 launches CDP Chrome against `AUTOMATION_PROFILE`
+(the dedicated Manju profile — see the Chrome-profile section below), opens Gmail's full-screen
+compose (`https://mail.google.com/mail/u/0/?view=cm&fs=1`), and fills fields directly:
+- To: `input[aria-label="To recipients"]`
+- Subject: `input[name='subjectbox']`
+- Body: `div[aria-label="Message Body"][role="textbox"]`
+- Attachments: `input[name="Filedata"]` (a real, always-present hidden file input) via Playwright's
+  `set_input_files([resume_path, cover_path])` — **no click, no file-chooser dialog, no base64**,
+  the browser reads the files itself. This is also safer than clicking the paperclip icon, which
+  sits immediately next to the Send button in the compose toolbar.
+- **`?view=cm&fs=1` is full-screen compose, not a popup dialog** — there is no "Save & close"/
+  minimize button to click (a first attempt at this looked for one and timed out). Gmail autosaves
+  continuously; just wait a few seconds after the last edit, then close the tab. Verified live
+  2026-09-09: real draft appeared in Gmail (`list_drafts`/`get_draft` via MCP), RAW MIME size
+  ~558,000 chars confirming both PDFs genuinely embedded (an attachment-free draft would be a few
+  KB) — checked by size only, never by reading the RAW content itself (same token-cost trap as
+  above applies to reading it back, not just writing it).
+- The Gmail MCP is still used, cheaply: the account-safety check (`search_threads`), and post-hoc
+  draft verification (`list_drafts`/`get_draft` metadata, no attachment bytes) to get `draft_id`/
+  `thread_id` for the Firestore bookkeeping below — small text responses only.
+- Gmail's compose DOM can drift between sessions; re-diagnose selectors with
+  `page.eval_on_selector_all(...)` over `input, textarea, div[contenteditable='true'],
+  div[role='textbox']` if any of the above stop matching, the same way this set was found.
+
+New Firestore field on `shared_state/job_status` entries: `email_draft` (`status`, `draft_id`,
+`thread_id`, `to`, `created_at`) — written by `email-apply` for idempotency (don't re-draft a job
+that already has one, unless explicitly told `redo`). This is separate from `action_item`/
+`applied`, which `email-apply` deliberately never touches — checking "Done" on an
+`email_application` action item in `review.html` (which sets `applied = yes`) remains the only
+signal that Manju actually sent the email, not that a draft merely exists.
+
+**If the MCP connector's authenticated account ever changes** (re-auth, different Google account
+picked), `email-apply`'s own safety check will catch it before drafting anything — but worth a
+manual sanity check too if Gmail-related work here starts behaving unexpectedly.
+
+**vineeth_jobs parity not done**: vineeth_jobs currently has none of the prerequisite
+infrastructure this skill depends on (no `job_status_store.py`, no `tailor-resume`/`find-apply-
+link`/`fill-form` skills — only `add-job-link.md` exists there), and no Gmail MCP connector for
+Vineeth's own mailbox was available in the session that built this. Porting `email-apply` there
+isn't just a parity edit — it needs that whole apply pipeline built first. Flagged to the user
+rather than silently skipped or half-built.
+
 ## Open/unresolved
 
 - `jobs_history.json.corrupt-20260813_150257`: partially investigated (2026-08-14). The file
