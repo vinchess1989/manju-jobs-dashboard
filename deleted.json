@@ -332484,5 +332484,53 @@
     "eval_model": "local/hermes-3-llama-3.1-8b",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'opettaja'"
+  },
+  {
+    "title": "Toimialajohtaja, yhteiskuntasuhteet",
+    "company": "Suomen L\u00e4\u00e4k\u00e4riliitto",
+    "location": "Helsinki Region, Finland",
+    "url": "https://fi.linkedin.com/jobs/view/toimialajohtaja-yhteiskuntasuhteet-at-suomen-l%C3%A4%C3%A4k%C3%A4riliitto-4463457252",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The role requires Finnish citizenship as a hard requirement, which Manju does not have.",
+    "id": "8511734a",
+    "source": "linkedin_fi_communications",
+    "posted_date": "2026-09-10",
+    "deadline": "2026-09-30",
+    "eval_model": "local/hermes-3-llama-3.1-8b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'johtaja'"
+  },
+  {
+    "title": "Policy Advisor",
+    "company": "Demos Helsinki",
+    "location": "Helsinki Region, Finland",
+    "url": "https://fi.linkedin.com/jobs/view/policy-advisor-at-demos-helsinki-4465636705",
+    "visited": "yes",
+    "matches_requirements": "maybe",
+    "reason": "The role is a generalist office position that fits Manju's background, but requires strong written English as a hard requirement which she has.",
+    "id": "7c6fb390",
+    "source": "linkedin_fi_communications",
+    "posted_date": "2026-09-10",
+    "deadline": "2023-09-27",
+    "eval_model": "local/hermes-3-llama-3.1-8b",
+    "description_file": "job_descriptions/demos_helsinki_policy_advisor_7c6fb390.txt",
+    "deletion_reason": "Deadline (2023-09-27) passed by more than 2 days and unreviewed"
+  },
+  {
+    "title": "Press Officer (Central Public Information Officer)",
+    "company": "The Business of HLTH Podcast",
+    "location": "Portland, OR",
+    "url": "https://www.linkedin.com/jobs/view/press-officer-central-public-information-officer-at-the-business-of-hlth-podcast-4465634687",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The job requires US residency, which Manju does not have.",
+    "id": "e4c76ae7",
+    "source": "linkedin_ww_communications",
+    "posted_date": "2026-09-10",
+    "deadline": "N/A",
+    "eval_model": "local/hermes-3-llama-3.1-8b",
+    "description_file": null,
+    "deletion_reason": "Requires US residency"
   }
 ]
