@@ -270064,5 +270064,20 @@
     "deadline": "N/A",
     "eval_model": "local/hermes-3-llama-3.1-8b",
     "description_file": "job_descriptions/mcm_worldwide_celebrity_and_special_projects_0386bded.txt"
+  },
+  {
+    "title": "Stroke Transfer Coordinator/UKHC",
+    "company": "UK HealthCare",
+    "location": "Lexington, KY",
+    "url": "https://www.linkedin.com/jobs/view/stroke-transfer-coordinator-ukhc-at-uk-healthcare-4465892694",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "a29c7481",
+    "source": "linkedin_ww_coordinator",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "groq/openai/gpt-oss-safeguard-20b",
+    "description_file": null
   }
 ]
