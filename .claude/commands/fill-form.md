@@ -7,6 +7,7 @@ Parse `$ARGUMENTS` by space-separated tokens:
 - Any token matching `^post<(\d+)$` or `^posted<(\d+)$` (case-insensitive) extracts `POSTED_DAYS_LIMIT` (e.g. `post<3` means jobs posted in the last 3 days, i.e., `posted_date >= today - 3 days`).
 - Any token matching `^dead<(\d+)$` or `^deadline<(\d+)$` (case-insensitive) extracts `DEADLINE_DAYS_LIMIT` (e.g. `dead<3` means jobs expiring in the next 3 days, i.e., `today <= deadline <= today + 3 days`).
 - Any token matching `^auto$` (case-insensitive) sets `$AutoMode = $true` — unattended mode, meant for a recurring `/loop 60m /fill-form auto`. Picks a job itself instead of asking, and never blocks on user input anywhere in the run.
+- Any token matching `^submit$` (case-insensitive) sets `$SubmitMode = $true` — explicitly authorizes Claude to click the real submit button itself instead of stopping at "pending_review" for Manju to click. Off by default; only use when the user has explicitly asked for this (in the invocation itself, or as a standing instruction for a recurring loop they set up). Combines with either mode: `/fill-form abc12345 submit` (single job) or `/fill-form auto submit` (unattended).
 
 **If no explicit `JOB_ID` token is given**:
 - `$AutoMode = $true` → run Step -1.A (auto-pick) instead of Step -1, then fall through to Steps 0–6 for whatever it picks (if anything — some cycles legitimately pick nothing).
@@ -18,6 +19,7 @@ Examples:
 - `/fill-form dead<5` — discover unapplied jobs expiring within the next 5 days
 - `/fill-form` — discover unapplied jobs expiring today or tomorrow (default)
 - `/fill-form auto` — unattended: auto-pick one strong-match job, fill it, stop before submit; never blocks waiting for input (meant to run every hour via `/loop 60m /fill-form auto`)
+- `/fill-form auto submit` — same as above, but Claude clicks the real submit button itself (only when the user has explicitly asked for this); the submission is logged the same way an unintended ATS auto-submit is (see Step 5.6), so it surfaces in `firebase_app/review.html`'s "Auto-Submitted" tab for Manju to review after the fact rather than before
 
 ---
 
@@ -366,7 +368,7 @@ with sync_playwright() as p:
   - If asked if the application can be used for other applications/future opportunities, always answer "yes" / agree to it.
   - If asked how she heard about the job, look up the `source` column for this job in `jobs.json` and use that value.
   - If asked for date of birth, use `1990-07-25` (25 July 1990) — from `master_data.json`'s `resume.contact.date_of_birth`.
-- **Never click the final submit button.** Leave the form filled and waiting for review.
+- **Never click the final submit button unless `$SubmitMode` is set.** By default, leave the form filled and waiting for review. When `$SubmitMode` is true, click through to and click the actual final submit control (which may take extra steps — a preview page, a two-step confirm, etc. — inspect the live page rather than assuming a single click suffices) and confirm success by reading the resulting page (a confirmation/thank-you message or status-badge change), the same way Step 5.5 detects an unintended auto-submission below. If submission can't be confirmed, don't claim it — fall through to Step 6's normal pending-review handling instead and say so.
 
 ---
 
@@ -401,9 +403,32 @@ If no such navigation/confirmation is detected, proceed to Step 6 exactly as bef
 
 ---
 
+## Step 5.6 — Deliberate submission (`$SubmitMode` only)
+
+When `$SubmitMode` is true and Step 5 confirmed a genuine successful submission (Claude clicked it deliberately, per the user's explicit instruction — not the unintended-ATS case Step 5.5 handles), log it with the **exact same Firestore schema** as an unintended auto-submission, since from Manju's perspective the distinction doesn't matter — either way she didn't personally review-and-click before it went out:
+```powershell
+$autoSubmitted = [ordered]@{
+    status = "auto_submitted"
+    filled_at = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
+    auto_submitted = $true
+    auto_submitted_at = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
+    done_at = $null
+} | ConvertTo-Json -Compress
+$tmpFile = "PUBLIC\scratch\form_filled_JOB_ID.json"
+Set-Content -Path $tmpFile -Value $autoSubmitted -Encoding utf8 -NoNewline
+python job_status_store.py set --url "JOB_URL" --field form_filled --json --value-file $tmpFile
+Remove-Item $tmpFile -ErrorAction SilentlyContinue
+python job_status_store.py set --url "JOB_URL" --field applied --value "yes"
+python job_status_store.py set --url "JOB_URL" --field applied_date --value (Get-Date).ToString("yyyy-MM-dd")
+python job_status_store.py set --url "JOB_URL" --field auto_fill_attempted_at --value (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
+```
+This is what makes it appear in `firebase_app/review.html`'s "Auto-Submitted" tab rather than "Filled Forms" (which is only for forms genuinely still waiting on Manju's own click). Print a summary naming the job, company, and confirmation evidence seen. Skip Step 6 entirely for this job — it's fully handled. **`$AutoMode`:** continue per Step -1.A.5's normal end-of-cycle reporting, calling out the submission by name.
+
+---
+
 ## Step 6 — Hand off for manual review
 
-Immediately after the fill script completes successfully (both modes) **and Step 5.5 found no auto-submission** — this is what powers `firebase_app/review.html`'s "Filled Forms" tab, so Manju can find and confirm-submit it later even from a different machine/session than the one that filled it:
+Immediately after the fill script completes successfully (both modes) **and Step 5.5 found no auto-submission, and Step 5.6 didn't already handle a deliberate submission** — this is what powers `firebase_app/review.html`'s "Filled Forms" tab, so Manju can find and confirm-submit it later even from a different machine/session than the one that filled it:
 ```powershell
 $formFilled = [ordered]@{
     status = "pending_review"
