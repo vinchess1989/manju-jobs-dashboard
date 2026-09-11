@@ -274154,17 +274154,18 @@
   },
   {
     "title": "Kassa-myyji\u00e4 jouluavuksi, Loviisa",
-    "company": "Extract via OpenClaw",
-    "location": "Extract via OpenClaw",
+    "company": "Tokmanni Group Oyj",
+    "location": "Finland",
     "url": "https://fi.indeed.com/rc/clk?jk=13ffa482ea97b529",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Failed to get or parse LLM response: 400 Client Error: Bad Request for url: http://127.0.0.1:1234/v1/chat/completions",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
     "id": "bef2a92e",
     "source": "indeed",
     "posted_date": "N/A",
     "deadline": "N/A",
-    "description_file": null
+    "description_file": null,
+    "eval_model": "local/google/gemma-4-26b-a4b-qat"
   },
   {
     "title": "Hotel K\u00e4mp - Head Waiter (Breakfast & Lunch)",
@@ -274423,17 +274424,18 @@
   },
   {
     "title": "Kassa-myyji\u00e4 jouluavuksi, Loviisa (m\u00e4\u00e4r\u00e4aikainen 18 h/vko)",
-    "company": "Extract via OpenClaw",
-    "location": "Extract via OpenClaw",
+    "company": "Kassa-myyji\u00e4 jouluavuksi, Loviisa (m\u00e4\u00e4r\u00e4aikainen 18 h/vko)",
+    "location": "Loviisa, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/57840588-d01c-4a34-ad40-da8d7899b6cd/fi",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Failed to get or parse LLM response: 400 Client Error: Bad Request for url: http://127.0.0.1:1234/v1/chat/completions",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
     "id": "4ca7a924",
     "source": "tyomarkkinatori",
     "posted_date": "N/A",
     "deadline": "N/A",
-    "description_file": null
+    "description_file": null,
+    "eval_model": "local/google/gemma-4-26b-a4b-qat"
   },
   {
     "title": "Osa-aikainen myym\u00e4l\u00e4siivooja Ulvilaan",
