@@ -1,4 +1,9 @@
 {
+  "web103.reachmee.com": {
+    "strategy": "webfetch_hops",
+    "discovered": "2026-09-11",
+    "notes": "ReachMee ATS (used by Sodexo Finland among others). duunitori.fi listing links to .../ext/I019/731/apply?site=...&job_id=... which WebFetch resolves (1 hop) to .../ext/I019/731/job?site=...&job_id=... - the actual application form page. Standard form, no special auth/bot-blocking observed."
+  },
   "soite.rekrytointi.com": {
     "strategy": "webfetch_hops",
     "discovered": "2026-09-09",
