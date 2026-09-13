@@ -275998,5 +275998,35 @@
     "deadline": "N/A",
     "eval_model": "local/google/gemma-4-26b-a4b-qat",
     "description_file": null
+  },
+  {
+    "title": "Puoliper\u00e4vaununkuljettaja",
+    "company": "JD Transport & Logistics Oy",
+    "location": "Hanko, Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/4ef9db30-26ed-4402-b1fd-a7ed7d35720b/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The position is a manual driver role, which falls under the trade/manual\u2011labour hard rejection criteria.",
+    "id": "dfa1825d",
+    "source": "tyomarkkinatori",
+    "posted_date": "13.9.2026, 17.15",
+    "deadline": "2026-10-31",
+    "eval_model": "groq/openai/gpt-oss-120b",
+    "description_file": null
+  },
+  {
+    "title": "Hankintakoordinaattori",
+    "company": "Hankkija Oy - Hyvink\u00e4\u00e4",
+    "location": "Etsi, Finland",
+    "url": "https://duunitori.fi/tyopaikat/tyo/hankkija-oy-hankintakoordinaattori-sdsuu-20568336",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "1d8dec78",
+    "source": "duunitori_coordinator",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/google/gemma-4-26b-a4b-qat",
+    "description_file": null
   }
 ]

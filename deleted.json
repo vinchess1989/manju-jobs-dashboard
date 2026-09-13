@@ -340002,5 +340002,21 @@
     "eval_model": "local/google/gemma-4-26b-a4b-qat",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'manager'"
+  },
+  {
+    "title": "Ty\u00f6njohtaja",
+    "company": "Omexom Suomi - Salo",
+    "location": "Etsi, Finland",
+    "url": "https://duunitori.fi/tyopaikat/tyo/omexom-suomi-tyonjohtaja-salo-sdsuu-20560451",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "83b4cd29",
+    "source": "duunitori_office_secretary",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/google/gemma-4-26b-a4b-qat",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'johtaja'"
   }
 ]
