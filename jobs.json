@@ -211064,7 +211064,8 @@
     "deadline": "2026-09-13",
     "eval_model": "local/hermes-3-llama-3.1-8b",
     "description_file": "job_descriptions/roschier_catering___reception__receptio_2b5862f9.txt",
-    "user_review": "done"
+    "user_review": "done",
+    "applied": "yes"
   },
   {
     "title": "Business Support Trainee",
@@ -276192,6 +276193,51 @@
     "posted_date": "N/A",
     "deadline": "N/A",
     "eval_model": "local/google/gemma-4-26b-a4b-qat",
+    "description_file": null
+  },
+  {
+    "title": "Gaming Expert - Gigantti Raisio",
+    "company": "Hae t\u00e4n\u00e4\u00e4n!",
+    "location": "Helsinki Region, Finland",
+    "url": "https://fi.indeed.com/rc/clk?jk=bf6e1adbe562adac",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "2d710542",
+    "source": "indeed",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "groq/openai/gpt-oss-safeguard-20b",
+    "description_file": null
+  },
+  {
+    "title": "Safariopas / Huskytarhaty\u00f6ntekij\u00e4",
+    "company": "SUOMEKSI",
+    "location": "Kittil\u00e4, Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/6d5c710f-badd-42c3-81cf-538b21b3a6a6/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "f305d951",
+    "source": "tyomarkkinatori",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/google/gemma-4-26b-a4b-qat",
+    "description_file": null
+  },
+  {
+    "title": "Administrative Assistant 2 (Facilities and Security)",
+    "company": "Cleveland State University",
+    "location": "Cleveland, OH",
+    "url": "https://www.linkedin.com/jobs/view/administrative-assistant-2-facilities-and-security-at-cleveland-state-university-4455486316",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "284a2f4c",
+    "source": "linkedin_ww_office_secretary",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "groq/openai/gpt-oss-safeguard-20b",
     "description_file": null
   }
 ]
