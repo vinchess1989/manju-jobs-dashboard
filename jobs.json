@@ -235568,7 +235568,8 @@
     "deadline": "2026-09-13",
     "eval_model": "local/hermes-3-llama-3.1-8b",
     "description_file": "job_descriptions/bluefors_trainee_for_service_documentat_ace1269b.txt",
-    "user_review": "done"
+    "user_review": "done",
+    "applied": "yes"
   },
   {
     "title": "Medical Scientific Liaison (MSL)",
@@ -276238,6 +276239,36 @@
     "posted_date": "N/A",
     "deadline": "N/A",
     "eval_model": "groq/openai/gpt-oss-safeguard-20b",
+    "description_file": null
+  },
+  {
+    "title": "Henkil\u00f6kohtainen avustaja",
+    "company": "Anonyymi ty\u00f6nantaja",
+    "location": "Lahti, Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/927c41de-8f91-49e4-aef5-03e6f6ddc5f3/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The role is a personal assistant (Henkil\u00f6kohtainen avustaja), which is a hard rejection category.",
+    "id": "1796e436",
+    "source": "tyomarkkinatori",
+    "posted_date": "13.09.2026, 20.35",
+    "deadline": "2026-10-11",
+    "eval_model": "groq/openai/gpt-oss-20b",
+    "description_file": null
+  },
+  {
+    "title": "El\u00e4inklinikan siivooja",
+    "company": "OPTI CLEANING SERVICES OY",
+    "location": "Jyv\u00e4skyl\u00e4 Region, Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/6fb812d7-98aa-4a2b-b450-cab6e052a3ab/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The role is a cleaning position, which is classified as manual labour and is a hard rejection.",
+    "id": "6d3793ae",
+    "source": "tyomarkkinatori",
+    "posted_date": "julkaistu 13.9.2026, 20.11",
+    "deadline": "2026-09-20",
+    "eval_model": "groq/openai/gpt-oss-120b",
     "description_file": null
   }
 ]
