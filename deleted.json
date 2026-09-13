@@ -339954,5 +339954,53 @@
     "eval_model": "groq/openai/gpt-oss-safeguard-20b",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'director'"
+  },
+  {
+    "title": "Director of Financial Planning and Analysis",
+    "company": "Camino Search",
+    "location": "Helsinki Region, Finland",
+    "url": "https://fi.linkedin.com/jobs/view/director-of-financial-planning-and-analysis-at-camino-search-4462521603",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The role is a senior Director-level position, which exceeds the candidate's experience level.",
+    "id": "72ae10a5",
+    "source": "linkedin_fin",
+    "posted_date": "2026-09-08",
+    "deadline": "N/A",
+    "eval_model": "groq/openai/gpt-oss-120b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'director'"
+  },
+  {
+    "title": "Service Contract Manager, Marine & Ports",
+    "company": "ABB",
+    "location": "Helsinki Region, Finland",
+    "url": "https://fi.linkedin.com/jobs/view/service-contract-manager-marine-ports-at-abb-4458248445",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "7ab82df9",
+    "source": "linkedin_fi_legal_counsel",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/google/gemma-4-26b-a4b-qat",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'manager'"
+  },
+  {
+    "title": "Project Manager",
+    "company": "NextPharma",
+    "location": "Tampere Region, Finland",
+    "url": "https://fi.linkedin.com/jobs/view/project-manager-at-nextpharma-4463387230",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "b6c21b43",
+    "source": "linkedin_fi_event_coordinator",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/google/gemma-4-26b-a4b-qat",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'manager'"
   }
 ]
