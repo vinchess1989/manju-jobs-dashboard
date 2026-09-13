@@ -339938,5 +339938,21 @@
     "eval_model": "local/google/gemma-4-26b-a4b-qat",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'sairaanhoitaja'"
+  },
+  {
+    "title": "Director - Compliance Issues Management",
+    "company": "American Express",
+    "location": "Charlotte, NC",
+    "url": "https://www.linkedin.com/jobs/view/director-compliance-issues-management-at-american-express-4463542060",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "31c62dcc",
+    "source": "linkedin_ww_compliance",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "groq/openai/gpt-oss-safeguard-20b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'director'"
   }
 ]
