@@ -339795,5 +339795,37 @@
     "eval_model": "local/google/gemma-4-26b-a4b-qat",
     "description_file": null,
     "deletion_reason": "Title contains seniority keyword 'lead'"
+  },
+  {
+    "title": "Event Manager",
+    "company": "Hyatt Regency Bethesda near Washington, DC",
+    "location": "Bethesda, MD",
+    "url": "https://www.linkedin.com/jobs/view/event-manager-at-hyatt-regency-bethesda-near-washington-dc-4460568626",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "ab64882b",
+    "source": "linkedin_ww_event",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/google/gemma-4-26b-a4b-qat",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'manager'"
+  },
+  {
+    "title": "Manager Philanthropy Events",
+    "company": "Canine Companions\u00ae",
+    "location": "Oceanside, CA",
+    "url": "https://www.linkedin.com/jobs/view/manager-philanthropy-events-at-canine-companions%C2%AE-4463893424",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "2d9d303c",
+    "source": "linkedin_ww_event",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/google/gemma-4-26b-a4b-qat",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'manager'"
   }
 ]
