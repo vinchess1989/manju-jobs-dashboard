@@ -275626,31 +275626,33 @@
   },
   {
     "title": "Ravintolaty\u00f6ntekij\u00e4 / Food Runner (Churrasco)",
-    "company": "Extract via OpenClaw",
-    "location": "Extract via OpenClaw",
+    "company": "SUOMEKSI",
+    "location": "Helsinki Region, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/48d34660-d41e-4b45-b269-8ef0f944a5b3/fi",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Failed to get or parse LLM response: HTTPConnectionPool(host='127.0.0.1', port=1234): Read timed out. (read timeout=120)",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
     "id": "5da68754",
     "source": "tyomarkkinatori",
     "posted_date": "N/A",
     "deadline": "N/A",
-    "description_file": null
+    "description_file": null,
+    "eval_model": "local/google/gemma-4-26b-a4b-qat"
   },
   {
     "title": "Autonasentaja, huoltokorjaamo, SK-Ajoneuvopalvelu Oy, Porvoo, Porvoo",
-    "company": "Extract via OpenClaw",
-    "location": "Extract via OpenClaw",
+    "company": "Autonasentaja, huoltokorjaamo, SK-Ajoneuvopalvelu Oy, Porvoo, Porvoo",
+    "location": "Helsinki Region, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/cf576de2-3431-4299-b6ad-9678f742ecc7/fi",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Failed to get or parse LLM response: HTTPConnectionPool(host='127.0.0.1', port=1234): Read timed out. (read timeout=120)",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
     "id": "142a6bb6",
     "source": "tyomarkkinatori",
     "posted_date": "N/A",
     "deadline": "N/A",
-    "description_file": null
+    "description_file": null,
+    "eval_model": "local/google/gemma-4-26b-a4b-qat"
   },
   {
     "title": "T\u00e4ysper\u00e4vaununkuljettajia kappaletavarajakeluun / y\u00f6 runkoajoon \u2013 Lahti Posti",
