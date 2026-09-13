@@ -275945,13 +275945,14 @@
     "location": "Wichita, KS",
     "url": "https://www.linkedin.com/jobs/view/litigation-legal-assistant-at-martin-pringle-oliver-wallace-bauer-llp-4464246067",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Failed to get or parse LLM response: 400 Client Error: Bad Request for url: http://127.0.0.1:1234/v1/chat/completions",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
     "id": "16cf4a4e",
     "source": "linkedin_ww_legal_trainee",
     "posted_date": "N/A",
     "deadline": "N/A",
-    "description_file": null
+    "description_file": null,
+    "eval_model": "groq/openai/gpt-oss-safeguard-20b"
   },
   {
     "title": "Kulttuuripaja, ty\u00f6kokeilu, Nuorten ty\u00f6pajat",
