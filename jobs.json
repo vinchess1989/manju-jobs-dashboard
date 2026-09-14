@@ -277576,17 +277576,18 @@
   },
   {
     "title": "Palvelumyyj\u00e4 K-Auto, Joensuu",
-    "company": "Extract via OpenClaw",
-    "location": "Extract via OpenClaw",
+    "company": "Palvelumyyj\u00e4 K-Auto, Joensuu",
+    "location": "Joensuu, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/51c7a17b-a4e3-4d62-9d0f-66347e82f2a3/fi",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Failed to get or parse LLM response: 400 Client Error: Bad Request for url: http://127.0.0.1:1234/v1/chat/completions",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
     "id": "ab52195c",
     "source": "tyomarkkinatori",
     "posted_date": "N/A",
     "deadline": "N/A",
-    "description_file": null
+    "description_file": null,
+    "eval_model": "local/google/gemma-4-26b-a4b-qat"
   },
   {
     "title": "P\u00e4iv\u00e4koti- ja koulusiivooja",
@@ -277921,16 +277922,17 @@
   {
     "title": "K\u00e4dentaitopaja, ty\u00f6kokeilu, Nuorten ty\u00f6pajat",
     "company": "Vantaan kaupunki - Vanda stad - City of Vantaa",
-    "location": "Vantaa, Uusimaa, Finland",
+    "location": "Helsinki Region, Finland",
     "url": "https://fi.linkedin.com/jobs/view/k%C3%A4dentaitopaja-ty%C3%B6kokeilu-nuorten-ty%C3%B6pajat-at-vantaan-kaupunki-vanda-stad-city-of-vantaa-4467009001",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Failed to get or parse LLM response: HTTPConnectionPool(host='127.0.0.1', port=1234): Read timed out. (read timeout=120)",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
     "id": "11fc3f30",
     "source": "linkedin_fi_event_coordinator",
     "posted_date": "N/A",
     "deadline": "N/A",
-    "description_file": null
+    "description_file": null,
+    "eval_model": "local/google/gemma-4-26b-a4b-qat"
   },
   {
     "title": "Digital Marketing Strategist",
