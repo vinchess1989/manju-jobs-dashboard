@@ -345080,5 +345080,21 @@
     "eval_model": "local/google/gemma-4-26b-a4b-qat",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'director'"
+  },
+  {
+    "title": "Event Planning Manager",
+    "company": "Paradise Point Resort & Spa",
+    "location": "San Diego Metropolitan Area",
+    "url": "https://www.linkedin.com/jobs/view/event-planning-manager-at-paradise-point-resort-spa-4467454001",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "f8f29d23",
+    "source": "linkedin_ww_event",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/google/gemma-4-26b-a4b-qat",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'manager'"
   }
 ]
