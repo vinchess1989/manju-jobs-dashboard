@@ -345560,5 +345560,37 @@
     "eval_model": "local/google/gemma-4-26b-a4b-qat",
     "description_file": null,
     "deletion_reason": "Title contains seniority keyword 'lead'"
+  },
+  {
+    "title": "Manager, Investor Relations",
+    "company": "Finnair",
+    "location": "Helsinki Region, Finland",
+    "url": "https://fi.linkedin.com/jobs/view/manager-investor-relations-at-finnair-4467733526",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "4231cbb1",
+    "source": "linkedin_fi_communications",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/google/gemma-4-26b-a4b-qat",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'manager'"
+  },
+  {
+    "title": "Assistant Project Manager",
+    "company": "Agnico Eagle Finland",
+    "location": "Kittil\u00e4, Lapland, Finland",
+    "url": "https://fi.linkedin.com/jobs/view/assistant-project-manager-at-agnico-eagle-finland-4467730152",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "14bf41dd",
+    "source": "linkedin_fi_coordinator",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/google/gemma-4-26b-a4b-qat",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'manager'"
   }
 ]
