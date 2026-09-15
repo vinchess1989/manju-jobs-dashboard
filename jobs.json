@@ -281294,5 +281294,20 @@
     "deadline": "N/A",
     "eval_model": "groq/openai/gpt-oss-20b",
     "description_file": null
+  },
+  {
+    "title": "Facilities Maintenance Coordinator",
+    "company": "DPR Construction",
+    "location": "Sacramento, CA",
+    "url": "https://www.linkedin.com/jobs/view/facilities-maintenance-coordinator-at-dpr-construction-4466587912",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "8ed34e12",
+    "source": "linkedin_ww_coordinator",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "groq/openai/gpt-oss-safeguard-20b",
+    "description_file": null
   }
 ]
