@@ -285573,16 +285573,17 @@
   {
     "title": "Cross Border Tech Compliance Adviso",
     "company": "African Shipowners Association",
-    "location": "Turku, Southwest Finland, Finland",
+    "location": "Turku Region, Finland",
     "url": "https://fi.linkedin.com/jobs/view/cross-border-tech-compliance-adviso-at-african-shipowners-association-4466200758",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Page load or parsing error.",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
     "id": "632124cc",
     "source": "linkedin_fi_compliance",
     "posted_date": "N/A",
     "deadline": "N/A",
-    "description_file": null
+    "description_file": null,
+    "eval_model": "local/google/gemma-4-26b-a4b-qat"
   },
   {
     "title": "Ymp\u00e4rist\u00f6asiantuntija",
@@ -285635,13 +285636,14 @@
     "location": "Extract via OpenClaw",
     "url": "https://fi.indeed.com/rc/clk?jk=2aa617776511be07",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Page load or parsing error.",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
     "id": "6a377b6d",
     "source": "indeed_compliance",
     "posted_date": "N/A",
     "deadline": "N/A",
-    "description_file": null
+    "description_file": null,
+    "eval_model": "local/google/gemma-4-26b-a4b-qat"
   },
   {
     "title": "Factory Training & Development Specialist",
@@ -285664,13 +285666,14 @@
     "location": "Extract via OpenClaw",
     "url": "https://fi.indeed.com/rc/clk?jk=c6b493dcbd9604f6",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Page load or parsing error.",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
     "id": "45bea153",
     "source": "indeed_compliance",
     "posted_date": "N/A",
     "deadline": "N/A",
-    "description_file": null
+    "description_file": null,
+    "eval_model": "local/google/gemma-4-26b-a4b-qat"
   },
   {
     "title": "Factory Training & Development Specialist",
