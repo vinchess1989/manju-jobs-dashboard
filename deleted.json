@@ -354104,5 +354104,53 @@
     "eval_model": "local/hermes-3-llama-3.1-8b",
     "description_file": null,
     "deletion_reason": "Deadline (2026-09-16) passed by more than 2 days and unreviewed"
+  },
+  {
+    "title": "L\u00e4hihoitaja osa-aika/keikka ty\u00f6h\u00f6n kotihoitoon Lohjalle",
+    "company": "L\u00e4hihoitaja osa-aika/keikka ty\u00f6h\u00f6n kotihoitoon Lohjalle",
+    "location": "Helsinki Region, Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/6ea5eb57-1966-42cc-86d2-a8f024b02e34/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "74782996",
+    "source": "tyomarkkinatori",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/google/gemma-4-26b-a4b-qat",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'l\u00e4hihoitaja'"
+  },
+  {
+    "title": "Sairaanhoitaja osa-aika ty\u00f6h\u00f6n kotihoitoon Tammisaareen",
+    "company": "Sairaanhoitaja osa-aika ty\u00f6h\u00f6n kotihoitoon Tammisaareen",
+    "location": "Tammisaari, Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/ec6343b2-b583-4a7a-b288-dc7ecf766c55/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "f17c54b8",
+    "source": "tyomarkkinatori",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/google/gemma-4-26b-a4b-qat",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'sairaanhoitaja'"
+  },
+  {
+    "title": "Vice President Compliance",
+    "company": "LHH",
+    "location": "Greater Milwaukee",
+    "url": "https://www.linkedin.com/jobs/view/vice-president-compliance-at-lhh-4440785830",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "1c490b42",
+    "source": "linkedin_ww_compliance",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/google/gemma-4-26b-a4b-qat",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'vice president'"
   }
 ]
