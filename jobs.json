@@ -285572,17 +285572,18 @@
   },
   {
     "title": "Myyj\u00e4, 10 h/vko, JYSK Raahe (m\u00e4\u00e4r\u00e4aikainen)",
-    "company": "Extract via OpenClaw",
-    "location": "Extract via OpenClaw",
+    "company": "Myyj\u00e4, 10 h/vko, JYSK Raahe (m\u00e4\u00e4r\u00e4aikainen)",
+    "location": "Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/4021b8e7-3f35-4460-a60b-255bb93ed0ee/fi",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Failed to get or parse LLM response: 400 Client Error: Bad Request for url: http://127.0.0.1:1234/v1/chat/completions",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
     "id": "746390ed",
     "source": "tyomarkkinatori",
     "posted_date": "N/A",
     "deadline": "N/A",
-    "description_file": null
+    "description_file": null,
+    "eval_model": "local/google/gemma-4-26b-a4b-qat"
   },
   {
     "title": "Lumity\u00f6ntekij\u00e4",
