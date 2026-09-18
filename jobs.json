@@ -291063,31 +291063,33 @@
   },
   {
     "title": "Autolasiliikkeeseen asiakaspalvelija",
-    "company": "Extract via OpenClaw",
-    "location": "Extract via OpenClaw",
+    "company": "Hae paikkaa",
+    "location": "Helsinki Region, Finland",
     "url": "https://www.jobly.fi/tyopaikka/autolasiliikkeeseen-asiakaspalvelija-2761382",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Page load or parsing error.",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
     "id": "949dc1fa",
     "source": "jobly",
     "posted_date": "N/A",
     "deadline": "N/A",
-    "description_file": null
+    "description_file": null,
+    "eval_model": "local/google/gemma-4-26b-a4b-qat"
   },
   {
     "title": "Elintarvikety\u00f6ntekij\u00e4",
-    "company": "Extract via OpenClaw",
-    "location": "Extract via OpenClaw",
+    "company": "Hae paikkaa",
+    "location": "Helsinki Region, Finland",
     "url": "https://www.jobly.fi/tyopaikka/elintarviketyontekija-2761381",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Page load or parsing error.",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
     "id": "ea319e78",
     "source": "jobly",
     "posted_date": "N/A",
     "deadline": "N/A",
-    "description_file": null
+    "description_file": null,
+    "eval_model": "local/google/gemma-4-26b-a4b-qat"
   },
   {
     "title": "LEVYSEPP\u00c4, Tampere",
