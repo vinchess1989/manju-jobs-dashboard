@@ -355286,5 +355286,37 @@
     "eval_model": "local/google/gemma-4-26b-a4b-qat",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'manager'"
+  },
+  {
+    "title": "Head of Compliance (BSA Officer)",
+    "company": "Monex Global",
+    "location": "Washington, DC",
+    "url": "https://www.linkedin.com/jobs/view/head-of-compliance-bsa-officer-at-monex-global-4412957926",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "6c9d5fa5",
+    "source": "linkedin_ww_compliance",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/google/gemma-4-26b-a4b-qat",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'head of'"
+  },
+  {
+    "title": "Director of Executive Communications",
+    "company": "Blue Origin",
+    "location": "Arlington, VA",
+    "url": "https://www.linkedin.com/jobs/view/director-of-executive-communications-at-blue-origin-4466909832",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "6dcfcfca",
+    "source": "linkedin_ww_communications",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/google/gemma-4-26b-a4b-qat",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'director'"
   }
 ]
