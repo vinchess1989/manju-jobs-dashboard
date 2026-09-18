@@ -290373,31 +290373,33 @@
   },
   {
     "title": "Myyntineuvottelija DNA, Tampere",
-    "company": "Extract via OpenClaw",
-    "location": "Extract via OpenClaw",
+    "company": "Hae paikkaa",
+    "location": "Helsinki Region, Finland",
     "url": "https://www.jobly.fi/tyopaikka/myyntineuvottelija-dna-tampere-2761021",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Page load or parsing error.",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
     "id": "182678fa",
     "source": "jobly_communications",
     "posted_date": "N/A",
     "deadline": "N/A",
-    "description_file": null
+    "description_file": null,
+    "eval_model": "local/google/gemma-4-26b-a4b-qat"
   },
   {
     "title": "Projektisuunnittelija, Crea+Tech Growth Lab -hanke",
-    "company": "Extract via OpenClaw",
-    "location": "Extract via OpenClaw",
+    "company": "Hae paikkaa",
+    "location": "Helsinki Region, Finland",
     "url": "https://www.jobly.fi/tyopaikka/projektisuunnittelija-createch-growth-lab-hanke-2760979",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Page load or parsing error.",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
     "id": "98b5e281",
     "source": "jobly_communications",
     "posted_date": "N/A",
     "deadline": "N/A",
-    "description_file": null
+    "description_file": null,
+    "eval_model": "local/google/gemma-4-26b-a4b-qat"
   },
   {
     "title": "Taloushallinnon koordinaattori",
