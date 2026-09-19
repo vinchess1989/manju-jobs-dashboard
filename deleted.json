@@ -357122,5 +357122,53 @@
     "eval_model": "local/google/gemma-4-26b-a4b-qat",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'vice president'"
+  },
+  {
+    "title": "ABC Kalajoki Keitti\u00f6p\u00e4\u00e4llikk\u00f6 ja Hesburger vastaava",
+    "company": "Extract via OpenClaw",
+    "location": "Tampere Region, Finland",
+    "url": "https://fi.indeed.com/rc/clk?jk=325af2941e0383ed",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "0e581728",
+    "source": "indeed",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/google/gemma-4-26b-a4b-qat",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'p\u00e4\u00e4llikk\u00f6'"
+  },
+  {
+    "title": "Myym\u00e4l\u00e4p\u00e4\u00e4llikk\u00f6, Outokumpu",
+    "company": "Tokmanni Group Oyj",
+    "location": "Finland",
+    "url": "https://fi.indeed.com/rc/clk?jk=ba94da871bb44e73",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "e6715476",
+    "source": "indeed",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/google/gemma-4-26b-a4b-qat",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'p\u00e4\u00e4llikk\u00f6'"
+  },
+  {
+    "title": "AI Research Lab Chief of Staff (100 % remote) (m/f/d)",
+    "company": "Apply for this job",
+    "location": "Helsinki Region, Finland",
+    "url": "https://fi.indeed.com/rc/clk?jk=32cea1457e0cb56f",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "6d108aa3",
+    "source": "indeed",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/google/gemma-4-26b-a4b-qat",
+    "description_file": null,
+    "deletion_reason": "Title contains seniority keyword 'chief'"
   }
 ]
