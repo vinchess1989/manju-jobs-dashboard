@@ -357458,5 +357458,37 @@
     "eval_model": "local/google/gemma-4-26b-a4b-qat",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'director'"
+  },
+  {
+    "title": "IT Project Manager (German-speaking), Matrix42, Espoo, Kuopio, Frankfurt",
+    "company": "Tiivistelm\u00e4 ty\u00f6paikkailmoituksesta:",
+    "location": "Helsinki Region, Finland",
+    "url": "https://www.jobly.fi/tyopaikka/it-project-manager-german-speaking-matrix42-espoo-kuopio-frankfurt-2719062",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "4631169f",
+    "source": "jobly",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "groq/openai/gpt-oss-safeguard-20b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'manager'"
+  },
+  {
+    "title": "Digital Marketing Manager",
+    "company": "Vierityspalkki.fi",
+    "location": "Helsinki Region, Finland",
+    "url": "https://fi.linkedin.com/jobs/view/digital-marketing-manager-at-vierityspalkki-fi-4469543237",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "d932e6bc",
+    "source": "linkedin_fi_communications",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/google/gemma-4-26b-a4b-qat",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'manager'"
   }
 ]
