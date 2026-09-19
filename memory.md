@@ -14,7 +14,22 @@ Two sibling dashboards, manju_jobs (Finnish job market, generalist roles) and vi
 - `scraper.py` — Playwright scraper + local-LLM job review, runs as a long-lived loop.
 - `orchestrator.py` — thin wrapper that logs to `orchestrator.log`, launched by a Windows
   Scheduled Task (`ManjuJobsLocalLLMOrchestrator` / `VineethJobsLocalLLMOrchestrator`).
-- `firebase_app/` — the live dashboard UI (`index.html`), deployed via Firebase Hosting.
+- `firebase_app/` — the live dashboard UI (`index.html`), deployed via Firebase Hosting: `https://manju-jobs-dashboard.web.app`.
+- **Hosted Web App:** `https://manju-jobs-dashboard.web.app`
+- **GitHub Repository:** `https://github.com/vinchess1989/manju-jobs-dashboard`
+
+## Major Features
+1. **Automated Multi-Portal Job Scraping:** Scrapes Finnish job portals (Työmarkkinatori, Duunitori, Kuntarekry, LinkedIn, Jobly, Workday) using Playwright.
+2. **Local LLM Job Evaluation Pipeline:** Evaluates match scores, salary benchmarks, and Finnish language requirements using a local LM Studio model (`qwen2.5-coder-7b` / `mistral`).
+3. **Automated CV & Cover Letter Generation:** Builds customized Finnish and English resumes and application letters targeted to specific job postings.
+4. **Live Firebase Job Dashboard:** Interactive web dashboard with pipeline status (New, Applied, Reviewing, Expired, Rejected) and direct application links.
+5. **Scheduled Autonomous Execution:** Windows Scheduled Task orchestrator continuously executing scrape loops, model evaluations, and state backups.
+
+## Minor Features & Utilities
+- **OS-Level LLM File Lock Protocol:** Crash-safe process lock prioritizing external requests and preventing GPU concurrency bottlenecks.
+- **Merge Driver & Immutable Jobs Log:** Custom Git merge driver preventing JSON conflicts across distributed runs.
+- **Expired Job Reaper:** Automatically archives closed or dead vacancies from the active view.
+- **Dedicated Chrome Profile SSO:** Reusable authenticated sessions for tricky portals (Workday, Indeed).
 
 ## Shared local LLM (LM Studio) infrastructure
 
@@ -48,6 +63,120 @@ One LM Studio server at `http://127.0.0.1:1234`, shared by both scrapers **and**
   - `_post_llm_with_retry` also retries transient `Timeout`/`ConnectionError` (2 retries, 10s
     backoff) before giving up and marking a job `'error'` — which both scrapers' pending-job
     filters already pick up and retry on the next cycle regardless.
+
+## evaluate_with_local_llm.py had its own, separate active-model bug (fixed 2026-09-11)
+
+`scraper.py`'s `get_active_llm_model()` correctly detects the active model via `lms ps --json`
+(see above). But `orchestrator.py` also runs a *separate* script, `evaluate_with_local_llm.py`
+(a later curation/review pass, invoked as `run_script("evaluate_with_local_llm.py")` - a fresh
+subprocess each time, so a code fix here takes effect on the very next orchestrator cycle with no
+restart needed), which had its own, older `get_active_model()` that queried the OpenAI-compatible
+`/v1/models` HTTP endpoint and took whatever came back first. `/v1/models` lists **every model
+downloaded on disk that's eligible for JIT auto-load, not just what's actually loaded** - so this
+would silently trigger LM Studio to auto-load an unrelated model (observed: it loaded Hermes
+alongside an already-loaded, already-tuned Gemma 26B, because Hermes happened to sort first in
+that listing) even when a different model was deliberately loaded and running. Its final fallback,
+if the HTTP call failed outright, was also just the hardcoded string `"hermes-3-llama-3.1-8b"` -
+so any network hiccup here reverted straight to Hermes regardless of `LOCAL_LLM_MODEL`. Symptom:
+system RAM crept to ~95% used with two full models resident at once, driven from this script, not
+from anything scraper.py did. **Fixed** by porting the same `lms ps`-based detection from
+scraper.py into `evaluate_with_local_llm.py` in both manju_jobs and vineeth_jobs. If RAM/VRAM
+pressure looks like "an extra model is loaded that nothing should be requesting," check `lms ps`
+first, then check whether any other script besides scraper.py's own detector queries the model
+name a different way - this bug class (a second, un-synced copy of model-detection logic) can
+recur if a new script duplicates this pattern again instead of importing/reusing one shared
+implementation.
+
+## Gemma 4 26B A4B QAT's chat template had two unrelated jinja bugs crashing OpenClaw (fixed 2026-09-12)
+
+The per-model config/template override file
+`C:\Users\vinee\.lmstudio\.internal\user-concrete-model-default-config\google\gemma-4-26b-a4b-qat.json`
+had two separate incompatibilities with LM Studio's jinja engine that only surface when a real tool-using
+client (OpenClaw) sends realistic requests - a simple text-only test call won't trigger either:
+
+1. **`Cannot apply filter "upper" to type: UndefinedValue`** - same bug already fixed in
+   `gemma-4-12b-qat.json`'s template (see its header comment) but never ported to the 26B-A4B version.
+   Happens when a tool's parameter schema omits an explicit `type` field. Fix: guard every
+   `value['type'] | upper` in the `format_parameters` macro with `value['type'] | default('') | upper`
+   (bind it once to a `prop_type` variable, use that everywhere).
+2. **`Unknown test: sequence`** - LM Studio's jinja engine does not implement Python Jinja2's `is sequence`
+   test at all (confirmed via direct error), even though it does support `is string`/`is none`/`is mapping`/
+   `is boolean`. The template used `is sequence` in 4 places (system/developer content-parts check, message
+   content-parts check, tool_body content-parts check, and `format_argument`'s list-rendering branch). Fix:
+   replace each with an equivalent built from the tests that DO work - either drop straight to `{%- else -%}`
+   where no other branch follows, or use `is not string and is not none` (or `and is not boolean and is not
+   mapping`, for format_argument) where a later branch still needs to be reachable.
+
+**Why this mattered more than it looks:** bug #2 wasn't just "one request fails" - when it fires while
+OpenClaw is replaying a resumed/interrupted session's history (which happens automatically on every gateway
+restart via its own `main-session-restart-recovery`), the resulting unhandled error appears to crash the
+whole Node gateway process, not just that one turn. That crash then orphans the *same* session again, so
+the next restart resumes it, hits the identical bug, and crashes again - a self-perpetuating crash loop.
+This is what looked like "the `OpenClaw Gateway` scheduled task keeps getting disabled/dying" - the task
+itself was fine each time; the process it launched was crash-looping on a poisoned session. Symptom in the
+browser Control UI: perpetual "Disconnected from gateway / Reconnecting...".
+
+**How to diagnose this class of bug fast next time:** don't trust a trivial "say OK" test call - it won't
+exercise tool schemas or content-parts arrays. Check `C:\Users\vinee\AppData\Local\Temp\openclaw\openclaw-<date>.log`
+(`[agent/embedded]` entries with `isError:true`) for `rawErrorPreview` mentioning "Error rendering prompt
+with jinja template" - that string plus whatever's quoted after it (`Cannot apply filter...` /
+`Unknown test: ...`) tells you exactly which jinja construct to patch in the model's own
+`user-concrete-model-default-config\...json` file. If a *different* unsupported test surfaces later, the
+fix pattern is the same: this engine's supported test vocabulary is smaller than real Jinja2's - stick to
+`string`/`none`/`mapping`/`boolean`/`defined` and build compound `is not X and is not Y` conditions instead
+of reaching for anything more exotic (`iterable`, `sequence`, etc. are NOT safe to assume).
+
+**Separately, a real but harmless remaining issue:** the same orphaned session that triggered the crash loop
+also has more accumulated history than fits in a 16384-token context (`n_keep: 25244 >= n_ctx: 16384`).
+Post-fix, this no longer crashes the gateway - OpenClaw's own auto-compaction catches it and the gateway
+keeps serving other requests fine - but that one specific session's continuation will likely keep needing to
+auto-compact each time. If you see repeated compaction warnings tied to `sessionKey=agent:main:main`, that's
+this - a fresh session (the Control UI's "New session" button) sidesteps it entirely.
+
+## OpenClaw Gateway scheduled task launch failures - ROOT CAUSE FOUND AND FIXED (2026-09-14)
+
+**Root cause: the `gateway.vbs` wrapper's `WScript.Shell.Run(cmdPath, 0, False)` hidden-launch mechanism
+itself is what's broken on this machine** - not Task Scheduler, not "Interactive only" logon mode, not the
+`OPENCLAW_*` env vars gateway.cmd sets. Isolated by testing each layer independently: `schtasks /run` on this
+same task with `Logon Mode: Interactive only` (identical to the scraper tasks, which have always worked
+reliably all session) never even updated "Last Run Time" - a real clue it wasn't launching at all, not just
+crashing. Direct `node.exe gateway` launches always worked, including with the exact `OPENCLAW_WINDOWS_TASK_HIDDEN_LAUNCHER=1`
+etc. env vars gateway.cmd sets (tested via `Start-Process`/`ProcessStartInfo`, not just plain `&`). But
+invoking `wscript.exe gateway.vbs` directly - bypassing Task Scheduler entirely - reproduced the exact
+crash-loop signature (process PID changing every several seconds, port never binding). That isolated it
+conclusively to the VBS/WScript.Shell.Run layer specifically.
+
+**Fix applied:** changed the task's action to skip the VBS wrapper and run `gateway.cmd` directly:
+`schtasks /change /tn "OpenClaw Gateway" /tr "C:\Users\vinee\.openclaw\gateway.cmd"` (matches how the
+manju_jobs/vineeth_jobs orchestrator tasks already invoke their target directly, no wrapper - which is
+exactly why those never had this problem). Confirmed stable afterward: `schtasks /run` now correctly shows
+`Status: Running`/updates `Last Run Time`, gateway reaches "gateway ready" and stays up with no respawn loop
+over repeated checks. `gateway.vbs` itself is left on disk (now unused by the task) in case anything else
+references it - harmless to leave, but the task no longer goes through it.
+
+**If this needs revisiting:** OpenClaw's installer/updater may regenerate the scheduled task (and point it
+back at `gateway.vbs`) on a future `openclaw doctor --repair`, plugin update, or reinstall - if the gateway
+stops binding again after any of those, check `schtasks /query /tn "OpenClaw Gateway" /v /fo list` for
+`Task To Run` reverting to `gateway.vbs` before re-diagnosing from scratch; the fix above is one command.
+
+**Self-inflicted gotcha to avoid repeating:** piping a long-running foreground process through
+`| Select-Object -First N` in PowerShell tears down the pipeline (and kills the piped process) as soon as N
+items are consumed - this looked like *another* gateway crash but was actually the diagnostic command itself
+killing it. Never pipe a long-lived server process through `Select-Object -First`/similar truncating
+cmdlets; let it run to its own timeout/backgrounding instead, or redirect to a file with plain `>`.
+
+**Secrets migration gotcha:** attempting to move `gateway.auth.token` (or any secret) to an env-var-backed
+SecretRef (`config set <path> --ref-provider default --ref-source env --ref-id <VAR>`) hit the same
+env-var-propagation issue documented for `LOCAL_LLM_MODEL` earlier in this file - `[System.Environment]::
+SetEnvironmentVariable(...,"User")` persists to the registry but a freshly spawned process (a new PowerShell
+tool call, or a Task-Scheduler-launched one) does not reliably inherit it without a logoff/logon. Confirmed
+by directly checking a fresh process's `$env:` for the var right after setting it at User scope: absent.
+Since the gateway is Task-Scheduler-launched, this SecretRef would very likely have failed to resolve on next
+restart, breaking gateway auth entirely - caught this via `doctor --repair`'s "SecretRef could not be
+resolved" warning before restarting, and reverted both fields back to plaintext. Do not retry the env-based
+SecretRef approach for anything Task-Scheduler-launched on this machine without first solving the
+propagation gap (a genuine logoff/logon, or a file-based SecretRef instead - `--provider-source file`, which
+reads directly off disk at the gateway's own startup with no environment-inheritance dependency).
 
 ## Groq cloud fallback (added 2026-08-20)
 
@@ -342,6 +471,46 @@ relationship, given how Task Scheduler often launches through broker/host proces
 needs fixing, investigate why the intermediate hop exists at all before touching it again, rather
 than assuming it's safe to prune.
 
+**This used to compound with the scheduled task's `PT72H` execution-time-limit to silently orphan
+`scraper.py` for days at a time (discovered 2026-09-14, via `priya_jobs`; fixed 2026-09-15 — see
+below).** `scraper.py` runs an internal `while True` loop and never exits on its own, so a single
+scheduled launch runs for days; Task Scheduler's 72-hour execution-time-limit existed to kill it so
+the daily trigger could start fresh. But because the real `scraper.py` sits an extra hop down
+through the LM-Studio-proxy reflection above, the 72-hour kill only reliably reached whatever Task
+Scheduler's job object still had a handle on — which could be *above* that hop — leaving the actual
+`scraper.py` alive and completely invisible to Task Scheduler. Every subsequent daily 8am trigger
+then either no-op'd (new instance correctly saw `scraper.lock` genuinely still held by the live
+orphan, logged an error, exited 0) or, if Task Scheduler thought nothing was tracked, appeared to
+terminate cleanly while the orphan kept running — either way `LastTaskResult`/`State` in Task
+Scheduler stopped reflecting reality. Confirmed case: `priya_jobs`'s `scraper.py` ran orphaned from
+2026-09-11 08:00 to 2026-09-14 08:00 (one full 72h cycle) with no live `orchestrator.py` parent,
+invisible to `Get-ScheduledTask`, until manually found via `Get-CimInstance Win32_Process`.
+`vineeth_jobs`'s task showed the identical `LastTaskResult=267014` (`SCHED_S_TASK_TERMINATED`,
+`0x41306`) and had at some point been left `Disabled`, consistent with the same bug having hit it
+too.
+
+Note `scraper.lock` itself was never actually the problem: it's a real OS-level `filelock.FileLock`
+(scraper.py's `__main__`), which Windows releases automatically the instant the holding process
+dies — including a hard `Stop-Process -Force` kill. No manual deletion of the `.lock` file is ever
+needed after killing a confirmed-dead PID; if `filelock` still refuses to acquire after that, the
+process isn't actually dead yet (check again) rather than treat the file as stale.
+
+**Fix applied 2026-09-15:** set `ExecutionTimeLimit` to `PT0S` (unlimited) via
+`Set-ScheduledTask -Settings` on `ManjuJobsLocalLLMOrchestrator` and
+`PriyaJobsLocalLLMOrchestrator` — `PT72H` was never a deliberately chosen value (it's Task
+Scheduler's GUI-wizard default; the one setup script that exists, `setup_windows_scheduler.bat`,
+predates the current daemon design entirely and describes a since-abandoned "repeat every 6h,
+each run exits" model). Since `MultipleInstances: IgnoreNew` plus the real OS-level `FileLock`
+already fully prevent double-runs on their own, removing the time limit costs nothing and stops
+Task Scheduler from periodically attempting a kill that the proxy-reflection hop can't reliably
+deliver anyway. **`vineeth_jobs`'s task was deliberately left at `PT72H`/disabled** (user choice,
+2026-09-15) — if it's ever re-enabled, apply the same `PT0S` fix first or it'll hit this again.
+
+**Detection, if this ever recurs elsewhere:** don't trust `Get-ScheduledTask`/`Get-ScheduledTaskInfo`
+alone to say whether the pipeline is actually running — cross-check with the actual process tree
+(`Get-CimInstance Win32_Process | Where CommandLine -match "scraper.py"`) and compare `CreationDate`
+against how long it's plausible for a single instance to have legitimately been running.
+
 ## Concurrent git operations on this repo are a real, recurring hazard
 
 Confirmed 2026-08-20: while doing a multi-file commit+push here, hit a stuck interactive rebase,
@@ -491,3 +660,10 @@ rather than silently skipped or half-built.
 
 ---
 Last updated: 2026-08-24
+
+
+## Eezy Talent (talent.core.eezy.fi) is Flutter/canvas — automation gotchas (2026-09-19)
+- The apply flow (tyopaikat.eezy.fi "Hae paikkaa" -> talent.core.eezy.fi/jobAdApplication) is a Flutter Web app: no real DOM inputs/buttons (everything under `flt-glass-pane`), so Playwright selectors find nothing. Interact only via `page.mouse.click(x, y)` on coordinates read from a screenshot.
+- The profile is already saved and prefilled (name, address, work history, education, licences, languages), so applying is: click Continue, then click "Apply for job" at the bottom. "Application Text" is optional; typing into it via mouse-click + keyboard did not focus the field, so it was skipped.
+- `mouse.wheel` scrolling leaves clicks unreliable. Instead call `page.set_viewport_size({"width":1280,"height":3400})` so the whole form fits, screenshot, and locate the button by scanning pixel colours with PIL (button is lavender rgb(148,112,229)) rather than eyeballing coordinates from the downscaled image, which was off by ~1000px.
+- Success = "Thank you! Your profile has now been linked as an applicant for the job" page. e396dc1e was submitted this way.
