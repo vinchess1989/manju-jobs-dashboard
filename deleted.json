@@ -357378,5 +357378,53 @@
     "eval_model": "local/google/gemma-4-26b-a4b-qat",
     "description_file": null,
     "deletion_reason": "Title contains seniority keyword 'lead'"
+  },
+  {
+    "title": "Director, Global Communications",
+    "company": "NBCUniversal",
+    "location": "Universal City, CA",
+    "url": "https://www.linkedin.com/jobs/view/director-global-communications-at-nbcuniversal-4467416821",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "0007a867",
+    "source": "linkedin_ww_communications_p2",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/google/gemma-4-26b-a4b-qat",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'director'"
+  },
+  {
+    "title": "Executive Communications Manager",
+    "company": "TransUnion",
+    "location": "Chicago, IL",
+    "url": "https://www.linkedin.com/jobs/view/executive-communications-manager-at-transunion-4464119890",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "525bc8d0",
+    "source": "linkedin_ww_communications_p2",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/google/gemma-4-26b-a4b-qat",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'manager'"
+  },
+  {
+    "title": "Director Public Relations and Corporate Communications",
+    "company": "Egnyte",
+    "location": "Mountain View, CA",
+    "url": "https://www.linkedin.com/jobs/view/director-public-relations-and-corporate-communications-at-egnyte-4466367468",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "e9747613",
+    "source": "linkedin_ww_communications_p2",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/google/gemma-4-26b-a4b-qat",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'director'"
   }
 ]
