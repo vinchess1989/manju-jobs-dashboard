@@ -357298,5 +357298,37 @@
     "eval_model": "local/google/gemma-4-26b-a4b-qat",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'manager'"
+  },
+  {
+    "title": "Ty\u00f6maap\u00e4\u00e4llikk\u00f6, Pirkanmaan rakentamisurakat",
+    "company": "Hae paikkaa",
+    "location": "Helsinki Region, Finland",
+    "url": "https://www.jobly.fi/tyopaikka/tyomaapaallikko-pirkanmaan-rakentamisurakat-2761559",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "a6ae202f",
+    "source": "jobly",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/google/gemma-4-26b-a4b-qat",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'p\u00e4\u00e4llikk\u00f6'"
+  },
+  {
+    "title": "VP, Experiential Production",
+    "company": "VaynerMedia",
+    "location": "New York, NY",
+    "url": "https://www.linkedin.com/jobs/view/vp-experiential-production-at-vaynermedia-4469294283",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "88ac4580",
+    "source": "linkedin_ww_event_p2",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/google/gemma-4-26b-a4b-qat",
+    "description_file": null,
+    "deletion_reason": "Title contains seniority keyword 'vp'"
   }
 ]
