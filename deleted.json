@@ -357330,5 +357330,37 @@
     "eval_model": "local/google/gemma-4-26b-a4b-qat",
     "description_file": null,
     "deletion_reason": "Title contains seniority keyword 'vp'"
+  },
+  {
+    "title": "2 L\u00c4HIHOITAJAA, Parkinm\u00e4en palvelutalo",
+    "company": "SUOMEKSI",
+    "location": "Turku Region, Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/8b370532-8e85-4210-ab0c-406112eabb1d/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "e4d6b92c",
+    "source": "tyomarkkinatori",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/google/gemma-4-26b-a4b-qat",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'l\u00e4hihoitaja'"
+  },
+  {
+    "title": "Stark Suomi - Viestint\u00e4p\u00e4\u00e4llikk\u00f6",
+    "company": "Momentous Oy - Espoo",
+    "location": "Etsi, Finland",
+    "url": "https://duunitori.fi/tyopaikat/tyo/momentous-stark-suomi-viestintapaallikko-espoo-sdsuu-20586066",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "02788765",
+    "source": "duunitori_communications",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/google/gemma-4-26b-a4b-qat",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'p\u00e4\u00e4llikk\u00f6'"
   }
 ]
