@@ -291527,5 +291527,35 @@
     "deadline": "N/A",
     "eval_model": "groq/openai/gpt-oss-safeguard-20b",
     "description_file": null
+  },
+  {
+    "title": "Majoitustilojen siivooja \u2013 Kukkolankoski, Tornio",
+    "company": "Majoitustilojen siivooja \u2013 Kukkolankoski, Tornio",
+    "location": "Tornio, Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/b5202ed1-e3e8-422e-b470-07795783aa3b/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "0f8c5b7a",
+    "source": "tyomarkkinatori",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/google/gemma-4-26b-a4b-qat",
+    "description_file": null
+  },
+  {
+    "title": "Administrative Support Assistant",
+    "company": "Northwell Health",
+    "location": "Smithtown, NY",
+    "url": "https://www.linkedin.com/jobs/view/administrative-support-assistant-at-northwell-health-4469545552",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "969243d0",
+    "source": "linkedin_ww_office_secretary",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/google/gemma-4-26b-a4b-qat",
+    "description_file": null
   }
 ]
