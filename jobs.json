@@ -291002,5 +291002,20 @@
     "deadline": "N/A",
     "eval_model": "local/google/gemma-4-26b-a4b-qat",
     "description_file": null
+  },
+  {
+    "title": "Employee Communications Representative",
+    "company": "Northrop Grumman",
+    "location": "McLean, VA",
+    "url": "https://www.linkedin.com/jobs/view/employee-communications-representative-at-northrop-grumman-4462066875",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "8fa77ee6",
+    "source": "linkedin_ww_communications",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "groq/openai/gpt-oss-20b",
+    "description_file": null
   }
 ]
