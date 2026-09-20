@@ -291467,5 +291467,50 @@
     "deadline": "N/A",
     "eval_model": "local/google/gemma-4-26b-a4b-qat",
     "description_file": null
+  },
+  {
+    "title": "Metsuri vakituiseen ty\u00f6suhteeseen",
+    "company": "SUOMEKSI",
+    "location": "Kouvola, Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/def6f512-3971-40ec-ae0a-f19fdf8d3a3d/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "0d1ec6a3",
+    "source": "tyomarkkinatori",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "groq/openai/gpt-oss-safeguard-20b",
+    "description_file": null
+  },
+  {
+    "title": "Kulttuuripaja, ty\u00f6kokeilu, Nuorten ty\u00f6pajat",
+    "company": "Vantaan kaupunki - Vanda stad - City of Vantaa",
+    "location": "Helsinki Region, Finland",
+    "url": "https://fi.linkedin.com/jobs/view/kulttuuripaja-ty%C3%B6kokeilu-nuorten-ty%C3%B6pajat-at-vantaan-kaupunki-vanda-stad-city-of-vantaa-4469591969",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "3ebf2239",
+    "source": "linkedin_fi_event_coordinator",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "groq/openai/gpt-oss-safeguard-20b",
+    "description_file": null
+  },
+  {
+    "title": "Event Coordinator",
+    "company": "MPI San Diego Chapter (MPISD)",
+    "location": "Shreveport, LA",
+    "url": "https://www.linkedin.com/jobs/view/event-coordinator-at-mpi-san-diego-chapter-mpisd-4468455956",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "e1f5b8d0",
+    "source": "linkedin_ww_event_coordinator",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/google/gemma-4-26b-a4b-qat",
+    "description_file": null
   }
 ]
