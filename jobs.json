@@ -292282,13 +292282,14 @@
     "location": "Extract via OpenClaw",
     "url": "https://fi.indeed.com/rc/clk?jk=3725b1c6fd2124df",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Page load or parsing error.",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
     "id": "13c6920e",
     "source": "indeed",
     "posted_date": "N/A",
     "deadline": "N/A",
-    "description_file": null
+    "description_file": null,
+    "eval_model": "local/google/gemma-4-26b-a4b-qat"
   },
   {
     "title": "Rappaaja",
