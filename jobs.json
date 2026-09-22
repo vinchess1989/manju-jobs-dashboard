@@ -289325,16 +289325,17 @@
   {
     "title": "Myyj\u00e4 visualistin vastuulla - Stadium Ideapark Lemp\u00e4\u00e4l\u00e4",
     "company": "Stadium",
-    "location": "Lemp\u00e4\u00e4l\u00e4, Pirkanmaa, Finland",
+    "location": "Tampere Region, Finland",
     "url": "https://fi.linkedin.com/jobs/view/myyj%C3%A4-visualistin-vastuulla-stadium-ideapark-lemp%C3%A4%C3%A4l%C3%A4-at-stadium-4467388082",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Failed to get or parse LLM response: 400 Client Error: Bad Request for url: http://127.0.0.1:1234/v1/chat/completions",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
     "id": "1799134c",
     "source": "linkedin_fi_event",
     "posted_date": "N/A",
     "deadline": "N/A",
-    "description_file": null
+    "description_file": null,
+    "eval_model": "local/google/gemma-4-26b-a4b-qat"
   },
   {
     "title": "Kulttuuripaja, ty\u00f6kokeilu, Nuorten ty\u00f6pajat",
