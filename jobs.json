@@ -289894,17 +289894,18 @@
   },
   {
     "title": "Glitter Chydenia etsii 4h myyj\u00e4\u00e4",
-    "company": "Extract via OpenClaw",
-    "location": "Extract via OpenClaw",
+    "company": "Glitter Chydenia etsii 4h myyj\u00e4\u00e4",
+    "location": "Kokkola, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/3d1ac6b8-126b-4c98-8507-24e93c2d8696/fi",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Failed to get or parse LLM response: 400 Client Error: Bad Request for url: http://127.0.0.1:1234/v1/chat/completions",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
     "id": "50854d7d",
     "source": "tyomarkkinatori",
     "posted_date": "N/A",
     "deadline": "N/A",
-    "description_file": null
+    "description_file": null,
+    "eval_model": "local/google/gemma-4-26b-a4b-qat"
   },
   {
     "title": "DJ / Tiskijukka",
