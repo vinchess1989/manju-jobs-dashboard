@@ -1,5 +1,6 @@
 import os
 import json
+import subprocess
 import urllib.request
 import random
 import time
@@ -16,27 +17,28 @@ os.makedirs(SAMPLES_DIR, exist_ok=True)
 # LLM Configuration
 LLM_ENDPOINT = os.environ.get("LOCAL_LLM_ENDPOINT", "http://localhost:1234/v1/chat/completions")
 
-def get_active_model(endpoint):
-    """Query /v1/models to dynamically find the active loaded model."""
+def get_active_model():
+    """Ask LM Studio (via `lms ps`) which chat model is actually loaded right now.
+    NOTE: the OpenAI-compatible /v1/models HTTP endpoint is NOT usable for this - it lists
+    every downloaded model eligible for LM Studio's just-in-time loading, not just what's
+    currently resident in memory, so picking the first entry from it (the old approach here)
+    could silently JIT-load an unrelated model - e.g. it picked Hermes back up over an
+    already-loaded Gemma purely because of /v1/models' listing order. `lms ps` only ever
+    lists genuinely loaded models, so it's the only trustworthy source. Mirrors
+    get_active_llm_model() in scraper.py, which had the same bug fixed already."""
     try:
-        # Construct /v1/models URL from /v1/chat/completions
-        base_url = endpoint.rsplit("/chat/completions", 1)[0]
-        models_url = f"{base_url}/models"
-        req = urllib.request.Request(models_url)
-        with urllib.request.urlopen(req, timeout=5) as response:
-            res_data = json.loads(response.read().decode("utf-8"))
-            models = res_data.get("data", [])
-            # Filter out embedding models if possible, otherwise default to first model in list
-            chat_models = [m["id"] for m in models if "embed" not in m["id"].lower()]
+        lms_exe = os.path.join(os.environ.get("USERPROFILE", ""), ".lmstudio", "bin", "lms.exe")
+        result = subprocess.run([lms_exe, "ps", "--json"], capture_output=True, text=True, timeout=10)
+        if result.returncode == 0 and result.stdout.strip():
+            models = json.loads(result.stdout)
+            chat_models = [m["identifier"] for m in models if m.get("type") == "llm"]
             if chat_models:
                 return chat_models[0]
-            elif models:
-                return models[0]["id"]
     except Exception as e:
-        print(f"Warning: Could not fetch active model from {models_url}: {e}")
+        print(f"Warning: Could not query lms ps for active model: {e}")
     return os.environ.get("LOCAL_LLM_MODEL", "hermes-3-llama-3.1-8b")
 
-MODEL_NAME = get_active_model(LLM_ENDPOINT)
+MODEL_NAME = get_active_model()
 print(f"Dynamically selected active local model: {MODEL_NAME}")
 
 def load_requirements():

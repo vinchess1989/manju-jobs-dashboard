@@ -811,9 +811,14 @@
      .mview-more     connection/scraper status, Summary, Re-Review, account
    ===================================================================== */
 
-/* Shell chrome does not exist above the breakpoint. */
+/* Shell chrome does not exist above the breakpoint. The filter-sheet
+   title is injected into the dropdown markup only when it is opened on a
+   phone, but hide it unconditionally here too so a resize to desktop
+   with one already built can never show it. */
 .mobile-app-bottom-nav,
-.mobile-subnav { display: none; }
+.mobile-subnav,
+.ms-sheet-title,
+.ms-sheet-backdrop { display: none; }
 
 @media (max-width: 768px), (max-height: 550px) and (orientation: landscape) {
 
@@ -870,6 +875,12 @@
         border-right: none !important;
         box-shadow: none !important;
         overflow: hidden !important;
+        /* backdrop-filter makes an element the containing block for its
+           position:fixed descendants, which would pin the column-filter
+           sheet to this card instead of the viewport. Edge-to-edge on a
+           phone it blurs nothing anyway. Desktop keeps its blur. */
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
     }
 
     .table-scroll-area {
@@ -1306,11 +1317,62 @@
         color: var(--text-secondary);
     }
 
-    .ms-dropdown {
-        max-height: 55vh !important;
-        max-width: calc(100vw - 16px) !important;
+    /* --- 7b. Column filter sheet -------------------------------------
+       toggleDropdown() anchors the dropdown just below the button it
+       belongs to. On a phone that puts most columns' dropdowns in the
+       lower half of the screen — precisely where the on-screen keyboard
+       lands the moment the "Search..." box is focused, so you cannot see
+       what you are typing or which options it matched.
+
+       On mobile the dropdown is re-presented as a top-anchored sheet
+       instead, sized against window.visualViewport so its bottom edge
+       always sits above the keyboard. top / left / right / max-height are
+       set from JS on purpose: they have to overwrite the inline values
+       toggleDropdown wrote, and only visualViewport knows how much room
+       the keyboard left. Anything !important here would freeze them. */
+    .ms-dropdown.open {
+        border-radius: 0.9rem !important;
+        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.75) !important;
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
     }
+    .ms-dropdown.open button { min-height: 40px; }
     .ms-option { min-height: 40px; }
+
+    .ms-sheet-title {
+        display: flex !important;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+        margin: -8px -8px 8px -8px;
+        padding: 0.6rem 0.8rem;
+        font-size: 0.72rem; font-weight: 700;
+        letter-spacing: 0.06em; text-transform: uppercase;
+        color: var(--text-primary);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .ms-sheet-done {
+        flex: 0 0 auto;
+        padding: 0.35rem 0.9rem;
+        border-radius: 999px;
+        border: 1px solid rgba(99, 102, 241, 0.45);
+        background: rgba(99, 102, 241, 0.18);
+        color: #c7d2fe;
+        font-family: inherit;
+        font-size: 0.72rem; font-weight: 700;
+        letter-spacing: 0.02em; text-transform: none;
+        cursor: pointer;
+        touch-action: manipulation;
+    }
+    .ms-sheet-backdrop {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.6);
+        /* Above the bottom nav (9000) as well as the page, so a stray tap
+           cannot switch tabs out from under an open sheet. */
+        z-index: 99998;
+    }
 
     /* --- 8. STATS view ------------------------------------------------ */
     body.mview-stats thead,
@@ -3634,6 +3696,134 @@
         var subnavEl = document.getElementById('mobile-subnav');
         var currentView = 'jobs';
 
+        var MOBILE_MQ = '(max-width: 768px), (max-height: 550px) and (orientation: landscape)';
+        function isMobile() { return window.matchMedia(MOBILE_MQ).matches; }
+
+        /* ---------------------------------------------------------------
+           Column filter sheet.
+
+           The page opens each column's multi-select as a popover pinned
+           just under its own button. On a phone the lower columns'
+           popovers land under the on-screen keyboard as soon as the
+           search box is focused, so you cannot see what you typed or what
+           it matched. Below the breakpoint the popover is re-laid-out as
+           a sheet anchored to the top of the *visual* viewport — the one
+           that shrinks when the keyboard appears — so the search box and
+           the matching options always stay on screen.
+           --------------------------------------------------------------- */
+        var backdrop = null;
+        var styledSheet = null;
+
+        function openSheet() { return document.querySelector('.ms-dropdown.open'); }
+
+        function layoutFilterSheet() {
+            var sheet = openSheet();
+            if (!sheet || !isMobile()) return;
+            var vv = window.visualViewport;
+            // offsetTop keeps a position:fixed element in view on iOS,
+            // which scrolls the visual viewport rather than resizing the
+            // layout viewport when the keyboard opens.
+            var top = (vv ? vv.offsetTop : 0) + 8;
+            var avail = (vv ? vv.height : window.innerHeight) - 16;
+            sheet.style.position = 'fixed';
+            sheet.style.top = top + 'px';
+            sheet.style.left = '8px';
+            sheet.style.right = '8px';
+            sheet.style.width = 'auto';
+            sheet.style.maxHeight = Math.max(160, avail) + 'px';
+            sheet.style.zIndex = '99999';
+            styledSheet = sheet;
+        }
+
+        /* Only ever undoes styles this module set. The desktop popover's
+           own inline positioning is written by toggleDropdown on each
+           open and must not be touched — hence the reference rather than
+           a blanket sweep over every .ms-dropdown. */
+        function resetStyledSheet() {
+            if (!styledSheet) return;
+            var s = styledSheet.style;
+            s.position = ''; s.top = ''; s.left = ''; s.right = '';
+            s.width = ''; s.maxHeight = ''; s.zIndex = '';
+            styledSheet = null;
+        }
+
+        function closeSheet() {
+            var sheet = openSheet();
+            if (sheet) sheet.classList.remove('open');
+            var active = document.activeElement;
+            if (active && active.blur) active.blur();
+            syncSheet();
+        }
+
+        /* Gives the sheet a title (which column is this?) and an explicit
+           Done button. Injected on open rather than once, because
+           buildMultiSelectFilters() regenerates the dropdown markup on
+           every rebuild of the table. */
+        function decorateSheet(sheet, colIndex) {
+            var header = sheet.firstElementChild;   // the dropdown's own sticky bar
+            if (!header) return;
+            var title = header.querySelector('.ms-sheet-title');
+            if (!title) {
+                title = document.createElement('div');
+                title.className = 'ms-sheet-title';
+                var label = document.createElement('span');
+                var done = document.createElement('button');
+                done.type = 'button';
+                done.className = 'ms-sheet-done';
+                done.textContent = 'Done';
+                done.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    closeSheet();
+                });
+                title.appendChild(label);
+                title.appendChild(done);
+                header.insertBefore(title, header.firstChild);
+            }
+            title.firstChild.textContent = FILTER_LABELS[colIndex] || 'Filter';
+        }
+
+        function syncSheet() {
+            var sheet = openSheet();
+            if (sheet && isMobile()) {
+                if (!backdrop) {
+                    backdrop = document.createElement('div');
+                    backdrop.className = 'ms-sheet-backdrop';
+                    // The page's own document-click handler closes the
+                    // dropdown for any tap outside it, including this one.
+                    document.body.appendChild(backdrop);
+                }
+                layoutFilterSheet();
+            } else {
+                if (backdrop) { backdrop.remove(); backdrop = null; }
+                resetStyledSheet();
+            }
+        }
+
+        // toggleDropdown is a top-level function declaration in the page's
+        // own script, so it is reachable (and replaceable) on window; the
+        // inline onclick handlers resolve it through the scope chain and
+        // will pick this wrapper up.
+        var originalToggleDropdown = window.toggleDropdown;
+        if (typeof originalToggleDropdown === 'function') {
+            window.toggleDropdown = function (colIndex, event) {
+                originalToggleDropdown(colIndex, event);
+                if (!isMobile()) return;
+                var sheet = openSheet();
+                if (sheet) decorateSheet(sheet, colIndex);
+                syncSheet();
+            };
+        }
+
+        // The page closes dropdowns from its own document/scroll handlers;
+        // these run after those (registered later for the same phase) and
+        // just reconcile the backdrop with whatever state it left behind.
+        document.addEventListener('click', syncSheet);
+        document.addEventListener('scroll', syncSheet, true);
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener('resize', layoutFilterSheet);
+            window.visualViewport.addEventListener('scroll', layoutFilterSheet);
+        }
+
         /* The filter cells are rebuilt by buildTable(), so the jump-target
            markers are (re)applied rather than written once. */
         function tagFilterSections() {
@@ -3721,6 +3911,7 @@
            out of sync with what is actually shown. */
         window.setMobileView = function (key) {
             if (VIEWS.indexOf(key) === -1) key = 'jobs';
+            closeSheet();
             currentView = key;
             VIEWS.forEach(function (v) {
                 document.body.classList.toggle('mview-' + v, v === key);
@@ -3735,6 +3926,7 @@
         window.addEventListener('resize', function () {
             tagFilterSections();
             buildSubnav();
+            syncSheet();
         });
 
         // buildTable() replaces #jobs-container wholesale on every data or

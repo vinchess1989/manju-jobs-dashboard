@@ -336,6 +336,95 @@ branch / root).
   `vals[i]` column access where manju uses `.col-*` CSS classes + `data-value` attributes. Check
   the actual code before assuming symmetry between the two.
 
+## Dashboard mobile app shell (`firebase_app/index.html`, added 2026-09-23)
+
+Both dashboards now render as a phone app below `@media (max-width: 768px), (max-height: 550px)
+and (orientation: landscape)`. Everything is **appended** — the desktop rules above it were not
+edited, and desktop rendering is verifiably byte-identical (same document size, same 257
+interactive elements at identical boxes, measured before/after).
+
+- **One body class drives everything**: `mview-jobs` / `mview-filters` / `mview-stats` /
+  `mview-more`, set by `window.setMobileView(key)` in the self-contained module at the end of
+  `<body>`. Four-tab fixed bottom nav; a contents-bar of chips (built from `[data-page]` /
+  `[data-page-label]` markers the module puts on the filter `<th>`s) appears only in the Filters
+  view. No existing function was rewritten — the module only *wraps* `toggleDropdown`.
+- **The jobs table becomes cards via CSS only** (`tbody tr { display: flex }` etc.), so sorting,
+  filtering and pagination keep working untouched. **That `tr` rule must never get `!important`**:
+  `renderPage()` paginates by writing inline `display:none`/`''` on each row, and an `!important`
+  stylesheet rule would beat the inline `none` and show every row at once.
+- **The "More" tab is the `<header>` itself**, re-laid-out as a full-screen fixed sheet. Nothing
+  is moved in the DOM. Gotcha hit while building it: the clutter list hides
+  `header #scraper-status-container` (specificity 1,0,1), which outranks
+  `body.mview-more header > div:last-child > *` (0,2,3) however many classes you pile on — an
+  id-carrying hide needs an id-carrying unhide.
+- **Landscape deliberately replaces** the older `@media (max-width: 950px) and
+  (orientation: landscape)` rule that set `html, body { min-width: max-content }` to let a phone
+  pinch-zoom over the full 1400px table. Measured at an emulated 852x393, that rule inflated the
+  layout viewport to **2381x1099** — the textbook viewport-inflation case. Landscape now gets the
+  app shell with two-up cards/filters. That older rule still applies to narrow *desktop* windows
+  (>550px tall), which is why it was overridden rather than deleted.
+- **Verifying it**: the harness used is Playwright + `page.route()` fulfilling `index.html` from
+  disk, a ~40-line stub for `/__/firebase/*` (fake `auth()`/`firestore()` that signs in
+  immediately) and mock `jobs.json` / `deleted.json` / `jobs_history.json`. That renders a fully
+  populated, signed-in table with no network and no real account — far easier than
+  `firebase serve` + a real Google sign-in. Pair it with
+  `~/.claude/skills/mobile-app-shell/scripts/audit_mobile.js` at 393x852, 852x393 and 1440x900.
+
+## The two dashboards' `toggleDropdown` differ — do NOT copy one into the other
+
+Discovered 2026-09-23 while making the column filters usable on a phone. Same-looking multi-select
+filter UI, materially different implementations:
+
+- **manju_jobs**: `toggleDropdown` reparents the dropdown to `document.body`, sets
+  `position: fixed`, and positions it under the button. `buildMultiSelectFilters` therefore starts
+  by removing any stale `body > .ms-dropdown`. Its outside-click handler checks **both**
+  `.ms-container` and `.ms-dropdown`.
+- **vineeth_jobs**: `toggleDropdown` only toggles the `.open` class. The dropdown stays inside
+  `.ms-container` using the base `position: absolute`, and the outside-click handler checks
+  **only** `.ms-container`. **Consequence: reparenting vineeth's dropdown to `<body>` would make
+  every option tap close it**, because the tap would no longer be inside a `.ms-container`. It
+  also never clears its own inline positioning, so anything that sets `style.position` on it has
+  to clean up after itself.
+
+Related trap that cost a debugging round: `.table-container` has `backdrop-filter: blur(12px)`,
+which makes it the **containing block for `position: fixed` descendants**. On vineeth (dropdown
+still inside the card) the filter sheet landed at `top: 99px` instead of `top: 8px` because of it.
+The mobile block now sets `backdrop-filter: none` on `.table-container` in both files. If a fixed
+element ever lands in the wrong place inside this card, check for `backdrop-filter`/`transform`/
+`filter` on an ancestor before anything else.
+
+## Column filters on a phone: keyboard-safe sheet (2026-09-23)
+
+Reported from a real iPhone 12: tapping into a column filter's search box raised the keyboard
+directly over the dropdown, so you could not see what you were typing or what it matched. Cause is
+structural, not cosmetic — `toggleDropdown` anchors each dropdown to its own button, and in the
+stacked mobile Filters view most buttons sit in the lower half of the screen, exactly where the
+keyboard lands.
+
+Fix (both dashboards): below the breakpoint the dropdown is re-presented as a sheet anchored to
+the top of the **visual** viewport, with a title row naming the column and a Done button. The
+module sets `top`/`left`/`right`/`max-height` from JS on every `visualViewport` `resize` and
+`scroll`, and **those four properties are deliberately absent from the CSS** — an `!important`
+there would freeze the sheet at one size and defeat the whole point. `visualViewport.offsetTop` is
+added to `top` because iOS scrolls the visual viewport rather than resizing the layout viewport
+when the keyboard opens. Measured on an emulated iPhone-sized viewport: sheet `max-height` goes
+836px → 500px when a 336px keyboard opens, bottom edge 508 vs keyboard top 516.
+
+The module only ever resets inline styles it set itself (tracked in a `styledSheet` reference) —
+a blanket sweep over every `.ms-dropdown` would wipe the desktop popover's positioning, which
+manju's own `toggleDropdown` writes inline on each open.
+
+## Editing files here while the orchestrator is running gets them auto-committed
+
+Observed 2026-09-23: mid-session, the scraper's routine auto-commit (`Auto-update scraped jobs:
+...`, roughly every 12 min) swept up **work-in-progress edits to `firebase_app/index.html`** and
+pushed them to `origin/main`. The scraper's commit step is not scoped to the data files it owns.
+Practical consequences: `git show HEAD:<file>` stops being a reliable "before" snapshot partway
+through a session (grab any baseline copy *early*), and half-finished UI edits can reach the
+public repo. It does **not** reach the live dashboard — Firebase Hosting serves the UI and only
+`publish_dashboards.ps1` deploys it; GitHub Pages only serves the raw data files. Stop the
+orchestrator task first if a long edit to a tracked non-data file needs to stay private.
+
 ## CDP Chrome connection flakiness (recurring — first seen 2026-08-15, confirmed again same day)
 
 During unattended `/fill-form auto` cycles, `playwright.chromium.connect_over_cdp("http://127.0.0.1:9222")`
