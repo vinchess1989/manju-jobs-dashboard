@@ -290028,31 +290028,33 @@
   },
   {
     "title": "LVI-suunnittelija / valvoja, korjausrakentaminen, Helsinki",
-    "company": "Extract via OpenClaw",
-    "location": "Extract via OpenClaw",
+    "company": "Hae paikkaa",
+    "location": "Helsinki Region, Finland",
     "url": "https://www.jobly.fi/tyopaikka/lvi-suunnittelija-valvoja-korjausrakentaminen-helsinki-2764030",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Page load or parsing error.",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
     "id": "761a8fd2",
     "source": "jobly_coordinator",
     "posted_date": "N/A",
     "deadline": "N/A",
-    "description_file": null
+    "description_file": null,
+    "eval_model": "local/google/gemma-4-26b-a4b-qat"
   },
   {
     "title": "Uimavalvoja, Holiday Club Kuusamo",
-    "company": "Extract via OpenClaw",
-    "location": "Extract via OpenClaw",
+    "company": "Hae paikkaa",
+    "location": "Helsinki Region, Finland",
     "url": "https://www.jobly.fi/tyopaikka/uimavalvoja-holiday-club-kuusamo-2747133",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Page load or parsing error.",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
     "id": "9aebc237",
     "source": "jobly_coordinator",
     "posted_date": "N/A",
     "deadline": "N/A",
-    "description_file": null
+    "description_file": null,
+    "eval_model": "local/google/gemma-4-26b-a4b-qat"
   },
   {
     "title": "Projektiassistentti datakeskushankkeisiin",
