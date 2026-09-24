@@ -289626,16 +289626,17 @@
   {
     "title": "Myym\u00e4l\u00e4nhoitaja",
     "company": "Rusta",
-    "location": "\u00c4\u00e4nekoski, Central Finland, Finland",
+    "location": "Jyv\u00e4skyl\u00e4 Region, Finland",
     "url": "https://fi.linkedin.com/jobs/view/myym%C3%A4l%C3%A4nhoitaja-at-rusta-4470427734",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Failed to get or parse LLM response: 400 Client Error: Bad Request for url: http://127.0.0.1:1234/v1/chat/completions",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
     "id": "d8b6d4b3",
     "source": "linkedin_fi_event_coordinator",
     "posted_date": "N/A",
     "deadline": "N/A",
-    "description_file": null
+    "description_file": null,
+    "eval_model": "local/google/gemma-4-26b-a4b-qat"
   },
   {
     "title": "Event Planning Coordinator",
