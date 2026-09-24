@@ -290000,17 +290000,18 @@
   },
   {
     "title": "Laatuinsin\u00f6\u00f6ri",
-    "company": "Extract via OpenClaw",
-    "location": "Extract via OpenClaw",
+    "company": "Hae paikkaa",
+    "location": "Tampere Region, Finland",
     "url": "https://www.jobly.fi/tyopaikka/laatuinsinoori-2764134",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Page load or parsing error.",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
     "id": "e3072bcb",
     "source": "jobly_coordinator",
     "posted_date": "N/A",
     "deadline": "N/A",
-    "description_file": null
+    "description_file": null,
+    "eval_model": "local/google/gemma-4-26b-a4b-qat"
   },
   {
     "title": "Valvoja, Pintak\u00e4sittely",
