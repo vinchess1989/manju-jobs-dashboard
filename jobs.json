@@ -291485,17 +291485,18 @@
   },
   {
     "title": "Toimistoavustaja, Kotihoito, palkkatuettu ty\u00f6suhde (3 teht\u00e4v\u00e4\u00e4)",
-    "company": "Extract via OpenClaw",
-    "location": "Extract via OpenClaw",
+    "company": "Helsingin kaupunki",
+    "location": "Helsinki Region, Finland",
     "url": "https://fi.indeed.com/rc/clk?jk=5cd335d79d1b9bab",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Page load or parsing error.",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
     "id": "357d97fd",
     "source": "indeed_office_secretary",
     "posted_date": "N/A",
     "deadline": "N/A",
-    "description_file": null
+    "description_file": null,
+    "eval_model": "local/google/gemma-4-26b-a4b-qat"
   },
   {
     "title": "Executive Assistant",
@@ -291514,16 +291515,17 @@
   },
   {
     "title": "Tiimiesihenkil\u00f6, Business Oulu -liikelaitos",
-    "company": "Extract via OpenClaw",
-    "location": "Extract via OpenClaw",
+    "company": "Oulun kaupunki",
+    "location": "Oulun, Finland",
     "url": "https://fi.indeed.com/rc/clk?jk=c1967a2eafba2233",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Page load or parsing error.",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
     "id": "056641b5",
     "source": "indeed_office_secretary",
     "posted_date": "N/A",
     "deadline": "N/A",
-    "description_file": null
+    "description_file": null,
+    "eval_model": "local/google/gemma-4-26b-a4b-qat"
   }
 ]
