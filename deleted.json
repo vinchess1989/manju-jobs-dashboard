@@ -373601,5 +373601,37 @@
     "eval_model": "local/google/gemma-4-26b-a4b-qat",
     "description_file": null,
     "deletion_reason": "Title contains seniority keyword 'lead'"
+  },
+  {
+    "title": "Corporate Public Relations Lead, US",
+    "company": "Wise",
+    "location": "Austin, Texas Metropolitan Area",
+    "url": "https://www.linkedin.com/jobs/view/corporate-public-relations-lead-us-at-wise-4470059838",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "2da08e07",
+    "source": "linkedin_ww_communications",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/google/gemma-4-26b-a4b-qat",
+    "description_file": null,
+    "deletion_reason": "Title contains seniority keyword 'lead'"
+  },
+  {
+    "title": "Executive Communications Manager, Office of the President",
+    "company": "Google",
+    "location": "Mountain View, CA",
+    "url": "https://www.linkedin.com/jobs/view/executive-communications-manager-office-of-the-president-at-google-4463845159",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "f63035e4",
+    "source": "linkedin_ww_communications",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/google/gemma-4-26b-a4b-qat",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'manager'"
   }
 ]
