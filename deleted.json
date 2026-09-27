@@ -373809,5 +373809,21 @@
     "eval_model": "local/google/gemma-4-26b-a4b-qat",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'lvi-asentaja'"
+  },
+  {
+    "title": "Parturi-Kampaaja , Jalkojenhoitaja/Kosmetologi, Hieroja, Kynsi-/Ripsiteknikko",
+    "company": "Parturi-Kampaaja , Jalkojenhoitaja/Kosmetologi, Hieroja, Kynsi-/Ripsiteknikko",
+    "location": "Kuopio, Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/a417b064-f1d7-4b81-9c6f-ba6d737dc3ce/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "d960e6eb",
+    "source": "tyomarkkinatori",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/google/gemma-4-26b-a4b-qat:2",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'parturi'"
   }
 ]
