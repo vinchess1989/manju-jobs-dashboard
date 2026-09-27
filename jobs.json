@@ -293195,17 +293195,18 @@
   },
   {
     "title": "Leipomo-kahvila myyj\u00e4-baarista ty\u00f6ntekij\u00e4\u00e4",
-    "company": "Extract via OpenClaw",
-    "location": "Extract via OpenClaw",
+    "company": "Leipomo-kahvila myyj\u00e4-baarista ty\u00f6ntekij\u00e4\u00e4",
+    "location": "Helsinki Region, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/323a0084-980f-46f4-bec4-72162aa44496/fi",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Failed to get or parse LLM response: 400 Client Error: Bad Request for url: http://127.0.0.1:1234/v1/chat/completions",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
     "id": "31919b79",
     "source": "tyomarkkinatori",
     "posted_date": "N/A",
     "deadline": "N/A",
-    "description_file": null
+    "description_file": null,
+    "eval_model": "local/google/gemma-4-26b-a4b-qat"
   },
   {
     "title": "Matkamuistojen, tekstiilien ja lahjavaroiden myyj\u00e4, asiakaspalvelija ja kassa",
