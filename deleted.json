@@ -377937,5 +377937,21 @@
     "eval_model": "local/qwen/qwen3-14b",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'manager'"
+  },
+  {
+    "title": "Event Manager",
+    "company": "Montgomery Marriott Prattville Hotel & Conference Center at Capitol Hill",
+    "location": "Prattville, AL",
+    "url": "https://www.linkedin.com/jobs/view/event-manager-at-montgomery-marriott-prattville-hotel-conference-center-at-capitol-hill-4471550272",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Job location is in Prattville, AL (USA), which is a non-Finland country-specific posting with no explicit 'open worldwide' statement, triggering automatic hard rejection.",
+    "id": "d091c127",
+    "source": "linkedin_ww_event",
+    "posted_date": "2026-09-29",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'manager'"
   }
 ]
