@@ -1,7 +1,9 @@
 import requests, json
 
+import firestore_auth
+
 url = 'https://firestore.googleapis.com/v1/projects/manju-jobs-dashboard/databases/(default)/documents/shared_state/job_status'
-r = requests.get(url)
+r = firestore_auth.session().get(url)
 data = r.json()
 fields = data.get('fields', {})
 

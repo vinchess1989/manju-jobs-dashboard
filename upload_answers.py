@@ -20,6 +20,8 @@ from pathlib import Path
 
 import requests
 
+import firestore_auth
+
 PROJECT_ID = "manju-jobs-dashboard"
 FIRESTORE_BASE = (
     f"https://firestore.googleapis.com/v1/projects/{PROJECT_ID}"
@@ -118,7 +120,7 @@ def upload_one(answers_path: Path) -> str:
     }
     body.update(find_documents(answers_path.parent))
 
-    resp = requests.patch(doc_url, json=_serialize_doc(body), timeout=30)
+    resp = firestore_auth.session().patch(doc_url, json=_serialize_doc(body), timeout=30)
     resp.raise_for_status()
     return job_id
 

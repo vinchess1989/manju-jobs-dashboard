@@ -14,6 +14,8 @@ from urllib.parse import urljoin, quote
 from playwright.sync_api import sync_playwright
 from bs4 import BeautifulSoup
 import requests
+
+import firestore_auth
 from dotenv import load_dotenv
 from filelock import FileLock, Timeout
 
@@ -1994,7 +1996,7 @@ def poll_firebase_feedback():
     # 2. Then, process the user_feedback queue for new requirements rules
     url = "https://firestore.googleapis.com/v1/projects/manju-jobs-dashboard/databases/(default)/documents/user_feedback"
     try:
-        response = requests.get(url, timeout=10)
+        response = firestore_auth.session().get(url, timeout=10)
         if response.status_code != 200:
             return # Database not created, or empty, or permission denied
             
@@ -2034,7 +2036,7 @@ def poll_firebase_feedback():
                 if doc_name:
                     update_url = f"https://firestore.googleapis.com/v1/{doc_name}?updateMask.fieldPaths=status"
                     payload = {"fields": {"status": {"stringValue": "read"}}}
-                    requests.patch(update_url, json=payload, timeout=10)
+                    firestore_auth.session().patch(update_url, json=payload, timeout=10)
                 continue
                 
 
@@ -2050,7 +2052,7 @@ def poll_firebase_feedback():
                 if doc_name:
                     update_url = f"https://firestore.googleapis.com/v1/{doc_name}?updateMask.fieldPaths=status"
                     payload = {"fields": {"status": {"stringValue": "read"}}}
-                    requests.patch(update_url, json=payload, timeout=10)
+                    firestore_auth.session().patch(update_url, json=payload, timeout=10)
                 continue
 
             if feedback_type == "delete_update":
@@ -2065,7 +2067,7 @@ def poll_firebase_feedback():
                 if doc_name:
                     update_url = f"https://firestore.googleapis.com/v1/{doc_name}?updateMask.fieldPaths=status"
                     payload = {"fields": {"status": {"stringValue": "read"}}}
-                    requests.patch(update_url, json=payload, timeout=10)
+                    firestore_auth.session().patch(update_url, json=payload, timeout=10)
                 continue
 
             reason = fields.get("reason", {}).get("stringValue", "")
@@ -2090,7 +2092,7 @@ def poll_firebase_feedback():
             if doc_name:
                 update_url = f"https://firestore.googleapis.com/v1/{doc_name}?updateMask.fieldPaths=status"
                 payload = {"fields": {"status": {"stringValue": "read"}}}
-                requests.patch(update_url, json=payload, timeout=10)
+                firestore_auth.session().patch(update_url, json=payload, timeout=10)
                 
         if new_positive_rules or new_negative_rules:
             with open(USER_FEEDBACK_FILE, 'a', encoding='utf-8') as f:
@@ -2198,7 +2200,7 @@ def poll_re_review_request():
     """Check Firebase for a user-triggered re-review request and run it synchronously."""
     doc_url = f"{FIRESTORE_BASE}/shared_state/re_review_request"
     try:
-        response = requests.get(doc_url, timeout=10)
+        response = firestore_auth.session().get(doc_url, timeout=10)
         if response.status_code != 200:
             print(f"INFO: poll_re_review: Firestore GET returned {response.status_code} — skipping.")
             return
@@ -2209,7 +2211,7 @@ def poll_re_review_request():
         if status == "requested":
             print("INFO: " + "=" * 60)
             print("INFO: RE-REVIEW TRIGGERED BY USER (dashboard button)")
-            requests.patch(
+            firestore_auth.session().patch(
                 f"{doc_url}?updateMask.fieldPaths=status",
                 json={"fields": {"status": {"stringValue": "in_progress"}}},
                 timeout=10
@@ -2250,7 +2252,7 @@ def poll_re_review_request():
             
             if needs_review_count == 0:
                 completed_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                requests.patch(
+                firestore_auth.session().patch(
                     f"{doc_url}?updateMask.fieldPaths=status&updateMask.fieldPaths=completedAt",
                     json={"fields": {
                         "status": {"stringValue": "completed"},
@@ -2559,7 +2561,7 @@ def main():
                 next_firebase_poll += 15.0
                 try:
                     doc_url = f"{FIRESTORE_BASE}/shared_state/re_review_request"
-                    resp = requests.get(doc_url, timeout=5)
+                    resp = firestore_auth.session().get(doc_url, timeout=5)
                     if resp.status_code == 200:
                         status = resp.json().get("fields", {}).get("status", {}).get("stringValue", "")
                         if status == "requested":

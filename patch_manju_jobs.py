@@ -1,5 +1,6 @@
 import os
 import re
+import firestore_auth
 
 INDEX_PATH = r"c:\Users\vinee\manju_jobs\firebase_app\index.html"
 SCRAPER_PATH = r"c:\Users\vinee\manju_jobs\scraper.py"
@@ -22,7 +23,7 @@ applied_update_logic = """
                 if doc_name:
                     update_url = f"https://firestore.googleapis.com/v1/{doc_name}?updateMask.fieldPaths=status"
                     payload = {"fields": {"status": {"stringValue": "read"}}}
-                    requests.patch(update_url, json=payload, timeout=10)
+                    firestore_auth.session().patch(update_url, json=payload, timeout=10)
                 continue
 """
 

@@ -6,6 +6,24 @@ maintained by Claude Code across sessions; update it whenever something here goe
 durable fact/gotcha is discovered. It's a reference for future work, not a session changelog —
 prune outdated entries rather than letting them accumulate.
 
+## Firestore locked down; Python scripts use a service account (2026-09-28)
+
+`firestore.rules` used to leave `shared_state` / `user_feedback` (and `application_answers`) readable and updatable by
+anyone (`if true`) so the unauthenticated Python REST calls could write. Now every collection is
+allow-listed accounts only, and scripts authenticate via **`firestore_auth.py`** (`session()` returns a
+`google.auth` `AuthorizedSession` with the project's service account; SA requests bypass rules via IAM).
+- Key file: `~/.secrets/manju-jobs-dashboard-sa.json` - OUTSIDE the repo (Firebase Console -> Project settings ->
+  Service accounts -> Generate new private key). `.gitignore` blocks `*firebase-adminsdk*.json` / `*-sa.json`.
+- **Any other PC** running scripts or skills that touch Firestore (tailor-resume, fill-form,
+  find-apply-link, mark-job-deleted, email-apply) needs its own key at that path plus `pip install google-auth`
+  in the venv - otherwise `firestore_auth.session()` raises FileNotFoundError.
+- New Firestore calls must use `firestore_auth.session().get/patch(...)`, never bare `requests` - a bare
+  call now gets 403. Rules deploy: `firebase deploy --only firestore:rules` from `firebase_app/`.
+- `application_answers` (Manju's saved form answers, incl. EEO fields) was world-readable AND
+  creatable. The apply-job skill (synced from claude.ai) fetched it anonymously; it now runs
+  `fetch_answers.py <job_id>` instead (local synced copy edited - must also be updated on claude.ai).
+
+
 ## System overview
 
 Two sibling dashboards, manju_jobs (Finnish job market, generalist roles) and vineeth_jobs
@@ -756,3 +774,7 @@ Last updated: 2026-08-24
 - The profile is already saved and prefilled (name, address, work history, education, licences, languages), so applying is: click Continue, then click "Apply for job" at the bottom. "Application Text" is optional; typing into it via mouse-click + keyboard did not focus the field, so it was skipped.
 - `mouse.wheel` scrolling leaves clicks unreliable. Instead call `page.set_viewport_size({"width":1280,"height":3400})` so the whole form fits, screenshot, and locate the button by scanning pixel colours with PIL (button is lavender rgb(148,112,229)) rather than eyeballing coordinates from the downscaled image, which was off by ~1000px.
 - Success = "Thank you! Your profile has now been linked as an applicant for the job" page. e396dc1e was submitted this way.
+
+## Firebase Deployment (2026-09-23)
+- Deployed latest `firebase_app` to `manju-jobs-dashboard` on Firebase Hosting (`https://manju-jobs-dashboard.web.app`) following all 21 test passes in `tests/test_scraper.py`.
+
