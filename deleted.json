@@ -377953,5 +377953,53 @@
     "eval_model": "local/qwen/qwen3-14b",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'manager'"
+  },
+  {
+    "title": "Event Manager",
+    "company": "Pyramid Global Hospitality",
+    "location": "Clearwater, FL",
+    "url": "https://www.linkedin.com/jobs/view/event-manager-at-pyramid-global-hospitality-4473025714",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Job location is Clearwater, FL (United States), which is a non-Finland country-specific posting with no explicit 'open worldwide' statement, triggering an automatic hard rejection.",
+    "id": "a8a8faf5",
+    "source": "linkedin_ww_event",
+    "posted_date": "2026-09-29",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'manager'"
+  },
+  {
+    "title": "Director, Corporate Communications",
+    "company": "CyrusOne",
+    "location": "Dallas, TX",
+    "url": "https://www.linkedin.com/jobs/view/director-corporate-communications-at-cyrusone-4471564628",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The job title contains 'Director' (senior-level role) and is located in Dallas, TX (non-Finland country-specific posting), both of which are hard rejections.",
+    "id": "472984ce",
+    "source": "linkedin_ww_communications",
+    "posted_date": "2026-09-29",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'director'"
+  },
+  {
+    "title": "Manager Of Communications",
+    "company": "Gainrep",
+    "location": "Charlotte County, FL",
+    "url": "https://www.linkedin.com/jobs/view/manager-of-communications-at-gainrep-4473028526",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The job title contains 'Manager', which is a senior-level role requiring experience Manju does not have, and the location is in Charlotte County, FL (USA), which is a non-Finland country-specific posting with no explicit remote/work-from-anywhere statement.",
+    "id": "1875b150",
+    "source": "linkedin_ww_communications",
+    "posted_date": "2026-09-29",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'manager'"
   }
 ]
