@@ -374305,5 +374305,37 @@
     "eval_model": "local/google/gemma-4-26b-a4b-qat",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'sairaanhoitaja'"
+  },
+  {
+    "title": "Sairaanhoitaja l\u00e4hisairaalaan, Parkano",
+    "company": "Sairaanhoitaja l\u00e4hisairaalaan, Parkano",
+    "location": "Parkano, Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/7200de4a-3d45-4df5-9529-f7a6faa2fc30/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "33dcfbff",
+    "source": "tyomarkkinatori",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/google/gemma-4-26b-a4b-qat",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'sairaanhoitaja'"
+  },
+  {
+    "title": "Varhaiskasvatuksen opettaja/Veikkolan p\u00e4iv\u00e4koti",
+    "company": "Varhaiskasvatuksen opettaja/Veikkolan p\u00e4iv\u00e4koti",
+    "location": "Helsinki Region, Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/14e7b485-f5e0-4a4f-ba4b-dec11297f03c/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "4545c5f7",
+    "source": "tyomarkkinatori",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/google/gemma-4-26b-a4b-qat",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'opettaja'"
   }
 ]
