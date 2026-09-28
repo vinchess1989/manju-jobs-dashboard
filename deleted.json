@@ -374113,5 +374113,21 @@
     "eval_model": "local/google/gemma-4-26b-a4b-qat",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'parturi'"
+  },
+  {
+    "title": "Project Manager",
+    "company": "Evac Group",
+    "location": "Helsinki Region, Finland",
+    "url": "https://fi.linkedin.com/jobs/view/project-manager-at-evac-group-4471443704",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Job title contains \\\\",
+    "id": "03611a4c",
+    "source": "linkedin_fi_event",
+    "posted_date": "2026-09-25",
+    "deadline": "N/A",
+    "eval_model": "groq/openai/gpt-oss-120b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'manager'"
   }
 ]
