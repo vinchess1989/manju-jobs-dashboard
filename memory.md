@@ -790,3 +790,5 @@ real verdict). Previously every loop retried them. On priya_global_jobs, 5 alway
 turned that into a retry+commit+push every ~9 s (258 commits/hour). The error cap is checked before
 `needs_re_review`, so a failing re-review job can't loop either. Capped jobs stay "error" on the
 dashboard. To force a retry, delete those two fields from the job.
+## Mobile bottom nav: filter indicator (2026-09-29)
+While any filter is set (column filters, date limits, LLM pills), the Filters tab shows an amber dot and its label becomes `shown/total` (e.g. 1/956), set at the end of `filterTable()` (`#mnav-filters.has-filters`). Ported from the Priya boards.
