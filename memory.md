@@ -6,6 +6,8 @@ maintained by Claude Code across sessions; update it whenever something here goe
 durable fact/gotcha is discovered. It's a reference for future work, not a session changelog —
 prune outdated entries rather than letting them accumulate.
 
+- **Resume/ is local-only (2026-09-28):** `Resume/Manju_CV_20260207.pdf` untracked from this PUBLIC repo and `Resume/` gitignored; nothing referenced it (saved resume links all point to the private `munchnambiar/Manju-jobs` repo). Still present in older public commits unless history is rewritten.
+
 ## Firestore locked down; Python scripts use a service account (2026-09-28)
 
 `firestore.rules` used to leave `shared_state` / `user_feedback` (and `application_answers`) readable and updatable by
@@ -19,6 +21,7 @@ allow-listed accounts only, and scripts authenticate via **`firestore_auth.py`**
   in the venv - otherwise `firestore_auth.session()` raises FileNotFoundError.
 - New Firestore calls must use `firestore_auth.session().get/patch(...)`, never bare `requests` - a bare
   call now gets 403. Rules deploy: `firebase deploy --only firestore:rules` from `firebase_app/`.
+- Key access: munchnambiar@gmail.com is already roles/editor on this project (can generate her own PC key); owner vineethkaimal1989@gmail.com.
 - `application_answers` (Manju's saved form answers, incl. EEO fields) was world-readable AND
   creatable. The apply-job skill (synced from claude.ai) fetched it anonymously; it now runs
   `fetch_answers.py <job_id>` instead (local synced copy edited - must also be updated on claude.ai).
@@ -778,3 +781,12 @@ Last updated: 2026-08-24
 ## Firebase Deployment (2026-09-23)
 - Deployed latest `firebase_app` to `manju-jobs-dashboard` on Firebase Hosting (`https://manju-jobs-dashboard.web.app`) following all 21 test passes in `tests/test_scraper.py`.
 
+
+## Error-retry cap (2026-09-29)
+Jobs whose review fails (`matches_requirements: "error"`: page won't load, unparseable LLM output) are
+now retried at most 3 times, at least 6 h apart (`_needs_review` / `_record_review_outcome`,
+`ERROR_MAX_ATTEMPTS` / `ERROR_RETRY_SECONDS`; per-job `error_attempts` / `last_error_at`, cleared by any
+real verdict). Previously every loop retried them. On priya_global_jobs, 5 always-failing Totaljobs pages
+turned that into a retry+commit+push every ~9 s (258 commits/hour). The error cap is checked before
+`needs_re_review`, so a failing re-review job can't loop either. Capped jobs stay "error" on the
+dashboard. To force a retry, delete those two fields from the job.
