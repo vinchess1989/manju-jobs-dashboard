@@ -374273,5 +374273,37 @@
     "eval_model": "groq/openai/gpt-oss-20b",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'putkiasentaja'"
+  },
+  {
+    "title": "Ateria- ja puhtauspalvelujen p\u00e4\u00e4llikk\u00f6, Palvelukeskus, Espoo",
+    "company": "Ateria- ja puhtauspalvelujen p\u00e4\u00e4llikk\u00f6, Palvelukeskus, Espoo",
+    "location": "Helsinki Region, Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/1f9a7a63-a123-4c68-a693-954edc8852f6/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "615db4e3",
+    "source": "tyomarkkinatori",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/google/gemma-4-26b-a4b-qat",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'p\u00e4\u00e4llikk\u00f6'"
+  },
+  {
+    "title": "Sairaanhoitaja Rinnekodit Nestori ja Luotsi",
+    "company": "Hae paikkaa",
+    "location": "Helsinki Region, Finland",
+    "url": "https://www.jobly.fi/tyopaikka/sairaanhoitaja-rinnekodit-nestori-ja-luotsi-2764342",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "5987f245",
+    "source": "jobly",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/google/gemma-4-26b-a4b-qat",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'sairaanhoitaja'"
   }
 ]
