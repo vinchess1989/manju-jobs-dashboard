@@ -378001,5 +378001,37 @@
     "eval_model": "local/qwen/qwen3-14b",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'manager'"
+  },
+  {
+    "title": "Tax Manager",
+    "company": "ICEYE",
+    "location": "Helsinki Region, Finland",
+    "url": "https://fi.linkedin.com/jobs/view/tax-manager-at-iceye-4472764229",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "52f19b32",
+    "source": "linkedin_fi_legal_counsel",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'manager'"
+  },
+  {
+    "title": "Club Events Manager",
+    "company": "CoralTree Hospitality",
+    "location": "Fort Lauderdale, FL",
+    "url": "https://www.linkedin.com/jobs/view/club-events-manager-at-coraltree-hospitality-4471558354",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Job is located in Fort Lauderdale, FL (United States), which is a non-Finland country-specific posting with no explicit 'open worldwide' statement, triggering an automatic hard rejection.",
+    "id": "2c1bfbcd",
+    "source": "linkedin_ww_event",
+    "posted_date": "2026-09-29",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'manager'"
   }
 ]
