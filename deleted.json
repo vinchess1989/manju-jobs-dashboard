@@ -379361,5 +379361,21 @@
     "eval_model": "local/qwen/qwen3-14b",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'manager'"
+  },
+  {
+    "title": "Director of Corporate Communications",
+    "company": "Silverfort",
+    "location": "Austin, TX",
+    "url": "https://www.linkedin.com/jobs/view/director-of-corporate-communications-at-silverfort-4471931858",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The job title contains 'Director', which is a senior-level role requiring more experience than Manju has, and the location is in Austin, TX (USA), which is a non-Finland country-specific posting without explicit remote-worldwide eligibility.",
+    "id": "30376dd2",
+    "source": "linkedin_ww_communications",
+    "posted_date": "2026-09-29",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'director'"
   }
 ]
