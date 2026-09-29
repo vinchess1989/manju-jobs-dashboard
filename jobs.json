@@ -302554,5 +302554,35 @@
     "deadline": "N/A",
     "eval_model": "local/qwen/qwen3-14b",
     "description_file": null
+  },
+  {
+    "title": "Paralegal Apprentice",
+    "company": "Rocke Law",
+    "location": "Seattle, WA",
+    "url": "https://www.linkedin.com/jobs/view/paralegal-apprentice-at-rocke-law-4471940554",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The job is located in Seattle, WA (USA), which is outside Finland and not explicitly stated as remote/open worldwide, triggering an automatic hard rejection due to non-Finland country-specific posting.",
+    "id": "9f0d7317",
+    "source": "linkedin_ww_legal_trainee",
+    "posted_date": "2026-09-30",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null
+  },
+  {
+    "title": "Events Specialist II",
+    "company": "Bank of America",
+    "location": "Charlotte, NC",
+    "url": "https://www.linkedin.com/jobs/view/events-specialist-ii-at-bank-of-america-4473548441",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Job location is Charlotte, NC (United States), which is an automatic hard rejection due to non-Finland country-specific posting.",
+    "id": "fad2d3c1",
+    "source": "linkedin_ww_event_coordinator",
+    "posted_date": "2026-09-30",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null
   }
 ]
