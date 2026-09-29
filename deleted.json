@@ -378081,5 +378081,21 @@
     "eval_model": "local/qwen/qwen3-14b",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'manager'"
+  },
+  {
+    "title": "Sairaanhoitaja Raaseporin psykoosivastaanotolle",
+    "company": "HUS Helsingin yliopistollinen sairaala",
+    "location": "Raasepori, Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/1d2ef414-258b-4368-9b62-7118cd493c0d/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The role requires a nurse (sairaanhoitaja) qualification with psychiatric care experience, which is a hard rejection as Manju has no medical/nursing background or relevant qualifications.",
+    "id": "8f5ab383",
+    "source": "tyomarkkinatori",
+    "posted_date": "29.9.2026, 5.08",
+    "deadline": "2026-10-13",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'sairaanhoitaja'"
   }
 ]
