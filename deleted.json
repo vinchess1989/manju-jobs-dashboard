@@ -379313,5 +379313,53 @@
     "eval_model": "local/qwen/qwen3-14b",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'head of'"
+  },
+  {
+    "title": "Huollon s\u00e4hk\u00f6asentaja, vakkari HUMPPILA",
+    "company": "Hae paikkaa",
+    "location": "Humppila, Finland",
+    "url": "https://www.jobly.fi/tyopaikka/huollon-sahkoasentaja-vakkari-humppila-2768366",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The job requires electrical installation expertise as a 's\u00e4hk\u00f6asentaja' (electrician), which is a trade/manual-labour role explicitly excluded under hard rejections due to lack of required vocational training and technical specialization.",
+    "id": "04368ca6",
+    "source": "jobly",
+    "posted_date": "2026-09-29",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 's\u00e4hk\u00f6asentaja'"
+  },
+  {
+    "title": "Alumiinihitsaaja, vakituinen, RAUMA",
+    "company": "Hae paikkaa",
+    "location": "Rauma, Finland",
+    "url": "https://www.jobly.fi/tyopaikka/alumiinihitsaaja-vakituinen-rauma-2768358",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "b000f07d",
+    "source": "jobly",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'hitsaaja'"
+  },
+  {
+    "title": "Implementation Project Manager",
+    "company": "Posti Group Oyj",
+    "location": "Helsinki Region, Finland",
+    "url": "https://fi.linkedin.com/jobs/view/implementation-project-manager-at-posti-group-oyj-4470868681",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "a2506e2e",
+    "source": "linkedin_fi_coordinator",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'manager'"
   }
 ]
