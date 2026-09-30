@@ -380292,5 +380292,21 @@
     "eval_model": "local/qwen/qwen3-14b",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'l\u00e4\u00e4k\u00e4ri'"
+  },
+  {
+    "title": "TIG-hitsaaja",
+    "company": "Hae paikkaa",
+    "location": "Sotkamo, Finland",
+    "url": "https://www.jobly.fi/tyopaikka/tig-hitsaaja-2758290",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "eb851d70",
+    "source": "jobly",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'hitsaaja'"
   }
 ]
