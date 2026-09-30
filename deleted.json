@@ -380708,5 +380708,53 @@
     "eval_model": "local/qwen/qwen3-14b",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'l\u00e4hihoitaja'"
+  },
+  {
+    "title": "Ly\u00f6m\u00e4soitinten \u00e4\u00e4nenjohtaja / Principal Percussion",
+    "company": "Suomen Sinfoniaorkesterit / Association of Finnish Symphony Orchestras",
+    "location": "Helsinki Region, Finland",
+    "url": "https://fi.linkedin.com/jobs/view/ly%C3%B6m%C3%A4soitinten-%C3%A4%C3%A4nenjohtaja-principal-percussion-at-suomen-sinfoniaorkesterit-association-of-finnish-symphony-orchestras-4473736726",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The job requires musical performance and percussion expertise, which is unrelated to the candidate's legal/office-admin background and skills.",
+    "id": "c766a94d",
+    "source": "linkedin_fi_event",
+    "posted_date": "2026-09-30",
+    "deadline": "2026-10-22",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'johtaja'"
+  },
+  {
+    "title": "Communications Manager - Sipoo",
+    "company": "Arla Oy - Sipoo, Uusimaa",
+    "location": "Etsi, Finland",
+    "url": "https://duunitori.fi/tyopaikat/tyo/arla-communications-manager-sipoo-sdsuu-20611938",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "0b27ae19",
+    "source": "duunitori_communications",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'manager'"
+  },
+  {
+    "title": "Lifecycle & Retention Lead, Consumer Subscriptions",
+    "company": "Data Engineer Real Estate Insightsiin\nAlma Media\nHelsinki\nToimittaja\nKaleva Media Oy",
+    "location": "Helsinki Region, Finland",
+    "url": "https://www.jobly.fi/tyopaikka/lifecycle-retention-lead-consumer-subscriptions-2768688",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "a69bd865",
+    "source": "jobly_communications",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains seniority keyword 'lead'"
   }
 ]
