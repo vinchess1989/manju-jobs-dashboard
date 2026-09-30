@@ -380148,5 +380148,53 @@
     "eval_model": "local/qwen/qwen3-14b",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'construction'"
+  },
+  {
+    "title": "Director, Global Ethics and Compliance Monitoring and Reporting - Remote",
+    "company": "Solventum",
+    "location": "Eden Prairie, MN",
+    "url": "https://www.linkedin.com/jobs/view/director-global-ethics-and-compliance-monitoring-and-reporting-remote-at-solventum-4468330767",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The job is located in the United States (Eden Prairie, MN) and requires a 'Director' seniority level, both of which are automatic hard rejections for this candidate.",
+    "id": "60473a1a",
+    "source": "linkedin_ww_compliance",
+    "posted_date": "2026-09-23",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'director'"
+  },
+  {
+    "title": "Creative Production Project Manager",
+    "company": "Vendor Management tbo",
+    "location": "Helsinki Region, Finland",
+    "url": "https://fi.linkedin.com/jobs/view/creative-production-project-manager-at-vendor-management-tbo-4473540477",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "f23e83cd",
+    "source": "linkedin_fi_event_coordinator",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'manager'"
+  },
+  {
+    "title": "Manager Communications - School of Public Health",
+    "company": "UTHealth Houston",
+    "location": "Houston, TX",
+    "url": "https://www.linkedin.com/jobs/view/manager-communications-school-of-public-health-at-uthealth-houston-4473569807",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The job title contains 'Manager' (senior-level role) which the candidate is not qualified for, and the location is in Houston, TX (non-Finland country-specific posting with no explicit worldwide remote option).",
+    "id": "820a231f",
+    "source": "linkedin_ww_communications",
+    "posted_date": "2026-09-30",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'manager'"
   }
 ]
