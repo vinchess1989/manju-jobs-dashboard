@@ -302319,15 +302319,14 @@
     "location": "Chicago, IL",
     "url": "https://www.linkedin.com/jobs/view/communications-consultant-ii-at-health-care-service-corporation-4472295622",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Page load or parsing error.",
+    "matches_requirements": "no",
+    "reason": "The job is located in Chicago, IL (USA), which is a non-Finland country-specific posting without explicit global remote access, triggering an automatic hard rejection.",
     "id": "126d8593",
     "source": "linkedin_ww_communications",
-    "posted_date": "N/A",
+    "posted_date": "2026-09-27",
     "deadline": "N/A",
     "description_file": null,
-    "error_attempts": 1,
-    "last_error_at": "2026-09-30T00:12:21+03:00"
+    "eval_model": "local/qwen/qwen3-14b"
   },
   {
     "title": "Administrative Assistant",
@@ -302335,15 +302334,14 @@
     "location": "Clarksville, TN",
     "url": "https://www.linkedin.com/jobs/view/administrative-assistant-at-austin-peay-state-university-4471100763",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Page load or parsing error.",
+    "matches_requirements": "no",
+    "reason": "Job location is in Clarksville, TN (USA), which is a non-Finland country-specific posting with no explicit 'open worldwide' statement, triggering an automatic hard rejection.",
     "id": "09311085",
     "source": "linkedin_ww_office_secretary",
-    "posted_date": "N/A",
+    "posted_date": "2026-09-24",
     "deadline": "N/A",
     "description_file": null,
-    "error_attempts": 1,
-    "last_error_at": "2026-09-30T00:12:21+03:00"
+    "eval_model": "local/qwen/qwen3-14b"
   },
   {
     "title": "Asiakashankkija - Kehity ja etene myynnin alalla",
