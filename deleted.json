@@ -380196,5 +380196,37 @@
     "eval_model": "local/qwen/qwen3-14b",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'manager'"
+  },
+  {
+    "title": "Sairaanhoitaja Neurologinen kuntoutus",
+    "company": "HUS Helsingin yliopistollinen sairaala",
+    "location": "Helsinki Region, Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/e83fbb63-cf00-4abe-b92f-a1551bb3ea58/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The job requires a licensed nurse with specific medical qualifications and bilingual Finnish/Swedish proficiency, which Manju does not possess. It falls under the 'Medical / Social Welfare' hard rejection category.",
+    "id": "7478fa23",
+    "source": "tyomarkkinatori",
+    "posted_date": "30.9.2026, 5.08",
+    "deadline": "2026-10-14",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'sairaanhoitaja'"
+  },
+  {
+    "title": "Erikoistuva l\u00e4\u00e4k\u00e4ri Plastiikkakirurgia",
+    "company": "HUS Helsingin yliopistollinen sairaala",
+    "location": "Helsinki Region, Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/63d032f3-6695-4479-acdc-133609ea0355/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The role requires a specialist doctor qualification in plastic surgery, which is a medical/clinical position explicitly excluded under the 'Medical / Social Welfare' hard rejection rule.",
+    "id": "ded4df2b",
+    "source": "tyomarkkinatori",
+    "posted_date": "30.9.2026, 5.08",
+    "deadline": "2026-10-14",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'l\u00e4\u00e4k\u00e4ri'"
   }
 ]
