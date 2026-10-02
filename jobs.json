@@ -312349,18 +312349,17 @@
   {
     "title": "Kohde-esimies, Helsinki",
     "company": "Extract via OpenClaw",
-    "location": "Extract via OpenClaw",
+    "location": "Helsinki Region, Finland",
     "url": "https://fi.indeed.com/rc/clk?jk=19f8cbfd8c165320",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Page load or parsing error.",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
     "id": "54bef96b",
     "source": "indeed",
     "posted_date": "N/A",
     "deadline": "N/A",
     "description_file": null,
-    "error_attempts": 1,
-    "last_error_at": "2026-10-02T18:34:45+03:00"
+    "eval_model": "local/qwen/qwen3-14b"
   },
   {
     "title": "Kuntosality\u00f6ntekij\u00e4 - Gym Ambassador",
