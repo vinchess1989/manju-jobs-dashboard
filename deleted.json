@@ -392326,5 +392326,21 @@
     "eval_model": "local/qwen/qwen3-14b",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'manager'"
+  },
+  {
+    "title": "Event Manager - Conrad Fort Lauderdale Beach",
+    "company": "Hilton",
+    "location": "Fort Lauderdale, FL",
+    "url": "https://www.linkedin.com/jobs/view/event-manager-conrad-fort-lauderdale-beach-at-hilton-4475050148",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Job located outside Finland and requires senior hospitality experience.",
+    "id": "85744339",
+    "source": "linkedin_ww_event",
+    "posted_date": "2026-10-03",
+    "deadline": "N/A",
+    "eval_model": "groq/openai/gpt-oss-20b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'manager'"
   }
 ]
