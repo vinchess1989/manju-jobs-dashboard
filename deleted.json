@@ -391638,5 +391638,21 @@
     "eval_model": "local/qwen/qwen3-14b",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 's\u00e4hk\u00f6asentaja'"
+  },
+  {
+    "title": "Trade Show & Events Lead",
+    "company": "Wenger Corporation",
+    "location": "Owatonna, MN",
+    "url": "https://www.linkedin.com/jobs/view/trade-show-events-lead-at-wenger-corporation-4454512613",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Job location is in Owatonna, Minnesota, USA (non-Finland country) with no explicit 'open worldwide' statement, triggering automatic hard rejection per Location Restrictions rule.",
+    "id": "aee638a5",
+    "source": "linkedin_ww_event",
+    "posted_date": "2026-09-25",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains seniority keyword 'lead'"
   }
 ]
