@@ -312018,19 +312018,18 @@
   },
   {
     "title": "Salaries for Huoltoasentaja at Jobros",
-    "company": "Extract via OpenClaw",
+    "company": "Jobros",
     "location": "Extract via OpenClaw",
     "url": "https://fi.indeed.com/cmp/Jobros/salaries/Huoltoasentaja",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Page load or parsing error.",
+    "matches_requirements": "no",
+    "reason": "The role 'Huoltoasentaja' (maintenance/installation technician) is explicitly rejected due to being a trade/manual-labour role requiring specific vocational training in technical installation, which Manju's profile does not qualify for.",
     "id": "8696a1e6",
     "source": "indeed",
     "posted_date": "N/A",
     "deadline": "N/A",
     "description_file": null,
-    "error_attempts": 1,
-    "last_error_at": "2026-10-02T15:45:51+03:00"
+    "eval_model": "local/qwen/qwen3-14b"
   },
   {
     "title": "Salaries for Huoltoasentaja at Jobros, Turku, F20",
