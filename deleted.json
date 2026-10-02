@@ -390438,5 +390438,53 @@
     "eval_model": "local/qwen/qwen3-14b",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'p\u00e4\u00e4llikk\u00f6'"
+  },
+  {
+    "title": "Associate Development Director",
+    "company": "Sony Computer Entertainment France SA",
+    "location": "Helsinki Region, Finland",
+    "url": "https://fi.linkedin.com/jobs/view/associate-development-director-at-sony-computer-entertainment-france-sa-4474592496",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The job title contains 'Director', which falls under Seniority-level hard rejections; the candidate lacks experience for such a senior role.",
+    "id": "75fee515",
+    "source": "linkedin_fin",
+    "posted_date": "2026-10-02",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'director'"
+  },
+  {
+    "title": "Projektip\u00e4\u00e4llikk\u00f6 Tietohallinto",
+    "company": "HELSINKI UUSIMAA, UUSIMAA, Suomi",
+    "location": "Helsinki Region, Finland",
+    "url": "https://fi.indeed.com/rc/clk?jk=ced5357c8fc7361a",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "007caecc",
+    "source": "indeed",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'p\u00e4\u00e4llikk\u00f6'"
+  },
+  {
+    "title": "L\u00e4hihoitaja, Tuusulan kotihoito, pohjoinen, yli 12kk",
+    "company": "Keski-Uudenmaan hyvinvointialue",
+    "location": "Helsinki Region, Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/ea613082-c5b4-47e0-bf6f-7ca0a509472d/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The job requires a 'sosiaali- ja terveysalan perustutkinto (l\u00e4hihoitaja)' (nursing/vocational degree), which is explicitly listed as a hard rejection criterion since the candidate does not hold this specific vocational qualification.",
+    "id": "3d9c3ae8",
+    "source": "tyomarkkinatori",
+    "posted_date": "2.10.2026, 7.15",
+    "deadline": "2026-10-15",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'l\u00e4hihoitaja'"
   }
 ]
