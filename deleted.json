@@ -390310,5 +390310,53 @@
     "eval_model": "local/qwen/qwen3-14b",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'director'"
+  },
+  {
+    "title": "Projektip\u00e4\u00e4llikk\u00f6 Tietohallinto",
+    "company": "Projektip\u00e4\u00e4llikk\u00f6 Tietohallinto",
+    "location": "Helsinki Region, Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/046a5ac6-3562-4ff7-9206-f719645c4884/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "f9dbba66",
+    "source": "tyomarkkinatori",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'p\u00e4\u00e4llikk\u00f6'"
+  },
+  {
+    "title": "Osastonl\u00e4\u00e4k\u00e4ri Diagnostiikkakeskus Kliininen mikrobiologia",
+    "company": "Osastonl\u00e4\u00e4k\u00e4ri Diagnostiikkakeskus Kliininen mikrobiologia",
+    "location": "Helsinki Region, Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/833a4a75-4d55-4397-a2e8-9a55e116df12/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "0d30dcac",
+    "source": "tyomarkkinatori",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'l\u00e4\u00e4k\u00e4ri'"
+  },
+  {
+    "title": "Event Director",
+    "company": "Linder Global Events",
+    "location": "Washington, DC",
+    "url": "https://www.linkedin.com/jobs/view/event-director-at-linder-global-events-4473957650",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "3d4ee2da",
+    "source": "linkedin_ww_event",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'director'"
   }
 ]
