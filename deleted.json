@@ -392534,5 +392534,21 @@
     "eval_model": "groq/openai/gpt-oss-20b",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'director'"
+  },
+  {
+    "title": "Professori, opinto- ja uraohjaus",
+    "company": "It\u00e4-Suomen yliopisto (UEF)",
+    "location": "Joensuu, Finland",
+    "url": "https://fi.indeed.com/rc/clk?jk=2048840384a3c666",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The position is a university professor role requiring a PhD and extensive academic credentials, which does not align with the candidate\u2019s qualifications.",
+    "id": "9a86e436",
+    "source": "indeed",
+    "posted_date": "2026-09-25",
+    "deadline": "2026-10-26",
+    "eval_model": "groq/openai/gpt-oss-safeguard-20b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'professor'"
   }
 ]
