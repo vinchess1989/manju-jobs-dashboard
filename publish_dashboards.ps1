@@ -139,6 +139,12 @@ if ($siblingProjects.Count -eq 0) {
 Write-Host "`n=== Committing & Pushing private companion repo ===" -ForegroundColor Cyan
 
 $PRIVATE = $env:MANJU_PRIVATE_DIR
+# The companion named after THIS project ("manju_jobs" -> "Manju_jobs_private") comes first: the loose
+# "*private*" match below would pick whichever private folder sorts first (e.g. Priya_jobs_private).
+if (-not $PRIVATE -or -not (Test-Path $PRIVATE)) {
+    $named = Join-Path $parentDir ((Split-Path $thisProject -Leaf) + "_private")
+    if (Test-Path $named) { $PRIVATE = (Get-Item $named).FullName }
+}
 if (-not $PRIVATE -or -not (Test-Path $PRIVATE)) {
     $PRIVATE = Get-ChildItem $parentDir -Directory -ErrorAction SilentlyContinue |
         Where-Object { $_.Name -match "private" } |

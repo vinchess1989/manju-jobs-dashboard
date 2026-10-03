@@ -1804,7 +1804,7 @@ def update_git():
         env = os.environ.copy()
         env.pop("GIT_ASKPASS", None)
         env["GIT_TERMINAL_PROMPT"] = "0"
-        env["GCM_INTERACTIVE"] = "false"  # Prevent Git Credential Manager from hanging headlessly
+        env["GCM_INTERACTIVE"] = "never"  # Prevent Git Credential Manager from hanging headlessly
 
         # Check if the folder is inside a Git repository
         is_git = False
@@ -1847,21 +1847,22 @@ def update_git():
             print(f"Committing changes: {commit_message}")
             subprocess.run(["git", "commit", "-m", commit_message], cwd=repo_dir, check=True, env=env, capture_output=True, text=True, stdin=subprocess.DEVNULL, timeout=60.0)
             
-            # Check for GitHub token in environment variables
-            push_cmd = ["git", "push"]
+            # Push through Git Credential Manager first: the remote URL names the account
+            # (https://vinchess1989@github.com/...) and GCM supplies its stored login. GITHUB_TOKEN is
+            # only a fallback (e.g. a machine without stored logins); it went stale on 2026-10-03 and
+            # silently stopped every push. Strip any user from the URL before adding the token, or git
+            # rejects "https://TOKEN@user@github.com" as a malformed URL.
+            push_cmds = [["git", "push"]]
             github_token = os.environ.get("GITHUB_TOKEN")
             if github_token:
                 remote_result = subprocess.run(["git", "config", "--get", "remote.origin.url"], cwd=repo_dir, capture_output=True, text=True, stdin=subprocess.DEVNULL)
-                remote_url = remote_result.stdout.strip()
+                remote_url = re.sub(r"^https://[^/@]*@", "https://", remote_result.stdout.strip())
                 if remote_url.startswith("https://"):
-                    auth_url = remote_url.replace("https://", f"https://{github_token}@")
-                    push_cmd = ["git", "push", auth_url]
+                    push_cmds.append(["git", "push", remote_url.replace("https://", f"https://{github_token}@", 1), "HEAD"])
 
             try:
                 print("Pulling remote changes before pushing...")
                 pull_cmd = ["git", "pull", "--rebase", "--autostash"]
-                if github_token and 'auth_url' in locals():
-                    pull_cmd = ["git", "pull", "--rebase", "--autostash", auth_url]
                 try:
                     subprocess.run(pull_cmd, cwd=repo_dir, check=True, env=env, capture_output=True, text=True, stdin=subprocess.DEVNULL, timeout=120.0)
                 except subprocess.CalledProcessError as e:
@@ -1870,7 +1871,14 @@ def update_git():
                         print(f"Git Pull Stderr: {e.stderr}")
 
                 print("Pushing to GitHub...")
-                subprocess.run(push_cmd, cwd=repo_dir, check=True, env=env, capture_output=True, text=True, stdin=subprocess.DEVNULL, timeout=120.0)
+                for i, push_cmd in enumerate(push_cmds):
+                    try:
+                        subprocess.run(push_cmd, cwd=repo_dir, check=True, env=env, capture_output=True, text=True, stdin=subprocess.DEVNULL, timeout=120.0)
+                        break
+                    except subprocess.CalledProcessError:
+                        if i == len(push_cmds) - 1:
+                            raise
+                        print("Push with the stored login failed; retrying with GITHUB_TOKEN...")
                 print("Successfully pushed updates to GitHub!")
                 # Deploy dashboard to Firebase Hosting if the CLI is available
                 firebase_app_dir = os.path.join(repo_dir, "firebase_app")

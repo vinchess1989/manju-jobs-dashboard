@@ -795,3 +795,12 @@ While any filter is set (column filters, date limits, LLM pills), the Filters ta
 
 ## Firestore lockdown rules actually deployed 2026-09-29
 The 2026-09-28 lockdown entry above said bare calls 'now get 403', but the locked-down `firestore.rules` had never been deployed: anonymous reads still returned 200 on all four projects (priya-jobs-dashboard, priya-global-jobs, manju-jobs-dashboard, vineeth-jobs-dashboard) until 2026-09-29, when they were deployed with `firebase deploy --only firestore:rules`. Verified after deploy: anonymous GET on `shared_state/job_status` and `user_feedback` -> 403; service-account `firestore_auth.session()` -> 200; no unauthenticated Firestore calls in any repo's .py files. **To check the lockdown, test anonymous access yourself** (`Invoke-WebRequest https://firestore.googleapis.com/v1/projects/<id>/databases/(default)/documents/shared_state/job_status` should throw 403). The committed rules file alone proves nothing. Any other machine needs its `~/.secrets/<project>-sa.json` key (Manju's PC was pending at deploy time).
+
+## GitHub push auth (2026-10-03)
+- `update_git()` in scraper.py pushes through Git Credential Manager first (remote URL names the account:
+  `https://vinchess1989@github.com/...`; GCM supplies the stored login, `GCM_INTERACTIVE=never` so a background run
+  never opens a sign-in window). `GITHUB_TOKEN` is only a fallback, inserted after stripping any user from the URL.
+- Why: the user-level `GITHUB_TOKEN` went stale (401) and every scraper push failed silently from ~01:30 on
+  2026-10-03 (manju_jobs 18 commits, priya_global_jobs 88 behind); then pinning the account in the remote URL made the
+  old code build `https://TOKEN@vinchess1989@github.com` ("URL rejected"). The dead env var was removed.
+- Only Manju_jobs_private pushes as munchnambiar; everything else as vinchess1989 (global CLAUDE.md rule).- publish_dashboards.ps1 now resolves the private repo as `<this project>_private` first (was: first sibling folder matching *private*).
