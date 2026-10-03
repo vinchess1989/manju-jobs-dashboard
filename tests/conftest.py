@@ -1,7 +1,21 @@
 """Shared fixtures for the manju_jobs test suite."""
 import json
 import os
+import sys
 import pytest
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import firestore_auth
+
+
+@pytest.fixture(autouse=True)
+def no_live_firestore(monkeypatch):
+    """Tests must never reach the real Firestore: poll_firebase_feedback marks feedback docs as read,
+    so a live call silently consumes real dashboard feedback. Tests that need Firestore fake
+    firestore_auth.session themselves (patch.object(scraper.firestore_auth, "session", ...))."""
+    def blocked():
+        raise RuntimeError("test tried to reach live Firestore; fake firestore_auth.session instead")
+    monkeypatch.setattr(firestore_auth, "session", blocked)
 
 
 SAMPLE_JOBS = [

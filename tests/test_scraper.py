@@ -180,15 +180,23 @@ class TestPollFirebaseFeedback:
             }]
         }
 
-    @patch("scraper.requests.patch")
-    @patch("scraper.requests.get")
-    def test_blank_reason_clears_user_reason_in_jobs(self, mock_get, mock_patch, jobs_file):
-        mock_get.return_value = MagicMock(status_code=200, json=lambda: self._make_firestore_response(""))
-        mock_patch.return_value = MagicMock(status_code=200)
+    # poll_firebase_feedback talks to Firestore through firestore_auth.session() (a service-account
+    # session) since 2026-09-28, so that is what gets faked; mocking requests.get no longer does
+    # anything and let these tests reach the live database.
+    @staticmethod
+    def _fake_session(payload):
+        sess = MagicMock()
+        sess.get.return_value = MagicMock(status_code=200, json=lambda: payload)
+        sess.patch.return_value = MagicMock(status_code=200)
+        return sess
 
-        with patch.object(scraper, "JOBS_FILE", jobs_file), \
+    def test_blank_reason_clears_user_reason_in_jobs(self, jobs_file, req_file):
+        sess = self._fake_session(self._make_firestore_response(""))
+
+        with patch.object(scraper.firestore_auth, "session", return_value=sess), \
+             patch.object(scraper, "JOBS_FILE", jobs_file), \
              patch("db_utils.JOBS_FILE", jobs_file), \
-             patch.object(scraper, "REQ_FILE", "nonexistent_req.md"):
+             patch.object(scraper, "USER_FEEDBACK_FILE", req_file):
             scraper.poll_firebase_feedback()
 
         with open(jobs_file) as f:
@@ -196,29 +204,27 @@ class TestPollFirebaseFeedback:
         job = next(j for j in jobs if j["url"] == self.JOB_URL)
         assert job["matches_requirements"] == "no"
         assert job["user_reason"] == ""          # stale "testing reason" must be cleared
+        assert sess.patch.call_args.kwargs["json"] == {"fields": {"status": {"stringValue": "read"}}}
 
-    @patch("scraper.requests.patch")
-    @patch("scraper.requests.get")
-    def test_low_quality_reason_not_written_to_req_file(self, mock_get, mock_patch, jobs_file, req_file):
-        mock_get.return_value = MagicMock(status_code=200, json=lambda: self._make_firestore_response("testing again"))
-        mock_patch.return_value = MagicMock(status_code=200)
+    def test_low_quality_reason_not_written_to_req_file(self, jobs_file, req_file):
+        sess = self._fake_session(self._make_firestore_response("testing again"))
 
-        with patch.object(scraper, "JOBS_FILE", jobs_file), \
+        with patch.object(scraper.firestore_auth, "session", return_value=sess), \
+             patch.object(scraper, "JOBS_FILE", jobs_file), \
              patch("db_utils.JOBS_FILE", jobs_file), \
              patch.object(scraper, "USER_FEEDBACK_FILE", req_file):
             scraper.poll_firebase_feedback()
 
         content = open(req_file).read() if os.path.exists(req_file) else ""
         assert "testing again" not in content
+        assert sess.get.called                   # the fake was really used, not skipped
 
-    @patch("scraper.requests.patch")
-    @patch("scraper.requests.get")
-    def test_meaningful_reason_written_to_req_file(self, mock_get, mock_patch, jobs_file, req_file):
+    def test_meaningful_reason_written_to_req_file(self, jobs_file, req_file):
         reason = "job requires carpentry skills not relevant to law candidate"
-        mock_get.return_value = MagicMock(status_code=200, json=lambda: self._make_firestore_response(reason))
-        mock_patch.return_value = MagicMock(status_code=200)
+        sess = self._fake_session(self._make_firestore_response(reason))
 
-        with patch.object(scraper, "JOBS_FILE", jobs_file), \
+        with patch.object(scraper.firestore_auth, "session", return_value=sess), \
+             patch.object(scraper, "JOBS_FILE", jobs_file), \
              patch("db_utils.JOBS_FILE", jobs_file), \
              patch.object(scraper, "USER_FEEDBACK_FILE", req_file):
             scraper.poll_firebase_feedback()

@@ -804,3 +804,11 @@ The 2026-09-28 lockdown entry above said bare calls 'now get 403', but the locke
   2026-10-03 (manju_jobs 18 commits, priya_global_jobs 88 behind); then pinning the account in the remote URL made the
   old code build `https://TOKEN@vinchess1989@github.com` ("URL rejected"). The dead env var was removed.
 - Only Manju_jobs_private pushes as munchnambiar; everything else as vinchess1989 (global CLAUDE.md rule).- publish_dashboards.ps1 now resolves the private repo as `<this project>_private` first (was: first sibling folder matching *private*).
+
+## Test fix: Firestore mocks (2026-10-03)
+- TestPollFirebaseFeedback mocked `scraper.requests.get/patch`, but since 2026-09-28 poll_firebase_feedback goes
+  through `firestore_auth.session()`, so the mocks did nothing: 2 tests failed and every run hit the LIVE Firestore
+  (could mark real feedback docs read and write constraints to a stray `nonexistent_req.md`). Tests now fake
+  `firestore_auth.session` (`patch.object(scraper.firestore_auth, "session", return_value=sess)`) and check the doc
+  is marked read; `tests/conftest.py` has an autouse `no_live_firestore` fixture that makes any real Firestore call
+  from a test raise. All tests pass.
