@@ -314130,5 +314130,20 @@
     "deadline": "N/A",
     "eval_model": "local/qwen/qwen3-14b",
     "description_file": null
+  },
+  {
+    "title": "Administrative Assistant I",
+    "company": "DHL Supply Chain",
+    "location": "Memphis, TN",
+    "url": "https://www.linkedin.com/jobs/view/administrative-assistant-i-at-dhl-supply-chain-4475078509",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "a6a22ae0",
+    "source": "linkedin_ww_office_secretary",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "groq/openai/gpt-oss-safeguard-20b",
+    "description_file": null
   }
 ]

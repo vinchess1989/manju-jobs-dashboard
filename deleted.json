@@ -392438,5 +392438,37 @@
     "eval_model": "groq/openai/gpt-oss-120b",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'manager'"
+  },
+  {
+    "title": "Director of Meetings and Special Event Planning",
+    "company": "Marriott International",
+    "location": "Lahaina, HI",
+    "url": "https://www.linkedin.com/jobs/view/director-of-meetings-and-special-event-planning-at-marriott-international-4475085145",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Senior director role located in the United States, outside Finland, and not a generalist office position.",
+    "id": "ad7faad2",
+    "source": "linkedin_ww_event",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "groq/openai/gpt-oss-safeguard-20b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'director'"
+  },
+  {
+    "title": "Communications Manager",
+    "company": "The Walt Disney Studios",
+    "location": "Burbank, CA",
+    "url": "https://www.linkedin.com/jobs/view/communications-manager-at-the-walt-disney-studios-4469298648",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "78c5144a",
+    "source": "linkedin_ww_communications",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'manager'"
   }
 ]
