@@ -314190,5 +314190,50 @@
     "deadline": "N/A",
     "eval_model": "local/qwen/qwen3-14b",
     "description_file": null
+  },
+  {
+    "title": "Mets\u00e4koneenkuljettaja",
+    "company": "Mets\u00e4ty\u00f6 IS Oy",
+    "location": "Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/292b0900-2a7a-4dd0-93d7-d860dd62f829/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The position is a trade role requiring manual labor as a harvester driver, which is a hard rejection.",
+    "id": "2c219250",
+    "source": "tyomarkkinatori",
+    "posted_date": "2026-10-03",
+    "deadline": "2026-10-30",
+    "eval_model": "groq/openai/gpt-oss-20b",
+    "description_file": null
+  },
+  {
+    "title": "Siivoaja/autonkuljettaja",
+    "company": "Siivoaja/autonkuljettaja",
+    "location": "Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/3349633d-7f1b-4e79-9df6-aaaf96049014/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "e315e149",
+    "source": "tyomarkkinatori",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "groq/openai/gpt-oss-safeguard-20b",
+    "description_file": null
+  },
+  {
+    "title": "Operations and Events Coordinator",
+    "company": "Morgan & Morgan, P.A.",
+    "location": "Longwood, FL",
+    "url": "https://www.linkedin.com/jobs/view/operations-and-events-coordinator-at-morgan-morgan-p-a-4473400963",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The job is located in Longwood, FL (United States), which is a non-Finland country and not explicitly stated as remote or open to worldwide applicants.",
+    "id": "27e5f25b",
+    "source": "linkedin_ww_event_coordinator",
+    "posted_date": "2026-10-03",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null
   }
 ]
