@@ -314625,5 +314625,35 @@
     "deadline": "2026-10-16",
     "eval_model": "local/qwen/qwen3-14b",
     "description_file": null
+  },
+  {
+    "title": "Markkinointiassistentti, osa-aikainen",
+    "company": "Markkinointiassistentti, osa-aikainen",
+    "location": "Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/01c06a36-e4c7-4be2-b4e2-3845aa700118/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "353b2398",
+    "source": "tyomarkkinatori",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null
+  },
+  {
+    "title": "Henkil\u00f6kohtainen avustaja",
+    "company": "Hae paikkaa",
+    "location": "Jyv\u00e4skyl\u00e4 Region, Finland",
+    "url": "https://www.jobly.fi/tyopaikka/henkilokohtainen-avustaja-2771529",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The job title 'Henkil\u00f6kohtainen avustaja' (Personal Assistant) falls under the hard rejection category for personal/home-care assistant roles requiring hands-on daily living support, which is unrelated to Manju's legal/event coordination background.",
+    "id": "79a5cf22",
+    "source": "jobly",
+    "posted_date": "2026-10-03",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null
   }
 ]
