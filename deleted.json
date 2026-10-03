@@ -392422,5 +392422,21 @@
     "eval_model": "local/qwen/qwen3-14b",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'director'"
+  },
+  {
+    "title": "Compliance Manager, Card",
+    "company": "Affirm",
+    "location": "Salt Lake City, UT",
+    "url": "https://www.linkedin.com/jobs/view/compliance-manager-card-at-affirm-4472361918",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "d148c8c0",
+    "source": "linkedin_ww_compliance",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "groq/openai/gpt-oss-120b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'manager'"
   }
 ]
