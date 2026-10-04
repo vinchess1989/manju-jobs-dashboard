@@ -392983,5 +392983,21 @@
     "eval_model": "local/qwen/qwen3-14b",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'manager'"
+  },
+  {
+    "title": "Rokotepalvelun terveyden-/sairaanhoitaja osa-aikainen Ouluun",
+    "company": "Rokotepalvelun terveyden-/sairaanhoitaja osa-aikainen Ouluun",
+    "location": "Helsinki Region, Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/2a6f7dd8-2da6-4f70-a1d2-76b2893af961/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The job requires a healthcare professional (terveyden/sairaanhoitaja) role which is explicitly rejected due to the candidate's lack of medical qualifications and the hard-rejection rule for roles requiring Valvira accreditation or specific nursing training.",
+    "id": "5b4542d0",
+    "source": "tyomarkkinatori",
+    "posted_date": "4.10.2026, 9.01",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'sairaanhoitaja'"
   }
 ]
