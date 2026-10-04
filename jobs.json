@@ -315649,18 +315649,17 @@
   {
     "title": "\ufe0f\ufe0fFinnish-Speaking Customer Support Specialist-Relocate to Sunny Greece",
     "company": "Extract via OpenClaw",
-    "location": "Extract via OpenClaw",
+    "location": "Helsinki Region, Finland",
     "url": "https://fi.indeed.com/rc/clk?jk=1688a90249ecc557",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Page load or parsing error.",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
     "id": "784a51a1",
     "source": "indeed",
     "posted_date": "N/A",
     "deadline": "N/A",
     "description_file": null,
-    "error_attempts": 1,
-    "last_error_at": "2026-10-04T16:05:22+03:00"
+    "eval_model": "local/qwen/qwen3-14b"
   },
   {
     "title": "Reumatologi, Vantaa Tikkurila",
@@ -316034,6 +316033,36 @@
     "source": "tyomarkkinatori",
     "posted_date": "N/A",
     "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null
+  },
+  {
+    "title": "Tuotantoty\u00f6ntekij\u00e4\u00e4 / Instrumenttiasentaja",
+    "company": "Hae paikkaa",
+    "location": "Helsinki Region, Finland",
+    "url": "https://www.jobly.fi/tyopaikka/tuotantotyontekijaa-instrumenttiasentaja-2769090",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "4385120c",
+    "source": "jobly",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null
+  },
+  {
+    "title": "Tietoliikenneasentaja",
+    "company": "Worker Henkil\u00f6st\u00f6ratkaisut",
+    "location": "Oulu Region, Finland",
+    "url": "https://www.jobly.fi/tyopaikka/tietoliikenneasentaja-2771074",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The job is a 'Tietoliikenneasentaja' (telecommunications installer) requiring fiber optic welding and installation skills, which falls under the 'Trade / Manual-labour' hard rejection category. Manju's legal/compliance background does not align with technical trade roles.",
+    "id": "c3235bcd",
+    "source": "jobly",
+    "posted_date": "2026-10-04",
+    "deadline": "2026-10-16",
     "eval_model": "local/qwen/qwen3-14b",
     "description_file": null
   }
