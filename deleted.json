@@ -393351,5 +393351,21 @@
     "eval_model": "local/qwen/qwen3-14b",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'lehtori'"
+  },
+  {
+    "title": "Yliopisto-opettaja, suomi ja sen sukukielet, erityisesti unkarin kieli",
+    "company": "Extract via OpenClaw",
+    "location": "Extract via OpenClaw",
+    "url": "https://fi.indeed.com/rc/clk?jk=b2de3386d327c6ae",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "62f6b0f2",
+    "source": "indeed",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'opettaja'"
   }
 ]
