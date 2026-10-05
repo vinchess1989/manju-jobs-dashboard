@@ -317482,15 +317482,14 @@
     "location": "Atlanta, GA",
     "url": "https://www.linkedin.com/jobs/view/associate-hybrid-counsel-telecoms-care-programs-and-retail-operations-at-google-4474269091",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Page load or parsing error.",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
     "id": "053fc7fa",
     "source": "linkedin_ww_legal_counsel",
     "posted_date": "N/A",
     "deadline": "N/A",
     "description_file": null,
-    "error_attempts": 1,
-    "last_error_at": "2026-10-05T18:08:35+03:00"
+    "eval_model": "local/qwen/qwen3-14b"
   },
   {
     "title": "Data Engineer",
