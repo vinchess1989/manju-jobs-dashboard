@@ -317767,15 +317767,14 @@
     "location": "Extract via OpenClaw",
     "url": "https://www.jobly.fi/tyopaikka/hse-valvoja-reissutyo-2772359",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Page load or parsing error.",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
     "id": "977e6ec6",
     "source": "jobly_coordinator",
     "posted_date": "N/A",
     "deadline": "N/A",
     "description_file": null,
-    "error_attempts": 1,
-    "last_error_at": "2026-10-05T15:49:18+03:00"
+    "eval_model": "local/qwen/qwen3-14b"
   },
   {
     "title": "K\u00e4ytt\u00f6\u00f6nottoinsin\u00f6\u00f6ri (koestaja)",
