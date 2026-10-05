@@ -393367,5 +393367,53 @@
     "eval_model": "local/qwen/qwen3-14b",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'opettaja'"
+  },
+  {
+    "title": "Sairaanhoitaja Meilahden teho-osasto",
+    "company": "HUS Helsingin yliopistollinen sairaala",
+    "location": "Helsinki Region, Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/3b388d9d-2348-46c8-a1c9-14e11ccaa161/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The job requires a nurse (sairaanhoitaja) with specific medical training and vaccination protections, which falls under the 'Medical / Social Welfare' hard rejection category as Manju lacks relevant qualifications.",
+    "id": "fda8d44d",
+    "source": "tyomarkkinatori",
+    "posted_date": "5.10.2026, 5.08",
+    "deadline": "2026-10-19",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'sairaanhoitaja'"
+  },
+  {
+    "title": "Erikoisl\u00e4\u00e4k\u00e4ri Sy\u00f6p\u00e4keskus Kiinte\u00e4t kasvaimet linja",
+    "company": "HUS Helsingin yliopistollinen sairaala",
+    "location": "Helsinki Region, Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/06002ee2-72e7-4cd4-9872-ed4d0b8d9902/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The job requires a specialist doctor qualification in oncology, which is a hard rejection due to the candidate's lack of medical licensure and clinical experience.",
+    "id": "92da7677",
+    "source": "tyomarkkinatori",
+    "posted_date": "5.10.2026, 5.08",
+    "deadline": "2026-10-26",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'l\u00e4\u00e4k\u00e4ri'"
+  },
+  {
+    "title": "Erikoisl\u00e4\u00e4k\u00e4ri Neonatologia Lasten ja nuorten sairaudet",
+    "company": "HUS Helsingin yliopistollinen sairaala",
+    "location": "Helsinki Region, Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/b9dc4683-a2dd-49b4-8033-610e9c9395a9/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The role requires a specialist doctor in neonatology, which necessitates medical qualifications and Valvira accreditation that the candidate does not possess (she holds legal degrees, not medical ones).",
+    "id": "95761c14",
+    "source": "tyomarkkinatori",
+    "posted_date": "5.10.2026, 5.08",
+    "deadline": "2026-11-02",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'l\u00e4\u00e4k\u00e4ri'"
   }
 ]
