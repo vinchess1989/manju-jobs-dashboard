@@ -316125,5 +316125,35 @@
     "deadline": "N/A",
     "eval_model": "local/qwen/qwen3-14b",
     "description_file": null
+  },
+  {
+    "title": "Kulttuuripaja, ty\u00f6kokeilu, Nuorten ty\u00f6pajat",
+    "company": "Vantaan kaupunki - Vanda stad - City of Vantaa",
+    "location": "Helsinki Region, Finland",
+    "url": "https://fi.linkedin.com/jobs/view/kulttuuripaja-ty%C3%B6kokeilu-nuorten-ty%C3%B6pajat-at-vantaan-kaupunki-vanda-stad-city-of-vantaa-4475515569",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "1dca21f6",
+    "source": "linkedin_fi_event_coordinator",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null
+  },
+  {
+    "title": "Office Assistant",
+    "company": "Northstar Painting",
+    "location": "Birmingham, MI",
+    "url": "https://www.linkedin.com/jobs/view/office-assistant-at-northstar-painting-4475522433",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Job location is Birmingham, MI (United States), which is a non-Finland country-specific posting and automatically rejected per Hard Rejections rule.",
+    "id": "22ea4714",
+    "source": "linkedin_ww_office_secretary",
+    "posted_date": "2026-10-05",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null
   }
 ]
