@@ -398042,5 +398042,37 @@
     "eval_model": "local/qwen/qwen3-14b",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'director'"
+  },
+  {
+    "title": "Communications Lead, Woven Capital",
+    "company": "Woven by Toyota",
+    "location": "Brooklyn, NY",
+    "url": "https://www.linkedin.com/jobs/view/communications-lead-woven-capital-at-woven-by-toyota-4372628377",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "9c6d76c5",
+    "source": "linkedin_ww_communications_p2",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains seniority keyword 'lead'"
+  },
+  {
+    "title": "Communications Lead, Woven Capital",
+    "company": "Woven by Toyota",
+    "location": "Seattle, WA",
+    "url": "https://www.linkedin.com/jobs/view/communications-lead-woven-capital-at-woven-by-toyota-4372624575",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Job location is Seattle, WA (United States), which is a non-Finland country-specific posting and automatically rejected per hard-rejection rules.",
+    "id": "14990187",
+    "source": "linkedin_ww_communications_p2",
+    "posted_date": "2026-03-11",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains seniority keyword 'lead'"
   }
 ]
