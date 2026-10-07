@@ -398122,5 +398122,37 @@
     "eval_model": "local/qwen/qwen3-14b",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'manager'"
+  },
+  {
+    "title": "L\u00e4hihoitaja/l\u00e4\u00e4kint\u00e4vahtimestari Puisto- ja Tornisairaalan leikkausyksik\u00f6t",
+    "company": "L\u00e4hihoitaja/l\u00e4\u00e4kint\u00e4vahtimestari Puisto- ja Tornisairaalan leikkausyksik\u00f6t",
+    "location": "Helsinki Region, Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/be948361-0f0e-42bf-a4c6-85e2cb10878e/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The job requires specific healthcare vocational qualifications (nurse/medical assistant) that the candidate does not possess, falling under 'Specialized / Vocational Degrees' hard rejection criteria.",
+    "id": "c2e2d8e2",
+    "source": "tyomarkkinatori",
+    "posted_date": "7.10.2026, 5.08",
+    "deadline": "2026-10-21",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'l\u00e4hihoitaja'"
+  },
+  {
+    "title": "Multiple Series Trusts Chief Compliance Officer",
+    "company": "U.S. Bank",
+    "location": "Boston, MA",
+    "url": "https://www.linkedin.com/jobs/view/multiple-series-trusts-chief-compliance-officer-at-u-s-bank-4476518786",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The job is located in the United States (Boston, MA) and explicitly requires a 'Chief Compliance Officer' role at a senior level, which Manju does not have experience for.",
+    "id": "7a77c9a8",
+    "source": "linkedin_ww_compliance",
+    "posted_date": "2026-10-07",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains seniority keyword 'chief'"
   }
 ]
