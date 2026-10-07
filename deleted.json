@@ -398074,5 +398074,53 @@
     "eval_model": "local/qwen/qwen3-14b",
     "description_file": null,
     "deletion_reason": "Title contains seniority keyword 'lead'"
+  },
+  {
+    "title": "Corporate Communications Manager",
+    "company": "Weatherford",
+    "location": "Houston, TX",
+    "url": "https://www.linkedin.com/jobs/view/corporate-communications-manager-at-weatherford-4476387741",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "5db456c9",
+    "source": "linkedin_ww_communications",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'manager'"
+  },
+  {
+    "title": "Director of Internal Communications",
+    "company": "DLA Piper",
+    "location": "Dallas-Fort Worth Metroplex",
+    "url": "https://www.linkedin.com/jobs/view/director-of-internal-communications-at-dla-piper-4453345175",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Hard rejection due to non-Finland location (Dallas-Fort Worth Metroplex) and senior-level job title ('Director') requiring experience the candidate does not have.",
+    "id": "88340597",
+    "source": "linkedin_ww_communications",
+    "posted_date": "2026-09-30",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'director'"
+  },
+  {
+    "title": "Manager, Corporate Content & Reputation, External Communications",
+    "company": "MilliporeSigma",
+    "location": "St Louis, MO",
+    "url": "https://www.linkedin.com/jobs/view/manager-corporate-content-reputation-external-communications-at-milliporesigma-4475113704",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "cfad21d8",
+    "source": "linkedin_ww_communications",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'manager'"
   }
 ]
