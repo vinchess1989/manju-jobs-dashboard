@@ -399738,5 +399738,37 @@
     "eval_model": "local/qwen/qwen3-14b",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 's\u00e4hk\u00f6asentaja'"
+  },
+  {
+    "title": "Toiminnanjohtaja",
+    "company": "Cantores Minores",
+    "location": "Helsinki Region, Finland",
+    "url": "https://fi.linkedin.com/jobs/view/toiminnanjohtaja-at-cantores-minores-4474461963",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "300f05ed",
+    "source": "linkedin_fi_event",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'johtaja'"
+  },
+  {
+    "title": "Director, Press & Communications",
+    "company": "Bvlgari",
+    "location": "New York County, NY",
+    "url": "https://www.linkedin.com/jobs/view/director-press-communications-at-bvlgari-4465558921",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The job title contains 'Director' and requires senior-level experience, which the candidate does not have. Additionally, the location is in New York County, NY (USA), which is a non-Finland country-specific posting.",
+    "id": "96c25a3d",
+    "source": "linkedin_ww_communications",
+    "posted_date": "2026-09-17",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'director'"
   }
 ]
