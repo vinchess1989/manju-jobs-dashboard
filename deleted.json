@@ -399866,5 +399866,37 @@
     "eval_model": "local/qwen/qwen3-14b",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 's\u00e4hk\u00f6asentaja'"
+  },
+  {
+    "title": "CORPORATE MEDIA RELATIONS COMMUNICATIONS MANAGER 2",
+    "company": "Ingalls Shipbuilding, a Division of HII",
+    "location": "Newport News, VA",
+    "url": "https://www.linkedin.com/jobs/view/corporate-media-relations-communications-manager-2-at-ingalls-shipbuilding-a-division-of-hii-4475719471",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Job is located in Newport News, VA (USA), which is an automatic hard rejection due to non-Finland country-specific posting.",
+    "id": "ac881536",
+    "source": "linkedin_ww_communications",
+    "posted_date": "2026-10-08",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'manager'"
+  },
+  {
+    "title": "Communications Manager",
+    "company": "Wimmer Solutions",
+    "location": "Miami, FL",
+    "url": "https://www.linkedin.com/jobs/view/communications-manager-at-wimmer-solutions-4471584595",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "7d03c4ea",
+    "source": "linkedin_ww_communications",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'manager'"
   }
 ]
