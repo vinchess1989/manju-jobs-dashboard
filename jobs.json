@@ -329880,5 +329880,35 @@
     "deadline": "N/A",
     "eval_model": "local/qwen/qwen3-14b",
     "description_file": null
+  },
+  {
+    "title": "Event Planner, Titletown",
+    "company": "Delaware North",
+    "location": "Green Bay, WI",
+    "url": "https://www.linkedin.com/jobs/view/event-planner-titletown-at-delaware-north-4474863424",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Job located outside Finland (Green Bay, WI) \u2013 not eligible.",
+    "id": "2062bab9",
+    "source": "linkedin_ww_event",
+    "posted_date": "2026-10-09",
+    "deadline": "N/A",
+    "eval_model": "groq/openai/gpt-oss-20b",
+    "description_file": null
+  },
+  {
+    "title": "Terapiakoordinaattori, mielenterveys- ja p\u00e4ihdepalvelut, Espoo",
+    "company": "L\u00e4nsi-Uudenmaan hyvinvointialue",
+    "location": "Helsinki Region, Finland",
+    "url": "https://fi.linkedin.com/jobs/view/terapiakoordinaattori-mielenterveys-ja-p%C3%A4ihdepalvelut-espoo-at-l%C3%A4nsi-uudenmaan-hyvinvointialue-4474956243",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "8c863b46",
+    "source": "linkedin_fi_coordinator",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null
   }
 ]
