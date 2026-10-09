@@ -401626,5 +401626,37 @@
     "eval_model": "local/qwen/qwen3-14b",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'johtaja'"
+  },
+  {
+    "title": "Turvallisuusp\u00e4\u00e4llikk\u00f6",
+    "company": "Hae paikkaa",
+    "location": "Helsinki Region, Finland",
+    "url": "https://www.jobly.fi/tyopaikka/turvallisuuspaallikko-2775474",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "c4d5801e",
+    "source": "jobly",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'p\u00e4\u00e4llikk\u00f6'"
+  },
+  {
+    "title": "Director of Communications",
+    "company": "State of South Carolina",
+    "location": "Greenwood, SC",
+    "url": "https://www.linkedin.com/jobs/view/director-of-communications-at-state-of-south-carolina-4474047355",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The job title contains 'Director' (senior-level role) and is located in the United States, both of which are hard rejections.",
+    "id": "95bfa898",
+    "source": "linkedin_ww_communications",
+    "posted_date": "2026-09-18",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'director'"
   }
 ]
