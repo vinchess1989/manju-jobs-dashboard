@@ -334086,15 +334086,14 @@
     "location": "Dallas, TX",
     "url": "https://www.linkedin.com/jobs/view/entry-level-paralegal-dallas-tx-at-friedman-vartolo-llp-4476537677",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Failed to get or parse LLM response: HTTPConnectionPool(host='127.0.0.1', port=1234): Read timed out. (read timeout=120)",
+    "matches_requirements": "no",
+    "reason": "Job is located in the United States, outside Finland.",
     "id": "c6a67618",
     "source": "linkedin_ww_legal_trainee",
-    "posted_date": "N/A",
+    "posted_date": "2026-10-07",
     "deadline": "N/A",
-    "error_attempts": 1,
-    "last_error_at": "2026-10-10T18:47:04+03:00",
-    "description_file": null
+    "description_file": null,
+    "eval_model": "groq/openai/gpt-oss-20b"
   },
   {
     "title": "Kulttuuripaja, ty\u00f6kokeilu, Nuorten ty\u00f6pajat",
@@ -334393,6 +334392,21 @@
     "id": "1f73fa25",
     "source": "linkedin_ww_office_secretary_p3",
     "posted_date": "2026-10-11",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null
+  },
+  {
+    "title": "Automaalari Kokkolaan",
+    "company": "Hae paikkaa",
+    "location": "Helsinki Region, Finland",
+    "url": "https://www.jobly.fi/tyopaikka/automaalari-kokkolaan-2772545",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The job requires a trade role (car painter) with specific manual labour skills and experience, which falls under the 'Trade / Manual-labour' hard rejection category.",
+    "id": "565840c9",
+    "source": "jobly",
+    "posted_date": "N/A",
     "deadline": "N/A",
     "eval_model": "local/qwen/qwen3-14b",
     "description_file": null
