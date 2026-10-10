@@ -334683,5 +334683,50 @@
     "deadline": "N/A",
     "eval_model": "groq/openai/gpt-oss-20b",
     "description_file": null
+  },
+  {
+    "title": "Johdon assistentti",
+    "company": "Johdon assistentti",
+    "location": "Turku Region, Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/29e7f978-71e5-40c4-936d-bae149eff107/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "0c565680",
+    "source": "tyomarkkinatori",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "groq/openai/gpt-oss-120b",
+    "description_file": null
+  },
+  {
+    "title": "Associate Attorney",
+    "company": "Synectics Inc.",
+    "location": "Savannah, GA",
+    "url": "https://www.linkedin.com/jobs/view/associate-attorney-at-synectics-inc-4470508177",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Job is located in Savannah, GA (USA), which is a non-Finland country-specific posting and requires active Georgia Bar admission not held by the candidate.",
+    "id": "56562213",
+    "source": "linkedin_ww_lawyer",
+    "posted_date": "2026-10-10",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null
+  },
+  {
+    "title": "Legal Assistant",
+    "company": "American National",
+    "location": "Houston, TX",
+    "url": "https://www.linkedin.com/jobs/view/legal-assistant-at-american-national-4475999740",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The job location is Houston, TX (USA), which is a non-Finland country-specific posting with no explicit statement of worldwide remote eligibility, triggering an automatic hard rejection.",
+    "id": "a54665c7",
+    "source": "linkedin_ww_legal_trainee_p3",
+    "posted_date": "2026-10-09",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null
   }
 ]
