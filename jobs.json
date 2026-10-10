@@ -333978,19 +333978,18 @@
   },
   {
     "title": "Keikkatarjoilija Turun alueelle, palkka 12,21-17\u20ac / MARAVA tes",
-    "company": "Extract via OpenClaw",
-    "location": "Extract via OpenClaw",
+    "company": "Keikkatarjoilija Turun alueelle, palkka 12,21-17\u20ac / MARAVA tes",
+    "location": "Turku Region, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/9e91a89d-a02e-41e7-99dc-d90a2279b515/fi",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Failed to get or parse LLM response: HTTPConnectionPool(host='127.0.0.1', port=1234): Read timed out. (read timeout=120)",
+    "matches_requirements": "no",
+    "reason": "The job is a manual-labour role requiring specific vocational training (hygiene pass) and involves physical service work, which falls under the 'Trade / Manual-labour' hard rejection category.",
     "id": "e0e3194a",
     "source": "tyomarkkinatori",
-    "posted_date": "N/A",
+    "posted_date": "2026-10-10",
     "deadline": "N/A",
-    "error_attempts": 1,
-    "last_error_at": "2026-10-10T12:43:58+03:00",
-    "description_file": null
+    "description_file": null,
+    "eval_model": "local/qwen/qwen3-14b"
   },
   {
     "title": "Blokkari y\u00f6kerhoon, palkka 12,21-15,04\u20ac / MARAVA tes",
