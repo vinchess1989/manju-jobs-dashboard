@@ -333690,5 +333690,20 @@
     "deadline": "N/A",
     "eval_model": "groq/openai/gpt-oss-120b",
     "description_file": null
+  },
+  {
+    "title": "Medical Affairs Advisor & Liaison",
+    "company": "Extract via OpenClaw",
+    "location": "Extract via OpenClaw",
+    "url": "https://fi.indeed.com/rc/clk?jk=583ca4e1a1a3dcd5",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "915b8268",
+    "source": "indeed",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null
   }
 ]
