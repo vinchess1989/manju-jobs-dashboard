@@ -403403,5 +403403,53 @@
     "eval_model": "groq/openai/gpt-oss-120b",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'sairaanhoitaja'"
+  },
+  {
+    "title": "Nordic Head Chef & QA Lead to Helsinki Airport",
+    "company": "Avolta",
+    "location": "Helsinki Region, Finland",
+    "url": "https://fi.linkedin.com/jobs/view/nordic-head-chef-qa-lead-to-helsinki-airport-at-avolta-4477815829",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The role requires culinary expertise and food safety leadership, which is unrelated to the candidate's legal/compliance background and skills. It also contains 'Head' in the title, indicating a senior-level position she is not qualified for.",
+    "id": "77b6ae83",
+    "source": "linkedin_fi_compliance",
+    "posted_date": "2026-10-10",
+    "deadline": "2026-10-25",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'chef'"
+  },
+  {
+    "title": "Executive Communications Lead",
+    "company": "Deloitte",
+    "location": "Greater Cleveland",
+    "url": "https://www.linkedin.com/jobs/view/executive-communications-lead-at-deloitte-4477891723",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Job location is 'Greater Cleveland' (United States), which is a non-Finland country-specific posting and does not meet location requirements.",
+    "id": "0e4da791",
+    "source": "linkedin_ww_communications",
+    "posted_date": "2026-10-10",
+    "deadline": "2026-11-08",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains seniority keyword 'lead'"
+  },
+  {
+    "title": "Executive Communications Lead",
+    "company": "Deloitte",
+    "location": "Boise, ID",
+    "url": "https://www.linkedin.com/jobs/view/executive-communications-lead-at-deloitte-4477892726",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "2da79fc0",
+    "source": "linkedin_ww_communications",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains seniority keyword 'lead'"
   }
 ]
