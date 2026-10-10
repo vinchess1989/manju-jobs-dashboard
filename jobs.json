@@ -334410,5 +334410,20 @@
     "deadline": "N/A",
     "eval_model": "local/qwen/qwen3-14b",
     "description_file": null
+  },
+  {
+    "title": "Events Coordinator",
+    "company": "City of New York",
+    "location": "Manhattan, NY",
+    "url": "https://www.linkedin.com/jobs/view/events-coordinator-at-city-of-new-york-4472940913",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "46af8bfc",
+    "source": "linkedin_ww_event_coordinator_p2",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "groq/openai/gpt-oss-120b",
+    "description_file": null
   }
 ]
