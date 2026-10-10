@@ -333645,5 +333645,35 @@
     "deadline": "N/A",
     "eval_model": "groq/openai/gpt-oss-120b",
     "description_file": null
+  },
+  {
+    "title": "Corporate Associate Attorney",
+    "company": "gpac",
+    "location": "Boise, ID",
+    "url": "https://www.linkedin.com/jobs/view/corporate-associate-attorney-at-gpac-4475289428",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Job is located in Boise, ID, USA, which is outside Finland.",
+    "id": "341b1644",
+    "source": "linkedin_ww_lawyer",
+    "posted_date": "2026-10-10",
+    "deadline": "N/A",
+    "eval_model": "groq/openai/gpt-oss-120b",
+    "description_file": null
+  },
+  {
+    "title": "Facilities Sr Coordinator",
+    "company": "CBRE",
+    "location": "Sunnyvale, CA",
+    "url": "https://www.linkedin.com/jobs/view/facilities-sr-coordinator-at-cbre-4478024263",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "4580bbad",
+    "source": "linkedin_ww_coordinator",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "groq/openai/gpt-oss-20b",
+    "description_file": null
   }
 ]
