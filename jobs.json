@@ -334396,5 +334396,51 @@
     "deadline": "N/A",
     "eval_model": "local/qwen/qwen3-14b",
     "description_file": null
+  },
+  {
+    "title": "Kokki ja tarjoilija \u00e0 la carte ravintolaan",
+    "company": "Kokki ja tarjoilija \u00e0 la carte ravintolaan",
+    "location": "Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/908b833d-7ce0-44f7-b7ad-15432d15f363/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "b313490e",
+    "source": "tyomarkkinatori",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "groq/openai/gpt-oss-120b",
+    "description_file": null
+  },
+  {
+    "title": "Kokeneita rengasasentajia syksyn 2026 sesonkiin Helsinkiin",
+    "company": "Hae paikkaa",
+    "location": "Helsinki Region, Finland",
+    "url": "https://www.jobly.fi/tyopaikka/kokeneita-rengasasentajia-syksyn-2026-sesonkiin-helsinkiin-2772294",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The job requires a trade/manual-labour role (tyre fitter) which is explicitly listed as a hard rejection due to lack of relevant experience and vocational training.",
+    "id": "6ed8dff5",
+    "source": "jobly",
+    "posted_date": "2026-10-10",
+    "deadline": "2026-10-20",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null
+  },
+  {
+    "title": "Assistentti",
+    "company": "Suomen Asuntopaperit Oy",
+    "location": "Finland",
+    "url": "https://fi.linkedin.com/jobs/view/assistentti-at-suomen-asuntopaperit-oy-4475620446",
+    "visited": "yes",
+    "matches_requirements": "error",
+    "reason": "Page load or parsing error.",
+    "id": "9f98c43c",
+    "source": "linkedin_fi_office_secretary",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "description_file": null,
+    "error_attempts": 1,
+    "last_error_at": "2026-10-10T16:55:49+03:00"
   }
 ]
