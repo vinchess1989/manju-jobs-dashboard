@@ -403387,5 +403387,21 @@
     "eval_model": "local/qwen/qwen3-14b",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'manager'"
+  },
+  {
+    "title": "Tiimiesihenkil\u00f6-sairaanhoitaja, Attendo Tervaniitty, Kuopio",
+    "company": "Attendo",
+    "location": "Kuopio, Finland",
+    "url": "https://fi.indeed.com/rc/clk?jk=ba490225763a67a2",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The position is a nursing role (sairaanhoitaja) requiring medical qualifications, which is a hard rejection.",
+    "id": "503c808a",
+    "source": "indeed",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "groq/openai/gpt-oss-120b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'sairaanhoitaja'"
   }
 ]
