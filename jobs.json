@@ -334187,19 +334187,18 @@
   },
   {
     "title": "Varhaiskasvatuksen sosionomi",
-    "company": "Extract via OpenClaw",
-    "location": "Extract via OpenClaw",
+    "company": "Pilke Liminka liikuntap\u00e4iv\u00e4koti",
+    "location": "Helsinki Region, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/934af870-cd4f-402d-8a64-703102c94932/fi",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Failed to get or parse LLM response: HTTPConnectionPool(host='127.0.0.1', port=1234): Read timed out. (read timeout=120)",
+    "matches_requirements": "no",
+    "reason": "The job title 'Varhaiskasvatuksen sosionomi' falls under Early Childhood Education, which is explicitly listed as a hard rejection due to requiring specific Finnish pedagogical qualifications not held by the candidate.",
     "id": "0b3d8624",
     "source": "tyomarkkinatori",
-    "posted_date": "N/A",
-    "deadline": "N/A",
-    "error_attempts": 1,
-    "last_error_at": "2026-10-10T20:24:54+03:00",
-    "description_file": null
+    "posted_date": "2026-10-10",
+    "deadline": "2026-10-25",
+    "description_file": null,
+    "eval_model": "local/qwen/qwen3-14b"
   },
   {
     "title": "Myyntiedustaja/asiakashankkija",
