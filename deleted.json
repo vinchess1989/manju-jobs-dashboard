@@ -404381,5 +404381,53 @@
     "eval_model": "local/qwen/qwen3-14b",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'manager'"
+  },
+  {
+    "title": "Stainless Steel Welders for Data Centre Projects",
+    "company": "ENGLANNIKSI",
+    "location": "Helsinki Region, Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/8cfd7203-154f-4639-a8df-6e2a3c457b27/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The position is a manual trade welding role, which is a hard rejection.",
+    "id": "88de1b08",
+    "source": "tyomarkkinatori",
+    "posted_date": "2026-10-11",
+    "deadline": "2026-11-30",
+    "eval_model": "groq/openai/gpt-oss-120b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'welder'"
+  },
+  {
+    "title": "Welder to Kouvola",
+    "company": "Lavonia Oy",
+    "location": "Kouvola, Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/b40cecd0-3b4d-452c-b783-c26c27ee2137/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The job requires a welder, which falls under the 'Trade / Manual-labour' hard rejection category as it demands specific vocational training in welding that the candidate does not possess.",
+    "id": "a34adb88",
+    "source": "tyomarkkinatori",
+    "posted_date": "11.10.2026, 21.28",
+    "deadline": "2026-11-30",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'welder'"
+  },
+  {
+    "title": "Hitsaaja Kouvolaan",
+    "company": "Lavonia Oy",
+    "location": "Kouvola, Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/8d7da4f4-6ffc-4b81-be86-b0b93816d2c6/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The job requires a welder (hitsaaja), which is a trade/manual-labour role requiring specific vocational training in welding, explicitly listed as a hard rejection.",
+    "id": "5932865c",
+    "source": "tyomarkkinatori",
+    "posted_date": "julkaistu 11.10.2026, 21.25",
+    "deadline": "2026-11-30",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'hitsaaja'"
   }
 ]
