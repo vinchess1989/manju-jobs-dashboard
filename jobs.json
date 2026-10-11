@@ -334544,5 +334544,50 @@
     "deadline": "2026-10-30",
     "eval_model": "groq/openai/gpt-oss-20b",
     "description_file": null
+  },
+  {
+    "title": "Osa-aikaista Et\u00e4myyntity\u00f6t\u00e4 p\u00e4\u00e4ty\u00f6ksi tai lis\u00e4-ansiota hakeville",
+    "company": "Pohjolan mediatalo Oy",
+    "location": "Haapavesi, Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/cb7a8434-05bc-47d7-889d-7194f5703aca/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The role is outbound telemarketing/sales, which is a hard rejection criterion.",
+    "id": "5c4f6b06",
+    "source": "tyomarkkinatori",
+    "posted_date": "2026-10-11",
+    "deadline": "2026-12-31",
+    "eval_model": "groq/openai/gpt-oss-120b",
+    "description_file": null
+  },
+  {
+    "title": "Et\u00e4myyntity\u00f6t\u00e4 el\u00e4kel\u00e4isille ja lis\u00e4-ansiota hakeville",
+    "company": "Et\u00e4myyntity\u00f6t\u00e4 el\u00e4kel\u00e4isille ja lis\u00e4-ansiota hakeville",
+    "location": "Helsinki Region, Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/43f2974c-d7fe-46e4-b159-11d3d1ff4d60/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "a3c9a332",
+    "source": "tyomarkkinatori",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null
+  },
+  {
+    "title": "Et\u00e4myyntity\u00f6t\u00e4 el\u00e4kel\u00e4isille ja lis\u00e4-ansiota hakeville",
+    "company": "Pohjolan mediatalo Oy",
+    "location": "Tampere Region, Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/c4d2a1b9-7830-4c95-bffd-81f814f0b3b3/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The job requires outbound telemarketing (puhelinmyynti) and commission-based sales work, which is explicitly listed as a hard rejection due to language requirements and role type mismatch.",
+    "id": "fab00522",
+    "source": "tyomarkkinatori",
+    "posted_date": "2026-10-11",
+    "deadline": "2026-12-31",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null
   }
 ]
