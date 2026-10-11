@@ -334514,5 +334514,35 @@
     "deadline": "2026-10-23",
     "eval_model": "local/qwen/qwen3-14b",
     "description_file": null
+  },
+  {
+    "title": "Vakuutusmeklari",
+    "company": "Vakuutusmeklari",
+    "location": "Helsinki Region, Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/2cf06c37-06d2-499c-b9e1-501e3ca1b0b6/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "99683f80",
+    "source": "tyomarkkinatori",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "groq/openai/gpt-oss-120b",
+    "description_file": null
+  },
+  {
+    "title": "Hitsaajia konepajaan",
+    "company": "Ja-Mi Works",
+    "location": "Urjala, Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/7456d1b0-8323-4e68-b5f1-2a92f008c314/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The role is a trade welding position, which is a manual\u2011labour job and disqualifies the candidate.",
+    "id": "70c128da",
+    "source": "tyomarkkinatori",
+    "posted_date": "julkaistu 11.10.2026, 8.54",
+    "deadline": "2026-10-30",
+    "eval_model": "groq/openai/gpt-oss-20b",
+    "description_file": null
   }
 ]
