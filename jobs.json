@@ -334694,5 +334694,50 @@
     "deadline": "N/A",
     "eval_model": "local/qwen/qwen3-14b",
     "description_file": null
+  },
+  {
+    "title": "Kosmetologi",
+    "company": "Chill Day Oy",
+    "location": "Pori, Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/22fb5700-cda6-4a36-9ef3-b37bc093c060/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The role requires a trained cosmetologist (a specific vocational qualification) which the candidate does not have.",
+    "id": "1c3971ca",
+    "source": "tyomarkkinatori",
+    "posted_date": "11.10.2026, 12.09",
+    "deadline": "2026-10-31",
+    "eval_model": "groq/openai/gpt-oss-120b",
+    "description_file": null
+  },
+  {
+    "title": "Asiakastapaamisia sopiva buukkaaja",
+    "company": "Powerbase Oy",
+    "location": "Helsinki Region, Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/6f76961c-e20e-4261-a8fa-7a90ae06b779/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Job is outbound telemarketing/cold\u2011calling role, which is a hard rejection.",
+    "id": "d68f98f8",
+    "source": "tyomarkkinatori",
+    "posted_date": "2026-10-11",
+    "deadline": "2026-11-01",
+    "eval_model": "groq/openai/gpt-oss-20b",
+    "description_file": null
+  },
+  {
+    "title": "Tiedonhallinnan asiantuntija",
+    "company": "Tiedonhallinnan asiantuntija",
+    "location": "Kuopio, Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/a13c8b81-2616-443e-bc71-9df4e43c8e26/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "99d029f0",
+    "source": "tyomarkkinatori",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null
   }
 ]
