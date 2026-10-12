@@ -404717,5 +404717,53 @@
     "eval_model": "local/qwen/qwen3-14b",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'electrician'"
+  },
+  {
+    "title": "Sairaanhoitaja, Pusulan terveysasema, Lohja",
+    "company": "L\u00e4nsi-Uudenmaan hyvinvointialue",
+    "location": "Helsinki Region, Finland",
+    "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/57b46a62-5a42-4092-9d14-847523d0c532/fi",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The job requires a licensed nurse (laillistettu sairaanhoitaja), which falls under the 'Medical / Social Welfare' hard rejection category as it necessitates specific Finnish nursing qualifications not held by the candidate.",
+    "id": "d20c5ce2",
+    "source": "tyomarkkinatori",
+    "posted_date": "2026-10-12",
+    "deadline": "2026-10-26",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'sairaanhoitaja'"
+  },
+  {
+    "title": "Environmental Consultant Team Lead",
+    "company": "Ecobio Oy",
+    "location": "Helsinki Region, Finland",
+    "url": "https://fi.linkedin.com/jobs/view/environmental-consultant-team-lead-at-ecobio-oy-4475208441",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "8ca36f46",
+    "source": "linkedin_fi_compliance",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains seniority keyword 'lead'"
+  },
+  {
+    "title": "Compliance Director, Regulatory Examinations & AML (Global Broker-Dealer/Clearing)",
+    "company": "Salient Group",
+    "location": "Dallas, TX",
+    "url": "https://www.linkedin.com/jobs/view/compliance-director-regulatory-examinations-aml-global-broker-dealer-clearing-at-salient-group-4477279344",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "1cb05838",
+    "source": "linkedin_ww_compliance",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "groq/openai/gpt-oss-120b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'director'"
   }
 ]
