@@ -335417,19 +335417,18 @@
   },
   {
     "title": "Uinninvalvoja",
-    "company": "Extract via OpenClaw",
-    "location": "Extract via OpenClaw",
+    "company": "Uinninvalvoja",
+    "location": "Kotka, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/7fc949ca-09b8-47bd-8385-a15d3139f349/fi",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Failed to get or parse LLM response: HTTPConnectionPool(host='127.0.0.1', port=1234): Read timed out. (read timeout=120)",
+    "matches_requirements": "no",
+    "reason": "The job requires specific vocational qualifications (ammatillinen perustutkinto) and lifeguarding certifications not present in the candidate's profile, and falls under physical/service roles excluded by hard rejections.",
     "id": "b39b58c1",
     "source": "tyomarkkinatori",
-    "posted_date": "N/A",
+    "posted_date": "2026-10-12",
     "deadline": "N/A",
-    "error_attempts": 1,
-    "last_error_at": "2026-10-12T06:04:15+03:00",
-    "description_file": null
+    "description_file": null,
+    "eval_model": "local/qwen/qwen3-14b"
   },
   {
     "title": "Corporate Counsel, Commercial Contracts",
