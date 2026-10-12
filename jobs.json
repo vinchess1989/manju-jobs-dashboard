@@ -336992,19 +336992,18 @@
   },
   {
     "title": "Toimistokoordinaattori / asiakaspalvelija",
-    "company": "Extract via OpenClaw",
-    "location": "Extract via OpenClaw",
+    "company": "Toimistokoordinaattori / asiakaspalvelija",
+    "location": "Helsinki Region, Finland",
     "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat/5b130301-7c88-4b40-94b0-97b6804cd75f/fi",
     "visited": "yes",
-    "matches_requirements": "error",
-    "reason": "Failed to get or parse LLM response: HTTPConnectionPool(host='127.0.0.1', port=1234): Read timed out. (read timeout=120)",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
     "id": "61e83057",
     "source": "tyomarkkinatori",
     "posted_date": "N/A",
     "deadline": "N/A",
-    "error_attempts": 1,
-    "last_error_at": "2026-10-12T14:48:01+03:00",
-    "description_file": null
+    "description_file": null,
+    "eval_model": "local/qwen/qwen3-14b"
   },
   {
     "title": "Lounaskokki Vuokatin talvisesonkiin,",
