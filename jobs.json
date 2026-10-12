@@ -337879,5 +337879,50 @@
     "deadline": "N/A",
     "eval_model": "local/qwen/qwen3-14b",
     "description_file": null
+  },
+  {
+    "title": "Administrative Secretary-Purchasing",
+    "company": "The MetroHealth System (Cleveland, OH)",
+    "location": "Cleveland, OH",
+    "url": "https://www.linkedin.com/jobs/view/administrative-secretary-purchasing-at-the-metrohealth-system-cleveland-oh-4474868059",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Job location is Cleveland, OH (USA), which is a non-Finland country-specific posting and automatically rejected per hard-rejection rules.",
+    "id": "f8383566",
+    "source": "linkedin_ww_office_secretary",
+    "posted_date": "2026-10-09",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null
+  },
+  {
+    "title": "Toimisto-/Taloussihteeri, Planora Oy, Oulu",
+    "company": "Academic Work - Oulu",
+    "location": "Etsi, Finland",
+    "url": "https://duunitori.fi/tyopaikat/tyo/toimisto-taloussihteeri-planora-oy-oulu-sasca-20643219",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "fe2703ab",
+    "source": "duunitori_office_secretary",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null
+  },
+  {
+    "title": "Toimistoavustaja, Vuosaaren kotihoito, palkkatuettu ty\u00f6suhde",
+    "company": "Helsingin kaupunki - Helsinki",
+    "location": "Helsinki Region, Finland",
+    "url": "https://duunitori.fi/tyopaikat/tyo/toimistoavustaja-vuosaaren-kotihoito-palkkatuettu-tyosuhde-shsel-20643191",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "512d406e",
+    "source": "duunitori_office_secretary",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null
   }
 ]
