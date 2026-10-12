@@ -406798,5 +406798,53 @@
     "eval_model": "local/qwen/qwen3-14b",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'l\u00e4hihoitaja'"
+  },
+  {
+    "title": "Workplace Manager, Otaniemi HQ",
+    "company": "RELEX Solutions",
+    "location": "Helsinki Region, Finland",
+    "url": "https://fi.linkedin.com/jobs/view/workplace-manager-otaniemi-hq-at-relex-solutions-4478555043",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "aadd72ad",
+    "source": "linkedin_fi_event_coordinator_p3",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'manager'"
+  },
+  {
+    "title": "Event Manager - Hilton Cleveland Downtown",
+    "company": "Hilton",
+    "location": "Cleveland, OH",
+    "url": "https://www.linkedin.com/jobs/view/event-manager-hilton-cleveland-downtown-at-hilton-4478545896",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "84ceb092",
+    "source": "linkedin_ww_event_p2",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "groq/openai/gpt-oss-20b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'manager'"
+  },
+  {
+    "title": "Director, Publicity - Santa Anna Nashville",
+    "company": "Sony Music Entertainment",
+    "location": "Nashville, TN",
+    "url": "https://www.linkedin.com/jobs/view/director-publicity-santa-anna-nashville-at-sony-music-entertainment-4477916885",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The job title contains 'Director' (senior-level role) and is located in Nashville, TN (non-Finland location), both of which are hard rejections.",
+    "id": "c7415f0f",
+    "source": "linkedin_ww_communications",
+    "posted_date": "2026-10-13",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'director'"
   }
 ]
