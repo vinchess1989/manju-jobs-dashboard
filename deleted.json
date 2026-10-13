@@ -406878,5 +406878,37 @@
     "eval_model": "local/qwen/qwen3-14b",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'director'"
+  },
+  {
+    "title": "Director, Public Relations",
+    "company": "Travel + Leisure Co.",
+    "location": "Orlando, FL",
+    "url": "https://www.linkedin.com/jobs/view/director-public-relations-at-travel-%2B-leisure-co-4478726546",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Hard rejected due to Seniority (job title 'Director') and Location (Orlando, FL in the US) requirements not meeting candidate's profile.",
+    "id": "98454efd",
+    "source": "linkedin_ww_communications",
+    "posted_date": "2026-10-13",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'director'"
+  },
+  {
+    "title": "Technology, Media & Telecommunications (TMT) Public Relations Associate Director - External Communications",
+    "company": "Deloitte",
+    "location": "Williamsville, NY",
+    "url": "https://www.linkedin.com/jobs/view/technology-media-telecommunications-tmt-public-relations-associate-director-external-communications-at-deloitte-4478714877",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The job is located in Williamsville, NY (United States), which is a non-Finland country-specific posting and not explicitly open to worldwide applicants, triggering an automatic hard rejection.",
+    "id": "dea6855f",
+    "source": "linkedin_ww_communications",
+    "posted_date": "2026-10-13",
+    "deadline": "2026-10-15",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'director'"
   }
 ]
