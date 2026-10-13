@@ -6,6 +6,12 @@ maintained by Claude Code across sessions; update it whenever something here goe
 durable fact/gotcha is discovered. It's a reference for future work, not a session changelog —
 prune outdated entries rather than letting them accumulate.
 
+- **ARCHIVED 2026-10-13 - Manju is moving to the UK; this Finland board is frozen.** Scheduled Task `ManjuJobsLocalLLMOrchestrator` is
+  **Disabled** (and its running scraper was stopped), a final data snapshot was committed, and the dashboard shows an "Archived" banner linking
+  to the new UK board (`..\manju_uk_jobs`, https://manju-uk-jobs.web.app). The site and the GitHub Pages data feed stay up, read-only: **do not
+  disable Pages or the hosting site**, and don't re-enable the task unless the board is deliberately revived. Its priority position on the shared
+  LLM server (`MANJU_PRIORITY_LOCK_FILE`) was inherited by `manju_uk_jobs`. `publish_dashboards.ps1` here still publishes sibling projects it
+  finds; the UK repo has its own script that publishes only itself.
 - **Resume/ is local-only (2026-09-28):** `Resume/Manju_CV_20260207.pdf` untracked from this PUBLIC repo and `Resume/` gitignored; nothing referenced it (saved resume links all point to the private `munchnambiar/Manju-jobs` repo). Still present in older public commits unless history is rewritten.
 
 ## Firestore locked down; Python scripts use a service account (2026-09-28)
