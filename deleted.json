@@ -406846,5 +406846,37 @@
     "eval_model": "local/qwen/qwen3-14b",
     "description_file": null,
     "deletion_reason": "Title contains hard-rejection keyword 'director'"
+  },
+  {
+    "title": "Lead Counsel (Equities Products)",
+    "company": "Citi",
+    "location": "Tampa, FL",
+    "url": "https://www.linkedin.com/jobs/view/lead-counsel-equities-products-at-citi-4477932265",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "Extracted via regex fallback",
+    "id": "09a96bdf",
+    "source": "linkedin_ww_legal_counsel",
+    "posted_date": "N/A",
+    "deadline": "N/A",
+    "eval_model": "groq/openai/gpt-oss-20b",
+    "description_file": null,
+    "deletion_reason": "Title contains seniority keyword 'lead'"
+  },
+  {
+    "title": "Compliance Director (RIA)",
+    "company": "NextReg",
+    "location": "Miami, FL",
+    "url": "https://www.linkedin.com/jobs/view/compliance-director-ria-at-nextreg-4478703597",
+    "visited": "yes",
+    "matches_requirements": "no",
+    "reason": "The job is located in Miami, FL (United States), which is a non-Finland country-specific posting and does not meet the location criteria.",
+    "id": "50f5df3e",
+    "source": "linkedin_ww_compliance",
+    "posted_date": "2026-10-13",
+    "deadline": "N/A",
+    "eval_model": "local/qwen/qwen3-14b",
+    "description_file": null,
+    "deletion_reason": "Title contains hard-rejection keyword 'director'"
   }
 ]
